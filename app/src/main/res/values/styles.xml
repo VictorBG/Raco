@@ -1,0 +1,28 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="ExtendedFAB" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="backgroundTint">?attr/colorAccent</item>
+        <item name="android:elevation">6dp</item>
+        <item name="android:paddingStart">20sp</item>
+        <item name="android:paddingEnd">20sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="cornerRadius">32dp</item>
+        <item name="iconPadding">12dp</item>
+        <item name="iconSize">24dp</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+
+</resources>

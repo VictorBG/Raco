@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extended_fab_height">64dp</dimen>
+    <dimen name="extended_fab_elevation">6dp</dimen>
+    <dimen name="extended_fab_padding_start_end">20dp</dimen>
+    <dimen name="extended_fab_text_size">14sp</dimen>
+    <dimen name="extended_fab_corner_radius">32dp</dimen>
+    <dimen name="extended_fab_icon_padding">12dp</dimen>
+    <dimen name="extended_fab_icon_size">24dp</dimen>
+</resources>
