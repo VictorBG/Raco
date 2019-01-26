@@ -4,7 +4,10 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.victorbg.racofib.model.login.LoginData;
+import com.victorbg.racofib.data.model.login.LoginData;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 
@@ -13,46 +16,16 @@ import androidx.annotation.NonNull;
  * pattern. It is initialized in a secure way to prevent duplicate on more
  * than one thread.
  * <p>
- * TODO: Singleton initialization must be replaced with @Singleton pattern of Dagger thus involving di.
- * <p>
- * <p>
  * TODO: Tests are not ready yet for this class.
  */
+@Singleton
 public class PrefManager {
-    private static volatile PrefManager ourInstance;
-
-    public static void initialize(Application application) {
-        if (ourInstance == null) {
-            ourInstance = new PrefManager(application);
-        }
-    }
-
-    //Lazy init not used in the project as it is initialize on application load
-    public synchronized static PrefManager getInstance(Application application) {
-        if (ourInstance == null) {
-            synchronized (PrefManager.class) {
-                ourInstance = new PrefManager(application);
-            }
-        }
-        return ourInstance;
-    }
-
-    public synchronized static PrefManager getInstance() {
-        if (ourInstance == null) {
-            throw new RuntimeException("PrefManager must be initialized with an application context");
-        }
-        return ourInstance;
-    }
 
     private SharedPreferences sharedPreferences;
 
-
-    private PrefManager() {
-    }
-
-    private PrefManager(Application application) {
+    @Inject
+    public PrefManager(Application application) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application);
-
     }
 
     /**

@@ -1,8 +1,7 @@
 package com.victorbg.racofib.data.database.dao;
 
-import com.victorbg.racofib.model.Subject;
-import com.victorbg.racofib.model.SubjectSchedule;
-import com.victorbg.racofib.model.user.User;
+import com.victorbg.racofib.data.model.Subject;
+import com.victorbg.racofib.data.model.SubjectSchedule;
 
 import java.util.List;
 
@@ -10,7 +9,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import io.reactivex.Single;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 

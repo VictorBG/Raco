@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="home_drawer" type="id" />
+    <item name="notes_drawer" type="id" />
+    <item name="schedule_drawer" type="id" />
+    <item name="info_drawer" type="id" />
+    <item name="settings_drawer" type="id" />
+    <item name="notes" type="id" />
+</resources>

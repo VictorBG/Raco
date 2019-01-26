@@ -1,16 +1,13 @@
 package com.victorbg.racofib.data.api;
 
-import com.victorbg.racofib.model.Note;
-import com.victorbg.racofib.model.Subject;
-import com.victorbg.racofib.model.SubjectSchedule;
-import com.victorbg.racofib.model.api.ApiListResponse;
-import com.victorbg.racofib.model.api.ApiNotesResponse;
-import com.victorbg.racofib.model.user.User;
-
-import java.util.List;
+import com.victorbg.racofib.data.model.Note;
+import com.victorbg.racofib.data.model.Subject;
+import com.victorbg.racofib.data.model.SubjectSchedule;
+import com.victorbg.racofib.data.model.api.ApiListResponse;
+import com.victorbg.racofib.data.model.api.ApiNotesResponse;
+import com.victorbg.racofib.data.model.user.User;
 
 
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;

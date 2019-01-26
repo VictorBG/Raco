@@ -1,13 +1,11 @@
 package com.victorbg.racofib.data.database.dao;
 
-import com.victorbg.racofib.model.user.User;
+import com.victorbg.racofib.data.model.user.User;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import io.reactivex.Maybe;
-import io.reactivex.Single;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
