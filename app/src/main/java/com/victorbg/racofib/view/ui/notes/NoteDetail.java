@@ -69,7 +69,6 @@ public class NoteDetail extends BaseActivity {
     @Override
     public void onBackPressed() {
         finishAfterTransition();
-
     }
 
     @Override

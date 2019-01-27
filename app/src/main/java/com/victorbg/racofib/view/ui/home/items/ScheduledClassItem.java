@@ -52,8 +52,8 @@ public class ScheduledClassItem extends AbstractItem<ScheduledClassItem, Schedul
         public TextView classroom;
         @BindView(R.id.subject)
         public TextView subject;
-        @BindView(R.id.when)
-        public TextView when;
+        @BindView(R.id.type)
+        public TextView type;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -74,26 +74,24 @@ public class ScheduledClassItem extends AbstractItem<ScheduledClassItem, Schedul
                 calendar.add(Calendar.HOUR, (int) item.clazz.duration);
 
                 time.setVisibility(View.VISIBLE);
-                when.setVisibility(View.VISIBLE);
-
                 time.setText(item.clazz.start + " - " + (format.format(calendar.getTime())));
-                Calendar cal = Calendar.getInstance();
-                if (cal.compareTo(calendar) < 0) {
-                    when.setText("Después");
-                } else {
-                    cal.add(Calendar.HOUR, (int) item.clazz.duration * -1);
-                    if (cal.compareTo(calendar) > 0) {
-                        when.setText("Ya ha ocurrido");
-                    } else {
-                        when.setText("Ahora mismo");
-                    }
-                }
+
             } catch (ParseException e) {
                 time.setVisibility(View.GONE);
-                when.setVisibility(View.GONE);
-
                 e.printStackTrace();
             }
+
+            String t = "";
+            if (item.clazz.type.toUpperCase().equals("L")) {
+                t += "Laboratorio";
+            } else if (item.clazz.type.toUpperCase().equals("L")) {
+                t += "Problemas";
+            } else {
+                t += "Teoria";
+            }
+
+            t += " · Grupo " + item.clazz.group;
+            type.setText(t);
 
 
         }
@@ -101,7 +99,7 @@ public class ScheduledClassItem extends AbstractItem<ScheduledClassItem, Schedul
         @Override
         public void unbindView(@NonNull ScheduledClassItem item) {
             time.setText(null);
-            when.setText(null);
+            type.setText(null);
             subject.setText(null);
             classroom.setText(null);
         }

@@ -23,9 +23,6 @@ public class AppRaco extends Application implements HasActivityInjector {
 
         AppInjector.init(this);
 
-        //PrefManager.initialize(this);
-        //DataRepository.getInstance(this);
-
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
         }

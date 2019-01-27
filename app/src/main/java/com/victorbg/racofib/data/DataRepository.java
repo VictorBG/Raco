@@ -6,6 +6,7 @@ import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.api.result.ApiResult;
 import com.victorbg.racofib.data.api.result.ApiResultData;
 import com.victorbg.racofib.data.database.AppDatabase;
+import com.victorbg.racofib.data.repository.exams.ExamsRepository;
 import com.victorbg.racofib.data.repository.notes.NotesRepository;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
@@ -40,6 +41,11 @@ public class DataRepository implements Injectable {
     public MutableLiveData<User> user;
 
     private NotesRepository notesRepository;
+    private ExamsRepository examsRepository;
+
+    /*
+    TODO: Change User implementation to an independent repository and clean the code as it is a mess rn
+     */
 
     /*
     There should be an option to put the parameters as @Inject directly without injecting them
@@ -51,11 +57,24 @@ public class DataRepository implements Injectable {
         this.appDatabase = appDatabase;
         this.apiService = apiService;
 
-        this.notesRepository = new NotesRepository(appDatabase.notesDao(), prefManager, apiService);
-
         user = new MutableLiveData<>();
         user.setValue(null);
         initUser();
+
+        this.notesRepository = new NotesRepository(appDatabase.notesDao(), prefManager, apiService);
+        this.examsRepository = new ExamsRepository(appDatabase.examDao(), user.getValue(), prefManager, apiService);
+
+        examsRepository.getExams(new ApiResult() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onFailed(String errorMessage) {
+
+            }
+        });
     }
 
     /**
@@ -81,7 +100,7 @@ public class DataRepository implements Injectable {
         if (day == 0) day = 7;
 
 //        u.todaySubjects = appDatabase.subjectScheduleDao().getTodaySchedule(u.username, day);
-        u.todaySubjects = appDatabase.subjectScheduleDao().getTodaySchedule(u.username, 4);
+        u.todaySubjects = appDatabase.subjectScheduleDao().getTodaySchedule(u.username, day);
 
         user.setValue(u);
 
@@ -122,11 +141,33 @@ public class DataRepository implements Injectable {
                                         subject.username = user.username;
                                         appDatabase.subjectScheduleDao().insert(subject);
                                     }
+
+                                    prefManager.setLogin(new LoginData(token, expirationTime));
+                                    if (!prefManager.isLogged()) return;
+
+                                    //The following operations are done in the main thread due they are
+                                    //critical for the app as they are needed even before inflating the main activity UI
+                                    User u = appDatabase.userDao().getUser();
+                                    u.subjects = appDatabase.subjectsDao().getSubjects(u.username);
+
+                                    //Getting the full schedule is not necessary at the start
+                                    //u.schedule = appDatabase.subjectScheduleDao().getSchedule(u.username);
+
+                                    Calendar c = Calendar.getInstance();
+                                    //-1 to start with 1 on monday (now it starts on sunday)
+                                    //Possible bug if there are classes on sunday, but i don't think there are classes on sunday
+
+                                    //Bugfix for classes on sunday
+                                    int day = c.get(Calendar.DAY_OF_WEEK) - 1;
+                                    if (day == 0) day = 7;
+
+//        u.todaySubjects = appDatabase.subjectScheduleDao().getTodaySchedule(u.username, day);
+                                    u.todaySubjects = appDatabase.subjectScheduleDao().getTodaySchedule(u.username, 4);
+
+                                    DataRepository.this.user.postValue(u);
+                                    result.onCompleted();
                                 }).start();
 
-                                prefManager.setLogin(new LoginData(token, expirationTime));
-                                initUser();
-                                result.onCompleted();
                             }
 
                             @Override
@@ -151,19 +192,6 @@ public class DataRepository implements Injectable {
         });
     }
 
-//    public void getNotes(@NonNull ApiResultData<List<Note>> result) {
-//        apiService.getNotes("Bearer " + prefManager.getToken(), "json").enqueue(new Callback<ApiNotesResponse>() {
-//            @Override
-//            public void onResponse(Call<ApiNotesResponse> call, Response<ApiNotesResponse> response) {
-//                result.onCompleted(response.body().result);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ApiNotesResponse> call, Throwable t) {
-//                result.onFailed(t.getMessage());
-//            }
-//        });
-//    }
 
     public void getNotes(@NonNull ApiResult result, boolean force) {
         notesRepository.getNotes(result, force);

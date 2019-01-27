@@ -8,6 +8,7 @@ import com.victorbg.racofib.AppRaco;
 import com.victorbg.racofib.data.api.ApiManager;
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.AppDatabase;
+import com.victorbg.racofib.data.database.dao.ExamDao;
 import com.victorbg.racofib.data.database.dao.NotesDao;
 import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
@@ -59,6 +60,12 @@ public class AppModule {
     @Provides
     public NotesDao getNotesDao(AppDatabase appDatabase) {
         return appDatabase.notesDao();
+    }
+
+    @Singleton
+    @Provides
+    public ExamDao getExamDao(AppDatabase appDatabase) {
+        return appDatabase.examDao();
     }
 
     @Singleton

@@ -41,8 +41,6 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
     TextView todayDate;
     @BindView(R.id.recyclerView)
     RecyclerView todayScheduleRecyclerView;
-    @BindView(R.id.progressBar2)
-    ProgressBar progressBar;
     @BindView(R.id.textView5)
     TextView noClassesTodayView;
 
@@ -81,6 +79,10 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
     @Override
     public void onChanged(User user) {
         List<ScheduledClassItem> items = new ArrayList<>();
+
+
+        noClassesTodayView.setVisibility((user.todaySubjects == null || user.todaySubjects.isEmpty()) ? View.VISIBLE : View.GONE);
+
         for (SubjectSchedule note : user.todaySubjects) {
             items.add(new ScheduledClassItem().withScheduledClass(note));
         }

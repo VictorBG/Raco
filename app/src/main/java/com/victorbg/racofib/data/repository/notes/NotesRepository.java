@@ -8,10 +8,18 @@ import com.victorbg.racofib.data.api.result.ApiResultData;
 import com.victorbg.racofib.data.database.dao.NotesDao;
 import com.victorbg.racofib.data.model.Note;
 import com.victorbg.racofib.data.model.api.ApiNotesResponse;
+import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.repository.Repository;
 import com.victorbg.racofib.data.sp.PrefManager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -36,7 +44,7 @@ public class NotesRepository extends Repository<List<Note>> {
     }
 
     public void getNotes(@NonNull ApiResult result, boolean force) {
-        if (!force && !preCall()) {
+        if (!force && !preCall() && data.getValue() != null) {
             data.postValue(data.getValue());
             result.onCompleted();
             return;
@@ -74,6 +82,8 @@ public class NotesRepository extends Repository<List<Note>> {
             else result.onCompleted();
         }));
     }
+
+
 
 
 }

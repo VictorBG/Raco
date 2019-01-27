@@ -78,15 +78,11 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         fragmentNavigator = new FragmentNavigator(this, getSupportFragmentManager(), R.id.fragment, toolbar);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         fragmentNavigator.initialNavigate();
-        setTitle("Avisos");
+        setTitle("Inicio");
     }
+
+
 
     private void initToolbar() {
         setSupportActionBar(toolbar);
