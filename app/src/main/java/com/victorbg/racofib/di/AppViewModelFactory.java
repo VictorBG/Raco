@@ -2,6 +2,7 @@ package com.victorbg.racofib.di;
 
 import android.util.ArrayMap;
 
+import com.victorbg.racofib.viewmodel.HomeViewModel;
 import com.victorbg.racofib.viewmodel.NotesViewModel;
 
 import java.util.Map;
@@ -25,6 +26,7 @@ public class AppViewModelFactory implements ViewModelProvider.Factory {
         // View models cannot be injected directly because they won't be bound to the owner's
         // view model scope.
         creators.put(NotesViewModel.class, viewModelSubComponent::notesViewModel);
+        creators.put(HomeViewModel.class, viewModelSubComponent::homeViewModel);
     }
 
     @Override

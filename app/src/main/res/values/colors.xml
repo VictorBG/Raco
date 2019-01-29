@@ -2,7 +2,9 @@
 <resources>
     <color name="colorPrimary">#344955</color>
     <color name="colorPrimaryDark">#232f34</color>
-    <color name="colorAccent">#f9aa33</color>
+    <!--<color name="colorAccent">#f9aa33</color>-->
+    <color name="colorAccent">#D83F53</color>
+    <color name="colorAccentDark">#912B46</color>
 
     <color name="bg_circle_default">@color/colorAccent</color>
 

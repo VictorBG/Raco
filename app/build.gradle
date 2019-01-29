@@ -103,7 +103,7 @@ dependencies {
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
-    implementation 'com.github.ksoichiro:android-observablescrollview:1.6.0'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 
 }

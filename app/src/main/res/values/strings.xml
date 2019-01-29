@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RacoFib</string>
     <string name="login_button_text">Iniciar sesión</string>
+    <string name="settings">Settings</string>
 </resources>

@@ -139,14 +139,14 @@ public class ExamsRepository extends Repository<List<Exam>> {
     }
 
     /**
-     * Returns the size nearest exams
+     * Returns the size nearest exams.
+     * <p>
+     * This must be called once it is secure the data has been fetched
      *
      * @param size size of the result list
      * @return The list of size nearest exams
      */
     public List<Exam> getNearestExams(int size) {
-        Calendar calendar = Calendar.getInstance();
-
         Comparator<Exam> c = (o1, o2) -> {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
             try {
@@ -159,6 +159,8 @@ public class ExamsRepository extends Repository<List<Exam>> {
         Exam exam = new Exam();
         exam.startDate = simpleDateFormat.format(Calendar.getInstance().getTime());
         int index = Collections.binarySearch(data.getValue(), exam, c);
+
+        if (index < 0) index = data.getValue().size();
 
         return data.getValue().subList(index, Math.min(size, data.getValue().size() - index));
     }

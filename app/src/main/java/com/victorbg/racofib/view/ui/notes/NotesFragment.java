@@ -77,7 +77,11 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         notesViewModel.notesState.observe(this, this::onChangedState);
         notesViewModel.getLiveData().observe(this, this);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         notesViewModel.reload(false);
     }
 

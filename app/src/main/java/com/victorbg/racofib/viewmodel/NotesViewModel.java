@@ -21,9 +21,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NotesViewModel extends ViewModel implements ApiResult {
 
+    //TODO: this is an anti-pattern, why I have done this, I only can expose an immutable variable
     public MutableLiveData<NotesState> notesState = new MutableLiveData<>();
-
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     DataRepository dataRepository;

@@ -1,5 +1,6 @@
 package com.victorbg.racofib.di;
 
+import com.victorbg.racofib.viewmodel.HomeViewModel;
 import com.victorbg.racofib.viewmodel.NotesViewModel;
 
 import dagger.Subcomponent;
@@ -13,4 +14,5 @@ public interface ViewModelSubcomponent {
     }
 
     NotesViewModel notesViewModel();
+    HomeViewModel homeViewModel();
 }

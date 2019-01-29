@@ -6,7 +6,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.victorbg.racofib.R;
@@ -18,7 +18,6 @@ import com.victorbg.racofib.view.base.BaseActivity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class NoteDetail extends BaseActivity {
 

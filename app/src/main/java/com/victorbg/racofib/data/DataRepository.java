@@ -6,6 +6,7 @@ import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.api.result.ApiResult;
 import com.victorbg.racofib.data.api.result.ApiResultData;
 import com.victorbg.racofib.data.database.AppDatabase;
+import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.repository.exams.ExamsRepository;
 import com.victorbg.racofib.data.repository.notes.NotesRepository;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -64,17 +65,6 @@ public class DataRepository implements Injectable {
         this.notesRepository = new NotesRepository(appDatabase.notesDao(), prefManager, apiService);
         this.examsRepository = new ExamsRepository(appDatabase.examDao(), user.getValue(), prefManager, apiService);
 
-        examsRepository.getExams(new ApiResult() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onFailed(String errorMessage) {
-
-            }
-        });
     }
 
     /**
@@ -199,5 +189,17 @@ public class DataRepository implements Injectable {
 
     public LiveData<List<Note>> getNotesLiveData() {
         return notesRepository.getLiveData();
+    }
+
+    public LiveData<List<Exam>> getExamsLiveData() {
+        return examsRepository.getLiveData();
+    }
+
+    public void getExams(@NonNull ApiResult result) {
+        examsRepository.getExams(result);
+    }
+
+    public List<Exam> getNearestExams(int size) {
+        return examsRepository.getNearestExams(size);
     }
 }

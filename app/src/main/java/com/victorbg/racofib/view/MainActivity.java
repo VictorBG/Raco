@@ -3,6 +3,10 @@ package com.victorbg.racofib.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.DispatchingAndroidInjector;
@@ -18,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -44,8 +49,10 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigationView;
+    @BindView(R.id.profile_image)
+    ImageView profileImage;
 
     private AccountHeader accountHeader;
     private Drawer drawer;
@@ -72,70 +79,73 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        initToolbar();
         initDrawerLoader();
-        initDrawer();
+        //initDrawer();
 
-        fragmentNavigator = new FragmentNavigator(this, getSupportFragmentManager(), R.id.fragment, toolbar);
+//        fragmentNavigator = new FragmentNavigator(this, getSupportFragmentManager(), R.id.fragment, toolbar);
+//
+//        fragmentNavigator.initialNavigate();
+//        setTitle("Inicio");
 
-        fragmentNavigator.initialNavigate();
-        setTitle("Inicio");
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        GlideUrl glideUrl = new GlideUrl(dataRepository.user.getValue().photoUrl, new LazyHeaders.Builder().addHeader("Authorization", "Bearer " + prefManager.getToken()).build());
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_avatar).override(80, 80).centerCrop();
+        Glide.with(this).setDefaultRequestOptions(requestOptions).load(glideUrl).into(profileImage);
     }
 
 
+//    private void initToolbar() {
+//        setSupportActionBar(toolbar);
+//    }
 
-    private void initToolbar() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-    }
-
-    private void initDrawer() {
-        User u = dataRepository.user.getValue();
-        if (u == null) {
-            dataRepository.user.observe(this, user -> initDrawer());
-        } else {
-            accountHeader = new AccountHeaderBuilder()
-                    .withActivity(this)
-                    .withOnAccountHeaderListener((view, profile, current) -> {
-                        handleProfileClick((int) profile.getIdentifier());
-                        return true;
-                    })
-                    .addProfiles(
-                            new ProfileDrawerItem().withName(u.fullName).withEmail(u.username).withIcon(u.photoUrl),
-                            new ProfileSettingDrawerItem().withName("Ver perfil").withIdentifier(55).withIconTinted(true),
-                            new ProfileSettingDrawerItem().withName("Cerrar sesión").withIdentifier(56).withIconTinted(true)
-                    ).build();
-
-            List<IDrawerItem> drawerItems = new ArrayList<>();
-            drawerItems.add(new PrimaryDrawerItem().withName("Inicio").withIcon(R.drawable.ic_home).withIdentifier(R.id.home_drawer).withIconTintingEnabled(true));
-            drawerItems.add(new PrimaryDrawerItem().withName("Avisos").withIcon(R.drawable.ic_inbox).withIdentifier(R.id.notes_drawer).withIconTintingEnabled(true));
-            drawerItems.add(new PrimaryDrawerItem().withName("Horario").withIcon(R.drawable.ic_timetable).withIdentifier(R.id.schedule_drawer).withIconTintingEnabled(true));
-            drawerItems.add(new SectionDrawerItem().withName("Asignaturas"));
-            int i = 0;
-            for (Subject subject : u.subjects) {
-                drawerItems.add(new PrimaryDrawerItem().withName(subject.name).withIdentifier(i++).withIconTintingEnabled(true));
-            }
-            drawerItems.add(new SectionDrawerItem().withName("Información"));
-            drawerItems.add(new SecondaryDrawerItem().withName("Acerca de").withIdentifier(R.id.info_drawer));
-            drawerItems.add(new SecondaryDrawerItem().withName("Configuración").withIdentifier(R.id.settings_drawer));
-
-            int finalI = i;
-            drawer = new DrawerBuilder()
-                    .withActivity(this)
-                    .withToolbar(toolbar)
-                    .withAccountHeader(accountHeader)
-                    .withDrawerItems(drawerItems)
-                    .withOnDrawerItemClickListener((view, position, drawerItem) -> {
-                        if (drawerItem.getIdentifier() >= 0 && drawerItem.getIdentifier() <= finalI) {
-                            Toast.makeText(MainActivity.this, (CharSequence) u.subjects.get((int) drawerItem.getIdentifier()), Toast.LENGTH_SHORT).show();
-                            return false;
-                        }
-
-                        return !(fragmentNavigator != null && fragmentNavigator.navigate((int) drawerItem.getIdentifier()));
-                    }).build();
-        }
-    }
+//    private void initDrawer() {
+//        User u = dataRepository.user.getValue();
+//        if (u == null) {
+//            dataRepository.user.observe(this, user -> initDrawer());
+//        } else {
+//            accountHeader = new AccountHeaderBuilder()
+//                    .withActivity(this)
+//                    .withOnAccountHeaderListener((view, profile, current) -> {
+//                        handleProfileClick((int) profile.getIdentifier());
+//                        return true;
+//                    })
+//                    .addProfiles(
+//                            new ProfileDrawerItem().withName(u.fullName).withEmail(u.username).withIcon(u.photoUrl),
+//                            new ProfileSettingDrawerItem().withName("Ver perfil").withIdentifier(55).withIconTinted(true),
+//                            new ProfileSettingDrawerItem().withName("Cerrar sesión").withIdentifier(56).withIconTinted(true)
+//                    ).build();
+//
+//            List<IDrawerItem> drawerItems = new ArrayList<>();
+//            drawerItems.add(new PrimaryDrawerItem().withName("Inicio").withIcon(R.drawable.ic_home).withIdentifier(R.id.home_drawer).withIconTintingEnabled(true));
+//            drawerItems.add(new PrimaryDrawerItem().withName("Avisos").withIcon(R.drawable.ic_inbox).withIdentifier(R.id.notes_drawer).withIconTintingEnabled(true));
+//            drawerItems.add(new PrimaryDrawerItem().withName("Horario").withIcon(R.drawable.ic_timetable).withIdentifier(R.id.schedule_drawer).withIconTintingEnabled(true));
+//            drawerItems.add(new SectionDrawerItem().withName("Asignaturas"));
+//            int i = 0;
+//            for (Subject subject : u.subjects) {
+//                drawerItems.add(new PrimaryDrawerItem().withName(subject.name).withIdentifier(i++).withIconTintingEnabled(true));
+//            }
+//            drawerItems.add(new SectionDrawerItem().withName("Información"));
+//            drawerItems.add(new SecondaryDrawerItem().withName("Acerca de").withIdentifier(R.id.info_drawer));
+//            drawerItems.add(new SecondaryDrawerItem().withName("Configuración").withIdentifier(R.id.settings_drawer));
+//
+//            int finalI = i;
+//            drawer = new DrawerBuilder()
+//                    .withActivity(this)
+//                    .withToolbar(toolbar)
+//                    .withAccountHeader(accountHeader)
+//                    .withDrawerItems(drawerItems)
+//                    .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+//                        if (drawerItem.getIdentifier() >= 0 && drawerItem.getIdentifier() <= finalI) {
+//                            Toast.makeText(MainActivity.this, (CharSequence) u.subjects.get((int) drawerItem.getIdentifier()), Toast.LENGTH_SHORT).show();
+//                            return false;
+//                        }
+//
+//                        return !(fragmentNavigator != null && fragmentNavigator.navigate((int) drawerItem.getIdentifier()));
+//                    }).build();
+//        }
+//    }
 
     private void handleProfileClick(int id) {
         switch (id) {

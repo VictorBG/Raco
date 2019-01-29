@@ -76,8 +76,7 @@ public class ShadowScrollBehavior extends AppBarLayout.ScrollingViewBehavior
 
     private float dp2px(Context context, int dp) {
         Resources r = context.getResources();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
-        return px;
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 
 

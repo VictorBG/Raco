@@ -17,6 +17,8 @@ import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
+import com.victorbg.racofib.viewmodel.HomeViewModel;
+import com.victorbg.racofib.viewmodel.NotesViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,12 +47,26 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
     RecyclerView todayScheduleRecyclerView;
     @BindView(R.id.textView5)
     TextView noClassesTodayView;
+    @BindView(R.id.recyclerViewExams)
+    RecyclerView recyclerViewExams;
+    @BindView(R.id.noExams)
+    TextView noExams;
+    @BindView(R.id.progressBar2)
+    ProgressBar examsProgressBar;
 
     private ItemAdapter<ScheduledClassItem> itemAdapter;
     private FastAdapter<ScheduledClassItem> fastAdapter;
 
+    private ItemAdapter<ScheduledClassItem> itemAdapterExams;
+    private FastAdapter<ScheduledClassItem> fastAdapterExams;
+
     @Inject
     DataRepository dataRepository;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    private HomeViewModel homeViewModel;
 
     @Nullable
     @Override
@@ -61,26 +79,31 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
         super.onViewCreated(view, savedInstanceState);
         setRecycler();
 
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault());
         todayDate.setText(dateFormat.format(Calendar.getInstance().getTime()));
+
         dataRepository.user.observe(this, this);
     }
 
     private void setRecycler() {
 
         itemAdapter = new ItemAdapter<>();
+        itemAdapterExams = new ItemAdapter<>();
         fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+        fastAdapterExams = FastAdapter.with(Collections.singletonList(itemAdapterExams));
 
         todayScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        recyclerViewExams.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         todayScheduleRecyclerView.setAdapter(fastAdapter);
+        recyclerViewExams.setAdapter(fastAdapterExams);
 
     }
 
     @Override
     public void onChanged(User user) {
         List<ScheduledClassItem> items = new ArrayList<>();
-
-
         noClassesTodayView.setVisibility((user.todaySubjects == null || user.todaySubjects.isEmpty()) ? View.VISIBLE : View.GONE);
 
         for (SubjectSchedule note : user.todaySubjects) {
