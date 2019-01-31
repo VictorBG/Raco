@@ -5,6 +5,7 @@ import android.view.View;
 
 import javax.inject.Inject;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,7 +32,11 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
         return childFragmentInjector;
     }
 
-    protected void onFabPressed() {
+    /**
+     * Dispatch click event of fab to the fragments that have overrode this method
+     * and are available
+     */
+    protected void onFabPressed(@IdRes int id) {
     }
 
 }

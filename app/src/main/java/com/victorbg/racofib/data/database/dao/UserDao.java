@@ -7,14 +7,15 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import io.reactivex.Single;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface UserDao {
 
-    @Query("select * from RacoUsers LIMIT 1")
-    LiveData<User> getUser();
+    @Query("select * from RacoUsers ")
+    User getUser();
 
     @Insert(onConflict = REPLACE)
     void insert(User user);

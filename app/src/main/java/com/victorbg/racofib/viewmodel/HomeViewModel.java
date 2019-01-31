@@ -18,6 +18,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class HomeViewModel extends ViewModel {
@@ -33,10 +34,16 @@ public class HomeViewModel extends ViewModel {
         this.examsRepository = examsRepository;
         this.userRepository = userRepository;
         user = userRepository.getUser();
-        exams = examsRepository.getExams(userRepository.getUser().getValue());
     }
 
-    public LiveData<Resource<List<Exam>>> getExams() {
+    public LiveData<Resource<List<Exam>>> getExams(User user) {
+        if (user.subjects == null || user.subjects.size() == 0) {
+            MutableLiveData<Resource<List<Exam>>> mutableLiveData = new MutableLiveData();
+            mutableLiveData.setValue(Resource.success(new ArrayList<>()));
+            exams = mutableLiveData;
+        } else {
+            exams = examsRepository.getExams(user);
+        }
         return exams;
     }
 

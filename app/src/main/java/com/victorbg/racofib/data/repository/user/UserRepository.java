@@ -11,6 +11,8 @@ import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -34,6 +36,8 @@ public class UserRepository {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+
     @Inject
     public UserRepository(AppExecutors appExecutors, UserDao userDao, SubjectsDao subjectsDao, SubjectScheduleDao subjectScheduleDao, PrefManager prefManager, ApiService apiService) {
         this.userDao = userDao;
@@ -50,7 +54,20 @@ public class UserRepository {
      * @return
      */
     public LiveData<User> getUser() {
-        return userDao.getUser();
+        if (userMutableLiveData.getValue() == null) {
+            appExecutors.diskIO().execute(() -> {
+                User user = userDao.getUser();
+                user.subjects = subjectsDao.getSubjects(user.username);
+                user.schedule = subjectScheduleDao.getSchedule(user.username);
+
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+                if (day < 0) day = 7;
+                user.todaySubjects = subjectScheduleDao.getTodaySchedule(user.username, day);
+                appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user));
+            });
+        }
+        return userMutableLiveData;
     }
 
     /**
@@ -87,6 +104,7 @@ public class UserRepository {
             });
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                 .subscribe(user -> {
+                    userMutableLiveData.postValue(user);
                     prefManager.setLogin(new LoginData(token, expirationTime));
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
                 }, error -> {

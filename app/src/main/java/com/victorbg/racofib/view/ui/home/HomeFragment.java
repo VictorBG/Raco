@@ -12,9 +12,12 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.SubjectSchedule;
+import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.user.User;
+import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
+import com.victorbg.racofib.view.ui.home.items.ExamItem;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
 
@@ -29,7 +32,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
@@ -37,7 +39,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
-public class HomeFragment extends BaseFragment implements Injectable, Observer<User> {
+public class HomeFragment extends BaseFragment implements Injectable {
 
     @BindView(R.id.todayDate)
     TextView todayDate;
@@ -55,13 +57,30 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
     private ItemAdapter<ScheduledClassItem> itemAdapter;
     private FastAdapter<ScheduledClassItem> fastAdapter;
 
-    private ItemAdapter<ScheduledClassItem> itemAdapterExams;
-    private FastAdapter<ScheduledClassItem> fastAdapterExams;
+    private ItemAdapter<ExamItem> itemAdapterExams;
+    private FastAdapter<ExamItem> fastAdapterExams;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     private HomeViewModel homeViewModel;
+    private boolean examsFetched = false;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+
+        homeViewModel.getUser().observe(this, user -> {
+            if (user != null) {
+                if (!examsFetched) {
+                    examsFetched = true;
+                    homeViewModel.getExams(user).observe(this, this::handleExams);
+                }
+                handleUser(user);
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -74,13 +93,8 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
         super.onViewCreated(view, savedInstanceState);
         setRecycler();
 
-        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault());
         todayDate.setText(dateFormat.format(Calendar.getInstance().getTime()));
-
-        homeViewModel.getUser().observe(this, this);
-
     }
 
     private void setRecycler() {
@@ -97,9 +111,40 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
 
     }
 
-    @Override
-    public void onChanged(User user) {
+    private void bindExams(List<Exam> exams) {
+        if (exams == null) return;
+        List<ExamItem> items = new ArrayList<>();
+        for (Exam exam : exams) {
+            items.add(new ExamItem().withExam(exam));
+        }
+
+        //Prevent recreating the whole list when there are identical items (based on title and subject)
+        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapterExams, items);
+        FastAdapterDiffUtil.set(itemAdapter, diffs);
+        recyclerViewExams.scrollToPosition(0);
+    }
+
+    private void handleExams(Resource<List<Exam>> examResource) {
+        switch (examResource.status) {
+            case SUCCESS:
+                if (examResource.data != null && examResource.data.size() > 0) {
+                    bindExams(homeViewModel.getNearestExams(5));
+                    return;
+                }
+            case ERROR:
+                examsProgressBar.setVisibility(View.GONE);
+                noExams.setVisibility(View.VISIBLE);
+                break;
+            case LOADING:
+                examsProgressBar.setVisibility(View.VISIBLE);
+                noExams.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    private void handleUser(User user) {
         if (user == null) return;
+
         List<ScheduledClassItem> items = new ArrayList<>();
         noClassesTodayView.setVisibility((user.todaySubjects == null || user.todaySubjects.isEmpty()) ? View.VISIBLE : View.GONE);
 

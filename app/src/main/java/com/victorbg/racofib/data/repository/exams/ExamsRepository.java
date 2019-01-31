@@ -36,6 +36,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @Singleton
 public class ExamsRepository {
@@ -91,6 +92,10 @@ public class ExamsRepository {
                     for (Subject s : user.subjects) {
                         requests.add(apiService.getExams(getToken(), semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
                     }
+
+//                    if (user.subjects.size() == 0) {
+//                        return Single.just(new ArrayList<Exam>());
+//                    }
                     return Single.zip(requests, objects -> {
                         List<Exam> resultList = new ArrayList<>();
                         for (Object apiListResponse : objects) {
@@ -102,7 +107,7 @@ public class ExamsRepository {
                         .subscribe(objects -> {
                             appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
                             setValue(Resource.success(objects));
-                        }));
+                        }, Timber::d));
             }
         }.getAsLiveData();
     }

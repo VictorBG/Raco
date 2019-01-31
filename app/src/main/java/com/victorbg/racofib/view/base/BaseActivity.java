@@ -8,18 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 
 @SuppressLint("Registered")
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            int flag = getWindow().getDecorView().getSystemUiVisibility();
-//            flag |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-//            getWindow().getDecorView().setSystemUiVisibility(flag);
-//        }
     }
 
     @Override
