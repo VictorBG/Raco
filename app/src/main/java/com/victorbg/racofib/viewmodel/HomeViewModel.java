@@ -1,10 +1,10 @@
 package com.victorbg.racofib.viewmodel;
 
-import com.victorbg.racofib.data.DataFactory;
-import com.victorbg.racofib.data.api.result.ApiResult;
 import com.victorbg.racofib.data.model.exams.Exam;
+import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.exams.ExamsRepository;
+import com.victorbg.racofib.data.repository.user.UserRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,25 +17,31 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class HomeViewModel extends ViewModel {
 
     private LiveData<Resource<List<Exam>>> exams;
+    private LiveData<User> user;
 
     private ExamsRepository examsRepository;
+    private UserRepository userRepository;
 
     @Inject
-    public HomeViewModel(ExamsRepository examsRepository, DataFactory dataFactory) {
+    public HomeViewModel(ExamsRepository examsRepository, UserRepository userRepository) {
         this.examsRepository = examsRepository;
-        exams = examsRepository.getExams(dataFactory.user.getValue());
+        this.userRepository = userRepository;
+        user = userRepository.getUser();
+        exams = examsRepository.getExams(userRepository.getUser().getValue());
     }
 
     public LiveData<Resource<List<Exam>>> getExams() {
         return exams;
+    }
+
+    public LiveData<User> getUser() {
+        return user;
     }
 
     /**
@@ -67,4 +73,6 @@ public class HomeViewModel extends ViewModel {
 
         return exams.getValue().data.subList(index, Math.min(size, exams.getValue().data.size() - index));
     }
+
+
 }

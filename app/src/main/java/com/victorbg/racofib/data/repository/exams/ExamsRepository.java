@@ -11,6 +11,7 @@ import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
 import com.victorbg.racofib.data.repository.base.Resource;
+import com.victorbg.racofib.data.repository.user.UserRepository;
 import com.victorbg.racofib.data.repository.util.NetworkRateLimiter;
 import com.victorbg.racofib.data.sp.PrefManager;
 
@@ -47,6 +48,7 @@ public class ExamsRepository {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private NetworkRateLimiter rateLimiter = new NetworkRateLimiter(1, TimeUnit.HOURS);
+
 
     @Inject
     public ExamsRepository(AppExecutors appExecutors, ExamDao examDao, PrefManager prefManager, ApiService apiService) {

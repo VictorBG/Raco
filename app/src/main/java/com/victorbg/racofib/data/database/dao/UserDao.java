@@ -2,6 +2,7 @@ package com.victorbg.racofib.data.database.dao;
 
 import com.victorbg.racofib.data.model.user.User;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,7 +14,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface UserDao {
 
     @Query("select * from RacoUsers LIMIT 1")
-    User getUser();
+    LiveData<User> getUser();
 
     @Insert(onConflict = REPLACE)
     void insert(User user);

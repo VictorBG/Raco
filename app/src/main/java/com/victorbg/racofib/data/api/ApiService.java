@@ -30,23 +30,19 @@ public interface ApiService {
 
     @Headers({"Content-Type: application/json"})
     @GET("jo/avisos")
-    Call<ApiNotesResponse> getNotes(@Header("Authorization") String authToken, @Query("format") String format);
-
-    @Headers({"Content-Type: application/json"})
-    @GET("jo/avisos")
     LiveData<ApiResponse<ApiNotesResponse>> getPublications(@Header("Authorization") String authToken, @Query("format") String format);
 
     @Headers({"Content-Type: application/json"})
     @GET("jo")
-    Call<User> getUser(@Header("Authorization") String authToken, @Query("format") String format);
+    Single<User> getUser(@Header("Authorization") String authToken, @Query("format") String format);
 
     @Headers({"Content-Type: application/json"})
     @GET("jo/assignatures")
-    Call<ApiListResponse<Subject>> getSubjects(@Header("Authorization") String authToken, @Query("format") String format);
+    Single<ApiListResponse<Subject>> getSubjects(@Header("Authorization") String authToken, @Query("format") String format);
 
     @Headers({"Content-Type: application/json"})
     @GET("jo/classes")
-    Call<ApiListResponse<SubjectSchedule>> getSubjectsSchedule(@Header("Authorization") String authToken, @Query("format") String format);
+    Single<ApiListResponse<SubjectSchedule>> getSubjectsSchedule(@Header("Authorization") String authToken, @Query("format") String format);
 
     @Headers({"Content-Type: application/json"})
     @GET("quadrimestres/actual")

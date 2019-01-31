@@ -22,6 +22,9 @@ public interface SubjectScheduleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SubjectSchedule subjectSchedule);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(List<SubjectSchedule> subjectSchedule);
+
     @Delete
     void delete(SubjectSchedule subjectSchedule);
 

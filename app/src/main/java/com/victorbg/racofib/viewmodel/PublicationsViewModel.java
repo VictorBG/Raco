@@ -1,7 +1,5 @@
 package com.victorbg.racofib.viewmodel;
 
-import com.victorbg.racofib.data.DataFactory;
-import com.victorbg.racofib.data.api.result.ApiResult;
 import com.victorbg.racofib.data.model.Note;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.publications.PublicationsRepository;

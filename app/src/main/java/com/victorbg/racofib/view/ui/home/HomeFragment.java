@@ -11,7 +11,6 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.DataFactory;
 import com.victorbg.racofib.data.model.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.di.injector.Injectable;
@@ -60,9 +59,6 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
     private FastAdapter<ScheduledClassItem> fastAdapterExams;
 
     @Inject
-    DataFactory dataFactory;
-
-    @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     private HomeViewModel homeViewModel;
@@ -83,7 +79,8 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault());
         todayDate.setText(dateFormat.format(Calendar.getInstance().getTime()));
 
-        dataFactory.user.observe(this, this);
+        homeViewModel.getUser().observe(this, this);
+
     }
 
     private void setRecycler() {
@@ -102,9 +99,11 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
 
     @Override
     public void onChanged(User user) {
+        if (user == null) return;
         List<ScheduledClassItem> items = new ArrayList<>();
         noClassesTodayView.setVisibility((user.todaySubjects == null || user.todaySubjects.isEmpty()) ? View.VISIBLE : View.GONE);
 
+        if (user.todaySubjects == null) return;
         for (SubjectSchedule note : user.todaySubjects) {
             items.add(new ScheduledClassItem().withScheduledClass(note));
         }
