@@ -1,4 +1,4 @@
-package com.victorbg.racofib.data.repository;
+package com.victorbg.racofib.data.repository.base;
 
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.model.Note;
@@ -67,6 +67,4 @@ public abstract class Repository<T> {
     public LiveData<T> getLiveData() {
         return data;
     }
-
-
 }

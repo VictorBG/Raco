@@ -55,6 +55,7 @@ dependencies {
     //Network
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit-mock:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
@@ -104,6 +105,8 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
 
 }

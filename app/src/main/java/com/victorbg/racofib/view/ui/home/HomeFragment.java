@@ -11,14 +11,13 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.DataRepository;
+import com.victorbg.racofib.data.DataFactory;
 import com.victorbg.racofib.data.model.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
-import com.victorbg.racofib.viewmodel.NotesViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
     private FastAdapter<ScheduledClassItem> fastAdapterExams;
 
     @Inject
-    DataRepository dataRepository;
+    DataFactory dataFactory;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -84,7 +83,7 @@ public class HomeFragment extends BaseFragment implements Injectable, Observer<U
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault());
         todayDate.setText(dateFormat.format(Calendar.getInstance().getTime()));
 
-        dataRepository.user.observe(this, this);
+        dataFactory.user.observe(this, this);
     }
 
     private void setRecycler() {

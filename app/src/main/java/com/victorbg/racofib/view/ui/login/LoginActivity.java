@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.DataRepository;
+import com.victorbg.racofib.data.DataFactory;
 import com.victorbg.racofib.data.api.result.ApiResult;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.MainActivity;
@@ -27,7 +27,7 @@ public class LoginActivity extends BaseActivity implements Injectable {
     ProgressBar progressBar;
 
     @Inject
-    DataRepository dataRepository;
+    DataFactory dataFactory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity implements Injectable {
             long expirationTime = Long.parseLong(loginData.getQueryParameter("expires_in"));
 
             //TODO: this should be in a VM
-            dataRepository.loginUser(token, expirationTime, new ApiResult() {
+            dataFactory.loginUser(token, expirationTime, new ApiResult() {
                 @Override
                 public void onCompleted() {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));

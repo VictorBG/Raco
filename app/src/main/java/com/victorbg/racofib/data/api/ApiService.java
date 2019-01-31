@@ -5,6 +5,7 @@ import com.victorbg.racofib.data.model.Subject;
 import com.victorbg.racofib.data.model.SubjectSchedule;
 import com.victorbg.racofib.data.model.api.ApiListResponse;
 import com.victorbg.racofib.data.model.api.ApiNotesResponse;
+import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.exams.Semester;
 import com.victorbg.racofib.data.model.user.User;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import androidx.lifecycle.LiveData;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
@@ -29,6 +31,10 @@ public interface ApiService {
     @Headers({"Content-Type: application/json"})
     @GET("jo/avisos")
     Call<ApiNotesResponse> getNotes(@Header("Authorization") String authToken, @Query("format") String format);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("jo/avisos")
+    LiveData<ApiResponse<ApiNotesResponse>> getPublications(@Header("Authorization") String authToken, @Query("format") String format);
 
     @Headers({"Content-Type: application/json"})
     @GET("jo")

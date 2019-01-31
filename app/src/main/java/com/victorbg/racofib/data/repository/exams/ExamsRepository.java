@@ -1,17 +1,17 @@
 package com.victorbg.racofib.data.repository.exams;
 
-import android.annotation.SuppressLint;
-
 import com.victorbg.racofib.data.api.ApiService;
-import com.victorbg.racofib.data.api.result.ApiResult;
 import com.victorbg.racofib.data.database.dao.ExamDao;
-import com.victorbg.racofib.data.model.Note;
+import com.victorbg.racofib.data.database.dao.NotesDao;
 import com.victorbg.racofib.data.model.Subject;
 import com.victorbg.racofib.data.model.api.ApiListResponse;
+import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.data.model.exams.Semester;
 import com.victorbg.racofib.data.model.user.User;
-import com.victorbg.racofib.data.repository.Repository;
+import com.victorbg.racofib.data.repository.AppExecutors;
+import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
+import com.victorbg.racofib.data.repository.base.Resource;
+import com.victorbg.racofib.data.repository.util.NetworkRateLimiter;
 import com.victorbg.racofib.data.sp.PrefManager;
 
 import java.text.ParseException;
@@ -22,146 +22,90 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
-import io.reactivex.Observable;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class ExamsRepository extends Repository<List<Exam>> {
+@Singleton
+public class ExamsRepository {
 
+    private ApiService apiService;
     private ExamDao examDao;
-    //Stores the last exams fetched from a specific subject
-    //This is not efficient when the user is iterating over and over through all the subjects
-    //which makes the program load all the time the specific times but is a simple solution
-    //and due there is not much subjects on the same user it wouldnt be a problem
-    private MutableLiveData<List<Exam>> subjectExams = new MutableLiveData<>();
+    private PrefManager prefManager;
+    private AppExecutors appExecutors;
 
-    private String[] subjects = new String[]{};
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public ExamsRepository(ExamDao examDao, User user, PrefManager prefManager, ApiService apiService) {
-        super(prefManager, apiService);
+    private NetworkRateLimiter rateLimiter = new NetworkRateLimiter(1, TimeUnit.HOURS);
 
+    @Inject
+    public ExamsRepository(AppExecutors appExecutors, ExamDao examDao, PrefManager prefManager, ApiService apiService) {
         this.examDao = examDao;
-
-        if (user != null) {
-            subjects = new String[user.subjects.size()];
-            int i = 0;
-            for (Subject subject : user.subjects) {
-                subjects[i++] = subject.shortName;
-            }
-        }
+        this.prefManager = prefManager;
+        this.apiService = apiService;
+        this.appExecutors = appExecutors;
     }
 
-    @SuppressLint("CheckResult")
-    public void getExams(@NonNull ApiResult result) {
+    public LiveData<Resource<List<Exam>>> getExams(User user) {
+        return new NetworkBoundResource<List<Exam>, ApiListResponse<Exam>>(appExecutors) {
 
-        if (!preCall()) {
-            if (data.getValue() == null) {
-                restoreFromDatabase(result, null);
-                return;
+            @Override
+            protected void saveCallResult(@NonNull ApiListResponse<Exam> item) {
+                examDao.insertExams(item.result);
             }
-            data.postValue(data.getValue());
-            result.onCompleted();
-            return;
-        }
 
-        /*
-        Fetch the current semester in order to get the ID of the semester to only get the exams of the
-        actual semester. As exams endpoint has no support (or I din't found it anywhere) for multiple subjects
-        we zip as much calls as subjects the user has and we do it in a concurrent way (note the subscribeOn on
-        every request we do).
-
-        Once we get all the exams we store them into the database and put it into the livedata object in
-        order to let the app know that there was a change and to store locally the data (as a cache).
-         */
-        compositeDisposable.add(apiService.getCurrentSemester(getToken(), "json").flatMap(semester -> {
-            List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
-            for (String s : subjects) {
-                requests.add(apiService.getExams(getToken(), semester.id, "json", s).subscribeOn(Schedulers.io()));
+            @Override
+            protected boolean shouldFetch(@Nullable List<Exam> data) {
+                return data == null || data.isEmpty() || rateLimiter.shouldFetch();
             }
-            return Single.zip(requests, objects -> {
-                List<Exam> resultList = new ArrayList<>();
-                for (Object apiListResponse : objects) {
-                    resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
-                }
-                return resultList;
-            });
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                .subscribe(objects -> {
-                    data.setValue(objects);
-                    internalSaveOnDatabase();
-                    postCall();
-                    result.onCompleted();
-                }));
+
+            @NonNull
+            @Override
+            protected LiveData<List<Exam>> loadFromDb() {
+                return examDao.getExams();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<ApiListResponse<Exam>>> createCall() {
+                return null;
+            }
+
+            @Override
+            protected void fetchFromNetwork(LiveData<List<Exam>> dbSource) {
+                result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
+                compositeDisposable.add(apiService.getCurrentSemester(getToken(), "json").flatMap(semester -> {
+                    List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
+                    for (Subject s : user.subjects) {
+                        requests.add(apiService.getExams(getToken(), semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
+                    }
+                    return Single.zip(requests, objects -> {
+                        List<Exam> resultList = new ArrayList<>();
+                        for (Object apiListResponse : objects) {
+                            resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
+                        }
+                        return resultList;
+                    });
+                }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                        .subscribe(objects -> {
+                            appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
+                            setValue(Resource.success(objects));
+                        }));
+            }
+        }.getAsLiveData();
     }
 
-
-    public void getExams(@NonNull ApiResult result, @NonNull String subject) {
-        restoreFromDatabase(result, subject);
-    }
-
-    private void restoreFromDatabase(@NonNull ApiResult result, String subject) {
-        if (subject == null) {
-            compositeDisposable.add(examDao.getExams().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(notes -> {
-                data.setValue(notes);
-                if (notes == null) result.onFailed("");
-                else result.onCompleted();
-            }));
-        } else {
-            compositeDisposable.add(examDao.getExamsBySubject(subject).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(notes -> {
-                subjectExams.setValue(notes);
-                if (notes == null) result.onFailed("");
-                else result.onCompleted();
-            }));
-        }
-    }
-
-    private void internalSaveOnDatabase() {
-        new Thread(() -> {
-            for (Exam note : data.getValue()) {
-                examDao.insert(note);
-            }
-        }).start();
-    }
-
-    /**
-     * Returns the size nearest exams.
-     * <p>
-     * This must be called once it is secure the data has been fetched
-     *
-     * @param size size of the result list
-     * @return The list of size nearest exams
-     */
-    public List<Exam> getNearestExams(int size) {
-        Comparator<Exam> c = (o1, o2) -> {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-            try {
-                return simpleDateFormat.parse(o1.startDate).after(simpleDateFormat.parse(o2.startDate)) ? 0 : -1;
-            } catch (ParseException e) {
-                return -1;
-            }
-        };
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-        Exam exam = new Exam();
-        exam.startDate = simpleDateFormat.format(Calendar.getInstance().getTime());
-        int index = Collections.binarySearch(data.getValue(), exam, c);
-
-        if (index < 0) index = data.getValue().size();
-
-        return data.getValue().subList(index, Math.min(size, data.getValue().size() - index));
+    private String getToken() {
+        return "Bearer " + prefManager.getToken();
     }
 }

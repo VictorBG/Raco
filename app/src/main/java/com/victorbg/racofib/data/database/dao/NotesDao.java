@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -21,8 +22,14 @@ public interface NotesDao {
     @Query("select * from Notes")
     Single<List<Note>> getNotes();
 
+    @Query("SELECT * FROM Notes")
+    LiveData<List<Note>> getPublications();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Note note);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertNotes(List<Note> notes);
 
     @Delete
     void delete(Note note);

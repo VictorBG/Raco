@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import timber.log.Timber;
 
 public class AppRaco extends Application implements HasActivityInjector {
 
@@ -25,6 +26,7 @@ public class AppRaco extends Application implements HasActivityInjector {
 
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
+            Timber.plant(new Timber.DebugTree());
         }
     }
 

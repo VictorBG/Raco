@@ -4,18 +4,13 @@ import android.annotation.SuppressLint;
 
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.api.result.ApiResult;
-import com.victorbg.racofib.data.api.result.ApiResultData;
 import com.victorbg.racofib.data.database.AppDatabase;
-import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.data.repository.exams.ExamsRepository;
-import com.victorbg.racofib.data.repository.notes.NotesRepository;
+
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.data.model.Note;
 import com.victorbg.racofib.data.model.Subject;
 import com.victorbg.racofib.data.model.SubjectSchedule;
 import com.victorbg.racofib.data.model.api.ApiListResponse;
-import com.victorbg.racofib.data.model.api.ApiNotesResponse;
 import com.victorbg.racofib.data.model.login.LoginData;
 import com.victorbg.racofib.data.model.user.User;
 
@@ -33,16 +28,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 @Singleton
-public class DataRepository implements Injectable {
+public class DataFactory implements Injectable {
 
     private AppDatabase appDatabase;
     private ApiService apiService;
     private PrefManager prefManager;
 
     public MutableLiveData<User> user;
-
-    private NotesRepository notesRepository;
-    private ExamsRepository examsRepository;
 
     /*
     TODO: Change User implementation to an independent repository and clean the code as it is a mess rn
@@ -53,7 +45,7 @@ public class DataRepository implements Injectable {
     into the constructor and then binding them to the variables.
      */
     @Inject
-    public DataRepository(PrefManager prefManager, AppDatabase appDatabase, ApiService apiService) {
+    public DataFactory(PrefManager prefManager, AppDatabase appDatabase, ApiService apiService) {
         this.prefManager = prefManager;
         this.appDatabase = appDatabase;
         this.apiService = apiService;
@@ -61,10 +53,6 @@ public class DataRepository implements Injectable {
         user = new MutableLiveData<>();
         user.setValue(null);
         initUser();
-
-        this.notesRepository = new NotesRepository(appDatabase.notesDao(), prefManager, apiService);
-        this.examsRepository = new ExamsRepository(appDatabase.examDao(), user.getValue(), prefManager, apiService);
-
     }
 
     /**
@@ -127,12 +115,16 @@ public class DataRepository implements Injectable {
                             @Override
                             public void onResponse(Call<ApiListResponse<SubjectSchedule>> call, Response<ApiListResponse<SubjectSchedule>> response) {
                                 new Thread(() -> {
+                                    prefManager.setLogin(new LoginData(token, expirationTime));
+                                    if (response.body() == null) {
+                                        result.onCompleted();
+                                    }
                                     for (SubjectSchedule subject : response.body().result) {
                                         subject.username = user.username;
                                         appDatabase.subjectScheduleDao().insert(subject);
                                     }
 
-                                    prefManager.setLogin(new LoginData(token, expirationTime));
+
                                     if (!prefManager.isLogged()) return;
 
                                     //The following operations are done in the main thread due they are
@@ -154,7 +146,7 @@ public class DataRepository implements Injectable {
 //        u.todaySubjects = appDatabase.subjectScheduleDao().getTodaySchedule(u.username, day);
                                     u.todaySubjects = appDatabase.subjectScheduleDao().getTodaySchedule(u.username, 4);
 
-                                    DataRepository.this.user.postValue(u);
+                                    DataFactory.this.user.postValue(u);
                                     result.onCompleted();
                                 }).start();
 
@@ -180,26 +172,5 @@ public class DataRepository implements Injectable {
                 result.onFailed(t.getMessage());
             }
         });
-    }
-
-
-    public void getNotes(@NonNull ApiResult result, boolean force) {
-        notesRepository.getNotes(result, force);
-    }
-
-    public LiveData<List<Note>> getNotesLiveData() {
-        return notesRepository.getLiveData();
-    }
-
-    public LiveData<List<Exam>> getExamsLiveData() {
-        return examsRepository.getLiveData();
-    }
-
-    public void getExams(@NonNull ApiResult result) {
-        examsRepository.getExams(result);
-    }
-
-    public List<Exam> getNearestExams(int size) {
-        return examsRepository.getNearestExams(size);
     }
 }
