@@ -1,8 +1,12 @@
 # [WIP] Raco
 
-An unofficial Android client for [El Racó](http://raco.fib.upc.edu), an intranet for [FIB](https://www.fib.upc.edu/) students.
+<div style="text-align:center; margin-bottom: 16px;"><img src=".github/assets/ic_launcher.png"
+            alt="Download from Google Play"
+            height="150">
 
-**The app is not yet on the play store neither through direct download**
+**An unofficial Android client for [El Racó](http://raco.fib.upc.edu), an intranet for [FIB](https://www.fib.upc.edu/) students.**
+
+###### The app is not yet on the play store neither through direct download
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Download from Google Play"
