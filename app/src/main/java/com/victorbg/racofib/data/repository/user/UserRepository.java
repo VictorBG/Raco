@@ -1,17 +1,28 @@
 package com.victorbg.racofib.data.repository.user;
 
 
+import android.content.Context;
+import android.graphics.Color;
+
+import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.api.ApiService;
+import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.database.dao.UserDao;
+import com.victorbg.racofib.data.model.Subject;
 import com.victorbg.racofib.data.model.login.LoginData;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,19 +44,24 @@ public class UserRepository {
     private SubjectScheduleDao subjectScheduleDao;
     private PrefManager prefManager;
     private AppExecutors appExecutors;
+    private AppDatabase appDatabase;
+    private String[] colors;
+    private int defaultColor = Color.GRAY;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
 
     @Inject
-    public UserRepository(AppExecutors appExecutors, UserDao userDao, SubjectsDao subjectsDao, SubjectScheduleDao subjectScheduleDao, PrefManager prefManager, ApiService apiService) {
+    public UserRepository(Context context, AppExecutors appExecutors, UserDao userDao, SubjectsDao subjectsDao, SubjectScheduleDao subjectScheduleDao, PrefManager prefManager, ApiService apiService, AppDatabase appDatabase) {
         this.userDao = userDao;
         this.prefManager = prefManager;
         this.apiService = apiService;
         this.appExecutors = appExecutors;
         this.subjectsDao = subjectsDao;
         this.subjectScheduleDao = subjectScheduleDao;
+
+        this.colors = context.getResources().getStringArray(R.array.mdcolor_500);
     }
 
     /**
@@ -82,6 +98,7 @@ public class UserRepository {
         MutableLiveData<Resource<String>> result = new MutableLiveData<>();
         result.setValue(Resource.loading("Fetching user..."));
 
+//        appExecutors.diskIO().execute(() -> appDatabase.beginTransaction());
         compositeDisposable.add(apiService.getUser(getToken(token), "json").flatMap(user -> {
 
             appExecutors.diskIO().execute(() -> userDao.insert(user));
@@ -90,6 +107,11 @@ public class UserRepository {
 
             return apiService.getSubjects(getToken(token), "json").flatMap(subjects -> {
 
+                ArrayList<String> c = (ArrayList<String>) Arrays.asList(colors);
+                Collections.shuffle(c);
+                for (int i = 0; i < subjects.result.size(); i++) {
+                    subjects.result.get(i).color = c.get(i);
+                }
                 user.subjects = subjects.result;
                 appExecutors.diskIO().execute(() -> subjectsDao.insert(subjects.result));
                 appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching schedule...")));
@@ -104,6 +126,7 @@ public class UserRepository {
             });
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                 .subscribe(user -> {
+//                    appExecutors.diskIO().execute(() -> appDatabase.setTransactionSuccessful());
                     userMutableLiveData.postValue(user);
                     prefManager.setLogin(new LoginData(token, expirationTime));
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
@@ -111,6 +134,7 @@ public class UserRepository {
                     //TODO: There is a bug on the API that if the user has no classes it returns an error 500 instead of
                     //TODO: a correct error, like 204 No Content or a 200 with an empty body: {total:0, results:[]}
                     //To prevent the app from failing in the development stage log the user if there was an error
+//                    appExecutors.diskIO().execute(() -> appDatabase.endTransaction());
                     prefManager.setLogin(new LoginData(token, expirationTime));
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.error("An error has occurred: " + error.getMessage(), null)));
                 }));

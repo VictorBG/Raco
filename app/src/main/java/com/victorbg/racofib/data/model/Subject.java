@@ -35,4 +35,6 @@ public class Subject {
 
     public String user;
 
+    public String color;
+
 }
