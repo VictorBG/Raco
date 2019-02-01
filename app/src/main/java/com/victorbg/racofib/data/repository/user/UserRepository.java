@@ -92,7 +92,7 @@ public class UserRepository {
 
                 user.subjects = subjects.result;
                 appExecutors.diskIO().execute(() -> subjectsDao.insert(subjects.result));
-                appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching timetable...")));
+                appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching schedule...")));
 
                 return apiService.getSubjectsSchedule(getToken(token), "json").flatMap(timetable -> {
                     if (timetable != null) {

@@ -50,11 +50,7 @@ public class LoginActivity extends BaseActivity implements Injectable {
         super.onResume();
 
         if (getIntent().getData() != null && getIntent().getDataString().startsWith("apifib://login")) {
-            String goodResponse = getIntent().getDataString().replace("apifib://login#", "apifib://login?");
-            Uri loginData = Uri.parse(goodResponse);
-            String token = loginData.getQueryParameter("access_token");
-            long expirationTime = Long.parseLong(loginData.getQueryParameter("expires_in"));
-            loginViewModel.doLogin(token, expirationTime).observe(this, this::handleLoginState);
+            loginViewModel.doLogin(getIntent().getDataString()).observe(this, this::handleLoginState);
         }
     }
 
@@ -69,7 +65,9 @@ public class LoginActivity extends BaseActivity implements Injectable {
                 progressBar.setVisibility(View.GONE);
                 statusMessage.setVisibility(View.VISIBLE);
                 statusMessage.setText(state.data);
-                break;
+                //TODO: Break is removed in order to login even when an error has occurred while the bug on the api persists
+                //Remove on production if bug has been fixed
+                //break;
             case SUCCESS:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
