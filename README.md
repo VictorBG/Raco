@@ -1,6 +1,7 @@
 # [WIP] Raco
 
 [![Build Status](https://travis-ci.com/VictorBG/RacoFib.svg?token=xio7T67Yoyke3FpGmCAb&branch=master)](https://travis-ci.com/VictorBG/RacoFib)
+[![codecov](https://codecov.io/gh/VictorBG/RacoFib/branch/master/graph/badge.svg?token=n4vV3gqOXM)](https://codecov.io/gh/VictorBG/RacoFib)
 
 <div style="text-align:center; margin-bottom: 16px;"><img src=".github/assets/ic_launcher.png"
             alt="Download from Google Play"
