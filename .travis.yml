@@ -9,6 +9,11 @@ android:
   - platform-tools
   - tools
 
+env:
+  global:
+  # wait up to 10 minutes for adb to connect to emulator
+  - ADB_INSTALL_TIMEOUT=10
+
 licenses:
 - android-sdk-preview-license-.+
 - android-sdk-license-.+
@@ -18,6 +23,12 @@ before_install:
 - chmod +x gradlew
 - mkdir "$ANDROID_HOME/licenses" || true
 - cp ./licenses/* "$ANDROID_HOME/licenses/"
+
+before_script:
+- echo no | android create avd --force -n test -t android-28 --abi armeabi-v7a
+- emulator -avd test -no-skin -no-audio -no-window &
+- android-wait-for-emulator
+- adb shell input keyevent 82 &
 
 script:
 - ./gradlew connectedCheck  -no-daemon --stacktrace
