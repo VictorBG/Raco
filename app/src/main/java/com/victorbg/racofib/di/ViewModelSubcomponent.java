@@ -4,6 +4,7 @@ import com.victorbg.racofib.viewmodel.HomeViewModel;
 import com.victorbg.racofib.viewmodel.LoginViewModel;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
+import com.victorbg.racofib.viewmodel.SubjectsViewModel;
 
 import dagger.Subcomponent;
 
@@ -19,4 +20,5 @@ public interface ViewModelSubcomponent {
     HomeViewModel homeViewModel();
     LoginViewModel loginViewModel();
     MainActivityViewModel mainActivityViewModel();
+    SubjectsViewModel subjectsViewModel();
 }

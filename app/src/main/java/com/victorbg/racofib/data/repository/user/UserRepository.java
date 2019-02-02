@@ -24,12 +24,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -60,8 +62,9 @@ public class UserRepository {
         this.appExecutors = appExecutors;
         this.subjectsDao = subjectsDao;
         this.subjectScheduleDao = subjectScheduleDao;
-
         this.colors = context.getResources().getStringArray(R.array.mdcolor_500);
+        //Init user
+        getUser();
     }
 
     /**
@@ -72,15 +75,43 @@ public class UserRepository {
     public LiveData<User> getUser() {
         if (userMutableLiveData.getValue() == null) {
             appExecutors.diskIO().execute(() -> {
-                User user = userDao.getUser();
-                user.subjects = subjectsDao.getSubjects(user.username);
-                user.schedule = subjectScheduleDao.getSchedule(user.username);
+                compositeDisposable.add(userDao.getUser().flatMap(user -> {
 
-                Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-                if (day < 0) day = 7;
-                user.todaySubjects = subjectScheduleDao.getTodaySchedule(user.username, day);
-                appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user));
+                    Calendar calendar = Calendar.getInstance();
+                    int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+                    if (day < 0) day = 7;
+
+                    return Single.zip(
+                            subjectsDao.getSubjects(user.username).subscribeOn(Schedulers.io()),
+                            subjectScheduleDao.getSchedule(user.username).subscribeOn(Schedulers.io()),
+                            subjectScheduleDao.getTodaySchedule(user.username, day).subscribeOn(Schedulers.io()),
+                            (subjects, schedule, today) -> {
+                                user.subjects = subjects;
+                                user.schedule = schedule;
+                                user.todaySubjects = today;
+                                return user;
+                            }
+                    );
+
+//                    return subjectsDao.getSubjects(user.username).flatMap(subjects -> {
+//                        user.subjects = subjects;
+//
+//                        return subjectScheduleDao.getSchedule(user.username).flatMap(schedule -> {
+//                            user.schedule = schedule;
+//
+//
+//                            return subjectScheduleDao.getTodaySchedule(user.username, day).flatMap(today -> {
+//                                user.todaySubjects = today;
+//                                return Single.just(user);
+//                            });
+//                        });
+//                    });
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(user ->
+                                appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user))));
+                //user.todaySubjects = subjectScheduleDao.getTodaySchedule(user.username, day);
+
             });
         }
         return userMutableLiveData;
@@ -128,14 +159,16 @@ public class UserRepository {
                 .subscribe(user -> {
 //                    appExecutors.diskIO().execute(() -> appDatabase.setTransactionSuccessful());
                     userMutableLiveData.postValue(user);
-                    prefManager.setLogin(new LoginData(token, expirationTime));
+                    prefManager.setLogin(new LoginData(token, expirationTime, user.username));
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
                 }, error -> {
                     //TODO: There is a bug on the API that if the user has no classes it returns an error 500 instead of
                     //TODO: a correct error, like 204 No Content or a 200 with an empty body: {total:0, results:[]}
-                    //To prevent the app from failing in the development stage log the user if there was an error
+
+                    //FIB development team has been notified about this bug, which makes me unable to
+                    //test anything until I have enrolled some classes
+
 //                    appExecutors.diskIO().execute(() -> appDatabase.endTransaction());
-                    prefManager.setLogin(new LoginData(token, expirationTime));
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.error("An error has occurred: " + error.getMessage(), null)));
                 }));
 

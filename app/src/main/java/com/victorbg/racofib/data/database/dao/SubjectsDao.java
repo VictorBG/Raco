@@ -9,6 +9,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import io.reactivex.Single;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
@@ -16,7 +17,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface SubjectsDao {
 
     @Query("select * from Subjects where user=:user")
-    List<Subject> getSubjects(String user);
+    Single<List<Subject>> getSubjects(String user);
 
     @Insert(onConflict = REPLACE)
     void insert(Subject subject);

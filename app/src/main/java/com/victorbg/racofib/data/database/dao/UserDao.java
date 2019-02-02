@@ -15,7 +15,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface UserDao {
 
     @Query("select * from RacoUsers ")
-    User getUser();
+    Single<User> getUser();
 
     @Insert(onConflict = REPLACE)
     void insert(User user);

@@ -15,4 +15,10 @@
         android:name="com.victorbg.racofib.view.ui.notes.NotesFragment"
         android:label="fragment_notes"
         tools:layout="@layout/fragment_notes" />
+
+    <fragment
+        android:id="@+id/subjectsFragment"
+        android:name="com.victorbg.racofib.view.ui.subjects.SubjectsFragment"
+        android:label="fragment_subjects"
+        tools:layout="@layout/fragment_subjects" />
 </navigation>

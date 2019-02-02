@@ -9,15 +9,17 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 @Dao
 public interface SubjectScheduleDao {
 
     @Query("select * from SubjectSchedule where username=:user and day_of_week=:day")
-    List<SubjectSchedule> getTodaySchedule(String user, int day);
+    Single<List<SubjectSchedule>> getTodaySchedule(String user, int day);
 
     @Query("select * from SubjectSchedule where username=:user order by day_of_week ASC")
-    List<SubjectSchedule> getSchedule(String user);
+    Single<List<SubjectSchedule>> getSchedule(String user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SubjectSchedule subjectSchedule);

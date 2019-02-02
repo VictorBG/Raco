@@ -6,6 +6,7 @@ import com.victorbg.racofib.viewmodel.HomeViewModel;
 import com.victorbg.racofib.viewmodel.LoginViewModel;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
+import com.victorbg.racofib.viewmodel.SubjectsViewModel;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -31,6 +32,7 @@ public class AppViewModelFactory implements ViewModelProvider.Factory {
         creators.put(HomeViewModel.class, viewModelSubComponent::homeViewModel);
         creators.put(LoginViewModel.class, viewModelSubComponent::loginViewModel);
         creators.put(MainActivityViewModel.class, viewModelSubComponent::mainActivityViewModel);
+        creators.put(SubjectsViewModel.class, viewModelSubComponent::subjectsViewModel);
     }
 
     @Override

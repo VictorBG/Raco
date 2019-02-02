@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="8dp"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/md_orange_500"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/subject_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="High Performance Computer Architecture" />
+
+        <TextView
+            android:id="@+id/subject_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+            app:layout_constraintStart_toStartOf="@+id/subject_title"
+            app:layout_constraintTop_toBottomOf="@+id/subject_title"
+            tools:text="MEI" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/subjects_credits"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"-->
+            <!--app:layout_constraintBottom_toBottomOf="@+id/subject_course"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/textView6"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/subject_course"-->
+            <!--tools:text="6.0" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView6"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:text="·"-->
+            <!--android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"-->
+            <!--app:layout_constraintBottom_toBottomOf="@+id/subject_course"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/subject_course"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/subject_course" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView7"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="4dp"-->
+            <!--android:text="ECTS"-->
+            <!--android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"-->
+            <!--app:layout_constraintBottom_toBottomOf="@+id/subjects_credits"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/subjects_credits"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/subjects_credits" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
