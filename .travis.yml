@@ -1,14 +1,28 @@
 language: android
+jdk: oraclejdk8
+sudo: required
 
 android:
   components:
   - tools
+  - build-tools-28.0.1
   - platform-tools
   - tools
 
-jdk: oraclejdk8
 
-sudo: required
+
+env:
+  global:
+  - DIR=constraint-layout-start # Project directory
+  - API=28 # Android API level 25 by default
+  - TAG=google_apis # Google APIs by default, alternatively use default
+  - ABI=armeabi-v7a # ARM ABI v7a by default
+  - QEMU_AUDIO_DRV=none # Disable emulator audio to avoid warning
+  - GRADLE_USER_HOME="${TRAVIS_BUILD_DIR}/gradle" # Change location for Gradle Wrapper and cache
+  - ANDROID_HOME=/usr/local/android-sdk-28.0.1 # Depends on the cookbooks version used in the VM
+  - TOOLS=${ANDROID_HOME}/tools # PATH order matters, exists more than one emulator script
+  - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+
 
 licenses:
 - android-sdk-preview-license-.+
@@ -19,8 +33,28 @@ before_install:
 - chmod +x gradlew
 - mkdir "$ANDROID_HOME/licenses" || true
 - cp ./licenses/* "$ANDROID_HOME/licenses/"
+- export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
+- echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
 
 install:
+- sdkmanager --list || true
+- sdkmanager --uninstall "system-images;android-15;default;armeabi-v7a"
+- sdkmanager --uninstall "system-images;android-16;default;armeabi-v7a"
+- sdkmanager --uninstall "system-images;android-17;default;armeabi-v7a"
+- sdkmanager --uninstall "system-images;android-18;default;armeabi-v7a"
+- sdkmanager --uninstall "system-images;android-19;default;armeabi-v7a"
+- sdkmanager --uninstall "system-images;android-21;default;armeabi-v7a"
+- sdkmanager --uninstall "extras;google;google_play_services"
+- sdkmanager --uninstall "extras;android;support"
+- sdkmanager --uninstall "platforms;android-10"
+- sdkmanager --uninstall "platforms;android-15"
+- sdkmanager --uninstall "platforms;android-16"
+- sdkmanager --uninstall "platforms;android-17"
+- sdkmanager --uninstall "platforms;android-18"
+- sdkmanager --uninstall "platforms;android-19"
+- sdkmanager --uninstall "platforms;android-20"
+- sdkmanager --uninstall "platforms;android-21"
+- sdkmanager --uninstall "build-tools;21.1.2"
 - echo yes | sdkmanager "tools"
 - echo yes | sdkmanager "platforms;android-28" # Latest platform required by SDK tools
 - echo yes | sdkmanager "platforms;android-28" # Android platform required by emulator
@@ -28,6 +62,17 @@ install:
 - echo yes | sdkmanager "extras;google;m2repository"
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
+  # Create and start emulator
+- echo no | avdmanager create avd -n acib -k "$EMULATOR" -f --abi "$ABI" --tag "$TAG"
+- emulator -avd acib -engine classic -no-window -camera-back none -camera-front none -verbose -qemu -m 512 &
+  # Start adbd, wait for device connected and show android serial
+- adb wait-for-device get-serialno
+  # Show version and download Gradle Wrapper if it's not already cached
+- cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew --version
+  # Clean project and download missing dependencies and components
+- cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew clean build
+  # Check components status
+- sdkmanager --list || true
 
 script:
 - cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew connectedCheck
