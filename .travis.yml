@@ -11,11 +11,6 @@ android:
   - platform-tools
   - tools
 
-env:
-  global:
-  # wait up to 10 minutes for adb to connect to emulator
-  - ADB_INSTALL_TIMEOUT=10
-
 licenses:
 - android-sdk-preview-license-.+
 - android-sdk-license-.+
@@ -26,14 +21,13 @@ before_install:
 - mkdir "$ANDROID_HOME/licenses" || true
 - cp ./licenses/* "$ANDROID_HOME/licenses/"
 
-before_script:
+script:
+- ./gradlew build jacocoTestReport assembleAndroidTest
 - echo no | android create avd --force -n test -t android-25 --abi google_apis/armeabi-v7a
 - emulator -avd test -no-skin -no-audio -no-window &
 - android-wait-for-emulator
-- adb shell input keyevent 82 &
-
-script:
-- ./gradlew connectedCheck  -no-daemon --stacktrace
+- adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+- ./gradlew connectedCheck -no-daemon --stacktrace
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -43,6 +37,9 @@ after_script:
 # Show tests and lint results
 - cat ${TRAVIS_BUILD_DIR}/${DIR}/*/build/outputs/androidTest-results/connected/*
 - cat ${TRAVIS_BUILD_DIR}/${DIR}/*/build/reports/lint-results.xml
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:
