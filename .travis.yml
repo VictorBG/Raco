@@ -19,29 +19,8 @@ before_install:
 - mkdir "$ANDROID_HOME/licenses" || true
 - cp ./licenses/* "$ANDROID_HOME/licenses/"
 
-install:
-
-- echo yes | sdkmanager "tools"
-- echo yes | sdkmanager "platforms;android-28" # Latest platform required by SDK tools
-- echo yes | sdkmanager "platforms;android-28" # Android platform required by emulator
-- echo yes | sdkmanager "extras;android;m2repository"
-- echo yes | sdkmanager "extras;google;m2repository"
-- echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
-- echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-  # Create and start emulator
-- echo no | avdmanager create avd -n acib -k "$EMULATOR" -f --abi "$ABI" --tag "$TAG"
-- emulator -avd acib -engine classic -no-window -camera-back none -camera-front none -verbose -qemu -m 512 &
-  # Start adbd, wait for device connected and show android serial
-- adb wait-for-device get-serialno
-  # Show version and download Gradle Wrapper if it's not already cached
-- cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew --version
-  # Clean project and download missing dependencies and components
-- cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew clean build
-  # Check components status
-- sdkmanager --list || true
-
 script:
-- cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew connectedCheck
+- ./gradlew connectedCheck  -no-daemon --stacktrace
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
