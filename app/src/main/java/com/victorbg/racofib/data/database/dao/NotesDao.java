@@ -19,11 +19,9 @@ import io.reactivex.Single;
 
 @Dao
 public interface NotesDao {
-    @Query("select * from Notes")
-    Single<List<Note>> getNotes();
 
     @Query("SELECT * FROM Notes")
-    LiveData<List<Note>> getPublications();
+    LiveData<List<Note>> getNotes();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Note note);
@@ -35,5 +33,5 @@ public interface NotesDao {
     void delete(Note note);
 
     @Query("delete from Notes")
-    void truncate();
+    void clear();
 }

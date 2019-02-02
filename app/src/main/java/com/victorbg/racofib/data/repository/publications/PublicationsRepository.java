@@ -20,7 +20,6 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import timber.log.Timber;
 
 @Singleton
 public class PublicationsRepository {
@@ -58,7 +57,7 @@ public class PublicationsRepository {
             @NonNull
             @Override
             protected LiveData<List<Note>> loadFromDb() {
-                return notesDao.getPublications();
+                return notesDao.getNotes();
             }
 
             @NonNull

@@ -42,7 +42,7 @@ public class ExamDaoTest extends DbTest {
     }
 
     @Test
-    public void insertSingle() throws InterruptedException {
+    public void insert() throws InterruptedException {
         Exam exam = new Exam();
         exam.startDate = "startDate";
         exam.classrooms = "classrooms";
@@ -68,33 +68,19 @@ public class ExamDaoTest extends DbTest {
         exams = LiveDataTestUtil.getValue(db.examDao().getExams());
 
         assertEquals(2, exams.size());
-    }
 
-    @Test
-    public void insertMultiple() throws InterruptedException {
-        Exam exam = new Exam();
-        exam.startDate = "startDate";
-        exam.classrooms = "classrooms";
-        exam.id = 5;
-        exam.subject = "subject";
-
-        Exam exam2 = new Exam();
-        exam2.startDate = "startDate";
-        exam2.classrooms = "classrooms";
-        exam2.id = 6;
-        exam2.subject = "subject";
-
-        List<Exam> list=new ArrayList<>();
+        List<Exam> list = new ArrayList<>();
         list.add(exam);
         list.add(exam2);
 
         db.examDao().clear();
         db.examDao().insertExams(list);
         //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExams());
+        List<Exam> e = LiveDataTestUtil.getValue(db.examDao().getExams());
 
-        assertEquals(2, exams.size());
+        assertEquals(2, e.size());
     }
+
 
     @Test
     public void getExamsBySubject() throws InterruptedException {
