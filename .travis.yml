@@ -9,21 +9,6 @@ android:
   - platform-tools
   - tools
 
-
-
-env:
-  global:
-  - DIR=constraint-layout-start # Project directory
-  - API=28 # Android API level 25 by default
-  - TAG=google_apis # Google APIs by default, alternatively use default
-  - ABI=armeabi-v7a # ARM ABI v7a by default
-  - QEMU_AUDIO_DRV=none # Disable emulator audio to avoid warning
-  - GRADLE_USER_HOME="${TRAVIS_BUILD_DIR}/gradle" # Change location for Gradle Wrapper and cache
-  - ANDROID_HOME=/usr/local/android-sdk-28.0.1 # Depends on the cookbooks version used in the VM
-  - TOOLS=${ANDROID_HOME}/tools # PATH order matters, exists more than one emulator script
-  - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
-
-
 licenses:
 - android-sdk-preview-license-.+
 - android-sdk-license-.+
