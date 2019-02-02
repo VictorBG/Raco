@@ -19,7 +19,7 @@ public interface ExamDao {
     LiveData<List<Exam>> getExams();
 
     @Query("select * from Exams where subject=:s")
-    Single<List<Exam>> getExamsBySubject(String s);
+    LiveData<List<Exam>> getExamsBySubject(String s);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Exam exam);
@@ -31,5 +31,5 @@ public interface ExamDao {
     void delete(Exam exam);
 
     @Query("delete from Exams")
-    void truncate();
+    void clear();
 }

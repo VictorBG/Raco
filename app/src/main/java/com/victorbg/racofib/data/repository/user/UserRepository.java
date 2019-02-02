@@ -16,6 +16,7 @@ import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.utils.CalendarUtils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -77,14 +78,10 @@ public class UserRepository {
             appExecutors.diskIO().execute(() -> {
                 compositeDisposable.add(userDao.getUser().flatMap(user -> {
 
-                    Calendar calendar = Calendar.getInstance();
-                    int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-                    if (day < 0) day = 7;
-
                     return Single.zip(
                             subjectsDao.getSubjects(user.username).subscribeOn(Schedulers.io()),
                             subjectScheduleDao.getSchedule(user.username).subscribeOn(Schedulers.io()),
-                            subjectScheduleDao.getTodaySchedule(user.username, day).subscribeOn(Schedulers.io()),
+                            subjectScheduleDao.getTodaySchedule(user.username, CalendarUtils.getDayOfWeek()).subscribeOn(Schedulers.io()),
                             (subjects, schedule, today) -> {
                                 user.subjects = subjects;
                                 user.schedule = schedule;
