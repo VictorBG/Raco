@@ -4,20 +4,20 @@ android:
   components:
   - tools
   - platform-tools
-  - tools # Upgrade again after upgrading platform-tools.
+  - tools
 
 jdk: oraclejdk8
 
 sudo: required
 
+licenses:
+- android-sdk-preview-license-.+
+- android-sdk-license-.+
+- google-gdk-license-.+
+
 before_install:
 - chmod +x gradlew
-# Skip build if the commit message contains [skip travis] or [travis skip]
-- >
-  echo "$TRAVIS_COMMIT_MESSAGE"
-  | grep -E  '\[(skip travis|travis skip)\]'
-  && echo "[skip travis] has been found, exiting."
-  && exit 0 || true
+
 
 before_script:
 - mkdir -p $ANDROID_HOME/licenses
