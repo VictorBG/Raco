@@ -25,7 +25,7 @@ before_script:
 - echo -e "\n504667f4c0de7af1a06de9f4b1727b84351f2910" > $ANDROID_HOME/licenses/android-sdk-preview-license
 
 script:
-- ./gradlew clean connectedCheck --no-daemon --stacktrace
+- ./gradlew clean assembleDebug  --no-daemon --stacktrace
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
