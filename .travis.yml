@@ -18,28 +18,9 @@ before_install:
 - chmod +x gradlew
 - mkdir "$ANDROID_HOME/licenses" || true
 - cp ./licenses/* "$ANDROID_HOME/licenses/"
-- export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
-- echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
 
 install:
-- sdkmanager --list || true
-- sdkmanager --uninstall "system-images;android-15;default;armeabi-v7a"
-- sdkmanager --uninstall "system-images;android-16;default;armeabi-v7a"
-- sdkmanager --uninstall "system-images;android-17;default;armeabi-v7a"
-- sdkmanager --uninstall "system-images;android-18;default;armeabi-v7a"
-- sdkmanager --uninstall "system-images;android-19;default;armeabi-v7a"
-- sdkmanager --uninstall "system-images;android-21;default;armeabi-v7a"
-- sdkmanager --uninstall "extras;google;google_play_services"
-- sdkmanager --uninstall "extras;android;support"
-- sdkmanager --uninstall "platforms;android-10"
-- sdkmanager --uninstall "platforms;android-15"
-- sdkmanager --uninstall "platforms;android-16"
-- sdkmanager --uninstall "platforms;android-17"
-- sdkmanager --uninstall "platforms;android-18"
-- sdkmanager --uninstall "platforms;android-19"
-- sdkmanager --uninstall "platforms;android-20"
-- sdkmanager --uninstall "platforms;android-21"
-- sdkmanager --uninstall "build-tools;21.1.2"
+
 - echo yes | sdkmanager "tools"
 - echo yes | sdkmanager "platforms;android-28" # Latest platform required by SDK tools
 - echo yes | sdkmanager "platforms;android-28" # Android platform required by emulator
