@@ -1,10 +1,12 @@
 # [WIP] Raco
 
+[![Build Status](https://travis-ci.com/VictorBG/RacoFib.svg?token=xio7T67Yoyke3FpGmCAb&branch=master)](https://travis-ci.com/VictorBG/RacoFib)
+
 <div style="text-align:center; margin-bottom: 16px;"><img src=".github/assets/ic_launcher.png"
             alt="Download from Google Play"
             height="150">
 
-**An unofficial Android client for [El Racó](http://raco.fib.upc.edu), an intranet for [FIB](https://www.fib.upc.edu/) students.**
+**An unofficial Android client for [El Racó](http://raco.fib.upc.edu)**.
 
 ###### The app is not yet on the play store neither through direct download
 
