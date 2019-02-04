@@ -7,5 +7,6 @@
     <color name="colorAccentDark">#912B46</color>
 
     <color name="bg_circle_default">@color/colorAccent</color>
+    <color name="white_appbar">#9AFFFFFF</color>
 
 </resources>

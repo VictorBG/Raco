@@ -11,7 +11,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/md_white_1000"
+        android:background="@color/md_white_1000"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:riv_corner_radius="56dip" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/imageButton"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
@@ -40,6 +40,7 @@
                 android:clickable="true"
                 android:contentDescription="@string/settings"
                 android:focusable="true"
+                android:padding="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -53,13 +54,14 @@
     <!--android:layout_height="match_parent"-->
     <!--android:layout_marginTop="?attr/actionBarSize" />-->
 
+
+    <!--app:layout_constraintTop_toBottomOf="@+id/appBarLayout"-->
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

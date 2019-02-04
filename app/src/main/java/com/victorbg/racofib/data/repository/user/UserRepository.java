@@ -3,6 +3,7 @@ package com.victorbg.racofib.data.repository.user;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.api.ApiService;
@@ -37,6 +38,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @Singleton
 public class UserRepository {
@@ -76,39 +78,23 @@ public class UserRepository {
     public LiveData<User> getUser() {
         if (userMutableLiveData.getValue() == null) {
             appExecutors.diskIO().execute(() -> {
-                compositeDisposable.add(userDao.getUser().flatMap(user -> {
-
-                    return Single.zip(
-                            subjectsDao.getSubjects(user.username).subscribeOn(Schedulers.io()),
-                            subjectScheduleDao.getSchedule(user.username).subscribeOn(Schedulers.io()),
-                            subjectScheduleDao.getTodaySchedule(user.username, CalendarUtils.getDayOfWeek()).subscribeOn(Schedulers.io()),
-                            (subjects, schedule, today) -> {
-                                user.subjects = subjects;
-                                user.schedule = schedule;
-                                user.todaySubjects = today;
-                                return user;
-                            }
-                    );
-
-//                    return subjectsDao.getSubjects(user.username).flatMap(subjects -> {
-//                        user.subjects = subjects;
-//
-//                        return subjectScheduleDao.getSchedule(user.username).flatMap(schedule -> {
-//                            user.schedule = schedule;
-//
-//
-//                            return subjectScheduleDao.getTodaySchedule(user.username, day).flatMap(today -> {
-//                                user.todaySubjects = today;
-//                                return Single.just(user);
-//                            });
-//                        });
-//                    });
-                }).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(user ->
-                                appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user))));
-                //user.todaySubjects = subjectScheduleDao.getTodaySchedule(user.username, day);
-
+                compositeDisposable.add(
+                        userDao.getUser().flatMap(user ->
+                                Single.zip(
+                                        subjectsDao.getSubjects(user.username).subscribeOn(Schedulers.io()),
+                                        subjectScheduleDao.getSchedule(user.username).subscribeOn(Schedulers.io()),
+                                        subjectScheduleDao.getTodaySchedule(user.username, CalendarUtils.getDayOfWeek()).subscribeOn(Schedulers.io()),
+                                        (subjects, schedule, today) -> {
+                                            user.subjects = subjects;
+                                            user.schedule = schedule;
+                                            user.todaySubjects = today;
+                                            return user;
+                                        }
+                                )).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(user ->
+                                                appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user))
+                                        , Timber::d));
             });
         }
         return userMutableLiveData;
@@ -164,7 +150,7 @@ public class UserRepository {
 
                     //FIB development team has been notified about this bug, which makes me unable to
                     //test anything until I have enrolled some classes
-
+                    prefManager.setLogin(new LoginData(token, expirationTime, "victor.blanco.garcia"));
 //                    appExecutors.diskIO().execute(() -> appDatabase.endTransaction());
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.error("An error has occurred: " + error.getMessage(), null)));
                 }));

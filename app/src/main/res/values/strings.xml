@@ -2,4 +2,9 @@
     <string name="app_name">RacoFib</string>
     <string name="login_button_text">Iniciar sesión</string>
     <string name="settings">Settings</string>
+    <string name="news">Noticias</string>
+    <string name="exams">Examenes</string>
+    <string name="labs">Laboratorios</string>
+    <string name="seminary">Seminarios</string>
+    <string name="webmail">Webmail</string>
 </resources>
