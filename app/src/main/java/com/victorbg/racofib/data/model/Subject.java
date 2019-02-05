@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Subjects", foreignKeys = @ForeignKey(entity = User.class, parentColumns = "username", childColumns = "user", onDelete = CASCADE), indices = {@Index("user")})
+@Entity(tableName = "Subjects")
 public class Subject {
 
     @NonNull
@@ -32,8 +32,6 @@ public class Subject {
 
     @SerializedName("nom")
     public String name;
-
-    public String user;
 
     public String color;
 

@@ -51,7 +51,7 @@ public class UserRepository {
     private AppExecutors appExecutors;
     private AppDatabase appDatabase;
     private String[] colors;
-    private int defaultColor = Color.GRAY;
+
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -65,9 +65,11 @@ public class UserRepository {
         this.appExecutors = appExecutors;
         this.subjectsDao = subjectsDao;
         this.subjectScheduleDao = subjectScheduleDao;
-        this.colors = context.getResources().getStringArray(R.array.mdcolor_500);
+        this.colors = context.getResources().getStringArray(R.array.mdcolor_400);
+
+        userMutableLiveData.setValue(null);
         //Init user
-        getUser();
+        //getUser();
     }
 
     /**
@@ -81,9 +83,9 @@ public class UserRepository {
                 compositeDisposable.add(
                         userDao.getUser().flatMap(user ->
                                 Single.zip(
-                                        subjectsDao.getSubjects(user.username).subscribeOn(Schedulers.io()),
-                                        subjectScheduleDao.getSchedule(user.username).subscribeOn(Schedulers.io()),
-                                        subjectScheduleDao.getTodaySchedule(user.username, CalendarUtils.getDayOfWeek()).subscribeOn(Schedulers.io()),
+                                        subjectsDao.getSubjects().subscribeOn(Schedulers.io()),
+                                        subjectScheduleDao.getSchedule().subscribeOn(Schedulers.io()),
+                                        subjectScheduleDao.getTodaySchedule(CalendarUtils.getDayOfWeek()).subscribeOn(Schedulers.io()),
                                         (subjects, schedule, today) -> {
                                             user.subjects = subjects;
                                             user.schedule = schedule;
@@ -121,7 +123,7 @@ public class UserRepository {
 
             return apiService.getSubjects(getToken(token), "json").flatMap(subjects -> {
 
-                ArrayList<String> c = (ArrayList<String>) Arrays.asList(colors);
+                List<String> c = Arrays.asList(colors);
                 Collections.shuffle(c);
                 for (int i = 0; i < subjects.result.size(); i++) {
                     subjects.result.get(i).color = c.get(i);
@@ -141,16 +143,17 @@ public class UserRepository {
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                 .subscribe(user -> {
 //                    appExecutors.diskIO().execute(() -> appDatabase.setTransactionSuccessful());
-                    userMutableLiveData.postValue(user);
-                    prefManager.setLogin(new LoginData(token, expirationTime, user.username));
+//                    userMutableLiveData.postValue(user);
+                    getUser();
+                    prefManager.setLogin(new LoginData(token, expirationTime));
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
-                }, error -> {
-                    //TODO: There is a bug on the API that if the user has no classes it returns an error 500 instead of
-                    //TODO: a correct error, like 204 No Content or a 200 with an empty body: {total:0, results:[]}
 
-                    //FIB development team has been notified about this bug, which makes me unable to
-                    //test anything until I have enrolled some classes
-                    prefManager.setLogin(new LoginData(token, expirationTime, "victor.blanco.garcia"));
+                }, error -> {
+                    /*There is a bug on the API that if the user has no classes it returns an error 500 instead of
+                      correct error, like 204 No Content or a 200 with an empty body: {total:0, results:[]}
+                      FIB development team has been notified about this bug, which makes me unable to
+                      test anything until I have enrolled some classes*/
+
 //                    appExecutors.diskIO().execute(() -> appDatabase.endTransaction());
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.error("An error has occurred: " + error.getMessage(), null)));
                 }));

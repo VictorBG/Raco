@@ -86,16 +86,13 @@ public class ExamsRepository {
 
             @Override
             protected void fetchFromNetwork(LiveData<List<Exam>> dbSource) {
-                result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
+                //result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
                 compositeDisposable.add(apiService.getCurrentSemester(getToken(), "json").flatMap(semester -> {
                     List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
                     for (Subject s : user.subjects) {
                         requests.add(apiService.getExams(getToken(), semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
                     }
 
-//                    if (user.subjects.size() == 0) {
-//                        return Single.just(new ArrayList<Exam>());
-//                    }
                     return Single.zip(requests, objects -> {
                         List<Exam> resultList = new ArrayList<>();
                         for (Object apiListResponse : objects) {

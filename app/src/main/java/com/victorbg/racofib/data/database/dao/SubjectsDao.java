@@ -16,8 +16,8 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface SubjectsDao {
 
-    @Query("select * from Subjects where user=:user")
-    Single<List<Subject>> getSubjects(String user);
+    @Query("select * from Subjects ORDER BY shortName ASC")
+    Single<List<Subject>> getSubjects();
 
     @Insert(onConflict = REPLACE)
     void insert(Subject subject);
@@ -29,5 +29,5 @@ public interface SubjectsDao {
     void delete(Subject s);
 
     @Query("delete from Subjects")
-    void truncate();
+    void clear();
 }

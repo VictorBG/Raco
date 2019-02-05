@@ -2,6 +2,7 @@ package com.victorbg.racofib.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -9,11 +10,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -32,6 +36,11 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.profile_image)
     ImageView profileImage;
+
+    @OnClick(R.id.imageButton)
+    public void settings(View view) {
+        Toast.makeText(this, "settings", Toast.LENGTH_LONG).show();
+    }
 
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;

@@ -12,10 +12,8 @@ import androidx.room.Index;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "SubjectSchedule", foreignKeys = {
-        @ForeignKey(entity = User.class, parentColumns = "username", childColumns = "username", onDelete = CASCADE)},
-        primaryKeys = {"id", "day_of_week", "start"},
-        indices = {@Index("username")})
+@Entity(tableName = "SubjectSchedule",
+        primaryKeys = {"id", "day_of_week", "start"})
 public class SubjectSchedule {
 
     @NonNull
@@ -42,7 +40,5 @@ public class SubjectSchedule {
     //Why is this a String on the API? There are groups with letters?
     @SerializedName("grup")
     public String group;
-
-    public String username;
 
 }

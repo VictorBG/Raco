@@ -1,9 +1,11 @@
 package com.victorbg.racofib.view.ui.subjects.items;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -27,6 +29,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class SubjectItem extends AbstractItem<SubjectItem, SubjectItem.ViewHolder> {
 
@@ -67,8 +70,10 @@ public class SubjectItem extends AbstractItem<SubjectItem, SubjectItem.ViewHolde
 
         @BindView(R.id.subject_title)
         TextView title;
-//        @BindView(R.id.subjects_credits)
+        //        @BindView(R.id.subjects_credits)
 //        TextView credits;
+        @BindView(R.id.subject_card)
+        MaterialCardView cardView;
         @BindView(R.id.subject_course)
         TextView course;
 
@@ -81,6 +86,12 @@ public class SubjectItem extends AbstractItem<SubjectItem, SubjectItem.ViewHolde
         public void bindView(@NonNull SubjectItem item, @NonNull List<Object> payloads) {
             StringHolder.applyToOrHide(new StringHolder(item.subject.name), title);
             StringHolder.applyToOrHide(new StringHolder(item.subject.shortName), course);
+
+            try {
+                cardView.setCardBackgroundColor(Color.parseColor(item.subject.color));
+            } catch (Exception e) {
+                Timber.d(e);
+            }
         }
 
 

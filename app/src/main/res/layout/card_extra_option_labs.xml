@@ -12,7 +12,8 @@
     android:foreground="?attr/selectableItemBackgroundBorderless"
     android:orientation="vertical"
     app:cardCornerRadius="8dp"
-    app:cardElevation="3dip">
+    app:cardElevation="3dip"
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

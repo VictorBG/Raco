@@ -43,16 +43,11 @@ public class PrefManager {
         editor.putBoolean(LOGGED_KEY, true);
         editor.putLong(EXPIRATION_KEY, (System.currentTimeMillis() + (loginData.expirationTime * 1000)));
         editor.putString(TOKEN_KEY, loginData.token);
-        editor.putString(USERNAME_KEY, loginData.username);
         editor.apply();
     }
 
     public String getToken() {
         return sharedPreferences.getString(TOKEN_KEY, "");
-    }
-
-    public String getUsername() {
-        return sharedPreferences.getString(USERNAME_KEY, "");
     }
 
     /**
@@ -63,14 +58,13 @@ public class PrefManager {
         editor.putBoolean(LOGGED_KEY, false);
         editor.putLong(EXPIRATION_KEY, -1);
         editor.putString(TOKEN_KEY, null);
-        editor.putString(USERNAME_KEY, null);
         editor.apply();
     }
 
     private static final String TOKEN_KEY = "AuthToken";
     private static final String LOGGED_KEY = "UserLogged";
     private static final String EXPIRATION_KEY = "TokenExpiration";
-    private static final String USERNAME_KEY = "UserNameKey";
+
 
 
 }

@@ -64,10 +64,8 @@ public class LoginActivity extends BaseActivity implements Injectable {
             case ERROR:
                 progressBar.setVisibility(View.GONE);
                 statusMessage.setVisibility(View.VISIBLE);
-                statusMessage.setText(state.data);
-                //TODO: Break is removed in order to login even when an error has occurred while the bug on the api persists
-                //Remove on production if bug has been fixed
-                //break;
+                statusMessage.setText(state.message);
+                break;
             case SUCCESS:
                 startActivity(new Intent(this, MainActivity.class));
                 break;

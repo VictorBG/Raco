@@ -15,11 +15,11 @@ import io.reactivex.Single;
 @Dao
 public interface SubjectScheduleDao {
 
-    @Query("select * from SubjectSchedule where username=:user and day_of_week=:day")
-    Single<List<SubjectSchedule>> getTodaySchedule(String user, int day);
+    @Query("select * from SubjectSchedule where  day_of_week=:day")
+    Single<List<SubjectSchedule>> getTodaySchedule(int day);
 
-    @Query("select * from SubjectSchedule where username=:user order by day_of_week ASC")
-    Single<List<SubjectSchedule>> getSchedule(String user);
+    @Query("select * from SubjectSchedule order by day_of_week ASC")
+    Single<List<SubjectSchedule>> getSchedule();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SubjectSchedule subjectSchedule);

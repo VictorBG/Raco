@@ -61,12 +61,13 @@ public class HomeViewModel extends ViewModel {
      */
     public List<Exam> getNearestExams(int size) {
 
+
         if (exams.getValue().data == null || exams.getValue().data.isEmpty())
             return new ArrayList<>();
         Comparator<Exam> c = (o1, o2) -> {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
             try {
-                return simpleDateFormat.parse(o1.startDate).after(simpleDateFormat.parse(o2.startDate)) ? 0 : -1;
+                return simpleDateFormat.parse(o1.startDate).after(simpleDateFormat.parse(o2.startDate)) ? 0 : 1;
             } catch (ParseException e) {
                 return -1;
             }
@@ -76,9 +77,9 @@ public class HomeViewModel extends ViewModel {
         exam.startDate = simpleDateFormat.format(Calendar.getInstance().getTime());
         int index = Collections.binarySearch(exams.getValue().data, exam, c);
 
-        if (index < 0) index = exams.getValue().data.size();
-
-        return exams.getValue().data.subList(index, Math.min(size, exams.getValue().data.size() - index));
+        if (index < 0 || index >= exams.getValue().data.size())
+            index = exams.getValue().data.size() - 1;
+        return exams.getValue().data.subList(index, Math.min(exams.getValue().data.size(), index + size));
     }
 
 

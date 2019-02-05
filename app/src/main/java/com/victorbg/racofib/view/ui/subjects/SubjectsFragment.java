@@ -47,7 +47,6 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
 
     @BindView(R.id.recycler_notes)
     RecyclerView recyclerView;
-
     @BindView(R.id.animation_view)
     LottieAnimationView animationView;
     @BindView(R.id.error_state_message)
@@ -69,7 +68,7 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        return inflater.inflate(R.layout.fragment_subjects, container, false);
     }
 
     @Override
@@ -79,8 +78,6 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
     }
 
     private void setRecycler() {
-
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         itemAdapter = new ItemAdapter<>();
         FastAdapter<SubjectItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
 

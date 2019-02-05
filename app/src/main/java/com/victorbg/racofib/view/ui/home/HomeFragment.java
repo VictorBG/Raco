@@ -118,9 +118,12 @@ public class HomeFragment extends BaseFragment implements Injectable {
             items.add(new ExamItem().withExam(exam));
         }
 
+        examsProgressBar.setVisibility(View.GONE);
+        noExams.setVisibility(View.GONE);
+
         //Prevent recreating the whole list when there are identical items (based on title and subject)
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapterExams, items);
-        FastAdapterDiffUtil.set(itemAdapter, diffs);
+        FastAdapterDiffUtil.set(itemAdapterExams, diffs);
         recyclerViewExams.scrollToPosition(0);
     }
 
@@ -129,8 +132,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
             case SUCCESS:
                 if (examResource.data != null && examResource.data.size() > 0) {
                     bindExams(homeViewModel.getNearestExams(5));
-                    return;
                 }
+                break;
             case ERROR:
                 examsProgressBar.setVisibility(View.GONE);
                 noExams.setVisibility(View.VISIBLE);

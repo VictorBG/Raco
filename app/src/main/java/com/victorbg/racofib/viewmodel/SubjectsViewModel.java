@@ -27,11 +27,11 @@ public class SubjectsViewModel extends ViewModel {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
-    public SubjectsViewModel(UserRepository userRepository, SubjectsDao subjectsDao, PrefManager prefManager) {
+    public SubjectsViewModel(UserRepository userRepository, SubjectsDao subjectsDao) {
         MutableLiveData<List<Subject>> mutableLiveData = new MutableLiveData();
         if (userRepository.getUser().getValue() != null) {
             //TODO: Test -> wrap this in a repository
-            compositeDisposable.add(subjectsDao.getSubjects(prefManager.getUsername())
+            compositeDisposable.add(subjectsDao.getSubjects()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(mutableLiveData::postValue));
