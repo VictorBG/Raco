@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -72,10 +73,21 @@ public class HomeViewModel extends ViewModel {
                 return -1;
             }
         };
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-        Exam exam = new Exam();
-        exam.startDate = simpleDateFormat.format(Calendar.getInstance().getTime());
-        int index = Collections.binarySearch(exams.getValue().data, exam, c);
+        Date currentTime = Calendar.getInstance().getTime();
+        int index;
+
+        for (index = 0; index < exams.getValue().data.size(); index++) {
+            try {
+                if (simpleDateFormat.parse(exams.getValue().data.get(index).startDate).after(currentTime)) {
+                    break;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                break;
+            }
+        }
 
         if (index < 0 || index >= exams.getValue().data.size())
             index = exams.getValue().data.size() - 1;

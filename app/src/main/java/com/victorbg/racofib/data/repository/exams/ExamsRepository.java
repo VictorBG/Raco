@@ -98,6 +98,15 @@ public class ExamsRepository {
                         for (Object apiListResponse : objects) {
                             resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
                         }
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                        Collections.sort(resultList, (o1, o2) -> {
+                            try {
+                                return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
+                            } catch (ParseException e) {
+                                Timber.d(e);
+                                return 0;
+                            }
+                        });
                         return resultList;
                     });
                 }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())

@@ -15,10 +15,10 @@ import io.reactivex.Single;
 @Dao
 public interface ExamDao {
 
-    @Query("select * from Exams")
+    @Query("select * from Exams order by start_date ASC")
     LiveData<List<Exam>> getExams();
 
-    @Query("select * from Exams where subject=:s")
+    @Query("select * from Exams where subject=:s order by start_date ASC")
     LiveData<List<Exam>> getExamsBySubject(String s);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

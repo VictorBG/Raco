@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Exams")
@@ -28,7 +30,6 @@ public class Exam {
     @SerializedName("fi")
     @ColumnInfo(name = "end_date")
     public String endDate;
-
 
     @SerializedName("tipus")
     public String type;

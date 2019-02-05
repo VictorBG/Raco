@@ -1,8 +1,10 @@
 package com.victorbg.racofib.view.ui.subjects.items;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -73,7 +75,7 @@ public class SubjectItem extends AbstractItem<SubjectItem, SubjectItem.ViewHolde
         //        @BindView(R.id.subjects_credits)
 //        TextView credits;
         @BindView(R.id.subject_card)
-        MaterialCardView cardView;
+        ViewGroup cardView;
         @BindView(R.id.subject_course)
         TextView course;
 
@@ -87,11 +89,8 @@ public class SubjectItem extends AbstractItem<SubjectItem, SubjectItem.ViewHolde
             StringHolder.applyToOrHide(new StringHolder(item.subject.name), title);
             StringHolder.applyToOrHide(new StringHolder(item.subject.shortName), course);
 
-            try {
-                cardView.setCardBackgroundColor(Color.parseColor(item.subject.color));
-            } catch (Exception e) {
-                Timber.d(e);
-            }
+            cardView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.subject.color)));
+
         }
 
 

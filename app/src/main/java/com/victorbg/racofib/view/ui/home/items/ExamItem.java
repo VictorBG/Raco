@@ -9,12 +9,14 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.SubjectSchedule;
 import com.victorbg.racofib.data.model.exams.Exam;
+import com.victorbg.racofib.utils.CalendarUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import butterknife.BindView;
@@ -42,15 +44,13 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
 
     @Override
     public int getLayoutRes() {
-        return R.layout.item_schedule;
+        return R.layout.item_exam_small;
     }
 
     public class ViewHolder extends FastAdapter.ViewHolder<ExamItem> {
 
         @BindView(R.id.time)
         public TextView time;
-        @BindView(R.id.classroom)
-        public TextView classroom;
         @BindView(R.id.subject)
         public TextView subject;
         @BindView(R.id.type)
@@ -64,7 +64,25 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
         @Override
         public void bindView(@NonNull ExamItem item, @NonNull List<Object> payloads) {
             subject.setText(item.exam.subject);
-            classroom.setText(item.exam.startDate);
+            time.setText(item.exam.startDate);
+            switch (item.exam.type) {
+                case "P":
+                    type.setText("Parcial");
+                    break;
+                case "F":
+                    type.setText("Final");
+                    break;
+                default:
+                    type.setVisibility(View.GONE);
+            }
+
+            try {
+                time.setText(CalendarUtils.getFormattedPeriod(item.exam.startDate, item.exam.endDate, "yyyy-MM-dd'T'HH:mm:ss"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                time.setVisibility(View.GONE);
+            }
+
         }
 
         @Override
@@ -72,7 +90,6 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
             time.setText(null);
             type.setText(null);
             subject.setText(null);
-            classroom.setText(null);
         }
     }
 }
