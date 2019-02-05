@@ -2,6 +2,7 @@ package com.victorbg.racofib.view.ui.notes.items;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.chip.Chip;
@@ -86,8 +87,8 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView date;
         @BindView(R.id.icon_text)
         TextView subject;
-        @BindView(R.id.attachmentsGroup)
-        ChipGroup attachmentsGroup;
+        @BindView(R.id.attachments)
+        ImageView attachmentsView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -111,16 +112,9 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
             }
 
             if (item.note.attachments.size() == 0) {
-                attachmentsGroup.setVisibility(View.GONE);
+                attachmentsView.setVisibility(View.GONE);
             } else {
-                attachmentsGroup.setVisibility(View.VISIBLE);
-                attachmentsGroup.removeAllViews();
-                for (Attachment attachment : item.note.attachments) {
-                    Chip chip = new Chip(item.context);
-                    chip.setText(attachment.name);
-                    chip.setChipIconResource(R.drawable.ic_picture_as_pdf_black_24dp);
-                    attachmentsGroup.addView(chip);
-                }
+                attachmentsView.setVisibility(View.VISIBLE);
             }
         }
 
