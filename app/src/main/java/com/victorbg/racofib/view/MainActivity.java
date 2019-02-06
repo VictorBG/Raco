@@ -1,6 +1,7 @@
 package com.victorbg.racofib.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.profile_image)
     ImageView profileImage;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @OnClick(R.id.imageButton)
     public void settings(View view) {
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);

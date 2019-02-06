@@ -19,13 +19,14 @@ public interface NotesDao {
     @Query("SELECT * FROM Notes order by date DESC")
     LiveData<List<Note>> getNotes();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Note note);
 
     @Update
     void updateNote(Note note);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    //Ignore on conflict as it has to preserve the state of favorites column
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertNotes(List<Note> notes);
 
     @Delete

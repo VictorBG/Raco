@@ -65,11 +65,6 @@ public class SwipeCallback extends ItemTouchHelper.SimpleCallback {
         return this;
     }
 
-    public SwipeCallback withBackgroundSwipeLeft(@ColorInt int bgColor) {
-        bgColorLeft = bgColor;
-        return this;
-    }
-
     @Override
     public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         IItem item = FastAdapter.getHolderAdapterItem(viewHolder);
@@ -127,6 +122,7 @@ public class SwipeCallback extends ItemTouchHelper.SimpleCallback {
             }
             bgPaint.setColor(isLeft ? bgColorLeft : bgColorRight);
 
+            //draw bg
             if (bgPaint.getColor() != Color.TRANSPARENT) {
                 int left = isLeft ? itemView.getRight() + (int) dX : itemView.getLeft();
                 int right = isLeft ? itemView.getRight() : (itemView.getLeft() + (int) dX);
