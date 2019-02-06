@@ -46,11 +46,24 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         Toast.makeText(this, "settings", Toast.LENGTH_LONG).show();
     }
 
+    @OnClick(R.id.profile_image)
+    public void profileModal(View v) {
+        mainActivityViewModel.getUser().observe(MainActivity.this, user -> {
+            if (user != null) {
+                ProfileModal profileModal = ProfileModal.getInstanceWithData(user, mainActivityViewModel.getToken());
+                profileModal.show(MainActivity.this.getSupportFragmentManager(), "profile-modal");
+            }
+        });
+
+    }
+
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Inject
     PrefManager prefManager;
+
+    private MainActivityViewModel mainActivityViewModel;
 
     @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
@@ -72,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
 
-        MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
+        mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getUser().observe(this, user -> {
             if (user == null || user.photoUrl == null) return;
             GlideUrl glideUrl = new GlideUrl(user.photoUrl, new LazyHeaders.Builder().addHeader("Authorization", "Bearer " + prefManager.getToken()).build());

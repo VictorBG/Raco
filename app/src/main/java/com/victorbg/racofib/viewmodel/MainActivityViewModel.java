@@ -24,4 +24,8 @@ public class MainActivityViewModel extends ViewModel {
     public LiveData<User> getUser() {
         return user;
     }
+
+    public String getToken() {
+        return userRepository.getToken();
+    }
 }

@@ -161,7 +161,7 @@ public class UserRepository {
         return result;
     }
 
-    private String getToken() {
+    public String getToken() {
         return "Bearer " + prefManager.getToken();
     }
 
