@@ -66,6 +66,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             onChangedState(listResource.status, listResource.message);
             onChanged(listResource.data);
         });
+
     }
 
     @Nullable
@@ -109,6 +110,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fastAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
 
     }
 
@@ -138,11 +140,9 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         int errorTvVis;
         int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.GONE;
-        int rvVis = (st == Status.ERROR) ? View.GONE : View.VISIBLE;
 
         errorTextView.setVisibility(errorTvVis);
         errorTextView.setText(message);
-        recyclerView.setVisibility(rvVis);
         animationView.setVisibility(animVis);
         if (animVis == View.VISIBLE) {
             animationView.playAnimation();

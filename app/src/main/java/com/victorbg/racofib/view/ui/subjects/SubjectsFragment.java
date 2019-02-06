@@ -77,6 +77,7 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         setRecycler();
     }
 
+
     private void setRecycler() {
         itemAdapter = new ItemAdapter<>();
         FastAdapter<SubjectItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
@@ -90,8 +91,8 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
             @javax.annotation.Nullable
             @Override
             public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof NoteItem.ViewHolder) {
-                    return ((NoteItem.ViewHolder) viewHolder).itemView;
+                if (viewHolder instanceof SubjectItem.ViewHolder) {
+                    return ((SubjectItem.ViewHolder) viewHolder).cardView;
                 }
                 return null;
             }

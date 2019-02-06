@@ -25,7 +25,7 @@ public class Note implements Parcelable {
     public String text;
 
     @NonNull
-    @SerializedName("data_insercio")
+    @SerializedName("data_modificacio")
     public String date;
 
     @TypeConverters(AttachmentsConverter.class)
@@ -40,6 +40,7 @@ public class Note implements Parcelable {
     public Note() {
 
     }
+
     public Note(Parcel in) {
         this.title = in.readString();
         this.subject = in.readString();

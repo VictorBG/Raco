@@ -75,7 +75,7 @@ public class SubjectItem extends AbstractItem<SubjectItem, SubjectItem.ViewHolde
         //        @BindView(R.id.subjects_credits)
 //        TextView credits;
         @BindView(R.id.subject_card)
-        ViewGroup cardView;
+        public ViewGroup cardView;
         @BindView(R.id.subject_course)
         TextView course;
 

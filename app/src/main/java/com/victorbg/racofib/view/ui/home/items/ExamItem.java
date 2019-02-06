@@ -31,6 +31,10 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
         return this;
     }
 
+    public Exam getExam() {
+        return exam;
+    }
+
     @NonNull
     @Override
     public ExamItem.ViewHolder getViewHolder(View v) {
@@ -77,7 +81,7 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
             }
 
             try {
-                time.setText(CalendarUtils.getFormattedPeriod(item.exam.startDate, item.exam.endDate, "yyyy-MM-dd'T'HH:mm:ss"));
+                time.setText(CalendarUtils.getFormattedPeriod(item.exam.startDate, item.exam.endDate, item.exam.standardFormat));
             } catch (ParseException e) {
                 e.printStackTrace();
                 time.setVisibility(View.GONE);

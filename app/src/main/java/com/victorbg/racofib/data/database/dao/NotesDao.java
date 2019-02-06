@@ -2,6 +2,7 @@ package com.victorbg.racofib.data.database.dao;
 
 
 import com.victorbg.racofib.data.model.Note;
+
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -14,7 +15,7 @@ import androidx.room.Query;
 @Dao
 public interface NotesDao {
 
-    @Query("SELECT * FROM Notes")
+    @Query("SELECT * FROM Notes order by date DESC")
     LiveData<List<Note>> getNotes();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

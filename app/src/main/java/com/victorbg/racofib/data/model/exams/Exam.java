@@ -1,6 +1,13 @@
 package com.victorbg.racofib.data.model.exams;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
+import com.victorbg.racofib.data.database.converters.AttachmentsConverter;
+import com.victorbg.racofib.data.model.Note;
+
+import java.io.Serializable;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -10,14 +17,13 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Exams")
-public class Exam {
+public class Exam implements Parcelable {
 
     @NonNull
     @PrimaryKey
     public int id;
 
     @SerializedName("assig")
-
     public String subject;
 
     @SerializedName("aules")
@@ -37,4 +43,48 @@ public class Exam {
     @SerializedName("comentaris")
     public String comments;
 
+    @Ignore
+    public final String standardFormat = "yyyy-MM-dd'T'HH:mm:ss";
+
+
+    public Exam() {
+    }
+
+    public Exam(Parcel in) {
+        id = in.readInt();
+        subject = in.readString();
+        classrooms = in.readString();
+        startDate = in.readString();
+        endDate = in.readString();
+        type = in.readString();
+        comments = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.subject);
+        dest.writeString(this.classrooms);
+        dest.writeString(this.startDate);
+        dest.writeString(this.endDate);
+        dest.writeString(this.type);
+        dest.writeString(this.comments);
+    }
+
+    public static final Creator<Exam> CREATOR = new Creator<Exam>() {
+        @Override
+        public Exam createFromParcel(Parcel in) {
+            return new Exam(in);
+        }
+
+        @Override
+        public Exam[] newArray(int size) {
+            return new Exam[size];
+        }
+    };
 }

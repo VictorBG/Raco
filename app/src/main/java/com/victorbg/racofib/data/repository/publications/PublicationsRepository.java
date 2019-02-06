@@ -45,7 +45,6 @@ public class PublicationsRepository {
         return new NetworkBoundResource<List<Note>, ApiNotesResponse>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull ApiNotesResponse item) {
-                //TODO: It is needed to create a transaction?
                 notesDao.insertNotes(item.getItems());
             }
 

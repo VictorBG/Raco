@@ -1,5 +1,6 @@
 package com.victorbg.racofib.view.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
+import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.SubjectSchedule;
 import com.victorbg.racofib.data.model.exams.Exam;
@@ -17,8 +19,12 @@ import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
+import com.victorbg.racofib.view.ui.exams.ExamDetail;
 import com.victorbg.racofib.view.ui.home.items.ExamItem;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
+import com.victorbg.racofib.view.ui.notes.NoteDetail;
+import com.victorbg.racofib.view.ui.notes.NotesFragment;
+import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
 
 import java.text.SimpleDateFormat;
@@ -103,6 +109,26 @@ public class HomeFragment extends BaseFragment implements Injectable {
         itemAdapterExams = new ItemAdapter<>();
         fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
         fastAdapterExams = FastAdapter.with(Collections.singletonList(itemAdapterExams));
+
+        fastAdapterExams.withEventHook(new ClickEventHook<ExamItem>() {
+            @Override
+            public void onClick(View v, int position, FastAdapter<ExamItem> fastAdapter, ExamItem item) {
+                Intent intent = new Intent(getContext(), ExamDetail.class);
+                //TODO: Put KEY in a more visible scope
+                intent.putExtra("ExamParam", item.getExam());
+                HomeFragment.this.startActivity(intent);
+            }
+
+            @javax.annotation.Nullable
+            @Override
+            public View onBind(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof ExamItem.ViewHolder) {
+                    return ((ExamItem.ViewHolder) viewHolder).itemView;
+                }
+                return null;
+            }
+
+        });
 
         todayScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         recyclerViewExams.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
