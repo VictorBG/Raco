@@ -1,6 +1,8 @@
 package com.victorbg.racofib.view.ui.notes.items;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -89,6 +91,8 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView subject;
         @BindView(R.id.attachments)
         ImageView attachmentsView;
+        @BindView(R.id.icon_profile)
+        ImageView iconProfileBackground;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -101,6 +105,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
             StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
             //StringHolder.applyToOrHide(new StringHolder(Html.fromHtml(item.note.text)), description);
 
+            iconProfileBackground.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
             try {

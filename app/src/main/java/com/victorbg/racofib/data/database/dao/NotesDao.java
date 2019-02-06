@@ -11,6 +11,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 @Dao
 public interface NotesDao {
@@ -20,6 +21,9 @@ public interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Note note);
+
+    @Update
+    void updateNote(Note note);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNotes(List<Note> notes);

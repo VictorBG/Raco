@@ -113,7 +113,10 @@ public class ExamsRepository {
                         .subscribe(objects -> {
                             appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
                             setValue(Resource.success(objects));
-                        }, Timber::d));
+                        }, error -> {
+                            Timber.d(error);
+                            result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
+                        }));
             }
         }.getAsLiveData();
     }

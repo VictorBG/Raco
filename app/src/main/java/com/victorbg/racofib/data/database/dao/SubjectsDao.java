@@ -1,7 +1,7 @@
 package com.victorbg.racofib.data.database.dao;
 
 import com.victorbg.racofib.data.model.Subject;
-import com.victorbg.racofib.data.model.SubjectSchedule;
+import com.victorbg.racofib.data.model.SubjectColor;
 
 import java.util.List;
 
@@ -18,6 +18,9 @@ public interface SubjectsDao {
 
     @Query("select * from Subjects ORDER BY shortName ASC")
     Single<List<Subject>> getSubjects();
+
+    @Query("select shortName as subject,color from Subjects")
+    Single<List<SubjectColor>> getColors();
 
     @Insert(onConflict = REPLACE)
     void insert(Subject subject);

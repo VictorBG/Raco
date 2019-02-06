@@ -9,6 +9,7 @@ import com.victorbg.racofib.data.database.converters.AttachmentsConverter;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
 
@@ -25,6 +26,9 @@ public class Note implements Parcelable {
     public String text;
 
     @NonNull
+    public String color = "#D83F53";
+
+    @NonNull
     @SerializedName("data_modificacio")
     public String date;
 
@@ -32,6 +36,9 @@ public class Note implements Parcelable {
     @SerializedName("adjunts")
     public List<Attachment> attachments;
 
+    public boolean opened = false;
+
+    public boolean favorite = false;
 
     public long getIdentifier() {
         return (title + subject).hashCode();

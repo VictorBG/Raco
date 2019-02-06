@@ -33,4 +33,9 @@ public class PublicationsViewModel extends ViewModel {
         publications = publicationsRepository.getPublications();
     }
 
+    public void addToFav(Note note) {
+        note.favorite = !note.favorite;
+        publicationsRepository.addToFav(note);
+    }
+
 }
