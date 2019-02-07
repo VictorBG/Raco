@@ -27,8 +27,6 @@ The app is currently in development and the things might not work correctly unti
 - Today classes schedule
 - Week schedule
 - Subjects information
-- Labs information
-- Conferences information
 
 ### Specs/Open-source libraries
 
