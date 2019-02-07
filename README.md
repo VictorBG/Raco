@@ -18,7 +18,7 @@
       alt="Direct apk download"
       height="80">](https://victorblancogarcia.com/)
 
-The app is currently in development and the things might not work correctly until the final deploy. Neither the tests are done nor the CI configured
+The app is currently in development and the things might not work correctly until the final deploy. The test are not done yet.
 
 ### Features
 
