@@ -86,6 +86,7 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
             @Override
             public void onClick(View v, int position, FastAdapter<SubjectItem> fastAdapter, SubjectItem item) {
                 Toast.makeText(getContext(), item.getSubject().name, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), SubjectDetail.class));
             }
 
             @javax.annotation.Nullable

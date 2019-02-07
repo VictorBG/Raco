@@ -46,6 +46,10 @@
             android:name=".view.ui.exams.ExamDetail"
             android:theme="@style/AppTheme.NoteDetail" />
 
+        <activity
+            android:name=".view.ui.subjects.SubjectDetail"
+            android:theme="@style/AppTheme.SubjectDetail" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
