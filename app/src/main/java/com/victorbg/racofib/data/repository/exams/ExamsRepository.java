@@ -2,8 +2,7 @@ package com.victorbg.racofib.data.repository.exams;
 
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.dao.ExamDao;
-import com.victorbg.racofib.data.database.dao.NotesDao;
-import com.victorbg.racofib.data.model.Subject;
+import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.api.ApiListResponse;
 import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
@@ -11,16 +10,13 @@ import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.user.UserRepository;
 import com.victorbg.racofib.data.repository.util.NetworkRateLimiter;
 import com.victorbg.racofib.data.sp.PrefManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +27,6 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -88,36 +83,37 @@ public class ExamsRepository {
             protected void fetchFromNetwork(LiveData<List<Exam>> dbSource) {
                 //result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
                 compositeDisposable.add(apiService.getCurrentSemester(getToken(), "json").flatMap(semester -> {
-                    List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
-                    for (Subject s : user.subjects) {
-                        requests.add(apiService.getExams(getToken(), semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
-                    }
+                List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
 
-                    return Single.zip(requests, objects -> {
-                        List<Exam> resultList = new ArrayList<>();
-                        for (Object apiListResponse : objects) {
-                            resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
+                for (Subject s : user.subjects) {
+                    requests.add(apiService.getExams(getToken(), semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
+                }
+
+                return Single.zip(requests, objects -> {
+                    List<Exam> resultList = new ArrayList<>();
+                    for (Object apiListResponse : objects) {
+                        resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
+                    }
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                    Collections.sort(resultList, (o1, o2) -> {
+                        try {
+                            return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
+                        } catch (ParseException e) {
+                            Timber.d(e);
+                            return 0;
                         }
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        Collections.sort(resultList, (o1, o2) -> {
-                            try {
-                                return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
-                            } catch (ParseException e) {
-                                Timber.d(e);
-                                return 0;
-                            }
-                        });
-                        return resultList;
                     });
-                }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                        .subscribe(objects -> {
-                            appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
-                            setValue(Resource.success(objects));
-                        }, error -> {
-                            Timber.d(error);
-                            result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
-                        }));
-            }
+                    return resultList;
+                });
+            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                    .subscribe(objects -> {
+                appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
+                setValue(Resource.success(objects));
+            }, error -> {
+                Timber.d(error);
+                result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
+            }));
+        }
         }.getAsLiveData();
     }
 

@@ -1,13 +1,11 @@
 package com.victorbg.racofib.db;
 
-import com.victorbg.racofib.data.model.Note;
-import com.victorbg.racofib.data.model.exams.Exam;
+import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.utils.LiveDataTestUtil;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.internal.matchers.Not;
 
 import java.util.ArrayList;
 import java.util.List;

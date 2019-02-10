@@ -1,7 +1,7 @@
 package com.victorbg.racofib.data.database.dao;
 
 
-import com.victorbg.racofib.data.model.Note;
+import com.victorbg.racofib.data.model.notes.Note;
 
 import java.util.List;
 

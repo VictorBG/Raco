@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.SubjectSchedule;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

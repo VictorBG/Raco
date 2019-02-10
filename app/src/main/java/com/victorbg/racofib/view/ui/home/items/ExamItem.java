@@ -1,22 +1,16 @@
 package com.victorbg.racofib.view.ui.home.items;
 
-import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.TextView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.SubjectSchedule;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.utils.CalendarUtils;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import butterknife.BindView;

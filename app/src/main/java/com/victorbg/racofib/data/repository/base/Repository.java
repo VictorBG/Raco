@@ -1,14 +1,10 @@
 package com.victorbg.racofib.data.repository.base;
 
 import com.victorbg.racofib.data.api.ApiService;
-import com.victorbg.racofib.data.model.Note;
 import com.victorbg.racofib.data.sp.PrefManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.FloatRange;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

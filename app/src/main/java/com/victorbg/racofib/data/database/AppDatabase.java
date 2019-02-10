@@ -7,9 +7,9 @@ import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.database.dao.UserDao;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.data.model.Note;
-import com.victorbg.racofib.data.model.Subject;
-import com.victorbg.racofib.data.model.SubjectSchedule;
+import com.victorbg.racofib.data.model.notes.Note;
+import com.victorbg.racofib.data.model.subject.Subject;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
 
 import androidx.room.Database;

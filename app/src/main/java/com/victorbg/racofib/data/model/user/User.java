@@ -1,8 +1,8 @@
 package com.victorbg.racofib.data.model.user;
 
 import com.google.gson.annotations.SerializedName;
-import com.victorbg.racofib.data.model.Subject;
-import com.victorbg.racofib.data.model.SubjectSchedule;
+import com.victorbg.racofib.data.model.subject.Subject;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 
 import java.util.List;
 

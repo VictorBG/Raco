@@ -4,14 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.victorbg.racofib.data.database.converters.AttachmentsConverter;
-import com.victorbg.racofib.data.model.Note;
-
-import java.io.Serializable;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;

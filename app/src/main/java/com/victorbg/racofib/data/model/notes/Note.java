@@ -1,4 +1,4 @@
-package com.victorbg.racofib.data.model;
+package com.victorbg.racofib.data.model.notes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,7 +9,6 @@ import com.victorbg.racofib.data.database.converters.AttachmentsConverter;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.TypeConverters;
 

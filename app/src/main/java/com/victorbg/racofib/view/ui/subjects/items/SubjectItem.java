@@ -1,37 +1,22 @@
 package com.victorbg.racofib.view.ui.subjects.items;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.Attachment;
-import com.victorbg.racofib.data.model.Note;
-import com.victorbg.racofib.data.model.Subject;
-import com.victorbg.racofib.view.ui.notes.items.NoteItem;
+import com.victorbg.racofib.data.model.subject.Subject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class SubjectItem extends AbstractItem<SubjectItem, SubjectItem.ViewHolder> {
 

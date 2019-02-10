@@ -14,15 +14,12 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
-import com.mikepenz.fastadapter_extensions.swipe.SimpleSwipeCallback;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.data.model.Note;
+import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
-import com.victorbg.racofib.view.widgets.DividerItemDecoration;
 import com.victorbg.racofib.view.widgets.SwipeCallback;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 

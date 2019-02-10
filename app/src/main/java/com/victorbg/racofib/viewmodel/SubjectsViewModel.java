@@ -1,14 +1,8 @@
 package com.victorbg.racofib.viewmodel;
 
-import android.annotation.SuppressLint;
-
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
-import com.victorbg.racofib.data.model.Note;
-import com.victorbg.racofib.data.model.Subject;
-import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.publications.PublicationsRepository;
+import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.repository.user.UserRepository;
-import com.victorbg.racofib.data.sp.PrefManager;
 
 import java.util.List;
 

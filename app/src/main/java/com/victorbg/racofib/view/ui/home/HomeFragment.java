@@ -13,7 +13,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.SubjectSchedule;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.base.Resource;
@@ -22,9 +22,6 @@ import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.exams.ExamDetail;
 import com.victorbg.racofib.view.ui.home.items.ExamItem;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
-import com.victorbg.racofib.view.ui.notes.NoteDetail;
-import com.victorbg.racofib.view.ui.notes.NotesFragment;
-import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
 
 import java.text.SimpleDateFormat;

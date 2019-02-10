@@ -1,7 +1,7 @@
 package com.victorbg.racofib.data.database.dao;
 
-import com.victorbg.racofib.data.model.Subject;
-import com.victorbg.racofib.data.model.SubjectColor;
+import com.victorbg.racofib.data.model.subject.Subject;
+import com.victorbg.racofib.data.model.subject.SubjectColor;
 
 import java.util.List;
 

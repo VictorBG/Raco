@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 public class PrefManager {
 
     private SharedPreferences sharedPreferences;
+    private String token = null;
 
     @Inject
     public PrefManager(Application application) {
@@ -47,7 +48,10 @@ public class PrefManager {
     }
 
     public String getToken() {
-        return sharedPreferences.getString(TOKEN_KEY, "");
+        if (token == null) {
+            token = sharedPreferences.getString(TOKEN_KEY, "");
+        }
+        return token;
     }
 
     /**
@@ -64,7 +68,6 @@ public class PrefManager {
     private static final String TOKEN_KEY = "AuthToken";
     private static final String LOGGED_KEY = "UserLogged";
     private static final String EXPIRATION_KEY = "TokenExpiration";
-
 
 
 }

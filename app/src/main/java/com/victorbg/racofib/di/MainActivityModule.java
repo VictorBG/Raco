@@ -3,6 +3,7 @@ package com.victorbg.racofib.di;
 import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.StartActivity;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
+import com.victorbg.racofib.view.ui.subjects.SubjectDetail;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -17,4 +18,7 @@ public abstract class MainActivityModule {
 
     @ContributesAndroidInjector
     abstract LoginActivity contirbuteLoginActivity();
+
+    @ContributesAndroidInjector
+    abstract SubjectDetail contirbuteSubjectDetail();
 }

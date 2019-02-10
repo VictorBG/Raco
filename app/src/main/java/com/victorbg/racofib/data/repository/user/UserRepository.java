@@ -2,8 +2,6 @@ package com.victorbg.racofib.data.repository.user;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.api.ApiService;
@@ -11,7 +9,6 @@ import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.database.dao.UserDao;
-import com.victorbg.racofib.data.model.Subject;
 import com.victorbg.racofib.data.model.login.LoginData;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
@@ -19,10 +16,7 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.CalendarUtils;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +27,6 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

@@ -32,6 +32,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -46,7 +50,7 @@ dependencies {
     testImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
     androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -70,7 +74,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:retrofit-mock:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     //MDC Android
     implementation 'com.google.android.material:material:1.0.0'
@@ -93,8 +97,8 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     //Navigation components
-    implementation "android.arch.navigation:navigation-fragment:1.0.0-alpha09"
-    implementation "android.arch.navigation:navigation-ui:1.0.0-alpha09"
+    implementation "android.arch.navigation:navigation-fragment:1.0.0-beta01"
+    implementation "android.arch.navigation:navigation-ui:1.0.0-beta01"
 
     //Dagger
     implementation 'com.google.dagger:dagger:2.16'
@@ -116,10 +120,10 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.0.0-beta1'
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-
     implementation 'com.makeramen:roundedimageview:2.3.0'
-
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
 
 
 }

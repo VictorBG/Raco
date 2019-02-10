@@ -21,4 +21,5 @@
         android:name="com.victorbg.racofib.view.ui.subjects.SubjectsFragment"
         android:label="fragment_subjects"
         tools:layout="@layout/fragment_subjects" />
+
 </navigation>

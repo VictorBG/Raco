@@ -7,16 +7,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.Attachment;
-import com.victorbg.racofib.data.model.Note;
+import com.victorbg.racofib.data.model.notes.Note;
 
 import java.text.DateFormat;
 import java.text.ParseException;

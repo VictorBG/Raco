@@ -1,7 +1,7 @@
 package com.victorbg.racofib.data.model.api;
 
 import com.google.gson.annotations.SerializedName;
-import com.victorbg.racofib.data.model.Note;
+import com.victorbg.racofib.data.model.notes.Note;
 
 import java.util.List;
 

@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.Attachment;
-import com.victorbg.racofib.data.model.Note;
+import com.victorbg.racofib.data.model.notes.Attachment;
+import com.victorbg.racofib.data.model.notes.Note;
 
 import com.victorbg.racofib.view.base.BaseActivity;
 

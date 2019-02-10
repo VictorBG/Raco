@@ -2,7 +2,7 @@ package com.victorbg.racofib.data.database.converters;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.victorbg.racofib.data.model.Attachment;
+import com.victorbg.racofib.data.model.notes.Attachment;
 
 import java.util.List;
 

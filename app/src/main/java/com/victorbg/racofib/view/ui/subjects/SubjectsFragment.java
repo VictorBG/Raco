@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -14,17 +13,10 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.Note;
-import com.victorbg.racofib.data.model.Subject;
-import com.victorbg.racofib.data.repository.base.Status;
+import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
-import com.victorbg.racofib.view.ui.notes.NoteDetail;
-import com.victorbg.racofib.view.ui.notes.NotesFragment;
-import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.view.ui.subjects.items.SubjectItem;
-import com.victorbg.racofib.view.widgets.DividerItemDecoration;
-import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 import com.victorbg.racofib.viewmodel.SubjectsViewModel;
 
 import java.util.ArrayList;
@@ -40,7 +32,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 
 public class SubjectsFragment extends BaseFragment implements Injectable {
@@ -85,8 +76,9 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         fastAdapter.withEventHook(new ClickEventHook<SubjectItem>() {
             @Override
             public void onClick(View v, int position, FastAdapter<SubjectItem> fastAdapter, SubjectItem item) {
-                Toast.makeText(getContext(), item.getSubject().name, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(), SubjectDetail.class));
+                Intent i = new Intent(getContext(), SubjectDetail.class);
+                i.putExtra(SubjectDetail.SUBJECT_OBJECT_KEY, item.getSubject());
+                startActivity(i);
             }
 
             @javax.annotation.Nullable

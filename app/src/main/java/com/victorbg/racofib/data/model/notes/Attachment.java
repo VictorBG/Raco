@@ -1,4 +1,4 @@
-package com.victorbg.racofib.data.model;
+package com.victorbg.racofib.data.model.notes;
 
 import com.google.gson.annotations.SerializedName;
 
