@@ -1,8 +1,6 @@
 package com.victorbg.racofib.view.ui.subjects.items;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.util.Linkify;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -13,7 +11,6 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.SubjectActivity;
-import com.victorbg.racofib.data.model.subject.SubjectContent;
 
 import java.util.List;
 
