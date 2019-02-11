@@ -6,4 +6,6 @@
     <item name="info_drawer" type="id" />
     <item name="settings_drawer" type="id" />
     <item name="notes" type="id" />
+    <item name="eval_act" type="id" />
+    <item name="normal_act" type="id" />
 </resources>

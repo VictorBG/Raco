@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -44,6 +45,7 @@ public class SubjectsRepository {
 
         appExecutors.networkIO().execute(() ->
                 compositeDisposable.add(apiService.getSubject("Bearer " + prefManager.getToken(), subject, "json")
+                        .flatMap(s -> Single.just(SubjectProcessor.processSubject(s))) //for every emission process the result
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(s -> result.postValue(Resource.success(s)),

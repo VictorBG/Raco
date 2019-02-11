@@ -4,15 +4,22 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class SubjectActivity {
+public class SubjectActivity extends BaseSubjectActivity {
 
-    public int id;
+    public SubjectActivity() {
+        
+    }
 
     @SerializedName("nom")
     public String name;
 
     @SerializedName("descripcio")
     public String desc;
+
+    @SerializedName("continguts")
+    public List<Integer> contentIntegers;
+
+    public List<String> content;
 
     @SerializedName("teoria")
     public WorkDescription theory;
@@ -29,6 +36,10 @@ public class SubjectActivity {
     @SerializedName("problemes")
     public WorkDescription problems;
 
+    @Override
+    public int getType() {
+        return ACTIVITY;
+    }
 
     public static class WorkDescription {
 

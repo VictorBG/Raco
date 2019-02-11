@@ -2,9 +2,11 @@ package com.victorbg.racofib.data.model.subject;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SubjectEvalAct {
+public class SubjectEvalAct extends BaseSubjectActivity {
 
-    public int id;
+    public SubjectEvalAct() {
+
+    }
 
     @SerializedName("fora_horaris")
     public boolean notInClassHours;
@@ -14,7 +16,6 @@ public class SubjectEvalAct {
 
     @SerializedName("tipus")
     public String type;
-
 
     @SerializedName("hores_duracio")
     public int duration;
@@ -30,4 +31,9 @@ public class SubjectEvalAct {
 
     @SerializedName("descripcio")
     public String description;
+
+    @Override
+    public int getType() {
+        return EVALUATION_ACTIVITY;
+    }
 }

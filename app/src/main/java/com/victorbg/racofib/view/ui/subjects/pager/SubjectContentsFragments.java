@@ -9,17 +9,12 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectContent;
-import com.victorbg.racofib.data.model.subject.SubjectHours;
 import com.victorbg.racofib.databinding.FragmentSubjectContentBinding;
-import com.victorbg.racofib.databinding.FragmentSubjectInfoBinding;
 import com.victorbg.racofib.view.base.BaseFragment;
-import com.victorbg.racofib.view.ui.subjects.SubjectDetail;
 import com.victorbg.racofib.view.ui.subjects.items.SubjectContentItem;
-import com.victorbg.racofib.view.ui.subjects.items.SubjectItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

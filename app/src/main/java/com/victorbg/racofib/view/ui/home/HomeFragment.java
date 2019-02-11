@@ -77,7 +77,11 @@ public class HomeFragment extends BaseFragment implements Injectable {
         homeViewModel.getUser().observe(this, user -> {
             if (user != null) {
                 if (!examsFetched) {
-                    examsFetched = true;
+//                    examsFetched = true;
+                    /*
+                    If the exams are just fetched one time, once the fragment is recreated they will not be fetched again
+                    making the layout to show no exams
+                     */
                     homeViewModel.getExams(user).observe(this, this::handleExams);
                 }
                 handleUser(user);

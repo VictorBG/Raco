@@ -3,6 +3,7 @@ package com.victorbg.racofib.data.model.subject;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.SparseArray;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -96,7 +97,6 @@ public class Subject implements Parcelable {
     @Ignore
     @SerializedName("ordre_activitats")
     public List<Integer> activitiesOrder;
-
 
     //endregion
 
