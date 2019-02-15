@@ -174,10 +174,12 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         int errorTvVis;
         int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.GONE;
+        int rvVis = (st == Status.ERROR) ? View.INVISIBLE : View.VISIBLE;
 
         errorTextView.setVisibility(errorTvVis);
         errorTextView.setText(message);
         animationView.setVisibility(animVis);
+        recyclerView.setVisibility(rvVis);
         if (animVis == View.VISIBLE) {
             animationView.playAnimation();
         }

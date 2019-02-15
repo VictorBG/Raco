@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.utils.CalendarUtils;
+import com.victorbg.racofib.utils.Utils;
 import com.victorbg.racofib.view.base.BaseActivity;
 
 import java.text.ParseException;
@@ -58,7 +58,7 @@ public class ExamDetail extends BaseActivity {
             }
 
             try {
-                time.setText(CalendarUtils.getFormattedPeriod(exam.startDate, exam.endDate, exam.standardFormat));
+                time.setText(Utils.getFormattedPeriod(exam.startDate, exam.endDate, exam.standardFormat));
             } catch (ParseException e) {
                 Timber.d(e);
                 time.setVisibility(View.GONE);

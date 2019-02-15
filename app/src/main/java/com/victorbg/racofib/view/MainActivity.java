@@ -1,5 +1,7 @@
 package com.victorbg.racofib.view;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import butterknife.BindView;
@@ -18,6 +21,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
@@ -40,11 +44,13 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     ImageView profileImage;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.schedule_toolbar)
+    public LinearLayout scheduleToolbar;
 
-    @OnClick(R.id.imageButton)
-    public void settings(View view) {
-        Toast.makeText(this, "settings", Toast.LENGTH_LONG).show();
-    }
+//    @OnClick(R.id.imageButton)
+//    public void settings(View view) {
+//        Toast.makeText(this, "settings", Toast.LENGTH_LONG).show();
+//    }
 
     @OnClick(R.id.profile_image)
     public void profileModal(View v) {
@@ -83,6 +89,15 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.timetableFragment) {
+                scheduleToolbar.setVisibility(View.VISIBLE);
+            } else {
+                scheduleToolbar.setVisibility(View.GONE);
+            }
+        });
 
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);

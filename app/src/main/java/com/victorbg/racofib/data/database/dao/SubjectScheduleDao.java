@@ -20,6 +20,9 @@ public interface SubjectScheduleDao {
     @Query("select * from SubjectSchedule order by day_of_week ASC")
     Single<List<SubjectSchedule>> getSchedule();
 
+    @Query("select ss.id, ss.day_of_week, ss.duration, ss.start, s.color from SubjectSchedule ss, Subjects s where ss.id=s.id order by ss.day_of_week ASC")
+    Single<List<SubjectSchedule>> getScheduleWithColors();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SubjectSchedule subjectSchedule);
 

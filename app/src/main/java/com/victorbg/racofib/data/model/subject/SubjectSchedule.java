@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 
 import static androidx.room.ForeignKey.CASCADE;
@@ -40,5 +41,7 @@ public class SubjectSchedule {
     //Why is this a String on the API? There are groups with letters?
     @SerializedName("grup")
     public String group;
+
+    public String color;
 
 }

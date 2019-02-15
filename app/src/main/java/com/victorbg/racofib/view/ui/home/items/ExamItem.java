@@ -7,7 +7,7 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.utils.CalendarUtils;
+import com.victorbg.racofib.utils.Utils;
 
 import java.text.ParseException;
 import java.util.List;
@@ -45,6 +45,11 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
         return R.layout.item_exam_small;
     }
 
+    @Override
+    public long getIdentifier() {
+        return exam.id;
+    }
+
     public class ViewHolder extends FastAdapter.ViewHolder<ExamItem> {
 
         @BindView(R.id.time)
@@ -75,7 +80,7 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
             }
 
             try {
-                time.setText(CalendarUtils.getFormattedPeriod(item.exam.startDate, item.exam.endDate, item.exam.standardFormat));
+                time.setText(Utils.getFormattedPeriod(item.exam.startDate, item.exam.endDate, item.exam.standardFormat));
             } catch (ParseException e) {
                 e.printStackTrace();
                 time.setVisibility(View.GONE);

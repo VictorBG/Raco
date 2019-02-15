@@ -2,6 +2,7 @@ package com.victorbg.racofib.di;
 
 import com.victorbg.racofib.view.ui.home.HomeFragment;
 import com.victorbg.racofib.view.ui.notes.NotesFragment;
+import com.victorbg.racofib.view.ui.schedule.ScheduleFragment;
 import com.victorbg.racofib.view.ui.subjects.SubjectsFragment;
 
 import dagger.Module;
@@ -17,5 +18,8 @@ public abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract SubjectsFragment contributeSubjectsFragment();
+
+    @ContributesAndroidInjector
+    abstract ScheduleFragment contributeScheduleFragment();
 
 }

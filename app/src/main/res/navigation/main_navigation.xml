@@ -22,4 +22,10 @@
         android:label="fragment_subjects"
         tools:layout="@layout/fragment_subjects" />
 
+    <fragment
+        android:id="@+id/timetableFragment"
+        android:name="com.victorbg.racofib.view.ui.schedule.ScheduleFragment"
+        android:label="fragment_timetable"
+        tools:layout="@layout/month_by_week" />
+
 </navigation>

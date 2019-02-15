@@ -10,14 +10,18 @@ import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.database.dao.UserDao;
 import com.victorbg.racofib.data.model.login.LoginData;
+import com.victorbg.racofib.data.model.subject.Subject;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
-import com.victorbg.racofib.utils.CalendarUtils;
+import com.victorbg.racofib.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -72,27 +76,61 @@ public class UserRepository {
      */
     public LiveData<User> getUser() {
         if (userMutableLiveData.getValue() == null) {
-            appExecutors.diskIO().execute(() -> {
-                compositeDisposable.add(
-                        userDao.getUser().flatMap(user ->
-                                Single.zip(
-                                        subjectsDao.getSubjects().subscribeOn(Schedulers.io()),
-                                        subjectScheduleDao.getSchedule().subscribeOn(Schedulers.io()),
-                                        subjectScheduleDao.getTodaySchedule(CalendarUtils.getDayOfWeek()).subscribeOn(Schedulers.io()),
-                                        (subjects, schedule, today) -> {
-                                            user.subjects = subjects;
-                                            user.schedule = schedule;
-                                            user.todaySubjects = today;
-                                            return user;
-                                        }
-                                )).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(user ->
-                                                appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user))
-                                        , Timber::d));
-            });
+            appExecutors.diskIO().execute(() ->
+                    compositeDisposable.add(
+                            userDao.getUser().flatMap(user ->
+                                    Single.zip(
+                                            subjectsDao.getSubjects().subscribeOn(Schedulers.io()),
+                                            subjectScheduleDao.getSchedule().subscribeOn(Schedulers.io()),
+                                            subjectScheduleDao.getTodaySchedule(Utils.getDayOfWeek()).subscribeOn(Schedulers.io()),
+                                            (subjects, schedule, today) -> {
+                                                user.subjects = subjects;
+                                                user.schedule = schedule;
+                                                user.todaySubjects = today;
+                                                return user;
+                                            }
+                                    )).subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(user ->
+                                                    appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user))
+                                            , Timber::d))
+            );
         }
         return userMutableLiveData;
+    }
+
+    public LiveData<List<SubjectSchedule>> getSchedule() {
+
+        MutableLiveData<List<SubjectSchedule>> result = new MutableLiveData<>();
+        result.setValue(new ArrayList<>());
+
+        appExecutors.diskIO().execute(() -> {
+            if (userMutableLiveData.getValue() == null) {
+                return;
+            }
+
+            HashMap<String, String> colorsMap = new HashMap<>();
+            for (Subject s : userMutableLiveData.getValue().subjects) {
+                colorsMap.put(s.id, s.color);
+            }
+
+            for (int i = 0; i < userMutableLiveData.getValue().schedule.size(); i++) {
+                String id = userMutableLiveData.getValue().schedule.get(i).id;
+                if (colorsMap.containsKey(id)) {
+                    userMutableLiveData.getValue().schedule.get(i).color = colorsMap.get(id);
+                }
+            }
+
+            appExecutors.mainThread().execute(() -> result.setValue(new ArrayList<>(userMutableLiveData.getValue().schedule)));
+//            compositeDisposable.add(
+//                    subjectScheduleDao.getSchedule().flatMap(Single::just).subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(subjects -> appExecutors.mainThread().execute(() -> result.setValue(subjects)), Timber::d)
+//            );
+        });
+
+
+        return result;
     }
 
     /**
