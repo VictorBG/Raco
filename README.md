@@ -46,6 +46,35 @@ The app has been developed using the [official API](https://api.fib.upc.edu/)
 
 I'm open for any contribution you would like to do either by [_creating a PR_](https://github.com/VictorBG/RacoFib/compare), [_submitting an issue_](https://github.com/VictorBG/RacoFib/issues/new) on Github or proposing ideas to make the app better.
 
+You can see the [current features](https://github.com/VictorBG/RacoFib/projects/1) that are being developed at the time and contribute to one. Note that the _In Progress_ features are actively being developed and won't accept any PR until it is finished. 
+
+### FAQ
+
+**Why I have to login every day?**
+
+The current system that is being used is the _implicit_ token grant, which doesn't return a refreshToken, that's why when the token has expired it cannot be automatically refreshed and needs the user to log in again. The [_authorization code_](https://github.com/VictorBG/RacoFib/projects/1#card-17730295) grant is scheduled but not actively in development.
+
+**I have classes on weekend and the schedule view doesn't show them**
+
+I was not aware of classes on weekend, that's why it is designed in a 5 column grid. Anyway, please tell me and I will modify the application in order to show the 7 days (you can do it yourself if you want, it's the _visibleDays_ variable of the class [_CalendarWeekScheduleView_](https://github.com/VictorBG/RacoFib/blob/01a40a108d8b57f0273cd89d29064438805bcc83/app/src/main/java/com/victorbg/racofib/view/widgets/calendar/CalendarWeekScheduleView.java#L96).
+
+**I don't want the subjects to have colors**
+
+You can edit them or remove them in the settings, but they always will have a color, at least the red color of the app.
+
+**The information of the app is not the same than the information on the Racó**
+
+The app caches the information in local databases in order to use it offline, you can refresh or delete this data in the settings.
+
+**Is there any dark theme?**
+
+In development.
+
+### Developed By
+
+- Víctor Blanco
+- [victorblancogarcia.com](https://victorblancogarcia.com)
+
 
 ### License
     Copyright 2019 VictorBG
