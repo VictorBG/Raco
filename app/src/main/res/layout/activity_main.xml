@@ -69,17 +69,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:navGraph="@navigation/main_navigation" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorAccent"
-
-        app:menu="@menu/bottom_navigation_menu" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
@@ -91,6 +80,20 @@
         app:layout_anchor="@id/bottom_navigation"
         app:layout_anchorGravity="end"
         app:useCompatPadding="true" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
+        android:id="@+id/bottom_navigation"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorAccent"
+
+        app:menu="@menu/bottom_navigation_menu" />
+
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
