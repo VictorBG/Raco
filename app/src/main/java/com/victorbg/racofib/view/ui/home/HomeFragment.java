@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
+import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.exams.ExamDetail;
 import com.victorbg.racofib.view.ui.home.items.ExamItem;
@@ -30,6 +32,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -87,6 +90,9 @@ public class HomeFragment extends BaseFragment implements Injectable {
                 handleUser(user);
             }
         });
+
+        LinearLayout scheduleToolbar = ((MainActivity) Objects.requireNonNull(getActivity())).scheduleToolbar;
+        scheduleToolbar.setVisibility(View.GONE);
     }
 
     @Nullable

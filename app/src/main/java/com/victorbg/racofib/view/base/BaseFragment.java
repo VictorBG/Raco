@@ -19,6 +19,8 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
     @Inject
     DispatchingAndroidInjector<android.app.Fragment> childFragmentInjector;
 
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

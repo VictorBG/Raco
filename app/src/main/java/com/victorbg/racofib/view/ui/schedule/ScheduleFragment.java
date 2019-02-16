@@ -52,6 +52,7 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
         if (today < 0) today = 7;
 
         LinearLayout scheduleToolbar = ((MainActivity) Objects.requireNonNull(getActivity())).scheduleToolbar;
+        scheduleToolbar.setVisibility(View.VISIBLE);
         scheduleToolbar.setPadding((int) scheduleView.getGridStartPadding(), 0, 0, 0);
         if (today <= 5) {
             if (scheduleToolbar.getChildAt(today - 1) instanceof ViewGroup) {

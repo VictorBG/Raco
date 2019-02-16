@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.data.model.notes.Note;
+import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.view.widgets.SwipeCallback;
@@ -26,6 +28,7 @@ import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -66,19 +69,16 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
 
+        LinearLayout scheduleToolbar = ((MainActivity) Objects.requireNonNull(getActivity())).scheduleToolbar;
+        scheduleToolbar.setVisibility(View.GONE);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_notes, container, false);
-        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
-        publicationsViewModel.getPublications().observe(this, listResource -> {
-            onChangedState(listResource.status, listResource.message);
-            onChanged(listResource.data);
-        });
-        return v;
+        return inflater.inflate(R.layout.fragment_notes, container, false);
     }
 
     @Override
@@ -87,6 +87,17 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         setRecycler();
         swipeRefreshLayout.setOnRefreshListener(this::reload);
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        publicationsViewModel.getPublications().removeObservers(this);
+        publicationsViewModel.getPublications().observe(this, listResource -> {
+            onChangedState(listResource.status, listResource.message);
+            onChanged(listResource.data);
+        });
     }
 
     private void setRecycler() {
@@ -149,12 +160,18 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     private void reload() {
-        //TODO: Should I remove the old observer here? Anyway, the old livedata will not exists anymore
+        publicationsViewModel.getPublications().removeObservers(this);
         publicationsViewModel.reload();
         publicationsViewModel.getPublications().observe(this, listResource -> {
             onChangedState(listResource.status, listResource.message);
             onChanged(listResource.data);
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        publicationsViewModel.getPublications().removeObservers(this);
     }
 
     public void onChanged(List<Note> notes) {
@@ -167,22 +184,22 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         //Prevent recreating the whole list when there are identical items (based on title and subject)
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
         FastAdapterDiffUtil.set(itemAdapter, diffs);
-        recyclerView.scrollToPosition(0);
+//        recyclerView.scrollToPosition(0);
     }
 
     private void onChangedState(final Status st, String message) {
 
-        int errorTvVis;
-        int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.GONE;
-        int rvVis = (st == Status.ERROR) ? View.INVISIBLE : View.VISIBLE;
-
-        errorTextView.setVisibility(errorTvVis);
-        errorTextView.setText(message);
-        animationView.setVisibility(animVis);
-        recyclerView.setVisibility(rvVis);
-        if (animVis == View.VISIBLE) {
-            animationView.playAnimation();
-        }
-        swipeRefreshLayout.setRefreshing(st == Status.LOADING);
+//        int errorTvVis;
+//        int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.GONE;
+//        int rvVis = (st == Status.ERROR) ? View.INVISIBLE : View.VISIBLE;
+//
+//        errorTextView.setVisibility(errorTvVis);
+//        errorTextView.setText(message);
+//        animationView.setVisibility(animVis);
+//        recyclerView.setVisibility(rvVis);
+//        if (animVis == View.VISIBLE) {
+//            animationView.playAnimation();
+//        }
+//        swipeRefreshLayout.setRefreshing(st == Status.LOADING);
     }
 }

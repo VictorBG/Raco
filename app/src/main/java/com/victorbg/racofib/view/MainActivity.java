@@ -1,15 +1,12 @@
 package com.victorbg.racofib.view;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import butterknife.BindView;
@@ -19,17 +16,20 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
@@ -46,11 +46,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     Toolbar toolbar;
     @BindView(R.id.schedule_toolbar)
     public LinearLayout scheduleToolbar;
-
-//    @OnClick(R.id.imageButton)
-//    public void settings(View view) {
-//        Toast.makeText(this, "settings", Toast.LENGTH_LONG).show();
-//    }
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
 
     @OnClick(R.id.profile_image)
     public void profileModal(View v) {
@@ -92,11 +89,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.timetableFragment) {
-                scheduleToolbar.setVisibility(View.VISIBLE);
-            } else {
-                scheduleToolbar.setVisibility(View.GONE);
-            }
+            appBarLayout.setExpanded(true);
         });
 
 
@@ -107,8 +100,30 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_avatar).override(80, 80).centerCrop();
             Glide.with(this).setDefaultRequestOptions(requestOptions).load(glideUrl).into(profileImage);
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings_menu:
+                showSnackbar("Settings");
+                break;
+        }
+        return true;
+    }
+
+    public void showSnackbar(String s) {
+        showSnackbar(s, Snackbar.LENGTH_LONG);
+    }
+
+    public void showSnackbar(String s, int length) {
+        Snackbar.make(findViewById(R.id.parent), s, length).show();
     }
 }
 

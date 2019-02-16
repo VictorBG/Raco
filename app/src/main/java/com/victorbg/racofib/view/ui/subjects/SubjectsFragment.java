@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -15,6 +16,7 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.di.injector.Injectable;
+import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.subjects.items.SubjectItem;
 import com.victorbg.racofib.viewmodel.SubjectsViewModel;
@@ -22,6 +24,7 @@ import com.victorbg.racofib.viewmodel.SubjectsViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -54,6 +57,9 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         super.onActivityCreated(savedInstanceState);
         subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
         subjectsViewModel.getSubjects().observe(this, this::onChanged);
+
+        LinearLayout scheduleToolbar = ((MainActivity) Objects.requireNonNull(getActivity())).scheduleToolbar;
+        scheduleToolbar.setVisibility(View.GONE);
     }
 
     @Nullable
