@@ -91,8 +91,11 @@ public class HomeFragment extends BaseFragment implements Injectable {
             }
         });
 
-        LinearLayout scheduleToolbar = ((MainActivity) Objects.requireNonNull(getActivity())).scheduleToolbar;
-        scheduleToolbar.setVisibility(View.GONE);
+        if (getContext() instanceof MainActivity) {
+            MainActivity m = (MainActivity) getContext();
+            m.scheduleToolbar.setVisibility(View.GONE);
+            m.fab.hide();
+        }
     }
 
     @Nullable

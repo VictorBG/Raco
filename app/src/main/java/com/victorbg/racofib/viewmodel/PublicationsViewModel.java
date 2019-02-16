@@ -15,6 +15,7 @@ public class PublicationsViewModel extends ViewModel {
 
     private LiveData<Resource<List<Note>>> publications;
 
+
     private PublicationsRepository publicationsRepository;
 
     @Inject
@@ -25,6 +26,10 @@ public class PublicationsViewModel extends ViewModel {
 
     public LiveData<Resource<List<Note>>> getPublications() {
         return publications;
+    }
+
+    public LiveData<List<Note>> getSavedPublications() {
+        return publicationsRepository.getSaved();
     }
 
 

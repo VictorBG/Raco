@@ -50,6 +50,10 @@
             android:name=".view.ui.subjects.SubjectDetail"
             android:theme="@style/AppTheme.SubjectDetail" />
 
+        <activity
+            android:name=".view.ui.notes.NotesFavoritesActivity"
+            android:theme="@style/AppTheme.NoteDetail" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

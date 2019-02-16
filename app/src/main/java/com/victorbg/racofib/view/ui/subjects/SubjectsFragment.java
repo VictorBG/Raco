@@ -58,8 +58,11 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
         subjectsViewModel.getSubjects().observe(this, this::onChanged);
 
-        LinearLayout scheduleToolbar = ((MainActivity) Objects.requireNonNull(getActivity())).scheduleToolbar;
-        scheduleToolbar.setVisibility(View.GONE);
+        if (getContext() instanceof MainActivity) {
+            MainActivity m= (MainActivity) getContext();
+            m.scheduleToolbar.setVisibility(View.GONE);
+            m.fab.hide();
+        }
     }
 
     @Nullable

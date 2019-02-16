@@ -51,23 +51,27 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
         int today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
         if (today < 0) today = 7;
 
-        LinearLayout scheduleToolbar = ((MainActivity) Objects.requireNonNull(getActivity())).scheduleToolbar;
-        scheduleToolbar.setVisibility(View.VISIBLE);
-        scheduleToolbar.setPadding((int) scheduleView.getGridStartPadding(), 0, 0, 0);
-        if (today <= 5) {
-            if (scheduleToolbar.getChildAt(today - 1) instanceof ViewGroup) {
-                ViewGroup vg = ((ViewGroup) scheduleToolbar.getChildAt(today - 1));
-                for (int i = 0; i < vg.getChildCount(); i++) {
-                    View v = vg.getChildAt(i);
-                    if (v instanceof TextView) {
-                        ((TextView) v).setTextColor(Color.WHITE);
+        if (getContext() instanceof MainActivity) {
+            MainActivity m = (MainActivity) getContext();
+            m.scheduleToolbar.setVisibility(View.VISIBLE);
+            m.fab.hide();
+
+            m.scheduleToolbar.setPadding((int) scheduleView.getGridStartPadding(), 0, 0, 0);
+            if (today <= 5) {
+                if (m.scheduleToolbar.getChildAt(today - 1) instanceof ViewGroup) {
+                    ViewGroup vg = ((ViewGroup) m.scheduleToolbar.getChildAt(today - 1));
+                    for (int i = 0; i < vg.getChildCount(); i++) {
+                        View v = vg.getChildAt(i);
+                        if (v instanceof TextView) {
+                            ((TextView) v).setTextColor(Color.WHITE);
+                        }
+
+                        if (v instanceof ImageView) {
+                            v.setVisibility(View.VISIBLE);
+                        }
                     }
 
-                    if (v instanceof ImageView) {
-                        v.setVisibility(View.VISIBLE);
-                    }
                 }
-
             }
         }
     }

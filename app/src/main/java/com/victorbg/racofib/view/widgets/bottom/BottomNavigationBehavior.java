@@ -49,7 +49,8 @@ public class BottomNavigationBehavior<V extends View> extends CoordinatorLayout.
             params.setAnchorId(child.getId());
             params.anchorGravity = Gravity.TOP;
             params.gravity = Gravity.TOP;
-            params.bottomMargin = (int) bottomMargin + child.getHeight();
+//            params.bottomMargin = (int) bottomMargin + child.getHeight();
+            params.bottomMargin = (int) bottomMargin;
             snackbarLayout.setLayoutParams(params);
 
 

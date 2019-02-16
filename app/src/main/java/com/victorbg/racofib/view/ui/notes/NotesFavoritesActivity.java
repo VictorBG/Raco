@@ -4,10 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +14,10 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.data.model.notes.Note;
-import com.victorbg.racofib.view.MainActivity;
-import com.victorbg.racofib.view.base.BaseFragment;
+import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.view.widgets.SwipeCallback;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
@@ -29,15 +25,11 @@ import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-
-
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
@@ -48,7 +40,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import timber.log.Timber;
 
-public class NotesFragment extends BaseFragment implements Observer<List<Note>>, Injectable {
+public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
     @BindView(R.id.recycler_notes)
     RecyclerView recyclerView;
@@ -58,6 +50,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     LottieAnimationView animationView;
     @BindView(R.id.error_state_message)
     TextView errorTextView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private ItemAdapter<NoteItem> itemAdapter;
     FastAdapter<NoteItem> fastAdapter;
@@ -67,41 +61,49 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
     private PublicationsViewModel publicationsViewModel;
 
-    private MainActivity m;
-
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_saved_notes);
 
         publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
 
-        if (getContext() instanceof MainActivity) {
-            m = (MainActivity) getContext();
-            m.scheduleToolbar.setVisibility(View.GONE);
-            m.fab.show();
-            m.fab.setOnClickListener(v -> startActivity(new Intent(getContext(), NotesFavoritesActivity.class)));
-        }
-    }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Saved notes");
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         setRecycler();
-        swipeRefreshLayout.setOnRefreshListener(this::reload);
-
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
         reload();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        publicationsViewModel.getPublications().removeObservers(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAfterTransition();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    private void reload() {
+        publicationsViewModel.getPublications().removeObservers(this);
+        publicationsViewModel.reload();
+        swipeRefreshLayout.setRefreshing(true);
+        publicationsViewModel.getSavedPublications().observe(this, listResource ->
+                new Handler().postDelayed(() -> onChanged(listResource), 200));
     }
 
     private void setRecycler() {
@@ -112,10 +114,10 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
             public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
-                Intent intent = new Intent(getContext(), NoteDetail.class);
+                Intent intent = new Intent(NotesFavoritesActivity.this, NoteDetail.class);
                 //TODO: Put KEY in a more visible scope
                 intent.putExtra("NoteParam", item.getNote());
-                NotesFragment.this.startActivity(intent);
+                NotesFavoritesActivity.this.startActivity(intent);
             }
 
             @javax.annotation.Nullable
@@ -129,66 +131,43 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         });
 
-        Drawable addToFav = getContext().getDrawable(R.drawable.ic_favorite_border_black_24dp);
-        Drawable removeFromFav = getContext().getDrawable(R.drawable.ic_remove_fav);
-        int addToFavColor = getContext().getResources().getColor(R.color.md_green_400);
-        int removeFromFavColor = getContext().getResources().getColor(R.color.md_red_400);
+        Drawable removeFromFav = getDrawable(R.drawable.ic_remove_fav);
+        int removeFromFavColor = getResources().getColor(R.color.md_red_400);
 
         SwipeCallback simpleSwipeCallback = new SwipeCallback((pos, dir) -> {
             fastAdapter.notifyItemChanged(pos);
 
             publicationsViewModel.addToFav(itemAdapter.getAdapterItem(pos).getNote());
-            boolean fav = itemAdapter.getAdapterItem(pos).getNote().favorite;
-            itemAdapter.getAdapterItem(pos).getNote().favorite = !fav;
+            itemAdapter.remove(pos);
+            fastAdapter.notifyAdapterItemRemoved(pos);
 
-            if (m != null) {
-                m.showSnackbar(fav ? "Added to favorites" : "Removed from favorites");
-            } else {
-                Toast.makeText(getContext(), fav ? "Added to favorites" : "Removed from favorites", Toast.LENGTH_SHORT).show();
-            }
+
         }, new SwipeCallback.ItemSwipeDrawableCallback() {
             @Override
             public Drawable getDrawable(int position) {
-                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFav : addToFav;
+                return removeFromFav;
             }
 
             @Override
             public int getColor(int position) {
-                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFavColor : addToFavColor;
+                return removeFromFavColor;
             }
         });
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleSwipeCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(fastAdapter);
 
     }
 
-    private void reload() {
-        publicationsViewModel.getPublications().removeObservers(this);
-        publicationsViewModel.reload();
-        swipeRefreshLayout.setRefreshing(true);
-        publicationsViewModel.getPublications().observe(this, listResource -> {
-            Timber.d("Data observed with status %s and time %f", listResource.status.toString(), (float) System.currentTimeMillis());
-
-            new Handler().postDelayed(() -> {
-                onChangedState(listResource.status, listResource.message);
-                onChanged(listResource.data);
-            }, 200);
-
-        });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        publicationsViewModel.getPublications().removeObservers(this);
-    }
-
     public void onChanged(List<Note> notes) {
-        if (notes == null) return;
+        if (notes == null || notes.size() == 0) {
+            onChangedState(Status.ERROR, "No content");
+            return;
+        }
+        onChangedState(Status.SUCCESS, null);
         List<NoteItem> items = new ArrayList<>();
         for (Note note : notes) {
             items.add(new NoteItem().withNote(note));

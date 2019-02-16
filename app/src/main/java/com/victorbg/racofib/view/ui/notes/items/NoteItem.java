@@ -29,15 +29,18 @@ import butterknife.ButterKnife;
 public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implements ISwipeable<NoteItem, IItem> {
 
     private Note note;
-    private Context context;
+
+
+    private SimpleDateFormat format;
+    private DateFormat df;
+
+    public NoteItem() {
+        format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        df = new SimpleDateFormat("dd MMM", Locale.getDefault());
+    }
 
     public NoteItem withNote(Note note) {
         this.note = note;
-        return this;
-    }
-
-    public NoteItem withContext(Context context) {
-        this.context = context;
         return this;
     }
 
@@ -80,8 +83,6 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
         @BindView(R.id.title)
         TextView title;
-        @BindView(R.id.description)
-        TextView description;
         @BindView(R.id.date)
         TextView date;
         @BindView(R.id.icon_text)
@@ -100,14 +101,12 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         public void bindView(@NonNull NoteItem item, @NonNull List<Object> payloads) {
             StringHolder.applyToOrHide(new StringHolder(item.note.title), title);
             StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
-            //StringHolder.applyToOrHide(new StringHolder(Html.fromHtml(item.note.text)), description);
 
             iconProfileBackground.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+
             try {
                 Date d = format.parse(item.note.date);
-                DateFormat df = new SimpleDateFormat("dd MMM", Locale.getDefault());
                 StringHolder.applyToOrHide(new StringHolder(df.format(d)), date);
             } catch (ParseException e) {
                 StringHolder.applyToOrHide(new StringHolder(item.note.date), date);
@@ -124,7 +123,6 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         @Override
         public void unbindView(@NonNull NoteItem item) {
             title.setText(null);
-            description.setText(null);
             date.setText(null);
         }
     }

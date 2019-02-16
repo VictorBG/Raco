@@ -28,6 +28,8 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -111,5 +113,9 @@ public class PublicationsRepository {
 
     public void addToFav(Note note) {
         notesDao.updateNote(note);
+    }
+
+    public LiveData<List<Note>> getSaved() {
+        return notesDao.getSavedNotes();
     }
 }

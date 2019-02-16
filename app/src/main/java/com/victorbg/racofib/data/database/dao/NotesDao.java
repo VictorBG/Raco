@@ -19,6 +19,9 @@ public interface NotesDao {
     @Query("SELECT * FROM Notes order by date DESC")
     LiveData<List<Note>> getNotes();
 
+    @Query("SELECT * FROM Notes WHERE favorite=1 order by date DESC")
+    LiveData<List<Note>> getSavedNotes();
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Note note);
 

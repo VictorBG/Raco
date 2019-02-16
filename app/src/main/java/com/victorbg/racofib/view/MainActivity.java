@@ -29,6 +29,7 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     Toolbar toolbar;
     @BindView(R.id.schedule_toolbar)
     public LinearLayout scheduleToolbar;
+    @BindView(R.id.fab)
+    public FloatingActionButton fab;
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
