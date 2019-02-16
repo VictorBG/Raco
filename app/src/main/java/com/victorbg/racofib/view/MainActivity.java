@@ -49,17 +49,6 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
-    @OnClick(R.id.profile_image)
-    public void profileModal(View v) {
-        mainActivityViewModel.getUser().observe(MainActivity.this, user -> {
-            if (user != null) {
-                ProfileModal profileModal = ProfileModal.getInstanceWithData(user, mainActivityViewModel.getToken());
-                profileModal.show(MainActivity.this.getSupportFragmentManager(), "profile-modal");
-            }
-        });
-
-    }
-
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
@@ -76,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
+    private int selectedFragmentId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            selectedFragmentId = destination.getId();
+            invalidateOptionsMenu();
             appBarLayout.setExpanded(true);
         });
 
@@ -104,7 +97,13 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        int m = R.menu.main_menu;
+        switch (selectedFragmentId) {
+            case R.id.notesFragment:
+                m = R.menu.fragment_menu;
+                break;
+        }
+        getMenuInflater().inflate(m, menu);
         return true;
     }
 
@@ -114,6 +113,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
             case R.id.settings_menu:
                 showSnackbar("Settings");
                 break;
+            case R.id.filter_menu:
+                showSnackbar("Filter");
+                break;
+            case R.id.search_menu:
+                showSnackbar("Search");
+
         }
         return true;
     }
@@ -124,6 +129,17 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
     public void showSnackbar(String s, int length) {
         Snackbar.make(findViewById(R.id.parent), s, length).show();
+    }
+
+    @OnClick(R.id.profile_image)
+    public void profileModal(View v) {
+        mainActivityViewModel.getUser().observe(MainActivity.this, user -> {
+            if (user != null) {
+                ProfileModal profileModal = ProfileModal.getInstanceWithData(user, mainActivityViewModel.getToken());
+                profileModal.show(MainActivity.this.getSupportFragmentManager(), "profile-modal");
+            }
+        });
+
     }
 }
 
