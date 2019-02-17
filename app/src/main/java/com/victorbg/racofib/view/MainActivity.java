@@ -1,5 +1,6 @@
 package com.victorbg.racofib.view;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -15,6 +16,7 @@ import butterknife.OnClick;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +35,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.view.ui.login.LoginActivity;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 
 import javax.inject.Inject;
@@ -96,6 +99,16 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_avatar).override(80, 80).centerCrop();
             Glide.with(this).setDefaultRequestOptions(requestOptions).load(glideUrl).into(profileImage);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!prefManager.isLogged()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 
     @Override
