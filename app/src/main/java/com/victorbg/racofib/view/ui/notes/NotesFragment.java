@@ -174,9 +174,17 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             Timber.d("Data observed with status %s and time %f", listResource.status.toString(), (float) System.currentTimeMillis());
 
             new Handler().postDelayed(() -> {
-                onChangedState(listResource.status, listResource.message);
-                onChanged(listResource.data);
+                /*
+                BUGFIX; Apparently if the data that loading state carries is not populated,
+                which occurs at the beginning of the fragment creation, solves the stuttering.
+
+                 */
+                if (listResource.status != Status.LOADING) {
+                    onChangedState(listResource.status, listResource.message);
+                    onChanged(listResource.data);
+                }
             }, 200);
+
 
         });
     }
@@ -205,7 +213,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     private void onChangedState(final Status st, String message) {
 
         int errorTvVis;
-        int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.INVISIBLE;
+        int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.GONE;
         int rvVis = (st == Status.ERROR) ? View.INVISIBLE : View.VISIBLE;
 
         errorTextView.setVisibility(errorTvVis);
