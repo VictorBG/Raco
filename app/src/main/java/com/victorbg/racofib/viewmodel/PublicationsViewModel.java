@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModel;
 
 public class PublicationsViewModel extends ViewModel {
 
-    private LiveData<Resource<List<Note>>> publications;
+    private LiveData<Resource<List<Note>>> publications = null;
 
 
     private PublicationsRepository publicationsRepository;
@@ -21,10 +21,13 @@ public class PublicationsViewModel extends ViewModel {
     @Inject
     public PublicationsViewModel(PublicationsRepository publicationsRepository) {
         this.publicationsRepository = publicationsRepository;
-        publications = publicationsRepository.getPublications();
+
     }
 
     public LiveData<Resource<List<Note>>> getPublications() {
+        if (publications == null) {
+            publications = publicationsRepository.getPublications();
+        }
         return publications;
     }
 
@@ -34,7 +37,7 @@ public class PublicationsViewModel extends ViewModel {
 
 
     public void reload() {
-        publicationsRepository.resetTimer();
+//        publicationsRepository.resetTimer();
         publications = publicationsRepository.getPublications();
     }
 

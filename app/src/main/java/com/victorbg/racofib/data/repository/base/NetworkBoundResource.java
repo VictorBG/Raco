@@ -36,6 +36,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             Timber.d("Fetching data");
             result.removeSource(dbSource);
             if (shouldFetch(data)) {
+                Timber.d("Should fetch returned true, fetching from network");
                 fetchFromNetwork(dbSource);
             } else {
                 result.addSource(dbSource, newData -> setValue(Resource.success(newData)));

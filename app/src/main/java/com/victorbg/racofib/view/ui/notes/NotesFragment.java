@@ -70,17 +70,23 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     private MainActivity m;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         if (getContext() instanceof MainActivity) {
             m = (MainActivity) getContext();
             m.scheduleToolbar.setVisibility(View.GONE);
             m.fab.show();
             m.fab.setOnClickListener(v -> startActivity(new Intent(getContext(), NotesFavoritesActivity.class)));
+
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
     }
 
     @Nullable
@@ -94,13 +100,11 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         super.onViewCreated(view, savedInstanceState);
         setRecycler();
         swipeRefreshLayout.setOnRefreshListener(this::reload);
-
-
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         reload();
     }
 
@@ -129,38 +133,38 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         });
 
-        Drawable addToFav = getContext().getDrawable(R.drawable.ic_favorite_border_black_24dp);
-        Drawable removeFromFav = getContext().getDrawable(R.drawable.ic_remove_fav);
-        int addToFavColor = getContext().getResources().getColor(R.color.md_green_400);
-        int removeFromFavColor = getContext().getResources().getColor(R.color.md_red_400);
+//        Drawable addToFav = getContext().getDrawable(R.drawable.ic_favorite_border_black_24dp);
+//        Drawable removeFromFav = getContext().getDrawable(R.drawable.ic_remove_fav);
+//        int addToFavColor = getContext().getResources().getColor(R.color.md_green_400);
+//        int removeFromFavColor = getContext().getResources().getColor(R.color.md_red_400);
 
-        SwipeCallback simpleSwipeCallback = new SwipeCallback((pos, dir) -> {
-            fastAdapter.notifyItemChanged(pos);
-
-            publicationsViewModel.addToFav(itemAdapter.getAdapterItem(pos).getNote());
-            boolean fav = itemAdapter.getAdapterItem(pos).getNote().favorite;
-            itemAdapter.getAdapterItem(pos).getNote().favorite = !fav;
-
-            if (m != null) {
-                m.showSnackbar(fav ? "Added to favorites" : "Removed from favorites");
-            } else {
-                Toast.makeText(getContext(), fav ? "Added to favorites" : "Removed from favorites", Toast.LENGTH_SHORT).show();
-            }
-        }, new SwipeCallback.ItemSwipeDrawableCallback() {
-            @Override
-            public Drawable getDrawable(int position) {
-                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFav : addToFav;
-            }
-
-            @Override
-            public int getColor(int position) {
-                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFavColor : addToFavColor;
-            }
-        });
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleSwipeCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
+//        SwipeCallback simpleSwipeCallback = new SwipeCallback((pos, dir) -> {
+//            fastAdapter.notifyItemChanged(pos);
+//
+//            publicationsViewModel.addToFav(itemAdapter.getAdapterItem(pos).getNote());
+//            boolean fav = itemAdapter.getAdapterItem(pos).getNote().favorite;
+//            itemAdapter.getAdapterItem(pos).getNote().favorite = !fav;
+//
+//            if (m != null) {
+//                m.showSnackbar(fav ? "Added to favorites" : "Removed from favorites");
+//            } else {
+//                Toast.makeText(getContext(), fav ? "Added to favorites" : "Removed from favorites", Toast.LENGTH_SHORT).show();
+//            }
+//        }, new SwipeCallback.ItemSwipeDrawableCallback() {
+//            @Override
+//            public Drawable getDrawable(int position) {
+//                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFav : addToFav;
+//            }
+//
+//            @Override
+//            public int getColor(int position) {
+//                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFavColor : addToFavColor;
+//            }
+//        });
+//
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleSwipeCallback);
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fastAdapter);
 
@@ -171,20 +175,10 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         publicationsViewModel.reload();
         swipeRefreshLayout.setRefreshing(true);
         publicationsViewModel.getPublications().observe(this, listResource -> {
+
             Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
-
-            new Handler().postDelayed(() -> {
-                /*
-                BUGFIX; Apparently if the data that loading state carries is not populated,
-                which occurs at the beginning of the fragment creation, solves the stuttering.
-
-                 */
-                if (listResource.status != Status.LOADING) {
-                    onChangedState(listResource.status, listResource.message);
-                    onChanged(listResource.data);
-                }
-            }, 200);
-
+            onChangedState(listResource.status, listResource.message);
+            onChanged(listResource.data);
 
         });
     }
@@ -203,11 +197,9 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         }
 
         //Prevent recreating the whole list when there are identical items (based on title and subject)
-
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
         FastAdapterDiffUtil.set(itemAdapter, diffs);
 
-//        recyclerView.scrollToPosition(0);
     }
 
     private void onChangedState(final Status st, String message) {

@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
+        bottomNavigationView.setOnNavigationItemReselectedListener(menuItem -> {
+        });
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             selectedFragmentId = destination.getId();

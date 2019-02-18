@@ -15,12 +15,12 @@ public class NetworkRateLimiter {
 
     public synchronized boolean shouldFetch() {
         long now = now();
-        if (timeout == -1) {
+        if (timestamp == -1) {
             timestamp = now;
             return true;
         }
 
-        if (now - timestamp > timestamp) {
+        if (now - timeout > timestamp) {
             timestamp = now;
             return true;
         }
@@ -29,7 +29,7 @@ public class NetworkRateLimiter {
     }
 
     private long now() {
-        return SystemClock.uptimeMillis();
+        return System.currentTimeMillis();
     }
 
     public void reset() {

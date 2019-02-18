@@ -28,11 +28,10 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @Singleton
 public class PublicationsRepository {
@@ -43,7 +42,7 @@ public class PublicationsRepository {
     private PrefManager prefManager;
     private AppExecutors appExecutors;
     private Context context;
-    private NetworkRateLimiter rateLimiter = new NetworkRateLimiter(5, TimeUnit.MINUTES);
+    private NetworkRateLimiter rateLimiter = new NetworkRateLimiter(15, TimeUnit.MINUTES);
 
     @Inject
     public PublicationsRepository(AppExecutors appExecutors, NotesDao notesDao, SubjectsDao subjectsDao, PrefManager prefManager, ApiService apiService, Context context) {
@@ -53,6 +52,8 @@ public class PublicationsRepository {
         this.subjectsDao = subjectsDao;
         this.appExecutors = appExecutors;
         this.context = context;
+
+        Timber.d("Constructor called");
     }
 
     public LiveData<Resource<List<Note>>> getPublications() {
@@ -61,7 +62,6 @@ public class PublicationsRepository {
             @SuppressLint("CheckResult")
             @Override
             protected void saveCallResult(@NonNull ApiNotesResponse item) {
-                //I think that this could be made with a simple sql sentence
                 subjectsDao.getColors().flatMap(colors -> {
                     HashMap<String, String> colorsMap = new HashMap<>();
                     for (SubjectColor color : colors) {

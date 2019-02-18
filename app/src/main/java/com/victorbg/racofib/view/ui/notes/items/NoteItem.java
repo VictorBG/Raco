@@ -89,8 +89,6 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView subject;
         @BindView(R.id.attachments)
         ImageView attachmentsView;
-        @BindView(R.id.icon_profile)
-        ImageView iconProfileBackground;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -102,7 +100,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
             StringHolder.applyToOrHide(new StringHolder(item.note.title), title);
             StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
 
-            iconProfileBackground.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
+            subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
 
 
             try {

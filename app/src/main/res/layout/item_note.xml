@@ -11,32 +11,21 @@
     android:paddingTop="8dp"
     android:paddingBottom="16dp">
 
-    <RelativeLayout
-        android:id="@+id/icon_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/icon_text"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/note_icon_background"
+        android:gravity="center"
+        android:maxLength="3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:textColor="@color/md_white_1000"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/icon_profile"
-            android:layout_width="@dimen/icon_width_height"
-            android:layout_height="@dimen/icon_width_height"
-            android:background="@drawable/note_icon_background"
-            android:contentDescription="Subject" />
-
-        <TextView
-            android:id="@+id/icon_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:maxLength="3"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:textColor="@color/md_white_1000" />
-
-    </RelativeLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="IDI" />
 
     <TextView
         android:id="@+id/title"
@@ -46,10 +35,9 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/attachments"
-        app:layout_constraintStart_toEndOf="@+id/icon_note"
-        app:layout_constraintTop_toTopOf="@+id/icon_note"
+        app:layout_constraintStart_toEndOf="@+id/icon_text"
+        app:layout_constraintTop_toTopOf="@+id/icon_text"
         tools:text="Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet" />
 
     <TextView
@@ -58,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/icon_note"
+        app:layout_constraintTop_toTopOf="@+id/icon_text"
         tools:text="21 Dic" />
 
     <ImageView
@@ -66,10 +54,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="@+id/date"
         app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintTop_toTopOf="@+id/date"
-        app:srcCompat="@drawable/ic_baseline_attachment_24px"
-        android:contentDescription="@null" />
+        app:srcCompat="@drawable/ic_baseline_attachment_24px" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
