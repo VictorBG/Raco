@@ -190,7 +190,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     public void onChanged(List<Note> notes) {
-        if (notes == null) return;
+        if (notes == null || notes.isEmpty()) return;
         List<NoteItem> items = new ArrayList<>();
         for (Note note : notes) {
             items.add(new NoteItem().withNote(note));
