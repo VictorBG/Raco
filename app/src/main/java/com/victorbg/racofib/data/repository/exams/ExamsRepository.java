@@ -55,6 +55,7 @@ public class ExamsRepository {
     }
 
     public LiveData<Resource<List<Exam>>> getExams(User user) {
+        Timber.d("Repository getExams() called at time %d", System.currentTimeMillis());
         return new NetworkBoundResource<List<Exam>, ApiListResponse<Exam>>(appExecutors) {
 
             @Override
@@ -82,42 +83,38 @@ public class ExamsRepository {
             @Override
             protected void fetchFromNetwork(LiveData<List<Exam>> dbSource) {
                 //result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
-                compositeDisposable.add(apiService.getCurrentSemester(getToken(), "json").flatMap(semester -> {
-                List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
+                compositeDisposable.add(apiService.getCurrentSemester("json").flatMap(semester -> {
+                    List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
 
-                for (Subject s : user.subjects) {
-                    requests.add(apiService.getExams(getToken(), semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
-                }
-
-                return Single.zip(requests, objects -> {
-                    List<Exam> resultList = new ArrayList<>();
-                    for (Object apiListResponse : objects) {
-                        resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
+                    for (Subject s : user.subjects) {
+                        requests.add(apiService.getExams(semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
                     }
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                    Collections.sort(resultList, (o1, o2) -> {
-                        try {
-                            return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
-                        } catch (ParseException e) {
-                            Timber.d(e);
-                            return 0;
-                        }
-                    });
-                    return resultList;
-                });
-            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                    .subscribe(objects -> {
-                appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
-                setValue(Resource.success(objects));
-            }, error -> {
-                Timber.d(error);
-                result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
-            }));
-        }
-        }.getAsLiveData();
-    }
 
-    private String getToken() {
-        return "Bearer " + prefManager.getToken();
+                    return Single.zip(requests, objects -> {
+                        List<Exam> resultList = new ArrayList<>();
+                        for (Object apiListResponse : objects) {
+                            resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
+                        }
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                        Collections.sort(resultList, (o1, o2) -> {
+                            try {
+                                return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
+                            } catch (ParseException e) {
+                                Timber.d(e);
+                                return 0;
+                            }
+                        });
+                        return resultList;
+                    });
+                }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                        .subscribe(objects -> {
+                            appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
+                            setValue(Resource.success(objects));
+                        }, error -> {
+                            Timber.d(error);
+                            result.addSource(dbSource, newData -> setValue(Resource.success(newData)));
+                        }));
+            }
+        }.getAsLiveData();
     }
 }

@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import timber.log.Timber;
 
 public class HomeViewModel extends ViewModel {
 
@@ -38,6 +39,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     public LiveData<Resource<List<Exam>>> getExams(User user) {
+        Timber.d("getExams() called at time %d", System.currentTimeMillis());
         if (user.subjects == null || user.subjects.size() == 0) {
             MutableLiveData<Resource<List<Exam>>> mutableLiveData = new MutableLiveData();
             mutableLiveData.setValue(Resource.success(new ArrayList<>()));

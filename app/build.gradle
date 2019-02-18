@@ -123,11 +123,11 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
-
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+
+    implementation 'com.afollestad:aesthetic:1.0.0-beta05'
 
 
 }

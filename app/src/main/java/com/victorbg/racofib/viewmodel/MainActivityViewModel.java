@@ -28,4 +28,9 @@ public class MainActivityViewModel extends ViewModel {
     public String getToken() {
         return userRepository.getToken();
     }
+
+    public void logout() {
+        userRepository.logout();
+    }
+
 }

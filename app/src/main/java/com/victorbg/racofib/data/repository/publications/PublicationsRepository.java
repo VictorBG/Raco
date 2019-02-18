@@ -88,6 +88,11 @@ public class PublicationsRepository {
             }
 
             @Override
+            protected boolean preShouldFetch() {
+                return true;
+            }
+
+            @Override
             protected boolean shouldFetch(@Nullable List<Note> data) {
                 return NetworkUtils.isOnline(context) && (data == null || data.isEmpty() || rateLimiter.shouldFetch());
             }
@@ -101,7 +106,7 @@ public class PublicationsRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<ApiNotesResponse>> createCall() {
-                return apiService.getPublications("Bearer " + prefManager.getToken(), "json");
+                return apiService.getPublications("json");
             }
 
         }.getAsLiveData();

@@ -28,8 +28,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class ProfileModal extends MaterialBottomSheetDialogFragment{
+public class ProfileModal extends MaterialBottomSheetDialogFragment {
+
+    public interface LogoutListener {
+        void onLogoutClick();
+    }
 
     @BindView(R.id.roundedImageView)
     RoundedImageView profileImage;
@@ -40,9 +45,10 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment{
 
     private User user;
     private String token;
+    private LogoutListener listener;
 
-    public static ProfileModal getInstanceWithData(User user, String token) {
-        return new ProfileModal().withUser(user).withToken(token);
+    public static ProfileModal getInstanceWithData(User user, String token, LogoutListener listener) {
+        return new ProfileModal().withUser(user).withToken(token).withLogout(listener);
     }
 
     @SuppressLint("SetTextI18n")
@@ -72,6 +78,11 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment{
         return this;
     }
 
+    public ProfileModal withLogout(LogoutListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
     public void setDialogBorder(Dialog dialog) {
         FrameLayout bottomSheet = (FrameLayout) Objects.requireNonNull(dialog.getWindow()).findViewById(com.google.android.material.R.id.design_bottom_sheet);
         bottomSheet.setBackground(new ColorDrawable(Color.TRANSPARENT));
@@ -83,6 +94,13 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment{
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             p.setMargins(left, top, right, bottom);
             view.requestLayout();
+        }
+    }
+
+    @OnClick(R.id.logout)
+    public void logout(View v) {
+        if (listener != null) {
+            listener.onLogoutClick();
         }
     }
 }

@@ -44,7 +44,7 @@ public class SubjectsRepository {
         result.setValue(Resource.loading(null));
 
         appExecutors.networkIO().execute(() ->
-                compositeDisposable.add(apiService.getSubject("Bearer " + prefManager.getToken(), subject, "json")
+                compositeDisposable.add(apiService.getSubject(subject, "json")
                         .flatMap(s -> Single.just(SubjectProcessor.processSubject(s))) //for every emission process the result
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

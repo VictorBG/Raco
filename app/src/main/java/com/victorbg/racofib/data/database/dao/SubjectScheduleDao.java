@@ -33,5 +33,5 @@ public interface SubjectScheduleDao {
     void delete(SubjectSchedule subjectSchedule);
 
     @Query("delete from SubjectSchedule")
-    void truncate();
+    void clear();
 }

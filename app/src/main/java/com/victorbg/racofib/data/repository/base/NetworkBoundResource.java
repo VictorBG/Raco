@@ -22,8 +22,15 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     protected NetworkBoundResource(AppExecutors appExecutors) {
 
         this.appExecutors = appExecutors;
-        result.setValue(Resource.loading(null));
         LiveData<ResultType> dbSource = loadFromDb();
+
+        if (preShouldFetch()) {
+            result.setValue(Resource.loading(null));
+        } else {
+            result.addSource(dbSource, data -> setValue(Resource.success(data)));
+            return;
+        }
+
 
         result.addSource(dbSource, data -> {
             Timber.d("Fetching data");
@@ -78,6 +85,11 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
 
     @MainThread
     protected abstract boolean shouldFetch(@Nullable ResultType data);
+
+    @MainThread
+    protected boolean preShouldFetch() {
+        return true;
+    }
 
     @NonNull
     @MainThread

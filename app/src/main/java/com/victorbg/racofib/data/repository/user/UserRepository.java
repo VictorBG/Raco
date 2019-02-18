@@ -6,10 +6,11 @@ import android.content.Context;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.AppDatabase;
+import com.victorbg.racofib.data.database.dao.NotesDao;
 import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.database.dao.UserDao;
-import com.victorbg.racofib.data.model.login.LoginData;
+import com.victorbg.racofib.data.model.TokenResponse;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
@@ -18,6 +19,7 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.Utils;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,7 +57,7 @@ public class UserRepository {
     private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
 
     @Inject
-    public UserRepository(Context context, AppExecutors appExecutors, UserDao userDao, SubjectsDao subjectsDao, SubjectScheduleDao subjectScheduleDao, PrefManager prefManager, ApiService apiService, AppDatabase appDatabase) {
+    public UserRepository(Context context, AppExecutors appExecutors, UserDao userDao, SubjectsDao subjectsDao, SubjectScheduleDao subjectScheduleDao, PrefManager prefManager, ApiService apiService, AppDatabase appDatabase, NotesDao notesDao) {
         this.userDao = userDao;
         this.prefManager = prefManager;
         this.apiService = apiService;
@@ -63,6 +65,7 @@ public class UserRepository {
         this.subjectsDao = subjectsDao;
         this.subjectScheduleDao = subjectScheduleDao;
         this.colors = context.getResources().getStringArray(R.array.mdcolor_400);
+        this.appDatabase = appDatabase;
 
         userMutableLiveData.setValue(null);
         //Init user
@@ -99,6 +102,73 @@ public class UserRepository {
         return userMutableLiveData;
     }
 
+    public LiveData<Resource<String>> authUser(String code) {
+        MutableLiveData<Resource<String>> result = new MutableLiveData<>();
+        appExecutors.networkIO().execute(() ->
+                compositeDisposable.add(apiService.getAccessToken(
+                        "authorization_code",
+                        code,
+                        "apifib://login",
+                        "dzHij8jTq4tpH9EzmNgmh3svKbRwBkV54cGr3RVh",
+                        "d4BfOqLwytQpUa0fDD4EtUXd5iPCdcK9LHlhqX2eVXyrnsbVHfpkWOMWQakt5fP4v76EYzrcZgySaiAPsMXMOHmagHRHxqV7ZuhuihBcEmWxCW1CQjXJ34pt00FIn0By"
+                ).flatMap(token -> apiService.getUser(getToken(token.getAccessToken()), "json").flatMap(user -> {
+
+                    Timber.d("Downloading subjects");
+                    appExecutors.diskIO().execute(() -> userDao.insert(user));
+
+                    appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching subjects...")));
+
+                    return apiService.getSubjects(getToken(token.getAccessToken()), "json").flatMap(subjects -> {
+                        Timber.d("Downloading schedule");
+                        List<String> c = Arrays.asList(colors);
+                        Collections.shuffle(c);
+                        for (int i = 0; i < subjects.result.size(); i++) {
+                            subjects.result.get(i).color = c.get(i);
+                        }
+                        user.subjects = subjects.result;
+                        appExecutors.diskIO().execute(() -> subjectsDao.insert(subjects.result));
+                        appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching schedule...")));
+
+                        return apiService.getSubjectsSchedule(getToken(token.getAccessToken()), "json").flatMap(timetable -> {
+                            if (timetable != null) {
+                                appExecutors.diskIO().execute(() -> subjectScheduleDao.insert(timetable.result));
+                                user.schedule = timetable.result;
+                            }
+                            Timber.d("Schedule downloaded");
+                            return Single.just(token);
+                        });
+                    });
+                })).observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(tokenResponse -> {
+                            getUser();
+                            prefManager.setLogin(tokenResponse);
+                            appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
+                        }, error -> {
+                            appExecutors.mainThread().execute(() -> result.setValue(Resource.error("An error has occurred: " + error.getMessage(), null)));
+                        })));
+
+
+        return result;
+    }
+
+    public void refreshToken() {
+        appExecutors.networkIO().execute(() -> {
+            compositeDisposable.add(apiService.refreshToken(
+                    "refresh_token",
+                    prefManager.getRefreshToken(),
+                    "dzHij8jTq4tpH9EzmNgmh3svKbRwBkV54cGr3RVh",
+                    "d4BfOqLwytQpUa0fDD4EtUXd5iPCdcK9LHlhqX2eVXyrnsbVHfpkWOMWQakt5fP4v76EYzrcZgySaiAPsMXMOHmagHRHxqV7ZuhuihBcEmWxCW1CQjXJ34pt00FIn0By"
+            ).observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(token -> {
+                        prefManager.setLogin(token);
+                    }, error -> {
+
+                    }));
+        });
+    }
+
     public LiveData<List<SubjectSchedule>> getSchedule() {
 
         MutableLiveData<List<SubjectSchedule>> result = new MutableLiveData<>();
@@ -133,26 +203,36 @@ public class UserRepository {
         return result;
     }
 
+    public void logout() {
+        appExecutors.diskIO().execute(() -> {
+            appDatabase.clearAllTables();
+        });
+        prefManager.logout();
+
+    }
+
     /**
      * Login the user into the app saving the params into the preferences and fetching the important user info
      * from the api.
      *
-     * @param token
-     * @param expirationTime
+     * @param tokenResponse {@link TokenResponse}
      * @return {@link Resource<String>} that indicates the state and the message to show on the login activity
+     * <p>
+     * This method has moved into authUser combined with auth grant type instead of implicit type used
      */
-    public LiveData<Resource<String>> loginUser(@NonNull String token, long expirationTime) {
+    @Deprecated
+    public LiveData<Resource<String>> loginUser(@NonNull TokenResponse tokenResponse) {
         MutableLiveData<Resource<String>> result = new MutableLiveData<>();
         result.setValue(Resource.loading("Fetching user..."));
 
 //        appExecutors.diskIO().execute(() -> appDatabase.beginTransaction());
-        compositeDisposable.add(apiService.getUser(getToken(token), "json").flatMap(user -> {
+        compositeDisposable.add(apiService.getUser(getToken(tokenResponse.getAccessToken()), "json").flatMap(user -> {
 
             appExecutors.diskIO().execute(() -> userDao.insert(user));
 
             appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching subjects...")));
 
-            return apiService.getSubjects(getToken(token), "json").flatMap(subjects -> {
+            return apiService.getSubjects(getToken(tokenResponse.getAccessToken()), "json").flatMap(subjects -> {
 
                 List<String> c = Arrays.asList(colors);
                 Collections.shuffle(c);
@@ -163,7 +243,7 @@ public class UserRepository {
                 appExecutors.diskIO().execute(() -> subjectsDao.insert(subjects.result));
                 appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching schedule...")));
 
-                return apiService.getSubjectsSchedule(getToken(token), "json").flatMap(timetable -> {
+                return apiService.getSubjectsSchedule(getToken(tokenResponse.getAccessToken()), "json").flatMap(timetable -> {
                     if (timetable != null) {
                         appExecutors.diskIO().execute(() -> subjectScheduleDao.insert(timetable.result));
                         user.schedule = timetable.result;
@@ -176,7 +256,7 @@ public class UserRepository {
 //                    appExecutors.diskIO().execute(() -> appDatabase.setTransactionSuccessful());
 //                    userMutableLiveData.postValue(user);
                     getUser();
-                    prefManager.setLogin(new LoginData(token, expirationTime));
+                    prefManager.setLogin(tokenResponse);
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
 
                 }, error -> {

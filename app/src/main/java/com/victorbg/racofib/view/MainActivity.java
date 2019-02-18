@@ -106,9 +106,14 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         super.onResume();
 
         if (!prefManager.isLogged()) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
+            logout();
         }
+    }
+
+    private void logout() {
+        mainActivityViewModel.logout();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     @Override
@@ -151,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     public void profileModal(View v) {
         mainActivityViewModel.getUser().observe(MainActivity.this, user -> {
             if (user != null) {
-                ProfileModal profileModal = ProfileModal.getInstanceWithData(user, mainActivityViewModel.getToken());
+                ProfileModal profileModal = ProfileModal.getInstanceWithData(user, mainActivityViewModel.getToken(), this::logout);
                 profileModal.show(MainActivity.this.getSupportFragmentManager(), "profile-modal");
             }
         });

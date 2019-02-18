@@ -171,7 +171,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         publicationsViewModel.reload();
         swipeRefreshLayout.setRefreshing(true);
         publicationsViewModel.getPublications().observe(this, listResource -> {
-            Timber.d("Data observed with status %s and time %f", listResource.status.toString(), (float) System.currentTimeMillis());
+            Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
 
             new Handler().postDelayed(() -> {
                 /*

@@ -24,5 +24,5 @@ public interface UserDao {
     void delete(User user);
 
     @Query("delete from RacoUsers")
-    void truncate();
+    void clear();
 }

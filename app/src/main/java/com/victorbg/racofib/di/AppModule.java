@@ -13,6 +13,7 @@ import com.victorbg.racofib.data.database.dao.NotesDao;
 import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.database.dao.UserDao;
+import com.victorbg.racofib.data.sp.PrefManager;
 
 import javax.inject.Singleton;
 
@@ -34,8 +35,8 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public ApiService provideApi() {
-        return ApiManager.create();
+    public ApiService provideApi(PrefManager prefManager) {
+        return ApiManager.create(prefManager);
     }
 
     @Singleton
