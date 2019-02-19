@@ -52,7 +52,9 @@ You can see the [current features](https://github.com/VictorBG/RacoFib/projects/
 
 **Why I have to login every day?**
 
-The current system that is being used is the _implicit_ token grant, which doesn't return a refreshToken, that's why when the token has expired it cannot be automatically refreshed and needs the user to log in again. The [_authorization code_](https://github.com/VictorBG/RacoFib/projects/1#card-17730295) grant is scheduled but not actively in development.
+~~The current system that is being used is the _implicit_ token grant, which doesn't return a refreshToken, that's why when the token has expired it cannot be automatically refreshed and needs the user to log in again. The [_authorization code_](https://github.com/VictorBG/RacoFib/projects/1#card-17730295) grant is scheduled but not actively in development.~~
+
+The auth system has been updated to authorization code grant system, but the automatic refresh system is not yet done.
 
 **I have classes on weekend and the schedule view doesn't show them**
 
