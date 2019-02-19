@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import timber.log.Timber;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,12 +36,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.utils.fragment.FragmentNavigator;
+import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class MainActivity extends BaseActivity implements HasSupportFragmentInjector {
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     PrefManager prefManager;
 
     private MainActivityViewModel mainActivityViewModel;
+    private FragmentNavigator fragmentNavigator;
 
     @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
@@ -71,27 +75,33 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private int selectedFragmentId = -1;
+    private int selectedFragmentId = R.id.homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        fragmentNavigator = new FragmentNavigator(this);
+
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            handleFragment(menuItem.getItemId());
+            return true;
+        });
 
         bottomNavigationView.setOnNavigationItemReselectedListener(menuItem -> {
         });
 
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            selectedFragmentId = destination.getId();
-            invalidateOptionsMenu();
-            appBarLayout.setExpanded(true);
-        });
+//        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+//            selectedFragmentId = destination.getId();
+//            invalidateOptionsMenu();
+//            appBarLayout.setExpanded(true);
+//        });
 
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
@@ -101,14 +111,46 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
             RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_avatar).override(80, 80).centerCrop();
             Glide.with(this).setDefaultRequestOptions(requestOptions).load(glideUrl).into(profileImage);
         });
+
+        handleFragment(R.id.homeFragment);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+//        Timber.d("onResume MainActivity. Selected fragment id: %d", selectedFragmentId);
+//        fragmentNavigator.replaceFragment(selectedFragmentId);
+
         if (!prefManager.isLogged()) {
             logout();
+        }
+    }
+
+    private void handleFragment(int selectedFragmentId) {
+        this.selectedFragmentId = selectedFragmentId;
+        fragmentNavigator.replaceFragment(selectedFragmentId);
+        invalidateOptionsMenu();
+        handleFragmentMainUI(selectedFragmentId);
+    }
+
+    private void handleFragmentMainUI(int selectedFragmentId) {
+        switch (selectedFragmentId) {
+            default:
+            case R.id.homeFragment:
+            case R.id.subjectsFragment:
+                fab.hide();
+                scheduleToolbar.setVisibility(View.GONE);
+                break;
+            case R.id.notesFragment:
+                fab.show();
+                scheduleToolbar.setVisibility(View.GONE);
+                break;
+            case R.id.timetableFragment:
+                fab.hide();
+                scheduleToolbar.setVisibility(View.VISIBLE);
+                break;
+
         }
     }
 
@@ -134,25 +176,18 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu:
-                showSnackbar("Settings");
+                showSnackbar(findViewById(R.id.parent), "Settings");
                 break;
             case R.id.filter_menu:
-                showSnackbar("Filter");
+                showSnackbar(findViewById(R.id.parent), "Filter");
                 break;
             case R.id.search_menu:
-                showSnackbar("Search");
+                showSnackbar(findViewById(R.id.parent), "Search");
 
         }
         return true;
     }
 
-    public void showSnackbar(String s) {
-        showSnackbar(s, Snackbar.LENGTH_LONG);
-    }
-
-    public void showSnackbar(String s, int length) {
-        Snackbar.make(findViewById(R.id.parent), s, length).show();
-    }
 
     @OnClick(R.id.profile_image)
     public void profileModal(View v) {

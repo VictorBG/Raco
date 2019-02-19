@@ -23,8 +23,10 @@ public class StartActivity extends BaseActivity implements Injectable {
 
         if (prefManager.isLogged()) {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         } else {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
     }

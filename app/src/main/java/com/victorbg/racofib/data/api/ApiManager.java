@@ -4,6 +4,7 @@ import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.data.sp.PrefManager;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -27,6 +28,9 @@ public class ApiManager {
 
 
         OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
                 .addInterceptor(interceptor)
                 .addInterceptor(chain -> {
                     Timber.d("Intercepting call: %s", chain.request().toString());

@@ -90,12 +90,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
                 handleUser(user);
             }
         });
-
-        if (getContext() instanceof MainActivity) {
-            MainActivity m = (MainActivity) getContext();
-            m.scheduleToolbar.setVisibility(View.GONE);
-            m.fab.hide();
-        }
     }
 
     @Nullable
@@ -111,6 +105,17 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.getDefault());
         todayDate.setText(dateFormat.format(Calendar.getInstance().getTime()));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        if (getContext() instanceof MainActivity) {
+//            MainActivity m = (MainActivity) getContext();
+//            m.scheduleToolbar.setVisibility(View.GONE);
+//            m.fab.hide();
+//        }
     }
 
     private void setRecycler() {

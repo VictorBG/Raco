@@ -3,7 +3,8 @@
     android:id="@+id/schedule_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:visibility="gone">
 
     <FrameLayout
         android:layout_width="0dp"
@@ -18,11 +19,11 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:src="@drawable/circle_today_bg"
             android:layout_gravity="center"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/circle_today_bg"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
@@ -50,11 +51,11 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:src="@drawable/circle_today_bg"
             android:layout_gravity="center"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/circle_today_bg"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
@@ -80,11 +81,11 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:src="@drawable/circle_today_bg"
             android:layout_gravity="center"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/circle_today_bg"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
@@ -110,11 +111,11 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:src="@drawable/circle_today_bg"
             android:layout_gravity="center"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/circle_today_bg"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
@@ -140,11 +141,11 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:src="@drawable/circle_today_bg"
             android:layout_gravity="center"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/circle_today_bg"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"

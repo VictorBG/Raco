@@ -41,6 +41,7 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     ViewModelProvider.Factory viewModelFactory;
 
     private ScheduleViewModel scheduleViewModel;
+    private MainActivity m;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -52,9 +53,7 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
         if (today < 0) today = 7;
 
         if (getContext() instanceof MainActivity) {
-            MainActivity m = (MainActivity) getContext();
-            m.scheduleToolbar.setVisibility(View.VISIBLE);
-            m.fab.hide();
+            m = (MainActivity) getContext();
 
             m.scheduleToolbar.setPadding((int) scheduleView.getGridStartPadding(), 0, 0, 0);
             if (today <= 5) {
@@ -81,6 +80,17 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_schedule, container, false);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+//        if (getContext() instanceof MainActivity) {
+//            m.scheduleToolbar.setVisibility(View.VISIBLE);
+//            m.fab.hide();
+//        }
     }
 
     private void onChanged(List<SubjectSchedule> schedule) {

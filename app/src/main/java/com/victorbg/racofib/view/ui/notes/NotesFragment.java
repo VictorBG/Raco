@@ -23,13 +23,11 @@ import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
-import com.victorbg.racofib.view.widgets.SwipeCallback;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -41,7 +39,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -72,14 +69,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getContext() instanceof MainActivity) {
-            m = (MainActivity) getContext();
-            m.scheduleToolbar.setVisibility(View.GONE);
-            m.fab.show();
-            m.fab.setOnClickListener(v -> startActivity(new Intent(getContext(), NotesFavoritesActivity.class)));
-
-        }
     }
 
     @Override
@@ -105,7 +94,14 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     @Override
     public void onResume() {
         super.onResume();
-        reload();
+        new Handler().postDelayed(this::reload, 100);
+
+//        if (getContext() instanceof MainActivity) {
+//            m = (MainActivity) getContext();
+//            m.scheduleToolbar.setVisibility(View.GONE);
+//            m.fab.show();
+//            m.fab.setOnClickListener(v -> startActivity(new Intent(getContext(), NotesFavoritesActivity.class)));
+//        }
     }
 
     private void setRecycler() {

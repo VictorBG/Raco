@@ -58,11 +58,7 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
         subjectsViewModel.getSubjects().observe(this, this::onChanged);
 
-        if (getContext() instanceof MainActivity) {
-            MainActivity m= (MainActivity) getContext();
-            m.scheduleToolbar.setVisibility(View.GONE);
-            m.fab.hide();
-        }
+
     }
 
     @Nullable
@@ -77,6 +73,16 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         setRecycler();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        if (getContext() instanceof MainActivity) {
+//            MainActivity m= (MainActivity) getContext();
+//            m.scheduleToolbar.setVisibility(View.GONE);
+//            m.fab.hide();
+//        }
+    }
 
     private void setRecycler() {
         itemAdapter = new ItemAdapter<>();

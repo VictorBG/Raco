@@ -12,66 +12,66 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:background="@color/md_white_1000"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:popupTheme="@style/ThemeOverlay.AppCompat">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentInsetEnd="0dp"
-                android:contentInsetRight="0dp"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:contentInsetRight="0dp"
-                app:contentInsetStart="0dp"
-                app:contentInsetStartWithNavigation="0dp"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:popupTheme="@style/ThemeOverlay.AppCompat">
+                android:layout_height="wrap_content">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="8dp"
+                    android:padding="8dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:riv_corner_radius="56dip" />
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/profile_image"
-                        android:layout_width="?attr/actionBarSize"
-                        android:layout_height="?attr/actionBarSize"
-                        android:layout_marginStart="8dp"
-                        android:padding="8dp"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:riv_corner_radius="56dip" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.appcompat.widget.Toolbar>
-
-            <include layout="@layout/widget_schedule_calendar_header" />
-        </LinearLayout>
-
+        <include layout="@layout/widget_schedule_calendar_header" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <!--<fragment-->
+    <!--android:id="@+id/nav_host_fragment"-->
+    <!--android:name="androidx.navigation.fragment.NavHostFragment"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginBottom="56dp"-->
+    <!--app:defaultNavHost="true"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+    <!--app:navGraph="@navigation/main_navigation" />-->
+
+    <FrameLayout
+        android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="56dp"
-        app:defaultNavHost="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:navGraph="@navigation/main_navigation" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
@@ -79,10 +79,10 @@
         app:fabSize="normal"
         app:layout_anchor="@id/bottom_navigation"
         app:layout_anchorGravity="end"
+        app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
         app:useCompatPadding="true" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
         android:id="@+id/bottom_navigation"
         style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
         android:layout_width="match_parent"
@@ -90,10 +90,9 @@
         android:layout_gravity="bottom"
         android:layout_marginTop="16dp"
         android:background="@color/colorAccent"
+        app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
 
         app:menu="@menu/bottom_navigation_menu" />
-
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
