@@ -58,6 +58,13 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
+    @OnClick(R.id.fab)
+    public void fabClick(View v) {
+        if (fragmentNavigator != null) {
+            fragmentNavigator.onFabSelected();
+        }
+    }
+
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
@@ -118,9 +125,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @Override
     protected void onResume() {
         super.onResume();
-
-//        Timber.d("onResume MainActivity. Selected fragment id: %d", selectedFragmentId);
-//        fragmentNavigator.replaceFragment(selectedFragmentId);
 
         if (!prefManager.isLogged()) {
             logout();

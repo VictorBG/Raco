@@ -95,13 +95,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     public void onResume() {
         super.onResume();
         new Handler().postDelayed(this::reload, 100);
-
-//        if (getContext() instanceof MainActivity) {
-//            m = (MainActivity) getContext();
-//            m.scheduleToolbar.setVisibility(View.GONE);
-//            m.fab.show();
-//            m.fab.setOnClickListener(v -> startActivity(new Intent(getContext(), NotesFavoritesActivity.class)));
-//        }
     }
 
     private void setRecycler() {
@@ -212,5 +205,10 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             animationView.playAnimation();
         }
         swipeRefreshLayout.setRefreshing(st == Status.LOADING);
+    }
+
+    @Override
+    public void onFabSelected() {
+        startActivity(new Intent(getContext(), NotesFavoritesActivity.class));
     }
 }

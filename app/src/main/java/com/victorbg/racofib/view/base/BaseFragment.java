@@ -38,7 +38,7 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
      * Dispatch click event of fab to the fragments that have overrode this method
      * and are available
      */
-    protected void onFabPressed(@IdRes int id) {
+    public void onFabSelected() {
     }
 
 }

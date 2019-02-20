@@ -77,11 +77,6 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
     public void onResume() {
         super.onResume();
 
-//        if (getContext() instanceof MainActivity) {
-//            MainActivity m= (MainActivity) getContext();
-//            m.scheduleToolbar.setVisibility(View.GONE);
-//            m.fab.hide();
-//        }
     }
 
     private void setRecycler() {

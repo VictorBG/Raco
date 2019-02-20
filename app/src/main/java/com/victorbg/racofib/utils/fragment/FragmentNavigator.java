@@ -3,6 +3,7 @@ package com.victorbg.racofib.utils.fragment;
 import android.app.Activity;
 
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.home.HomeFragment;
 import com.victorbg.racofib.view.ui.notes.NotesFragment;
 import com.victorbg.racofib.view.ui.schedule.ScheduleFragment;
@@ -110,6 +111,10 @@ public class FragmentNavigator {
 
     public Fragment getSelectedFragment() {
         return selectedFragment;
+    }
+
+    public void onFabSelected() {
+        ((BaseFragment) selectedFragment).onFabSelected();
     }
 
 

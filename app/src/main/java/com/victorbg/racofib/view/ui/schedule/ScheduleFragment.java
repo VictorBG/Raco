@@ -85,12 +85,6 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     @Override
     public void onResume() {
         super.onResume();
-
-
-//        if (getContext() instanceof MainActivity) {
-//            m.scheduleToolbar.setVisibility(View.VISIBLE);
-//            m.fab.hide();
-//        }
     }
 
     private void onChanged(List<SubjectSchedule> schedule) {
