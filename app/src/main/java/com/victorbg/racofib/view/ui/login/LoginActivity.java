@@ -89,7 +89,7 @@ public class LoginActivity extends BaseActivity implements Injectable {
         customTabsIntent.launchUrl(this, Uri.parse(url));
     }
 
-    public static final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz|!£$%&/=@#";
+    public static final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     public static Random RANDOM = new Random();
 
     public static String randomString(int len) {
