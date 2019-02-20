@@ -127,12 +127,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
                 publicationsViewModel.addToFav(item.getNote());
                 boolean fav = item.getNote().favorite;
                 item.getNote().favorite = fav;
-
-                if (getMainActivity() != null) {
-                    getMainActivity().showSnackbar(getMainActivity().findViewById(R.id.parent), fav ? "Added to favorites" : "Removed from favorites");
-                } else {
-                    Toast.makeText(getContext(), fav ? "Added to favorites" : "Removed from favorites", Toast.LENGTH_SHORT).show();
-                }
+                showSnackbar(getMainActivity().findViewById(R.id.parent), fav ? "Added to favorites" : "Removed from favorites");
                 fastAdapter.notifyAdapterItemChanged(position);
             }
 

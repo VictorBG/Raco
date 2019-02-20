@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.haha.perflib.Main;
+import com.victorbg.racofib.R;
 import com.victorbg.racofib.view.MainActivity;
 
 import javax.inject.Inject;
@@ -56,6 +58,27 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
      * and are available
      */
     public void onFabSelected() {
+    }
+
+    public Snackbar showSnackbar(String s) {
+        return showSnackbar(s, Snackbar.LENGTH_LONG);
+    }
+
+    public Snackbar showSnackbar(String s, int length) {
+        if (getMainActivity() != null) {
+            return showSnackbar(getMainActivity().findViewById(R.id.parent), s, length);
+        }
+        return showSnackbar(getActivity().findViewById(android.R.id.content), s, length);
+    }
+
+    public Snackbar showSnackbar(View v, String s) {
+        return showSnackbar(v, s, Snackbar.LENGTH_LONG);
+    }
+
+    public Snackbar showSnackbar(View v, String s, int length) {
+        Snackbar snackbar = Snackbar.make(v, s, length);
+        snackbar.show();
+        return snackbar;
     }
 
 }

@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import com.victorbg.racofib.data.background.AttachmentDownload;
 import com.victorbg.racofib.data.model.notes.Attachment;
 import com.victorbg.racofib.data.model.notes.Note;
 
+import com.victorbg.racofib.data.repository.publications.PublicationsRepository;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 
@@ -37,6 +40,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -57,10 +61,14 @@ public class NoteDetail extends BaseActivity implements Injectable {
 
     @Inject
     AttachmentDownload attachmentDownload;
+    @Inject
+    PublicationsRepository publicationsRepository;
 
     private Snackbar snackbar;
     private DownloadManager dm;
     private long enqueue;
+
+    Note note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,7 +77,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
 
         if (getIntent().getExtras() != null) {
 
-            Note note = getIntent().getExtras().getParcelable("NoteParam");
+            note = getIntent().getExtras().getParcelable("NoteParam");
             if (note == null) finish();
 
             setSupportActionBar(toolbar);
@@ -170,6 +178,30 @@ public class NoteDetail extends BaseActivity implements Injectable {
         }
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (note == null) return false;
+        menu.clear();
+        menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, note.favorite ? "Remove from favorites" : "Add to favorites")
+                .setIcon(note.favorite ? R.drawable.ic_favorite_red : R.drawable.ic_favorite_border_black_24dp)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == Menu.FIRST) {
+            note.favorite = !note.favorite;
+            publicationsRepository.resetTimer();
+            publicationsRepository.addToFav(note);
+            invalidateOptionsMenu();
+
+            showSnackbar(note.favorite ? "Added to favorites" : "Removed from favorites");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onBackPressed() {
