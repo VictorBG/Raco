@@ -5,25 +5,27 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.victorbg.racofib.R;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 
 @SuppressLint("Registered")
-public abstract class BaseActivity extends AppCompatActivity {
-
+public abstract class BaseActivity extends BaseThemeActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        configureUI();
     }
 
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
+    }
+
+    private void configureUI() {
     }
 
     public Snackbar showSnackbar(String s) {

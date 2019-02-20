@@ -21,13 +21,15 @@ import java.util.Random;
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements Injectable {
+public class LoginActivity extends AppCompatActivity implements Injectable {
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -43,6 +45,7 @@ public class LoginActivity extends BaseActivity implements Injectable {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
 

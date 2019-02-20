@@ -1,6 +1,9 @@
 package com.victorbg.racofib.view.widgets.calendar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,6 +18,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -98,6 +102,7 @@ public class CalendarWeekScheduleView extends View {
     private int dayBackgroundColor = Color.WHITE;
     private int nowLineColor = Color.BLACK;
     private int hourSeparatorColor = Color.rgb(230, 230, 230);
+    private int hourTextColor;
 
 
     private int eventTextSize;
@@ -172,6 +177,7 @@ public class CalendarWeekScheduleView extends View {
         this(context, attrs, 0);
     }
 
+    @SuppressLint("ResourceType")
     public CalendarWeekScheduleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -184,6 +190,21 @@ public class CalendarWeekScheduleView extends View {
         minHourHeight = context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_min_hour_height);
         textSize = context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_text_size);
         eventTextSize = context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_text_size);
+
+        int attr[] = {
+                R.attr.themeColorDivider,
+                R.attr.themeBackgroundColor,
+                R.attr.themeColorViews
+        };
+        Resources.Theme theme = context.getTheme();
+        TypedArray typedArray = theme.obtainStyledAttributes(attr);
+
+        hourSeparatorColor = typedArray.getColor(0, context.getResources().getColor(R.color.material_drawer_dark_divider));
+        dayBackgroundColor = typedArray.getColor(1, context.getResources().getColor(R.color.md_white_1000));
+        nowLineColor = typedArray.getColor(2, context.getResources().getColor(R.color.md_black_1000));
+        hourTextColor = nowLineColor;
+
+        typedArray.recycle();
 
         init();
     }
@@ -199,7 +220,7 @@ public class CalendarWeekScheduleView extends View {
         timeTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         timeTextPaint.setTextAlign(Paint.Align.RIGHT);
         timeTextPaint.setTextSize(textSize);
-        timeTextPaint.setColor(Color.BLACK);
+        timeTextPaint.setColor(hourTextColor);
         Rect rect = new Rect();
         timeTextPaint.getTextBounds("00:00", 0, "00:00".length(), rect);
         timeTextHeight = rect.height();

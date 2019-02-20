@@ -9,24 +9,74 @@
         <item name="android:navigationBarColor">@color/colorAccentDark</item>
     </style>
 
-    <style name="AppTheme.NoteDetail" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+    <style name="AppTheme.Light" parent="AppTheme">
+        <item name="themeColorPrimary">@color/colorPrimary</item>
+        <item name="themeColorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="themeColorAccent">@color/colorAccent</item>
+        <item name="themePrimaryTextColor">@android:color/primary_text_light</item>
+        <item name="themeSecondaryTextColor">@color/secondary_text_color_light</item>
+        <item name="themeBackgroundColor">@color/md_white_1000</item>
+        <item name="themeColorViews">@color/md_black_1000</item>
+        <item name="themeToolbarColor">@color/accent</item>
+        <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="android:statusBarColor">@color/colorAccentDark</item>
+        <item name="themeColorDivider">@color/md_light_dividers</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorAccentDark</item>
+        <item name="themeColorPrimary">@color/colorPrimary</item>
+        <item name="themeColorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="themeColorAccent">@color/colorAccent</item>
+        <item name="themePrimaryTextColor">@android:color/primary_text_dark</item>
+        <item name="themeSecondaryTextColor">@color/secondary_text_color_dark</item>
+        <item name="themeBackgroundColor">@color/md_dark_background</item>
+        <item name="themeColorViews">@color/md_white_1000</item>
+        <item name="themeToolbarColor">@color/accent</item>
+        <item name="android:statusBarColor">@color/colorAccentDark</item>
+        <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="themeColorDivider">@color/md_dark_dividers</item>
+    </style>
+
+    <style name="AppTheme.NoteDetail.Light" parent="AppTheme.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
     </style>
 
+    <style name="AppTheme.NoteDetail.Dark" parent="AppTheme.Dark">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
+    </style>
 
     <style name="AppTheme.Login" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
     </style>
 
-    <style name="AppTheme.SubjectDetail" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme.SubjectDetail.Light" parent="AppTheme.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/md_grey_300</item>
+        <item name="android:statusBarColor">@color/md_white_1000</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
+    </style>
+
+    <style name="AppTheme.SubjectDetail.Dark" parent="AppTheme.Dark">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/md_dark_background</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
     </style>
 
 
@@ -66,7 +116,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/month_mini_day_number</item>
     </style>
-
 
 
 </resources>

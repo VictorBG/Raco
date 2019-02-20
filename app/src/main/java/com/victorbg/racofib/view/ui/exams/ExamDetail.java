@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.exams.Exam;
+import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.utils.Utils;
 import com.victorbg.racofib.view.base.BaseActivity;
 
@@ -19,7 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import timber.log.Timber;
 
-public class ExamDetail extends BaseActivity {
+public class ExamDetail extends BaseActivity implements Injectable {
 
     @BindView(R.id.subject)
     TextView subject;
@@ -90,5 +91,15 @@ public class ExamDetail extends BaseActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected int getLightTheme() {
+        return R.style.AppTheme_NoteDetail_Light;
+    }
+
+    @Override
+    protected int getDarkTheme() {
+        return R.style.AppTheme_NoteDetail_Dark;
     }
 }

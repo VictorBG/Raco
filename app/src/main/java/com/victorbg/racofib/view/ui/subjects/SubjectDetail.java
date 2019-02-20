@@ -180,4 +180,13 @@ public class SubjectDetail extends BaseActivity implements Injectable {
         finishAfterTransition();
     }
 
+    @Override
+    protected int getLightTheme() {
+        return R.style.AppTheme_SubjectDetail_Light;
+    }
+
+    @Override
+    protected int getDarkTheme() {
+        return R.style.AppTheme_SubjectDetail_Dark;
+    }
 }

@@ -182,6 +182,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         switch (item.getItemId()) {
             case R.id.settings_menu:
                 showSnackbar(findViewById(R.id.parent), "Settings");
+                prefManager.setDarkTheme(!isDarkThemeEnabled);
+                recreate();
                 break;
             case R.id.filter_menu:
                 showSnackbar(findViewById(R.id.parent), "Filter");
@@ -192,7 +194,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         }
         return true;
     }
-
 
 
     @OnClick(R.id.profile_image)

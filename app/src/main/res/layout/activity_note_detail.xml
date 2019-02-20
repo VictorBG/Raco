@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/md_white_1000"
     android:fitsSystemWindows="true">
 
     <!--app:layout_behavior="com.victorbg.racofib.utils.ShadowScrollBehavior"-->
@@ -12,17 +11,17 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/md_white_1000"
+        android:backgroundTint="?themeToolbarColor"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -54,12 +53,12 @@
 
             <TextView
                 android:id="@+id/description"
-                android:textIsSelectable="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textIsSelectable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/title"

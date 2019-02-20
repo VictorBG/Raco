@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Light">
         <activity
             android:name=".view.MainActivity"
             android:theme="@style/AppTheme" />
@@ -41,19 +41,19 @@
 
         <activity
             android:name=".view.ui.notes.NoteDetail"
-            android:theme="@style/AppTheme.NoteDetail" />
+            android:theme="@style/AppTheme.NoteDetail.Light" />
 
         <activity
             android:name=".view.ui.exams.ExamDetail"
-            android:theme="@style/AppTheme.NoteDetail" />
+            android:theme="@style/AppTheme.NoteDetail.Light" />
 
         <activity
             android:name=".view.ui.subjects.SubjectDetail"
-            android:theme="@style/AppTheme.SubjectDetail" />
+            android:theme="@style/AppTheme.SubjectDetail.Light" />
 
         <activity
             android:name=".view.ui.notes.NotesFavoritesActivity"
-            android:theme="@style/AppTheme.NoteDetail" />
+            android:theme="@style/AppTheme.NoteDetail.Light" />
 
         <meta-data
             android:name="preloaded_fonts"

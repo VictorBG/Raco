@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="themeColorPrimary" format="reference"/>
+    <attr name="themeColorPrimaryDark" format="reference"/>
+    <attr name="themeColorAccent" format="reference"/>
+    <attr name="themePrimaryTextColor" format="reference"/>
+    <attr name="themeSecondaryTextColor" format="reference"/>
+    <attr name="themeBackgroundColor" format="reference"/>
+    <attr name="themeToolbarColor" format="reference"/>
+    <attr name="themeColorViews" format="reference"/>
+    <attr name="themeToolbarTheme" format="reference"/>
+    <attr name="themeColorDivider" format="reference"/>
+</resources>

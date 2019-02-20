@@ -62,7 +62,7 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
                     for (int i = 0; i < vg.getChildCount(); i++) {
                         View v = vg.getChildAt(i);
                         if (v instanceof TextView) {
-                            ((TextView) v).setTextColor(Color.WHITE);
+                            ((TextView) v).setTextColor(Color.BLACK);
                         }
 
                         if (v instanceof ImageView) {

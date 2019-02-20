@@ -9,6 +9,9 @@
     <color name="bg_circle_default">@color/colorAccent</color>
     <color name="white_appbar">#9AFFFFFF</color>
 
+    <color name="secondary_text_color_light">#323232</color>
+    <color name="secondary_text_color_dark">#bebebe</color>
+
     <color name="month_day_number">#FF333333</color>
     <color name="month_mini_day_number">#FF000000</color>
     <color name="month_day_number_other">#FF999999</color>

@@ -215,4 +215,14 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
             animationView.playAnimation();
         }
     }
+
+    @Override
+    protected int getLightTheme() {
+        return R.style.AppTheme_NoteDetail_Light;
+    }
+
+    @Override
+    protected int getDarkTheme() {
+        return R.style.AppTheme_NoteDetail_Dark;
+    }
 }

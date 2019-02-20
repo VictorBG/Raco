@@ -24,10 +24,13 @@ public class PrefManager {
 
     private SharedPreferences sharedPreferences;
     private String token = null;
+    private boolean darkTheme = false;
 
     @Inject
     public PrefManager(Application application) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application);
+
+        darkTheme = sharedPreferences.getBoolean(DARK_THEME_KEY, false);
     }
 
     /**
@@ -68,10 +71,20 @@ public class PrefManager {
         editor.apply();
     }
 
+    public boolean isDarkThemeEnabled() {
+        return darkTheme;
+    }
+
+    public void setDarkTheme(boolean darkTheme) {
+        this.darkTheme = darkTheme;
+        sharedPreferences.edit().putBoolean(DARK_THEME_KEY, darkTheme).apply();
+    }
+
     private static final String TOKEN_KEY = "AuthToken";
     private static final String REFRESH_TOKEN_KEY = "AuthRefreshToken";
     private static final String LOGGED_KEY = "UserLogged";
     private static final String EXPIRATION_KEY = "TokenExpiration";
+    private static final String DARK_THEME_KEY = "DarkTheme";
 
 
     public String getRefreshToken() {

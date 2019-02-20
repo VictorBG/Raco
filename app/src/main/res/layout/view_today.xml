@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,6 +14,7 @@
         android:layout_marginEnd="8dp"
         android:text="Today's timeline"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
+        android:textColor="?themeSecondaryTextColor"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,8 +41,7 @@
         android:minHeight="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/todayDate"
-        app:layout_constraintTop_toBottomOf="@+id/todayDate"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/todayDate" />
 
     <TextView
         android:id="@+id/textView5"
@@ -50,6 +49,7 @@
         android:layout_height="wrap_content"
         android:text="No classes today"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Chip"
+        android:textColor="?themePrimaryTextColor"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="@+id/recyclerView"

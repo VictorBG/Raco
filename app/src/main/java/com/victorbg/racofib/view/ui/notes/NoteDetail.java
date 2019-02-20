@@ -101,6 +101,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
                     chipGroup.addView(chip);
                 }
             }
+            invalidateOptionsMenu();
         } else {
             finish();
         }
@@ -183,7 +184,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
         if (note == null) return false;
         menu.clear();
         menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, note.favorite ? "Remove from favorites" : "Add to favorites")
-                .setIcon(note.favorite ? R.drawable.ic_favorite_red : R.drawable.ic_favorite_border_black_24dp)
+                .setIcon(note.favorite ? R.drawable.ic_remove_fav : R.drawable.ic_favorite_border_white)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return true;
@@ -212,5 +213,15 @@ public class NoteDetail extends BaseActivity implements Injectable {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected int getLightTheme() {
+        return R.style.AppTheme_NoteDetail_Light;
+    }
+
+    @Override
+    protected int getDarkTheme() {
+        return R.style.AppTheme_NoteDetail_Dark;
     }
 }

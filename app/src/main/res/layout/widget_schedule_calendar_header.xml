@@ -3,8 +3,7 @@
     android:id="@+id/schedule_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:orientation="horizontal"
-    android:visibility="gone">
+    android:orientation="horizontal">
 
     <FrameLayout
         android:layout_width="0dp"
@@ -15,7 +14,7 @@
             android:layout_width="2px"
             android:layout_height="10dp"
             android:layout_gravity="bottom"
-            android:background="#e6e6e6" />
+            android:background="?themeColorDivider" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -32,7 +31,7 @@
             android:gravity="center"
             android:text="L"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@android:color/primary_text_light"
+            android:textColor="@color/md_white_1000"
             android:textSize="18sp" />
 
 
@@ -47,7 +46,7 @@
             android:layout_width="2px"
             android:layout_height="10dp"
             android:layout_gravity="bottom"
-            android:background="#e6e6e6" />
+            android:background="?themeColorDivider" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -64,7 +63,7 @@
             android:gravity="center"
             android:text="M"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@android:color/primary_text_light"
+            android:textColor="@color/md_white_1000"
             android:textSize="18sp" />
     </FrameLayout>
 
@@ -77,7 +76,7 @@
             android:layout_width="2px"
             android:layout_height="10dp"
             android:layout_gravity="bottom"
-            android:background="#e6e6e6" />
+            android:background="?themeColorDivider" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -94,7 +93,7 @@
             android:gravity="center"
             android:text="X"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@android:color/primary_text_light"
+            android:textColor="@color/md_white_1000"
             android:textSize="18sp" />
     </FrameLayout>
 
@@ -107,7 +106,7 @@
             android:layout_width="2px"
             android:layout_height="10dp"
             android:layout_gravity="bottom"
-            android:background="#e6e6e6" />
+            android:background="?themeColorDivider" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -124,7 +123,7 @@
             android:gravity="center"
             android:text="J"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@android:color/primary_text_light"
+            android:textColor="@color/md_white_1000"
             android:textSize="18sp" />
     </FrameLayout>
 
@@ -137,7 +136,7 @@
             android:layout_width="2px"
             android:layout_height="10dp"
             android:layout_gravity="bottom"
-            android:background="#e6e6e6" />
+            android:background="?themeColorDivider" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -154,7 +153,7 @@
             android:gravity="center"
             android:text="V"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@android:color/primary_text_light"
+            android:textColor="@color/md_white_1000"
             android:textSize="18sp" />
     </FrameLayout>
 
