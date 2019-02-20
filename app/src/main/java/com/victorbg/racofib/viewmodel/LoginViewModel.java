@@ -23,14 +23,6 @@ public class LoginViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public LiveData<Resource<String>> doLogin(String response) {
-        String goodResponse = response.replace("apifib://login#", "apifib://login?");
-        Uri loginData = Uri.parse(goodResponse);
-        String token = loginData.getQueryParameter("access_token");
-        long expirationTime = Long.parseLong(loginData.getQueryParameter("expires_in"));
-        return userRepository.loginUser(null);
-    }
-
     public LiveData<Resource<String>> test(Uri response, String state) {
         String code = response.getQueryParameter("code");
         String rState = response.getQueryParameter("state");

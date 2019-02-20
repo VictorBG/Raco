@@ -40,7 +40,7 @@ public class Note implements Parcelable {
     public boolean favorite = false;
 
     public long getIdentifier() {
-        return (title + subject).hashCode();
+        return (title + subject).hashCode() + (favorite ? 1 : 0);
     }
 
     public Note() {

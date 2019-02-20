@@ -133,6 +133,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
     private void handleFragment(int selectedFragmentId) {
         this.selectedFragmentId = selectedFragmentId;
+        appBarLayout.setExpanded(true, true);
         fragmentNavigator.replaceFragment(selectedFragmentId);
         invalidateOptionsMenu();
         handleFragmentMainUI(selectedFragmentId);
@@ -191,6 +192,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         }
         return true;
     }
+
 
 
     @OnClick(R.id.profile_image)

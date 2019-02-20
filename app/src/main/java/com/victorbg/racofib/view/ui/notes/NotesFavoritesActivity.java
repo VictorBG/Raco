@@ -44,8 +44,7 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
     @BindView(R.id.recycler_notes)
     RecyclerView recyclerView;
-    @BindView(R.id.swipe)
-    SwipeRefreshLayout swipeRefreshLayout;
+
     @BindView(R.id.animation_view)
     LottieAnimationView animationView;
     @BindView(R.id.error_state_message)
@@ -61,6 +60,8 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
     private PublicationsViewModel publicationsViewModel;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +71,7 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Saved notes");
+        setTitle("Favorites");
 
         setRecycler();
     }
@@ -101,7 +102,6 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
     private void reload() {
         publicationsViewModel.getPublications().removeObservers(this);
         publicationsViewModel.reload();
-        swipeRefreshLayout.setRefreshing(true);
         publicationsViewModel.getSavedPublications().observe(this, listResource ->
                 new Handler().postDelayed(() -> onChanged(listResource), 200));
     }
@@ -131,15 +131,35 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
         });
 
+        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
+            @Override
+            public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
+                publicationsViewModel.addToFav(item.getNote());
+                itemAdapter.remove(position);
+                fastAdapter.notifyAdapterItemRemoved(position);
+                showSnackbar("Removed from favorites");
+            }
+
+            @javax.annotation.Nullable
+            @Override
+            public View onBind(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof NoteItem.ViewHolder) {
+                    return ((NoteItem.ViewHolder) viewHolder).saved;
+                }
+                return null;
+            }
+
+        });
+
         Drawable removeFromFav = getDrawable(R.drawable.ic_remove_fav);
         int removeFromFavColor = getResources().getColor(R.color.md_red_400);
 
         SwipeCallback simpleSwipeCallback = new SwipeCallback((pos, dir) -> {
             fastAdapter.notifyItemChanged(pos);
-
             publicationsViewModel.addToFav(itemAdapter.getAdapterItem(pos).getNote());
             itemAdapter.remove(pos);
             fastAdapter.notifyAdapterItemRemoved(pos);
+            showSnackbar("Removed from favorites");
 
 
         }, new SwipeCallback.ItemSwipeDrawableCallback() {
@@ -194,6 +214,5 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
         if (animVis == View.VISIBLE) {
             animationView.playAnimation();
         }
-        swipeRefreshLayout.setRefreshing(st == Status.LOADING);
     }
 }

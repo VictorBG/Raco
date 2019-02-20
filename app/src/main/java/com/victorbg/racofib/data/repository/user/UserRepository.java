@@ -19,7 +19,6 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.Utils;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -163,8 +162,6 @@ public class UserRepository {
                     .subscribeOn(Schedulers.io())
                     .subscribe(token -> {
                         prefManager.setLogin(token);
-                    }, error -> {
-
                     }));
         });
     }
@@ -211,69 +208,8 @@ public class UserRepository {
 
     }
 
-    /**
-     * Login the user into the app saving the params into the preferences and fetching the important user info
-     * from the api.
-     *
-     * @param tokenResponse {@link TokenResponse}
-     * @return {@link Resource<String>} that indicates the state and the message to show on the login activity
-     * <p>
-     * This method has moved into authUser combined with auth grant type instead of implicit type used
-     */
-    @Deprecated
-    public LiveData<Resource<String>> loginUser(@NonNull TokenResponse tokenResponse) {
-        MutableLiveData<Resource<String>> result = new MutableLiveData<>();
-        result.setValue(Resource.loading("Fetching user..."));
-
-//        appExecutors.diskIO().execute(() -> appDatabase.beginTransaction());
-        compositeDisposable.add(apiService.getUser(getToken(tokenResponse.getAccessToken()), "json").flatMap(user -> {
-
-            appExecutors.diskIO().execute(() -> userDao.insert(user));
-
-            appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching subjects...")));
-
-            return apiService.getSubjects(getToken(tokenResponse.getAccessToken()), "json").flatMap(subjects -> {
-
-                List<String> c = Arrays.asList(colors);
-                Collections.shuffle(c);
-                for (int i = 0; i < subjects.result.size(); i++) {
-                    subjects.result.get(i).color = c.get(i);
-                }
-                user.subjects = subjects.result;
-                appExecutors.diskIO().execute(() -> subjectsDao.insert(subjects.result));
-                appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching schedule...")));
-
-                return apiService.getSubjectsSchedule(getToken(tokenResponse.getAccessToken()), "json").flatMap(timetable -> {
-                    if (timetable != null) {
-                        appExecutors.diskIO().execute(() -> subjectScheduleDao.insert(timetable.result));
-                        user.schedule = timetable.result;
-                    }
-                    return Single.just(user);
-                });
-            });
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                .subscribe(user -> {
-//                    appExecutors.diskIO().execute(() -> appDatabase.setTransactionSuccessful());
-//                    userMutableLiveData.postValue(user);
-                    getUser();
-                    prefManager.setLogin(tokenResponse);
-                    appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
-
-                }, error -> {
-                    /*There is a bug on the API that if the user has no classes it returns an error 500 instead of
-                      correct error, like 204 No Content or a 200 with an empty body: {total:0, results:[]}
-                      FIB development team has been notified about this bug, which makes me unable to
-                      test anything until I have enrolled some classes*/
-
-//                    appExecutors.diskIO().execute(() -> appDatabase.endTransaction());
-                    appExecutors.mainThread().execute(() -> result.setValue(Resource.error("An error has occurred: " + error.getMessage(), null)));
-                }));
-
-        return result;
-    }
-
     public String getToken() {
-        return "Bearer " + prefManager.getToken();
+        return getToken(prefManager.getToken());
     }
 
     private String getToken(String token) {

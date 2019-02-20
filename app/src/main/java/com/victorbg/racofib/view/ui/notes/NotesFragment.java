@@ -64,8 +64,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
     private PublicationsViewModel publicationsViewModel;
 
-    private MainActivity m;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,13 +86,14 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setRecycler();
-        swipeRefreshLayout.setOnRefreshListener(this::reload);
+        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        new Handler().postDelayed(this::reload, 100);
+        new Handler().postDelayed(() -> reload(false), 100);
+
     }
 
     private void setRecycler() {
@@ -122,46 +121,41 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         });
 
-//        Drawable addToFav = getContext().getDrawable(R.drawable.ic_favorite_border_black_24dp);
-//        Drawable removeFromFav = getContext().getDrawable(R.drawable.ic_remove_fav);
-//        int addToFavColor = getContext().getResources().getColor(R.color.md_green_400);
-//        int removeFromFavColor = getContext().getResources().getColor(R.color.md_red_400);
+        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
+            @Override
+            public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
+                publicationsViewModel.addToFav(item.getNote());
+                boolean fav = item.getNote().favorite;
+                item.getNote().favorite = fav;
 
-//        SwipeCallback simpleSwipeCallback = new SwipeCallback((pos, dir) -> {
-//            fastAdapter.notifyItemChanged(pos);
-//
-//            publicationsViewModel.addToFav(itemAdapter.getAdapterItem(pos).getNote());
-//            boolean fav = itemAdapter.getAdapterItem(pos).getNote().favorite;
-//            itemAdapter.getAdapterItem(pos).getNote().favorite = !fav;
-//
-//            if (m != null) {
-//                m.showSnackbar(fav ? "Added to favorites" : "Removed from favorites");
-//            } else {
-//                Toast.makeText(getContext(), fav ? "Added to favorites" : "Removed from favorites", Toast.LENGTH_SHORT).show();
-//            }
-//        }, new SwipeCallback.ItemSwipeDrawableCallback() {
-//            @Override
-//            public Drawable getDrawable(int position) {
-//                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFav : addToFav;
-//            }
-//
-//            @Override
-//            public int getColor(int position) {
-//                return itemAdapter.getAdapterItem(position).getNote().favorite ? removeFromFavColor : addToFavColor;
-//            }
-//        });
-//
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleSwipeCallback);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
+                if (getMainActivity() != null) {
+                    getMainActivity().showSnackbar(getMainActivity().findViewById(R.id.parent), fav ? "Added to favorites" : "Removed from favorites");
+                } else {
+                    Toast.makeText(getContext(), fav ? "Added to favorites" : "Removed from favorites", Toast.LENGTH_SHORT).show();
+                }
+                fastAdapter.notifyAdapterItemChanged(position);
+            }
+
+            @javax.annotation.Nullable
+            @Override
+            public View onBind(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof NoteItem.ViewHolder) {
+                    return ((NoteItem.ViewHolder) viewHolder).saved;
+                }
+                return null;
+            }
+
+        });
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fastAdapter);
 
     }
 
-    private void reload() {
+    private void reload(boolean force) {
         publicationsViewModel.getPublications().removeObservers(this);
-        publicationsViewModel.reload();
+        publicationsViewModel.reload(force);
         swipeRefreshLayout.setRefreshing(true);
         publicationsViewModel.getPublications().observe(this, listResource -> {
 

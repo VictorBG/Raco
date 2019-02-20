@@ -170,6 +170,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
         }
     }
 
+
     @Override
     public void onBackPressed() {
         finishAfterTransition();

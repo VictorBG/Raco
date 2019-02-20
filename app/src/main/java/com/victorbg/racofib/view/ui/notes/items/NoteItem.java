@@ -89,6 +89,8 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView subject;
         @BindView(R.id.attachments)
         ImageView attachmentsView;
+        @BindView(R.id.saved)
+        public ImageView saved;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -102,6 +104,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
             subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
 
+            saved.setImageResource(!item.note.favorite ? R.drawable.ic_favorite_border_black_24dp : R.drawable.ic_favorite_red);
 
             try {
                 Date d = format.parse(item.note.date);

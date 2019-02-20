@@ -35,13 +35,19 @@ public class PublicationsViewModel extends ViewModel {
         return publicationsRepository.getSaved();
     }
 
-
     public void reload() {
-//        publicationsRepository.resetTimer();
+        reload(false);
+    }
+
+    public void reload(boolean force) {
+        if (force) {
+            publicationsRepository.resetTimer();
+        }
         publications = publicationsRepository.getPublications();
     }
 
     public void addToFav(Note note) {
+        publicationsRepository.resetTimer();
         note.favorite = !note.favorite;
         publicationsRepository.addToFav(note);
     }
