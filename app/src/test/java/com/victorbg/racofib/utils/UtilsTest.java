@@ -17,38 +17,6 @@ import static org.junit.Assert.*;
 
 public class UtilsTest {
 
-
-    @Test
-    public void getFormattedPeriod() {
-
-        Calendar start = Calendar.getInstance();
-
-
-        start.set(Calendar.AM_PM, 1);
-        start.set(Calendar.YEAR, 2019);
-        start.set(Calendar.MONTH, 1);
-        start.set(Calendar.DAY_OF_MONTH, 1);
-        start.set(Calendar.HOUR_OF_DAY, 8);
-        start.set(Calendar.MINUTE, 0);
-
-        Calendar end = (Calendar) start.clone();
-        end.add(Calendar.HOUR_OF_DAY, 2);
-
-        String formattedPeriod = Utils.getFormattedPeriod(start.getTime(), end.getTime());
-
-        assertEquals("01 feb 08:00 - 10:00", formattedPeriod);
-    }
-
-    @Test
-    public void getFormattedPeriod1() throws ParseException {
-        String start = "01/02/2019 08:00";
-        String end = "01/02/2019 10:00";
-
-        String formattedPeriod = Utils.getFormattedPeriod(start, end, "dd/MM/yyyy HH:mm");
-
-        assertEquals("01 feb 08:00 - 10:00", formattedPeriod);
-    }
-
     @Test
     public void getStringSubjectsApi() {
         List<Subject> subjects = new ArrayList<>();

@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import androidx.test.InstrumentationRegistry;
@@ -16,10 +18,42 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.*;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
 public class UtilsTest {
+
+    @Test
+    public void getFormattedPeriod() {
+
+        Calendar start = Calendar.getInstance();
+
+        start.set(Calendar.AM_PM, 1);
+        start.set(Calendar.YEAR, 2019);
+        start.set(Calendar.MONTH, 1);
+        start.set(Calendar.DAY_OF_MONTH, 1);
+        start.set(Calendar.HOUR_OF_DAY, 8);
+        start.set(Calendar.MINUTE, 0);
+
+        Calendar end = (Calendar) start.clone();
+        end.add(Calendar.HOUR_OF_DAY, 2);
+
+        String formattedPeriod = Utils.getFormattedPeriod(start.getTime(), end.getTime());
+
+        assertEquals("01 Feb 08:00 - 10:00", formattedPeriod);
+    }
+
+    @Test
+    public void getFormattedPeriod1() throws ParseException {
+        String start = "01/02/2019 08:00";
+        String end = "01/02/2019 10:00";
+
+        String formattedPeriod = Utils.getFormattedPeriod(start, end, "dd/MM/yyyy HH:mm");
+
+        assertEquals("01 Feb 08:00 - 10:00", formattedPeriod);
+    }
+
     @Test
     public void assignRandomColors() {
 
