@@ -10,6 +10,12 @@ import java.util.ArrayList;
 
 public class SubjectProcessor {
 
+    /**
+     * Converts a list of contents into a List of strings
+     *
+     * @param subject
+     * @return
+     */
     public static Subject processSubject(Subject subject) {
         SparseArray<String> contents = new SparseArray<>();
 

@@ -35,6 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.fragment.FragmentNavigator;
 import com.victorbg.racofib.view.base.BaseActivity;
@@ -67,13 +68,11 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     private MainActivityViewModel mainActivityViewModel;
     private FragmentNavigator fragmentNavigator;
 
-    @Override
-    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
-        return dispatchingAndroidInjector;
-    }
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    GlideRequests glideRequests;
 
     private int selectedFragmentId = R.id.homeFragment;
 
@@ -97,9 +96,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getUser().observe(this, user -> {
             if (user == null || user.photoUrl == null) return;
-            GlideUrl glideUrl = new GlideUrl(user.photoUrl, new LazyHeaders.Builder().addHeader("Authorization", "Bearer " + prefManager.getToken()).build());
-            RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_avatar).override(80, 80).centerCrop();
-            Glide.with(this).setDefaultRequestOptions(requestOptions).load(glideUrl).into(profileImage);
+            glideRequests.loadImage(profileImage, user.photoUrl, 80, 80);
         });
 
         if (savedInstanceState != null) {
@@ -188,6 +185,10 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         return true;
     }
 
+    @Override
+    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
+        return dispatchingAndroidInjector;
+    }
 
     @OnClick(R.id.profile_image)
     public void profileModal(View v) {

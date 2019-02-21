@@ -3,6 +3,7 @@ package com.victorbg.racofib.data.repository.user;
 
 import android.content.Context;
 
+import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.AppDatabase;
@@ -48,7 +49,7 @@ public class UserRepository {
     private PrefManager prefManager;
     private AppExecutors appExecutors;
     private AppDatabase appDatabase;
-    private String[] colors;
+    private Context context;
 
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -63,8 +64,8 @@ public class UserRepository {
         this.appExecutors = appExecutors;
         this.subjectsDao = subjectsDao;
         this.subjectScheduleDao = subjectScheduleDao;
-        this.colors = context.getResources().getStringArray(R.array.mdcolor_400);
         this.appDatabase = appDatabase;
+        this.context = context;
 
         userMutableLiveData.setValue(null);
         //Init user
@@ -103,27 +104,21 @@ public class UserRepository {
 
     public LiveData<Resource<String>> authUser(String code) {
         MutableLiveData<Resource<String>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading("Fetching user"));
         appExecutors.networkIO().execute(() ->
                 compositeDisposable.add(apiService.getAccessToken(
                         "authorization_code",
                         code,
-                        "apifib://login",
-                        "dzHij8jTq4tpH9EzmNgmh3svKbRwBkV54cGr3RVh",
-                        "d4BfOqLwytQpUa0fDD4EtUXd5iPCdcK9LHlhqX2eVXyrnsbVHfpkWOMWQakt5fP4v76EYzrcZgySaiAPsMXMOHmagHRHxqV7ZuhuihBcEmWxCW1CQjXJ34pt00FIn0By"
+                        BuildConfig.RacoRedirectUrl,
+                        BuildConfig.RacoClientID,
+                        BuildConfig.RacoSecret
                 ).flatMap(token -> apiService.getUser(getToken(token.getAccessToken()), "json").flatMap(user -> {
-
-                    Timber.d("Downloading subjects");
                     appExecutors.diskIO().execute(() -> userDao.insert(user));
 
                     appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching subjects...")));
 
                     return apiService.getSubjects(getToken(token.getAccessToken()), "json").flatMap(subjects -> {
-                        Timber.d("Downloading schedule");
-                        List<String> c = Arrays.asList(colors);
-                        Collections.shuffle(c);
-                        for (int i = 0; i < subjects.result.size(); i++) {
-                            subjects.result.get(i).color = c.get(i);
-                        }
+                        Utils.assignRandomColors(context, subjects.result);
                         user.subjects = subjects.result;
                         appExecutors.diskIO().execute(() -> subjectsDao.insert(subjects.result));
                         appExecutors.mainThread().execute(() -> result.setValue(Resource.loading("Fetching schedule...")));
@@ -133,7 +128,6 @@ public class UserRepository {
                                 appExecutors.diskIO().execute(() -> subjectScheduleDao.insert(timetable.result));
                                 user.schedule = timetable.result;
                             }
-                            Timber.d("Schedule downloaded");
                             return Single.just(token);
                         });
                     });
@@ -142,7 +136,7 @@ public class UserRepository {
                         .subscribe(tokenResponse -> {
                             getUser();
                             prefManager.setLogin(tokenResponse);
-                            appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched bro")));
+                            appExecutors.mainThread().execute(() -> result.setValue(Resource.success("All fetched")));
                         }, error -> {
                             appExecutors.mainThread().execute(() -> result.setValue(Resource.error("An error has occurred: " + error.getMessage(), null)));
                         })));
@@ -156,8 +150,8 @@ public class UserRepository {
             compositeDisposable.add(apiService.refreshToken(
                     "refresh_token",
                     prefManager.getRefreshToken(),
-                    "dzHij8jTq4tpH9EzmNgmh3svKbRwBkV54cGr3RVh",
-                    "d4BfOqLwytQpUa0fDD4EtUXd5iPCdcK9LHlhqX2eVXyrnsbVHfpkWOMWQakt5fP4v76EYzrcZgySaiAPsMXMOHmagHRHxqV7ZuhuihBcEmWxCW1CQjXJ34pt00FIn0By"
+                    BuildConfig.RacoClientID,
+                    BuildConfig.RacoSecret
             ).observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(token -> {
@@ -176,17 +170,7 @@ public class UserRepository {
                 return;
             }
 
-            HashMap<String, String> colorsMap = new HashMap<>();
-            for (Subject s : userMutableLiveData.getValue().subjects) {
-                colorsMap.put(s.id, s.color);
-            }
-
-            for (int i = 0; i < userMutableLiveData.getValue().schedule.size(); i++) {
-                String id = userMutableLiveData.getValue().schedule.get(i).id;
-                if (colorsMap.containsKey(id)) {
-                    userMutableLiveData.getValue().schedule.get(i).color = colorsMap.get(id);
-                }
-            }
+            Utils.assignColorsSchedule(userMutableLiveData.getValue().subjects, userMutableLiveData.getValue().schedule);
 
             appExecutors.mainThread().execute(() -> result.setValue(new ArrayList<>(userMutableLiveData.getValue().schedule)));
 //            compositeDisposable.add(

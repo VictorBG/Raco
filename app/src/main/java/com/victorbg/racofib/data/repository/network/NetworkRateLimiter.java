@@ -1,6 +1,4 @@
-package com.victorbg.racofib.data.repository.util;
-
-import android.os.SystemClock;
+package com.victorbg.racofib.data.repository.network;
 
 import java.util.concurrent.TimeUnit;
 

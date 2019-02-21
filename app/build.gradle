@@ -23,6 +23,12 @@ android {
         }
     }
 
+    buildTypes.each {
+        it.buildConfigField 'String', 'RacoClientID', raco_client_id
+        it.buildConfigField 'String', 'RacoSecret', raco_secret
+        it.buildConfigField 'String', 'RacoRedirectUrl', raco_redirect_url
+    }
+
     lintOptions {
         abortOnError false
         disable 'InvalidPackage'
@@ -44,10 +50,13 @@ dependencies {
 
     //Default
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleDependency
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation "androidx.test.ext:junit:1.1.0"
+    testImplementation 'androidx.test:core:1.1.0'
+    testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'

@@ -1,5 +1,6 @@
 package com.victorbg.racofib.di;
 
+import com.victorbg.racofib.view.ProfileModal;
 import com.victorbg.racofib.view.ui.home.HomeFragment;
 import com.victorbg.racofib.view.ui.notes.NotesFragment;
 import com.victorbg.racofib.view.ui.schedule.ScheduleFragment;
@@ -21,5 +22,8 @@ public abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract ScheduleFragment contributeScheduleFragment();
+
+    @ContributesAndroidInjector
+    abstract ProfileModal contributeProfileModal();
 
 }

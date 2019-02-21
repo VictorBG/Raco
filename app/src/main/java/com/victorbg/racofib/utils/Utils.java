@@ -2,24 +2,36 @@ package com.victorbg.racofib.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 
+import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.model.exams.Exam;
+import com.victorbg.racofib.data.model.notes.Note;
+import com.victorbg.racofib.data.model.subject.Subject;
+import com.victorbg.racofib.data.model.subject.SubjectColor;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import timber.log.Timber;
 
 import static android.text.format.Time.MONDAY_BEFORE_JULIAN_EPOCH;
 
 public class Utils {
-
-    static final String SHARED_PREFS_NAME = "calendar_preferences";
-
-    private static final CalendarUtils.TimeZoneUtils mTZUtils = new CalendarUtils.TimeZoneUtils(SHARED_PREFS_NAME);
 
     /**
      * @return Today index based on spanish week system
@@ -43,103 +55,88 @@ public class Utils {
 
     }
 
-    /**
-     * Returns the week since {@link Time#EPOCH_JULIAN_DAY} (Jan 1, 1970)
-     * adjusted for first day of week.
-     *
-     * This takes a julian day and the week start day and calculates which
-     * week since {@link Time#EPOCH_JULIAN_DAY} that day occurs in, starting
-     * at 0. *Do not* use this to compute the ISO week number for the year.
-     *
-     * @param julianDay The julian day to calculate the week number for
-     * @param firstDayOfWeek Which week day is the first day of the week,
-     *          see {@link Time#SUNDAY}
-     * @return Weeks since the epoch
-     */
-    public static int getWeeksSinceEpochFromJulianDay(int julianDay, int firstDayOfWeek) {
-        int diff = Time.THURSDAY - firstDayOfWeek;
-        if (diff < 0) {
-            diff += 7;
+    public static String getStringSubjectsApi(List<Subject> subjects) {
+        if (subjects == null) {
+            return "";
         }
-        int refDay = Time.EPOCH_JULIAN_DAY - diff;
-        return (julianDay - refDay) / 7;
-    }
+        StringBuilder result = new StringBuilder();
 
-
-    /**
-     * Takes a number of weeks since the epoch and calculates the Julian day of
-     * the Monday for that week.
-     *
-     * This assumes that the week containing the {@link Time#EPOCH_JULIAN_DAY}
-     * is considered week 0. It returns the Julian day for the Monday
-     * {@code week} weeks after the Monday of the week containing the epoch.
-     *
-     * @param week Number of weeks since the epoch
-     * @return The julian day for the Monday of the given week since the epoch
-     */
-    public static int getJulianMondayFromWeeksSinceEpoch(int week) {
-        return MONDAY_BEFORE_JULIAN_EPOCH + week * 7;
-    }
-
-    public static String getTimeZone(Context context, Runnable callback) {
-        return mTZUtils.getTimeZone(context, callback);
-    }
-
-    public static String[] getSharedPreference(Context context, String key, String[] defaultValue) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        Set<String> ss = prefs.getStringSet(key, null);
-        if (ss != null) {
-            String strings[] = new String[ss.size()];
-            return ss.toArray(strings);
+        for (int i = 0; i < subjects.size(); i++) {
+            result.append(subjects.get(i).shortName);
+            if (i + 1 != subjects.size()) {
+                result.append(",");
+            }
         }
-        return defaultValue;
+        return result.toString();
     }
 
-    public static String getSharedPreference(Context context, String key, String defaultValue) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        return prefs.getString(key, defaultValue);
+    public static void assignRandomColors(Context context, List<Subject> list) {
+        String[] colors = context.getResources().getStringArray(R.array.mdcolor_400);
+
+        List<String> c = Arrays.asList(colors);
+        Collections.shuffle(c);
+        int i;
+        for (i = 0; i < Math.min(list.size(), c.size()); i++) {
+            list.get(i).color = c.get(i);
+        }
+
+        if (i < list.size()) {
+            for (; i < list.size(); i++) {
+                list.get(i).color = "#1976d2";
+            }
+        }
     }
 
-    public static int getSharedPreference(Context context, String key, int defaultValue) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        return prefs.getInt(key, defaultValue);
+    public static void assignColorsToNotes(List<SubjectColor> colors, List<Note> result) {
+        HashMap<String, String> colorsMap = new HashMap<>();
+        for (SubjectColor color : colors) {
+            colorsMap.put(color.subject, color.color);
+        }
+
+        for (int i = 0; i < result.size(); i++) {
+            if (colorsMap.containsKey(result.get(i).subject)) {
+                result.get(i).color = colorsMap.get(result.get(i).subject);
+            } else {
+                result.get(i).color = "#1976d2";
+            }
+        }
     }
 
-    public static boolean getSharedPreference(Context context, String key, boolean defaultValue) {
-        SharedPreferences prefs = getSharedPreferences(context);
-        return prefs.getBoolean(key, defaultValue);
+    public static void assignColorsSchedule(List<Subject> colors, List<SubjectSchedule> result) {
+        HashMap<String, String> colorsMap = buildColors(colors);
+
+        for (int i = 0; i < result.size(); i++) {
+            String id = result.get(i).id;
+            if (colorsMap.containsKey(id)) {
+                result.get(i).color = colorsMap.get(id);
+            } else {
+                result.get(i).color = "#1976d2";
+            }
+        }
     }
 
-    public static SharedPreferences getSharedPreferences(Context context) {
-        return context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+    public static HashMap<String, String> buildColors(List<Subject> subjects) {
+        HashMap<String, String> colorsMap = new HashMap<>();
+        for (Subject s : subjects) {
+            colorsMap.put(s.id, s.color);
+        }
+        return colorsMap;
     }
 
-    /**
-     * Formats a date or a time range according to the local conventions.
-     *
-     * @param context the context is required only if the time is shown
-     * @param startMillis the start time in UTC milliseconds
-     * @param endMillis the end time in UTC milliseconds
-     * @param flags a bit mask of options
-     * @return a string containing the formatted date/time range.
-     */
-    public static String formatDateRange(
-            Context context, long startMillis, long endMillis, int flags) {
-        return mTZUtils.formatDateRange(context, startMillis, endMillis, flags);
+    public static void sortExamsList(List<Exam> subjects) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        sortList(subjects, (o1, o2) -> {
+            try {
+                return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
+            } catch (ParseException e) {
+                Timber.d(e);
+                return 0;
+            }
+        });
     }
 
-    /**
-     * Formats the given Time object so that it gives the month and year (for
-     * example, "September 2007").
-     *
-     * @param time the time to format
-     * @return the string containing the weekday and the date
-     */
-    public static String formatMonthYear(Context context, Time time) {
-        int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_MONTH_DAY
-                | DateUtils.FORMAT_SHOW_YEAR;
-        long millis = time.toMillis(true);
-        return formatDateRange(context, millis, millis, flags);
+    public static <T> void sortList(List<T> list, Comparator<T> comparator) {
+        Collections.sort(list, comparator);
     }
 
 }

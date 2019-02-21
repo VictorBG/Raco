@@ -9,15 +9,10 @@ import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.util.NetworkRateLimiter;
-import com.victorbg.racofib.data.sp.PrefManager;
-import com.victorbg.racofib.utils.UserUtils;
+import com.victorbg.racofib.data.repository.network.NetworkRateLimiter;
+import com.victorbg.racofib.utils.Utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -37,7 +32,7 @@ public class ExamsRepository {
 
     private ApiService apiService;
     private ExamDao examDao;
-    private PrefManager prefManager;
+
     private AppExecutors appExecutors;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -46,15 +41,13 @@ public class ExamsRepository {
 
 
     @Inject
-    public ExamsRepository(AppExecutors appExecutors, ExamDao examDao, PrefManager prefManager, ApiService apiService) {
+    public ExamsRepository(AppExecutors appExecutors, ExamDao examDao, ApiService apiService) {
         this.examDao = examDao;
-        this.prefManager = prefManager;
         this.apiService = apiService;
         this.appExecutors = appExecutors;
     }
 
     public LiveData<Resource<List<Exam>>> getExams(User user) {
-        Timber.d("Repository getExams() called at time %d", System.currentTimeMillis());
         return new NetworkBoundResource<List<Exam>, ApiListResponse<Exam>>(appExecutors) {
 
             @Override
@@ -84,10 +77,10 @@ public class ExamsRepository {
                 //result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
                 compositeDisposable.add(apiService.getCurrentSemester("json").flatMap(semester -> {
 
-                    String exams = UserUtils.getStringSubjectsApi(user.subjects);
+                    String exams = Utils.getStringSubjectsApi(user.subjects);
 
                     return apiService.getExams(semester.id, "json", exams).flatMap(result -> {
-                        UserUtils.sortExamsList(result.result);
+                        Utils.sortExamsList(result.result);
                         return Single.just(result.result);
                     });
                 }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())

@@ -488,7 +488,6 @@ public class CalendarWeekScheduleView extends View {
                 }
             }
 
-
             // Draw the lines for hours
             canvas.drawLines(hourLines, hourSeparatorPaint);
 

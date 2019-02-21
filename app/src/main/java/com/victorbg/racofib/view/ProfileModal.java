@@ -18,11 +18,14 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.widgets.bottom.MaterialBottomSheetDialogFragment;
 
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -30,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProfileModal extends MaterialBottomSheetDialogFragment {
+public class ProfileModal extends MaterialBottomSheetDialogFragment implements Injectable {
 
     public interface LogoutListener {
         void onLogoutClick();
@@ -47,6 +50,9 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment {
     private String token;
     private LogoutListener listener;
 
+    @Inject
+    GlideRequests glideRequests;
+
     public static ProfileModal getInstanceWithData(User user, String token, LogoutListener listener) {
         return new ProfileModal().withUser(user).withToken(token).withLogout(listener);
     }
@@ -57,13 +63,10 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment {
         View rootView = inflater.inflate(R.layout.profile_modal, container);
         ButterKnife.bind(this, rootView);
 
-
         name.setText(user.name + " " + user.surnames);
         username.setText(user.username);
 
-        GlideUrl glideUrl = new GlideUrl(user.photoUrl, new LazyHeaders.Builder().addHeader("Authorization", token).build());
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_avatar).override(80, 80).centerCrop();
-        Glide.with(this).setDefaultRequestOptions(requestOptions).load(glideUrl).into(profileImage);
+        glideRequests.loadImage(profileImage, user.photoUrl);
 
         return rootView;
     }
