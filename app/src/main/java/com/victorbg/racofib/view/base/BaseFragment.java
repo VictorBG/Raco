@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.squareup.haha.perflib.Main;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.view.MainActivity;
 
 import javax.inject.Inject;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

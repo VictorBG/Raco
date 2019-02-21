@@ -2,7 +2,6 @@ package com.victorbg.racofib.data.repository.exams;
 
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.dao.ExamDao;
-import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.api.ApiListResponse;
 import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
@@ -12,10 +11,10 @@ import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.util.NetworkRateLimiter;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.utils.UserUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -84,27 +83,12 @@ public class ExamsRepository {
             protected void fetchFromNetwork(LiveData<List<Exam>> dbSource) {
                 //result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
                 compositeDisposable.add(apiService.getCurrentSemester("json").flatMap(semester -> {
-                    List<Single<ApiListResponse<Exam>>> requests = new ArrayList<>();
 
-                    for (Subject s : user.subjects) {
-                        requests.add(apiService.getExams(semester.id, "json", s.shortName).subscribeOn(Schedulers.io()));
-                    }
+                    String exams = UserUtils.getStringSubjectsApi(user.subjects);
 
-                    return Single.zip(requests, objects -> {
-                        List<Exam> resultList = new ArrayList<>();
-                        for (Object apiListResponse : objects) {
-                            resultList.addAll(((ApiListResponse<Exam>) apiListResponse).result);
-                        }
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                        Collections.sort(resultList, (o1, o2) -> {
-                            try {
-                                return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
-                            } catch (ParseException e) {
-                                Timber.d(e);
-                                return 0;
-                            }
-                        });
-                        return resultList;
+                    return apiService.getExams(semester.id, "json", exams).flatMap(result -> {
+                        UserUtils.sortExamsList(result.result);
+                        return Single.just(result.result);
                     });
                 }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                         .subscribe(objects -> {

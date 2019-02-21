@@ -93,9 +93,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
         fragmentNavigator = new FragmentNavigator(this);
 
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             handleFragment(menuItem.getItemId());
             return true;
@@ -103,13 +100,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
         bottomNavigationView.setOnNavigationItemReselectedListener(menuItem -> {
         });
-
-//        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-//            selectedFragmentId = destination.getId();
-//            invalidateOptionsMenu();
-//            appBarLayout.setExpanded(true);
-//        });
-
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getUser().observe(this, user -> {
@@ -119,7 +109,12 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             Glide.with(this).setDefaultRequestOptions(requestOptions).load(glideUrl).into(profileImage);
         });
 
-        handleFragment(R.id.homeFragment);
+        if (savedInstanceState != null) {
+            Timber.d("Restoring from fragment id");
+            handleFragment(savedInstanceState.getInt("FragmentID"));
+        } else {
+            handleFragment(R.id.homeFragment);
+        }
     }
 
     @Override
@@ -129,6 +124,13 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         if (!prefManager.isLogged()) {
             logout();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Timber.d("Saving fragment id");
+        outState.putInt("FragmentID", selectedFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     private void handleFragment(int selectedFragmentId) {
