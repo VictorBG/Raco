@@ -61,10 +61,14 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
+    private Bundle savedInstanceState;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_notes);
+
+        this.savedInstanceState = savedInstanceState;
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
 
@@ -73,10 +77,6 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
         setTitle("Exams");
 
         setRecycler();
-
-        if (savedInstanceState != null) {
-            fastAdapter.withSavedInstanceState(savedInstanceState);
-        }
     }
 
     @Override
@@ -148,7 +148,10 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
 
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
         FastAdapterDiffUtil.set(itemAdapter, diffs);
-        recyclerView.scrollToPosition(0);
+
+        if (savedInstanceState != null) {
+            fastAdapter.withSavedInstanceState(savedInstanceState);
+        }
     }
 
     private void showNoContent() {
