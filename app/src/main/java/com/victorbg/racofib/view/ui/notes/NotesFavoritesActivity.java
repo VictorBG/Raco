@@ -44,7 +44,6 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
     @BindView(R.id.recycler_notes)
     RecyclerView recyclerView;
-
     @BindView(R.id.animation_view)
     LottieAnimationView animationView;
     @BindView(R.id.error_state_message)
@@ -59,8 +58,6 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
     ViewModelProvider.Factory viewModelFactory;
 
     private PublicationsViewModel publicationsViewModel;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -20,7 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="?themeToolbarTheme"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

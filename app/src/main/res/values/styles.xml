@@ -19,7 +19,7 @@
         <item name="themeBackgroundColor">@color/md_white_1000</item>
         <item name="themeColorViews">@color/md_black_1000</item>
         <item name="themeToolbarColor">@color/accent</item>
-        <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:statusBarColor">@color/colorAccentDark</item>
         <item name="themeColorDivider">@color/md_light_dividers</item>
     </style>

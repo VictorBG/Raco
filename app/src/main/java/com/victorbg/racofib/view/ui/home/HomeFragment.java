@@ -21,6 +21,7 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
+import com.victorbg.racofib.view.ui.exams.AllExamsActivity;
 import com.victorbg.racofib.view.ui.exams.ExamDetail;
 import com.victorbg.racofib.view.ui.home.items.ExamItem;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
@@ -44,6 +45,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class HomeFragment extends BaseFragment implements Injectable {
 
@@ -194,5 +196,11 @@ public class HomeFragment extends BaseFragment implements Injectable {
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
         FastAdapterDiffUtil.set(itemAdapter, diffs);
         todayScheduleRecyclerView.scrollToPosition(0);
+    }
+
+
+    @OnClick(R.id.seeMoreExams)
+    public void seeMoreExams(View view) {
+        startActivity(new Intent(getContext(), AllExamsActivity.class));
     }
 }

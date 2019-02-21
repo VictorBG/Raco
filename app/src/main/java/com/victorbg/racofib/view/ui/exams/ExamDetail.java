@@ -22,6 +22,8 @@ import timber.log.Timber;
 
 public class ExamDetail extends BaseActivity implements Injectable {
 
+    public static final String EXAM_PARAM_KEY = "ExamParam";
+
     @BindView(R.id.subject)
     TextView subject;
     @BindView(R.id.description)
@@ -42,7 +44,7 @@ public class ExamDetail extends BaseActivity implements Injectable {
 
         if (getIntent().getExtras() != null) {
 
-            Exam exam = getIntent().getExtras().getParcelable("ExamParam");
+            Exam exam = getIntent().getExtras().getParcelable(EXAM_PARAM_KEY);
             if (exam == null) finish();
 
             setSupportActionBar(toolbar);

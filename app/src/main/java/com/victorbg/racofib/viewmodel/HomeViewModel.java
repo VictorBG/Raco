@@ -55,7 +55,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     /**
-     * Returns the size nearest exams.
+     * Returns the size nearest exams from today.
      * <p>
      * This must be called once it is secure the data has been fetched
      *
@@ -91,8 +91,9 @@ public class HomeViewModel extends ViewModel {
             }
         }
 
-        if (index < 0 || index >= exams.getValue().data.size())
+        if (index < 0 || index >= exams.getValue().data.size()) {
             index = exams.getValue().data.size() - 1;
+        }
         return exams.getValue().data.subList(index, Math.min(exams.getValue().data.size(), index + size));
     }
 

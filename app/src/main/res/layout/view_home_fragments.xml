@@ -16,10 +16,10 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
         android:textColor="?themeSecondaryTextColor"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/materialButton2"
+        app:layout_constraintBottom_toBottomOf="@+id/seeMoreExams"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/materialButton2" />
+        app:layout_constraintTop_toTopOf="@+id/seeMoreExams" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewExams"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toTopOf="@+id/recyclerViewExams" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton2"
+        android:id="@+id/seeMoreExams"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

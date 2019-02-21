@@ -58,13 +58,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
-    @OnClick(R.id.fab)
-    public void fabClick(View v) {
-        if (fragmentNavigator != null) {
-            fragmentNavigator.onFabSelected();
-        }
-    }
-
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
@@ -110,7 +103,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         });
 
         if (savedInstanceState != null) {
-            Timber.d("Restoring from fragment id");
             handleFragment(savedInstanceState.getInt("FragmentID"));
         } else {
             handleFragment(R.id.homeFragment);
@@ -128,7 +120,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Timber.d("Saving fragment id");
         outState.putInt("FragmentID", selectedFragmentId);
         super.onSaveInstanceState(outState);
     }
@@ -206,7 +197,13 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
                 profileModal.show(MainActivity.this.getSupportFragmentManager(), "profile-modal");
             }
         });
+    }
 
+    @OnClick(R.id.fab)
+    public void fabClick(View v) {
+        if (fragmentNavigator != null) {
+            fragmentNavigator.onFabSelected();
+        }
     }
 }
 
