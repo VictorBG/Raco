@@ -79,7 +79,6 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_schedule, container, false);
-
     }
 
     @Override

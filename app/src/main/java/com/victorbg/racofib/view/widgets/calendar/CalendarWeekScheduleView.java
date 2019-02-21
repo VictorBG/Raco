@@ -106,8 +106,8 @@ public class CalendarWeekScheduleView extends View {
 
 
     private int eventTextSize;
-    private int eventTextColor = Color.WHITE;
     private int eventPadding;
+    private int startPaddingTop;
 
     private boolean dimensionsInvalid = true;
 
@@ -190,6 +190,7 @@ public class CalendarWeekScheduleView extends View {
         minHourHeight = context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_min_hour_height);
         textSize = context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_text_size);
         eventTextSize = context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_text_size);
+        startPaddingTop = eventPadding;
 
         int attr[] = {
                 R.attr.themeColorDivider,
@@ -248,6 +249,7 @@ public class CalendarWeekScheduleView extends View {
         // Prepare event text size and color
         eventTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         eventTextPaint.setStyle(Paint.Style.FILL);
+        int eventTextColor = Color.WHITE;
         eventTextPaint.setColor(eventTextColor);
         eventTextPaint.setTextSize(eventTextSize);
 
@@ -398,7 +400,7 @@ public class CalendarWeekScheduleView extends View {
         canvas.restore();
 
         for (int i = START_HOUR; i <= END_HOUR; i++) {
-            float top = currentOrigin.y + timeRowHeight * (i - START_HOUR + 1);
+            float top = currentOrigin.y + timeRowHeight * (i - START_HOUR) + timeTextHeight / 2 + startPaddingTop;
             String time = String.format(Locale.getDefault(), "%02d:00", i);
             if (top < getHeight()) {
                 canvas.drawText(time, timeTextWidth + timeCellPadding, top + timeTextHeight / 2, timeTextPaint);
@@ -419,7 +421,7 @@ public class CalendarWeekScheduleView extends View {
 
         // Calculate the new height due to the zooming.
         if (newHourHeight > 0) {
-            int maxHourHeight = 250;
+            int maxHourHeight = 400;
             if (newHourHeight < effectiveMinHourHeight) {
                 newHourHeight = effectiveMinHourHeight;
             } else if (newHourHeight > maxHourHeight) {
@@ -432,8 +434,8 @@ public class CalendarWeekScheduleView extends View {
         }
 
         // If the new currentOrigin.y is invalid, make it valid.
-        if (currentOrigin.y < getHeight() - timeRowHeight * (END_HOUR - START_HOUR + 2) - timeTextHeight / 2) {
-            currentOrigin.y = getHeight() - timeRowHeight * (END_HOUR - START_HOUR + 2) - timeTextHeight / 2;
+        if (currentOrigin.y < getHeight() - timeRowHeight * (END_HOUR - START_HOUR + 1) - timeTextHeight / 2) {
+            currentOrigin.y = getHeight() - timeRowHeight * (END_HOUR - START_HOUR + 1) - timeTextHeight / 2;
         }
 
         // Don't put an "else if" because it will trigger a glitch when completely zoomed out and
@@ -476,7 +478,7 @@ public class CalendarWeekScheduleView extends View {
             //Compute hour lines
             int i = 0;
             for (int hourNumber = 0; hourNumber <= (END_HOUR - START_HOUR + 1); hourNumber++) {
-                float top = +currentOrigin.y + timeRowHeight * hourNumber;
+                float top = +currentOrigin.y + timeRowHeight * hourNumber + timeTextHeight / 2 + startPaddingTop;
                 if (top > timeTextHeight / 2 - hourSeparatorHeight && top < getHeight() && startPixel + columnWidth - start > 0) {
                     hourLines[i * 4] = start;
                     hourLines[i * 4 + 1] = top;
@@ -500,8 +502,8 @@ public class CalendarWeekScheduleView extends View {
 
             //Draw the current time line on the correct column
             if (dayNumber == todayNumber) {
-                float startY = timeTextHeight / 2 + currentOrigin.y;
-                float beforeNow = (now.get(Calendar.HOUR_OF_DAY) - START_HOUR + 1 + now.get(Calendar.MINUTE) / 60.0f) * timeRowHeight;
+                float startY = timeTextHeight / 2 + currentOrigin.y + startPaddingTop;
+                float beforeNow = (now.get(Calendar.HOUR_OF_DAY) - START_HOUR + now.get(Calendar.MINUTE) / 60.0f) * timeRowHeight;
                 canvas.drawLine(start, startY + beforeNow, startPixel + columnWidth, startY + beforeNow, nowLinePaint);
                 canvas.drawCircle(start, startY + beforeNow, 15, nowLinePaint);
             }
@@ -522,8 +524,8 @@ public class CalendarWeekScheduleView extends View {
             for (int i = 0; i < computedScheduledEvents.size(); i++) {
                 if (date == computedScheduledEvents.get(i).event.getDay()) {
 
-                    float bottom = (computedScheduledEvents.get(i).event.getDuration() + computedScheduledEvents.get(i).event.getStartTime() - START_HOUR + 1) * timeRowHeight + currentOrigin.y - 2;
-                    float top = (computedScheduledEvents.get(i).event.getStartTime() - START_HOUR + 1) * timeRowHeight + currentOrigin.y + 2;
+                    float bottom = (computedScheduledEvents.get(i).event.getDuration() + computedScheduledEvents.get(i).event.getStartTime() - START_HOUR) * timeRowHeight + currentOrigin.y - 2 + +timeTextHeight / 2 + startPaddingTop;
+                    float top = (computedScheduledEvents.get(i).event.getStartTime() - START_HOUR) * timeRowHeight + currentOrigin.y + 2 + timeTextHeight / 2 + startPaddingTop;
                     float left = startFromPixel + computedScheduledEvents.get(i).left * columnWidth;
                     float right = left + computedScheduledEvents.get(i).width * columnWidth;
 
