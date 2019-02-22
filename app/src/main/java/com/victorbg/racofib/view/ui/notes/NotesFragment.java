@@ -142,6 +142,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         });
 
+        itemAdapter.getItemFilter().withFilterPredicate((item, constraint) -> item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fastAdapter);
@@ -199,5 +201,10 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     @Override
     public void onFabSelected() {
         startActivity(new Intent(getContext(), NotesFavoritesActivity.class));
+    }
+
+    @Override
+    public void onQuery(String query) {
+        itemAdapter.filter(query);
     }
 }

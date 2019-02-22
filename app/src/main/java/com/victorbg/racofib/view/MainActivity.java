@@ -1,17 +1,10 @@
 package com.victorbg.racofib.view;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -24,16 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.SearchView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -75,6 +63,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     GlideRequests glideRequests;
 
     private int selectedFragmentId = R.id.homeFragment;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,10 +149,37 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         int m = R.menu.main_menu;
         switch (selectedFragmentId) {
             case R.id.notesFragment:
-                m = R.menu.fragment_menu;
+                m = R.menu.notes_menu;
                 break;
         }
         getMenuInflater().inflate(m, menu);
+
+        if (m == R.menu.notes_menu) {
+            searchView = (SearchView) menu.getItem(0).getActionView();
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Timber.d("On query searched: %s", query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (fragmentNavigator != null) {
+                        fragmentNavigator.onQuery(newText);
+                    }
+                    return false;
+                }
+            });
+
+            searchView.setOnCloseListener(() -> {
+                if (fragmentNavigator != null) {
+                    fragmentNavigator.onQuery(null);
+                }
+                return false;
+            });
+        }
         return true;
     }
 
@@ -188,6 +204,18 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @Override
     public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView != null && !searchView.isIconified()) {
+//            searchView.setQuery("", false);
+//            searchView.setIconified(true);
+            searchView.onActionViewCollapsed();
+
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @OnClick(R.id.profile_image)

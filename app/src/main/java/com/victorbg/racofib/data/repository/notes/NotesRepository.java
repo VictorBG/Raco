@@ -1,4 +1,4 @@
-package com.victorbg.racofib.data.repository.publications;
+package com.victorbg.racofib.data.repository.notes;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -31,7 +31,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class PublicationsRepository {
+public class NotesRepository {
 
     private ApiService apiService;
     private NotesDao notesDao;
@@ -44,7 +44,7 @@ public class PublicationsRepository {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
-    public PublicationsRepository(AppExecutors appExecutors, NotesDao notesDao, SubjectsDao subjectsDao, ApiService apiService, Context context) {
+    public NotesRepository(AppExecutors appExecutors, NotesDao notesDao, SubjectsDao subjectsDao, ApiService apiService, Context context) {
         this.notesDao = notesDao;
         this.apiService = apiService;
         this.subjectsDao = subjectsDao;
@@ -53,7 +53,7 @@ public class PublicationsRepository {
 
     }
 
-    public LiveData<Resource<List<Note>>> getPublications() {
+    public LiveData<Resource<List<Note>>> getNotes() {
 
         return new NetworkBoundResource<List<Note>, ApiNotesResponse>(appExecutors) {
             @SuppressLint("CheckResult")

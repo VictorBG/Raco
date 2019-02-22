@@ -17,10 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,7 +28,7 @@ import com.victorbg.racofib.data.background.AttachmentDownload;
 import com.victorbg.racofib.data.model.notes.Attachment;
 import com.victorbg.racofib.data.model.notes.Note;
 
-import com.victorbg.racofib.data.repository.publications.PublicationsRepository;
+import com.victorbg.racofib.data.repository.notes.NotesRepository;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 
@@ -40,7 +38,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -62,7 +59,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
     @Inject
     AttachmentDownload attachmentDownload;
     @Inject
-    PublicationsRepository publicationsRepository;
+    NotesRepository publicationsRepository;
 
     private Snackbar snackbar;
     private DownloadManager dm;
@@ -157,7 +154,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
                     DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
             dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            enqueue = dm.enqueue(attachmentDownload.test(attachment.url, attachment.name));
+            enqueue = dm.enqueue(attachmentDownload.downloadFile(attachment.url, attachment.name));
             snackbar = showSnackbar("Downloading...", Snackbar.LENGTH_INDEFINITE);
         }
     }
@@ -182,9 +179,10 @@ public class NoteDetail extends BaseActivity implements Injectable {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (note == null) return false;
+        Timber.d("Populating menu: fav? %s", note.favorite ? "Yes" : "No");
         menu.clear();
         menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, note.favorite ? "Remove from favorites" : "Add to favorites")
-                .setIcon(note.favorite ? R.drawable.ic_remove_fav : R.drawable.ic_favorite_border_white)
+                .setIcon(note.favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return true;

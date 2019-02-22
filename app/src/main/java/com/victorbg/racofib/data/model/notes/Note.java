@@ -53,6 +53,7 @@ public class Note implements Parcelable {
         this.text = in.readString();
         this.date = in.readString();
         this.attachments = AttachmentsConverter.toList(in.readString());
+        this.favorite = in.readInt() == 1;
     }
 
     @Override
@@ -67,6 +68,7 @@ public class Note implements Parcelable {
         dest.writeString(this.text);
         dest.writeString(this.date);
         dest.writeString(AttachmentsConverter.toString(this.attachments));
+        dest.writeInt(favorite ? 1 : 0);
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {

@@ -117,5 +117,9 @@ public class FragmentNavigator {
         ((BaseFragment) selectedFragment).onFabSelected();
     }
 
+    public void onQuery(String query) {
+        ((BaseFragment) selectedFragment).onQuery(query);
+    }
+
 
 }

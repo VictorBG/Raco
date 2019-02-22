@@ -58,6 +58,15 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
     public void onFabSelected() {
     }
 
+    /**
+     * Dispatch the current query done in the {@link MainActivity}
+     *
+     * @param query
+     */
+    public void onQuery(String query) {
+
+    }
+
     public Snackbar showSnackbar(String s) {
         return showSnackbar(s, Snackbar.LENGTH_LONG);
     }

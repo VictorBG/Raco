@@ -2,7 +2,7 @@ package com.victorbg.racofib.viewmodel;
 
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.publications.PublicationsRepository;
+import com.victorbg.racofib.data.repository.notes.NotesRepository;
 
 import java.util.List;
 
@@ -16,17 +16,17 @@ public class PublicationsViewModel extends ViewModel {
     private LiveData<Resource<List<Note>>> publications = null;
 
 
-    private PublicationsRepository publicationsRepository;
+    private NotesRepository publicationsRepository;
 
     @Inject
-    public PublicationsViewModel(PublicationsRepository publicationsRepository) {
+    public PublicationsViewModel(NotesRepository publicationsRepository) {
         this.publicationsRepository = publicationsRepository;
 
     }
 
     public LiveData<Resource<List<Note>>> getPublications() {
         if (publications == null) {
-            publications = publicationsRepository.getPublications();
+            publications = publicationsRepository.getNotes();
         }
         return publications;
     }
@@ -43,7 +43,7 @@ public class PublicationsViewModel extends ViewModel {
         if (force) {
             publicationsRepository.resetTimer();
         }
-        publications = publicationsRepository.getPublications();
+        publications = publicationsRepository.getNotes();
     }
 
     public void addToFav(Note note) {
