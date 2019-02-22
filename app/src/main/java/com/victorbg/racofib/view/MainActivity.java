@@ -191,11 +191,11 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
                 prefManager.setDarkTheme(!isDarkThemeEnabled);
                 recreate();
                 break;
-            case R.id.filter_menu:
-                showSnackbar(findViewById(R.id.parent), "Filter");
-                break;
-            case R.id.search_menu:
-                showSnackbar(findViewById(R.id.parent), "Search");
+//            case R.id.filter_menu:
+//                showSnackbar(findViewById(R.id.parent), "Filter");
+//                break;
+//            case R.id.search_menu:
+//                showSnackbar(findViewById(R.id.parent), "Search");
 
         }
         return true;

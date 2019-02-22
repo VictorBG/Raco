@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Personalización">
+        <SwitchPreference
+            android:icon="@drawable/ic_palette_black_24dp"
+            android:key="DarkMode"
+            android:summary="Habilitar modo oscuro"
+            android:title="Modo oscuro" />
+
+        <Preference
+            android:icon="@drawable/ic_palette_black_24dp"
+            android:key="SubjectsColors"
+            android:summary="Modifica los colores de cada asignatura"
+            android:title="Colores de asignaturas" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_remove_black_24dp"
+            android:key="NavBarColor"
+            android:summary="Deshabilitar barra de navegación coloreada"
+            android:title="Barra de navegación sin color" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notificaciones">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:key="NotificationsEnabled"
+            android:title="Activar notificaciones" />
+
+        <ListPreference
+            android:dependency="NotificationsEnabled"
+            android:icon="@drawable/ic_access_time_black_24dp"
+            android:key="NotificationsInterval"
+            android:summary="Cambiar qué tan frecuentemente la app busca notificaciones"
+            android:title="Intervalo de búsqueda de notificaciones" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Comportamiento">
+
+        <Preference
+            android:icon="@drawable/ic_delete_black_24dp"
+            android:key="DeleteAppData"
+            android:summary="Borra todos los datos almacenados en la app. Requiere reinicio"
+            android:title="Borrar datos almacenados" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Acerca de">
+
+        <Preference
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:summary="1.0.0"
+            android:title="Versión" />
+
+        <Preference
+            android:icon="@drawable/ic_star"
+            android:title="Puntúa esta aplicación">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://google.com" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_favorite_border_white"
+            android:title="Ayuda al desarrollo">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/VictorBG/RacoFib" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_github"
+            android:key="OpenSource"
+            android:title="Librerías de código abierto" />
+
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

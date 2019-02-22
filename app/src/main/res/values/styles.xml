@@ -48,6 +48,20 @@
         <item name="colorControlHighlight">@color/md_white_1000</item>
     </style>
 
+    <style name="AppTheme.Settings.Light" parent="AppTheme.Light">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorAccentDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
+    </style>
+
+    <style name="AppTheme.Settings.Dark" parent="AppTheme.Dark">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorAccentDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/md_black_1000</item>
+    </style>
+
     <style name="AppTheme.NoteDetail.Light" parent="AppTheme.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
