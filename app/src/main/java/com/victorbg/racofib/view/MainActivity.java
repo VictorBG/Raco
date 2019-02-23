@@ -1,5 +1,6 @@
 package com.victorbg.racofib.view;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -10,14 +11,17 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import timber.log.Timber;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,7 +32,10 @@ import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.fragment.FragmentNavigator;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
+import com.victorbg.racofib.view.ui.settings.SettingsActivity;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
+
+import java.lang.reflect.Field;
 
 import javax.inject.Inject;
 
@@ -157,6 +164,14 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         if (m == R.menu.notes_menu) {
             searchView = (SearchView) menu.getItem(0).getActionView();
             searchView.setMaxWidth(Integer.MAX_VALUE);
+            final int textViewID = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+            final AutoCompleteTextView searchTextView = searchView.findViewById(textViewID);
+            try {
+                Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+                mCursorDrawableRes.setAccessible(true);
+                mCursorDrawableRes.set(searchTextView, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+            } catch (Exception e) {
+            }
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -187,18 +202,22 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu:
-                showSnackbar(findViewById(R.id.parent), "Settings");
-                prefManager.setDarkTheme(!isDarkThemeEnabled);
-                recreate();
+
+                startActivityForResult(new Intent(this, SettingsActivity.class), 400);
                 break;
 //            case R.id.filter_menu:
 //                showSnackbar(findViewById(R.id.parent), "Filter");
 //                break;
-//            case R.id.search_menu:
-//                showSnackbar(findViewById(R.id.parent), "Search");
 
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 400) {
+            internalRecreate();
+        }
     }
 
     @Override

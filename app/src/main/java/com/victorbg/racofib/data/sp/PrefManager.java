@@ -30,7 +30,11 @@ public class PrefManager {
     public PrefManager(Application application) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application);
 
-        darkTheme = sharedPreferences.getBoolean(DARK_THEME_KEY, false);
+        refreshDarkTheme();
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
     }
 
     /**
@@ -51,6 +55,7 @@ public class PrefManager {
         editor.putString(REFRESH_TOKEN_KEY, loginData.getRefreshToken());
         editor.apply();
     }
+
 
     public String getToken() {
         if (token == null) {
@@ -89,5 +94,9 @@ public class PrefManager {
 
     public String getRefreshToken() {
         return sharedPreferences.getString(REFRESH_TOKEN_KEY, "");
+    }
+
+    public void refreshDarkTheme() {
+        darkTheme = sharedPreferences.getBoolean(DARK_THEME_KEY, false);
     }
 }

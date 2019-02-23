@@ -16,7 +16,6 @@ public abstract class BaseActivity extends BaseThemeActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        configureUI();
     }
 
     @Override
@@ -25,8 +24,6 @@ public abstract class BaseActivity extends BaseThemeActivity {
         ButterKnife.bind(this);
     }
 
-    private void configureUI() {
-    }
 
     public Snackbar showSnackbar(String s) {
         return showSnackbar(s, Snackbar.LENGTH_LONG);

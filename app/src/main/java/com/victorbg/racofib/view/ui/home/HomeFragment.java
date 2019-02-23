@@ -46,6 +46,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class HomeFragment extends BaseFragment implements Injectable {
 
@@ -165,17 +166,19 @@ public class HomeFragment extends BaseFragment implements Injectable {
     }
 
     private void handleExams(Resource<List<Exam>> examResource) {
+        Timber.d("handleExams with status %s at time %d", examResource.status.toString(), System.currentTimeMillis());
         switch (examResource.status) {
             case SUCCESS:
                 if (examResource.data != null && examResource.data.size() > 0) {
                     bindExams(homeViewModel.getNearestExams(5));
+                    break;
                 }
-                break;
             case ERROR:
                 examsProgressBar.setVisibility(View.GONE);
                 noExams.setVisibility(View.VISIBLE);
                 break;
             case LOADING:
+
                 examsProgressBar.setVisibility(View.VISIBLE);
                 noExams.setVisibility(View.GONE);
                 break;

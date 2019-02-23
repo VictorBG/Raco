@@ -4,7 +4,7 @@
     <PreferenceCategory android:title="Personalización">
         <SwitchPreference
             android:icon="@drawable/ic_palette_black_24dp"
-            android:key="DarkMode"
+            android:key="DarkTheme"
             android:summary="Habilitar modo oscuro"
             android:title="Modo oscuro" />
 
@@ -21,22 +21,22 @@
             android:title="Barra de navegación sin color" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Notificaciones">
+    <!--<PreferenceCategory android:title="Notificaciones">-->
 
-        <SwitchPreference
-            android:defaultValue="true"
-            android:icon="@drawable/ic_notifications_black_24dp"
-            android:key="NotificationsEnabled"
-            android:title="Activar notificaciones" />
+        <!--<SwitchPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:icon="@drawable/ic_notifications_black_24dp"-->
+            <!--android:key="NotificationsEnabled"-->
+            <!--android:title="Activar notificaciones" />-->
 
-        <ListPreference
-            android:dependency="NotificationsEnabled"
-            android:icon="@drawable/ic_access_time_black_24dp"
-            android:key="NotificationsInterval"
-            android:summary="Cambiar qué tan frecuentemente la app busca notificaciones"
-            android:title="Intervalo de búsqueda de notificaciones" />
+        <!--<ListPreference-->
+            <!--android:dependency="NotificationsEnabled"-->
+            <!--android:icon="@drawable/ic_access_time_black_24dp"-->
+            <!--android:key="NotificationsInterval"-->
+            <!--android:summary="Cambiar qué tan frecuentemente la app busca notificaciones"-->
+            <!--android:title="Intervalo de búsqueda de notificaciones" />-->
 
-    </PreferenceCategory>
+    <!--</PreferenceCategory>-->
 
     <PreferenceCategory android:title="Comportamiento">
 
@@ -64,7 +64,7 @@
         </Preference>
 
         <Preference
-            android:icon="@drawable/ic_favorite_border_white"
+            android:icon="@drawable/ic_favorite_border_multicolor"
             android:title="Ayuda al desarrollo">
             <intent
                 android:action="android.intent.action.VIEW"
@@ -74,7 +74,9 @@
         <Preference
             android:icon="@drawable/ic_github"
             android:key="OpenSource"
-            android:title="Librerías de código abierto" />
+            android:title="Librerías de código abierto" >
+
+        </Preference>
 
 
     </PreferenceCategory>

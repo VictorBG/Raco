@@ -26,7 +26,6 @@ public abstract class BaseThemeActivity extends AppCompatActivity implements Inj
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
-        Timber.d("PrefManager null? %s", prefManager == null ? "Yes" : "No");
         if (prefManager != null && prefManager.isDarkThemeEnabled()) {
             isDarkThemeEnabled = true;
             themeId = getDarkTheme();
@@ -44,6 +43,12 @@ public abstract class BaseThemeActivity extends AppCompatActivity implements Inj
 
     protected int getDarkTheme() {
         return R.style.AppTheme_Dark;
+    }
+
+    protected void internalRecreate() {
+        if (isDarkThemeEnabled != prefManager.isDarkThemeEnabled()) {
+            recreate();
+        }
     }
 
 }

@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements Injectable {
                 break;
             case SUCCESS:
                 startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
         }
     }

@@ -8,6 +8,7 @@ import com.victorbg.racofib.view.ui.exams.ExamDetail;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
 import com.victorbg.racofib.view.ui.notes.NoteDetail;
 import com.victorbg.racofib.view.ui.notes.NotesFavoritesActivity;
+import com.victorbg.racofib.view.ui.settings.SettingsActivity;
 import com.victorbg.racofib.view.ui.subjects.SubjectDetail;
 import com.victorbg.racofib.view.widgets.bottom.MaterialBottomSheetDialogFragment;
 
@@ -15,7 +16,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
-public abstract class MainActivityModule {
+public abstract class ActivitiesModule {
     @ContributesAndroidInjector(modules = FragmentBuilderModule.class)
     abstract MainActivity contributeMainActivity();
 
@@ -42,5 +43,8 @@ public abstract class MainActivityModule {
 
     @ContributesAndroidInjector
     abstract AllExamsActivity contirbuteAllExamsActivity();
+
+    @ContributesAndroidInjector
+    abstract SettingsActivity contirbuteSettingsActivity();
 
 }

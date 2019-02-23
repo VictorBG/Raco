@@ -13,7 +13,7 @@ import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 
 @Singleton
-@Component(modules = {AppModule.class, AndroidInjectionModule.class, MainActivityModule.class})
+@Component(modules = {AppModule.class, AndroidInjectionModule.class, ActivitiesModule.class})
 public interface AppComponent {
 
     @Component.Builder

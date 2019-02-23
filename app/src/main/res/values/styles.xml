@@ -23,8 +23,6 @@
         <item name="android:statusBarColor">@color/colorAccentDark</item>
         <item name="themeColorDivider">@color/md_light_dividers</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
-        <item name="colorControlActivated">@color/md_white_1000</item>
-        <item name="colorControlHighlight">@color/md_white_1000</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
@@ -44,22 +42,51 @@
         <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="themeColorDivider">@color/md_dark_dividers</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
-        <item name="colorControlActivated">@color/md_white_1000</item>
-        <item name="colorControlHighlight">@color/md_white_1000</item>
     </style>
 
-    <style name="AppTheme.Settings.Light" parent="AppTheme.Light">
+    <style name="AppTheme.Settings.Light" parent="Theme.MaterialComponents.Light">
+        <item name="themeColorPrimary">@color/colorPrimary</item>
+        <item name="themeColorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="themeColorAccent">@color/colorAccent</item>
+        <item name="themePrimaryTextColor">@android:color/primary_text_light</item>
+        <item name="themeSecondaryTextColor">@color/secondary_text_color_light</item>
+        <item name="themeBackgroundColor">@color/md_white_1000</item>
+        <item name="themeColorViews">@color/md_black_1000</item>
+        <item name="themeToolbarColor">@color/accent</item>
+        <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:statusBarColor">@color/colorAccentDark</item>
+        <item name="themeColorDivider">@color/md_light_dividers</item>
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorAccentDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/md_black_1000</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
-    <style name="AppTheme.Settings.Dark" parent="AppTheme.Dark">
+    <style name="AppTheme.Settings.Dark" parent="Theme.MaterialComponents">
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="themeColorPrimary">@color/colorPrimary</item>
+        <item name="themeColorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="themeColorAccent">@color/colorAccent</item>
+        <item name="themePrimaryTextColor">@android:color/primary_text_dark</item>
+        <item name="themeSecondaryTextColor">@color/secondary_text_color_dark</item>
+        <item name="themeBackgroundColor">@color/md_dark_background</item>
+        <item name="themeColorViews">@color/md_white_1000</item>
+        <item name="themeToolbarColor">@color/accent</item>
+        <item name="android:statusBarColor">@color/colorAccentDark</item>
+        <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="themeColorDivider">@color/md_dark_dividers</item>
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorAccentDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/md_black_1000</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
     <style name="AppTheme.NoteDetail.Light" parent="AppTheme.Light">
