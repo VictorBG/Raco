@@ -6,10 +6,6 @@ import java.util.List;
 
 public class SubjectActivity extends BaseSubjectActivity {
 
-    public SubjectActivity() {
-        
-    }
-
     @SerializedName("nom")
     public String name;
 
@@ -35,6 +31,10 @@ public class SubjectActivity extends BaseSubjectActivity {
 
     @SerializedName("problemes")
     public WorkDescription problems;
+
+    public SubjectActivity() {
+
+    }
 
     @Override
     public int getType() {

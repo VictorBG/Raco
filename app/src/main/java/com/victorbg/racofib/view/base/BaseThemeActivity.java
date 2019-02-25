@@ -1,6 +1,9 @@
 package com.victorbg.racofib.view.base;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.afollestad.rxkprefs.Pref;
 import com.victorbg.racofib.R;
@@ -22,6 +25,9 @@ public abstract class BaseThemeActivity extends AppCompatActivity implements Inj
     protected int themeId;
 
     protected boolean isDarkThemeEnabled = false;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +51,6 @@ public abstract class BaseThemeActivity extends AppCompatActivity implements Inj
         return R.style.AppTheme_Dark;
     }
 
-    protected void internalRecreate() {
-        if (isDarkThemeEnabled != prefManager.isDarkThemeEnabled()) {
-            recreate();
-        }
-    }
+
 
 }

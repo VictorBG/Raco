@@ -7,15 +7,19 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.oss.licenses.OssLicensesActivity;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.repository.user.UserRepository;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
@@ -25,11 +29,18 @@ public class SettingsActivity extends BaseActivity implements Injectable, Shared
     @Inject
     PrefManager prefManager;
 
+    @Inject
+    UserRepository userRepository;
+
+    private String locale;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setPreferenceListener();
+
+        locale = prefManager.getLocale();
 
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
@@ -51,6 +62,26 @@ public class SettingsActivity extends BaseActivity implements Injectable, Shared
         if (key.equals("DarkTheme")) {
             prefManager.refreshDarkTheme();
             recreate();
+        }
+
+        if (key.equals("LocaleApp")) {
+            if (!locale.equals(sharedPreferences.getString(key, PrefManager.LOCALE_SPANISH))) {
+                MaterialDialog materialDialog = new MaterialDialog.Builder(this)
+                        .title("Cambiar idioma")
+                        .content("Para cambiar el idioma es necesario reiniciar sesión")
+                        .positiveText("Reiniciar")
+                        .negativeText("Cancelar")
+                        .onPositive((dialog, which) -> {
+                            userRepository.clean();
+                            dialog.dismiss();
+                            onBackPressed();
+                        })
+                        .onNegative(((dialog, which) -> {
+                            sharedPreferences.edit().putString(key, locale).apply();
+                            dialog.dismiss();
+                        })).build();
+                materialDialog.show();
+            }
         }
     }
 

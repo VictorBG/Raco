@@ -16,6 +16,8 @@ import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
+import com.victorbg.racofib.data.repository.RepositoryCleaner;
+import com.victorbg.racofib.data.repository.base.Repository;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.Utils;
@@ -40,7 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @Singleton
-public class UserRepository {
+public class UserRepository extends Repository {
 
     private ApiService apiService;
     private UserDao userDao;
@@ -50,14 +52,14 @@ public class UserRepository {
     private AppExecutors appExecutors;
     private AppDatabase appDatabase;
     private Context context;
-
+    private RepositoryCleaner cleaner;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
 
     @Inject
-    public UserRepository(Context context, AppExecutors appExecutors, UserDao userDao, SubjectsDao subjectsDao, SubjectScheduleDao subjectScheduleDao, PrefManager prefManager, ApiService apiService, AppDatabase appDatabase, NotesDao notesDao) {
+    public UserRepository(Context context, AppExecutors appExecutors, UserDao userDao, SubjectsDao subjectsDao, SubjectScheduleDao subjectScheduleDao, PrefManager prefManager, ApiService apiService, AppDatabase appDatabase, RepositoryCleaner repositoryCleaner) {
         this.userDao = userDao;
         this.prefManager = prefManager;
         this.apiService = apiService;
@@ -66,6 +68,7 @@ public class UserRepository {
         this.subjectScheduleDao = subjectScheduleDao;
         this.appDatabase = appDatabase;
         this.context = context;
+        this.cleaner = repositoryCleaner;
 
         userMutableLiveData.setValue(null);
         //Init user
@@ -179,17 +182,13 @@ public class UserRepository {
 //                            .subscribe(subjects -> appExecutors.mainThread().execute(() -> result.setValue(subjects)), Timber::d)
 //            );
         });
-
-
         return result;
     }
 
     public void logout() {
-        appExecutors.diskIO().execute(() -> {
-            appDatabase.clearAllTables();
-        });
+       cleaner.clean();
+        appExecutors.diskIO().execute(() -> appDatabase.clearAllTables());
         prefManager.logout();
-
     }
 
     public String getToken() {
@@ -200,4 +199,8 @@ public class UserRepository {
         return "Bearer " + token;
     }
 
+    @Override
+    public void clean() {
+        logout();
+    }
 }

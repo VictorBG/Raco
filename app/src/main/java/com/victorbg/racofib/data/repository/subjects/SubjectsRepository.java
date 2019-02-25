@@ -3,6 +3,7 @@ package com.victorbg.racofib.data.repository.subjects;
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.repository.AppExecutors;
+import com.victorbg.racofib.data.repository.base.Repository;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 
@@ -20,13 +21,11 @@ public class SubjectsRepository {
 
     private AppExecutors appExecutors;
     private ApiService apiService;
-    private PrefManager prefManager;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
-    public SubjectsRepository(AppExecutors appExecutors, ApiService apiService, PrefManager prefManager) {
-        this.prefManager = prefManager;
+    public SubjectsRepository(AppExecutors appExecutors, ApiService apiService) {
         this.apiService = apiService;
         this.appExecutors = appExecutors;
     }

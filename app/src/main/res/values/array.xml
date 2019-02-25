@@ -34,4 +34,6 @@
         <item name="deep_orange_500" type="color">#ff5722</item>
         <item name="brown_500" type="color">#795548</item>
     </string-array>
+
+
 </resources>

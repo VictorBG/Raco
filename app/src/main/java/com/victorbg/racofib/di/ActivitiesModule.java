@@ -2,6 +2,7 @@ package com.victorbg.racofib.di;
 
 import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.StartActivity;
+import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.base.BaseThemeActivity;
 import com.victorbg.racofib.view.ui.exams.AllExamsActivity;
 import com.victorbg.racofib.view.ui.exams.ExamDetail;
@@ -37,6 +38,9 @@ public abstract class ActivitiesModule {
 
     @ContributesAndroidInjector
     abstract BaseThemeActivity contirbuteBaseThemeActivity();
+
+    @ContributesAndroidInjector
+    abstract BaseActivity contirbuteBaseActivity();
 
     @ContributesAndroidInjector
     abstract ExamDetail contirbuteExamDetail();

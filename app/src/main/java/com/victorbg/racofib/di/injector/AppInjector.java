@@ -26,7 +26,6 @@ public class AppInjector {
         appClass.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                Timber.d("Handling activity %s", activity.getLocalClassName());
                 handleActivity(activity);
             }
             //region unused methods

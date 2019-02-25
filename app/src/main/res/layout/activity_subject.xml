@@ -71,6 +71,7 @@
                         android:gravity="center"
                         android:text="@{subject.name}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="?themePrimaryTextColor"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/icon_note"
@@ -127,10 +128,10 @@
                     android:layout_height="wrap_content"
                     android:text="Información" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Notas" />
+                <!--<com.google.android.material.tabs.TabItem-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Notas" />-->
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"

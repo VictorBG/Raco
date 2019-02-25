@@ -82,9 +82,9 @@ public class ScheduledClassItem extends AbstractItem<ScheduledClassItem, Schedul
             }
 
             String t = "";
-            if (item.clazz.type.toUpperCase().equals("L")) {
+            if (item.clazz.type.equalsIgnoreCase("L")) {
                 t += "Laboratorio";
-            } else if (item.clazz.type.toUpperCase().equals("L")) {
+            } else if (item.clazz.type.equalsIgnoreCase("P")) {
                 t += "Problemas";
             } else {
                 t += "Teoria";

@@ -87,7 +87,6 @@ public class SubjectDetail extends BaseActivity implements Injectable {
             subject = getIntent().getExtras().getParcelable(SUBJECT_OBJECT_KEY);
         }
 
-
         if (subject == null) {
             Toast.makeText(this, "There was an error retrieving subject information", Toast.LENGTH_SHORT).show();
             finish();
@@ -115,7 +114,7 @@ public class SubjectDetail extends BaseActivity implements Injectable {
     private void populateViewPager(Subject subject) {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(SubjectInfoFragment.newInstance(subject));
-        fragments.add(SubjectGradesFragment.newInstance(subject.shortName));
+//        fragments.add(SubjectGradesFragment.newInstance(subject.shortName));
         fragments.add(SubjectContentsFragments.newInstance(subject));
         fragments.add(SubjectActivitiesFragment.newInstance(subject));
 
@@ -127,9 +126,9 @@ public class SubjectDetail extends BaseActivity implements Injectable {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 1:
-                        fab.show();
-                        break;
+//                    case 1:
+//                        fab.show();
+//                        break;
                     default:
                         fab.hide();
 
@@ -165,11 +164,11 @@ public class SubjectDetail extends BaseActivity implements Injectable {
                 default:
                 case 0:
                     return "Información";
+//                case 1:
+//                    return "Notas";
                 case 1:
-                    return "Notas";
-                case 2:
                     return "Contenidos";
-                case 3:
+                case 2:
                     return "Actividades";
             }
         }

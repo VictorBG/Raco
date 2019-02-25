@@ -44,12 +44,13 @@ public class ApiManager {
                                 break;
                             }
                         }
+                        Request.Builder requestBuilder = chain.request().newBuilder();
+                        Timber.d("Locale: %s", prefManager.getLocale());
+                        requestBuilder.addHeader("Accept-Language", prefManager.getLocale());
                         if (!skipHeader) {
-                            Request request = chain.request().newBuilder()
-                                    .addHeader("Authorization", "Bearer " + prefManager.getToken())
-                                    .build();
-                            return chain.proceed(request);
+                            requestBuilder.addHeader("Authorization", "Bearer " + prefManager.getToken());
                         }
+                        return chain.proceed(requestBuilder.build());
                     }
                     return chain.proceed(chain.request());
                 })

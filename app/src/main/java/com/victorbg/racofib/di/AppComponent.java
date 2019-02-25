@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.victorbg.racofib.AppRaco;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.view.base.BaseContextWrapper;
 
 import javax.inject.Singleton;
 

@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @BindView(R.id.schedule_toolbar)
     public LinearLayout scheduleToolbar;
     @BindView(R.id.fab)
-    public FloatingActionButton fab;
+    FloatingActionButton fab;
     @BindView(R.id.appBarLayout)
     AppBarLayout appBarLayout;
 
@@ -228,10 +228,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @Override
     public void onBackPressed() {
         if (searchView != null && !searchView.isIconified()) {
-//            searchView.setQuery("", false);
-//            searchView.setIconified(true);
             searchView.onActionViewCollapsed();
-
         } else {
             super.onBackPressed();
         }

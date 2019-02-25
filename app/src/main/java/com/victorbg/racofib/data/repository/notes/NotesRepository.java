@@ -11,6 +11,7 @@ import com.victorbg.racofib.data.model.api.ApiNotesResponse;
 import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
+import com.victorbg.racofib.data.repository.base.Repository;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.network.NetworkRateLimiter;
 import com.victorbg.racofib.utils.NetworkUtils;
@@ -31,7 +32,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class NotesRepository {
+public class NotesRepository extends Repository {
 
     private ApiService apiService;
     private NotesDao notesDao;
@@ -50,7 +51,6 @@ public class NotesRepository {
         this.subjectsDao = subjectsDao;
         this.appExecutors = appExecutors;
         this.context = context;
-
     }
 
     public LiveData<Resource<List<Note>>> getNotes() {
@@ -104,5 +104,10 @@ public class NotesRepository {
 
     public LiveData<List<Note>> getSaved() {
         return notesDao.getSavedNotes();
+    }
+
+    @Override
+    public void clean() {
+        rateLimiter.reset();
     }
 }

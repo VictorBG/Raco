@@ -11,7 +11,8 @@ import java.util.ArrayList;
 public class SubjectProcessor {
 
     /**
-     * Converts a list of contents into a List of strings
+     * Converts a list of {@link SubjectContent} into a list of {@link String}
+     * following a specific order that is in contentIntegers
      *
      * @param subject
      * @return

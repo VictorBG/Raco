@@ -22,14 +22,27 @@ import androidx.annotation.NonNull;
 @Singleton
 public class PrefManager {
 
+    private static final String TOKEN_KEY = "AuthToken";
+    private static final String REFRESH_TOKEN_KEY = "AuthRefreshToken";
+    private static final String LOGGED_KEY = "UserLogged";
+    private static final String EXPIRATION_KEY = "TokenExpiration";
+    private static final String DARK_THEME_KEY = "DarkTheme";
+    public static final String LOCALE_KEY = "LocaleApp";
+
+    public static final String LOCALE_ENGLISH = "en";
+    public static final String LOCALE_SPANISH = "es";
+    public static final String LOCALE_CATALAN = "ca";
+
     private SharedPreferences sharedPreferences;
     private String token = null;
     private boolean darkTheme = false;
+    private String locale = LOCALE_SPANISH;
+
+    private boolean localeFetched = false;
 
     @Inject
     public PrefManager(Application application) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application);
-
         refreshDarkTheme();
     }
 
@@ -85,18 +98,15 @@ public class PrefManager {
         sharedPreferences.edit().putBoolean(DARK_THEME_KEY, darkTheme).apply();
     }
 
-    private static final String TOKEN_KEY = "AuthToken";
-    private static final String REFRESH_TOKEN_KEY = "AuthRefreshToken";
-    private static final String LOGGED_KEY = "UserLogged";
-    private static final String EXPIRATION_KEY = "TokenExpiration";
-    private static final String DARK_THEME_KEY = "DarkTheme";
-
-
     public String getRefreshToken() {
         return sharedPreferences.getString(REFRESH_TOKEN_KEY, "");
     }
 
     public void refreshDarkTheme() {
         darkTheme = sharedPreferences.getBoolean(DARK_THEME_KEY, false);
+    }
+
+    public String getLocale() {
+        return sharedPreferences.getString(LOCALE_KEY, LOCALE_SPANISH);
     }
 }

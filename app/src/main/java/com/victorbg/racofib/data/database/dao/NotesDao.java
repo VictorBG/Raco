@@ -22,8 +22,11 @@ public interface NotesDao {
     @Query("SELECT * FROM Notes WHERE favorite=1 order by date DESC")
     LiveData<List<Note>> getSavedNotes();
 
-    @Query("SELECT * FROM NOTES WHERE subject IN (:filter)")
+    @Query("SELECT * FROM Notes WHERE subject IN (:filter)")
     List<Note> getFilterNotes(String filter);
+
+    @Query("UPDATE Notes SET color=:color WHERE color=:initialColor")
+    void updateColors(String initialColor, String color);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Note note);

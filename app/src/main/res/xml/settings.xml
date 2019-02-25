@@ -14,37 +14,45 @@
             android:summary="Modifica los colores de cada asignatura"
             android:title="Colores de asignaturas" />
 
-        <SwitchPreference
-            android:icon="@drawable/ic_remove_black_24dp"
-            android:key="NavBarColor"
-            android:summary="Deshabilitar barra de navegación coloreada"
-            android:title="Barra de navegación sin color" />
+        <!--<SwitchPreference-->
+        <!--android:icon="@drawable/ic_remove_black_24dp"-->
+        <!--android:key="NavBarColor"-->
+        <!--android:summary="Deshabilitar barra de navegación coloreada"-->
+        <!--android:title="Barra de navegación sin color" />-->
     </PreferenceCategory>
 
     <!--<PreferenceCategory android:title="Notificaciones">-->
 
-        <!--<SwitchPreference-->
-            <!--android:defaultValue="true"-->
-            <!--android:icon="@drawable/ic_notifications_black_24dp"-->
-            <!--android:key="NotificationsEnabled"-->
-            <!--android:title="Activar notificaciones" />-->
+    <!--<SwitchPreference-->
+    <!--android:defaultValue="true"-->
+    <!--android:icon="@drawable/ic_notifications_black_24dp"-->
+    <!--android:key="NotificationsEnabled"-->
+    <!--android:title="Activar notificaciones" />-->
 
-        <!--<ListPreference-->
-            <!--android:dependency="NotificationsEnabled"-->
-            <!--android:icon="@drawable/ic_access_time_black_24dp"-->
-            <!--android:key="NotificationsInterval"-->
-            <!--android:summary="Cambiar qué tan frecuentemente la app busca notificaciones"-->
-            <!--android:title="Intervalo de búsqueda de notificaciones" />-->
+    <!--<ListPreference-->
+    <!--android:dependency="NotificationsEnabled"-->
+    <!--android:icon="@drawable/ic_access_time_black_24dp"-->
+    <!--android:key="NotificationsInterval"-->
+    <!--android:summary="Cambiar qué tan frecuentemente la app busca notificaciones"-->
+    <!--android:title="Intervalo de búsqueda de notificaciones" />-->
 
     <!--</PreferenceCategory>-->
 
-    <PreferenceCategory android:title="Comportamiento">
+    <PreferenceCategory android:title="General">
 
+        <ListPreference
+            android:defaultValue="es"
+            android:entries="@array/language_list_titles"
+            android:entryValues="@array/language_list_values"
+            android:icon="@drawable/ic_language_black_24dp"
+            android:key="LocaleApp"
+            android:title="Idioma" />
         <Preference
             android:icon="@drawable/ic_delete_black_24dp"
             android:key="DeleteAppData"
             android:summary="Borra todos los datos almacenados en la app. Requiere reinicio"
             android:title="Borrar datos almacenados" />
+
 
     </PreferenceCategory>
 
@@ -60,7 +68,7 @@
             android:title="Puntúa esta aplicación">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://google.com" />
+                android:data="https://play.google.com/store/apps/details?id=com.victorbg.racofib" />
         </Preference>
 
         <Preference
@@ -74,7 +82,7 @@
         <Preference
             android:icon="@drawable/ic_github"
             android:key="OpenSource"
-            android:title="Librerías de código abierto" >
+            android:title="Librerías de código abierto">
 
         </Preference>
 

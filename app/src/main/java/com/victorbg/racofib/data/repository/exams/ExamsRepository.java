@@ -8,6 +8,7 @@ import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
+import com.victorbg.racofib.data.repository.base.Repository;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.network.NetworkRateLimiter;
 import com.victorbg.racofib.utils.Utils;
@@ -28,15 +29,12 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @Singleton
-public class ExamsRepository {
+public class ExamsRepository extends Repository {
 
     private ApiService apiService;
     private ExamDao examDao;
-
     private AppExecutors appExecutors;
-
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     private NetworkRateLimiter rateLimiter = new NetworkRateLimiter(1, TimeUnit.HOURS);
 
 
@@ -83,6 +81,7 @@ public class ExamsRepository {
                         Utils.sortExamsList(result.result);
                         return Single.just(result.result);
                     });
+
                 }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                         .subscribe(objects -> {
                             appExecutors.diskIO().execute(() -> examDao.insertExams(objects));
@@ -93,5 +92,10 @@ public class ExamsRepository {
                         }));
             }
         }.getAsLiveData();
+    }
+
+    @Override
+    public void clean() {
+        rateLimiter.reset();
     }
 }

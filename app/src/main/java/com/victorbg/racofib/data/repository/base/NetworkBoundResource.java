@@ -87,6 +87,11 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     @MainThread
     protected abstract boolean shouldFetch(@Nullable ResultType data);
 
+    /**
+     * Returns if the prefecth has to be done or we can pass the result
+     * directly without loading state
+     * @return
+     */
     @MainThread
     protected boolean preShouldFetch() {
         return true;
@@ -100,6 +105,9 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     @MainThread
     protected abstract LiveData<ApiResponse<RequestType>> createCall();
 
+    /**
+     * Called when a fetch has failed
+     */
     @MainThread
     protected void onFetchFailed() {
     }
