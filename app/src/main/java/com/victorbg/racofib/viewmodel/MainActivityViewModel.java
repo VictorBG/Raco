@@ -1,8 +1,8 @@
 package com.victorbg.racofib.viewmodel;
 
+import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
+import com.victorbg.racofib.data.domain.user.LogoutUserUseCase;
 import com.victorbg.racofib.data.model.user.User;
-import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.user.UserRepository;
 
 import javax.inject.Inject;
 
@@ -11,26 +11,22 @@ import androidx.lifecycle.ViewModel;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private UserRepository userRepository;
-
     private LiveData<User> user;
 
+    private LogoutUserUseCase logoutUserUseCase;
+
     @Inject
-    public MainActivityViewModel(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        user = userRepository.getUser();
+    public MainActivityViewModel(LoadUserUseCase loadUserUseCase, LogoutUserUseCase logoutUserUseCase) {
+        this.logoutUserUseCase = logoutUserUseCase;
+        user = loadUserUseCase.execute();
     }
 
     public LiveData<User> getUser() {
         return user;
     }
 
-    public String getToken() {
-        return userRepository.getToken();
-    }
-
     public void logout() {
-        userRepository.logout();
+        logoutUserUseCase.execute();
     }
 
 }

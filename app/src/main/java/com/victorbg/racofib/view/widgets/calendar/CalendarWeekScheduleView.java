@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.StaticLayout;
@@ -18,7 +17,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -77,7 +75,7 @@ public class CalendarWeekScheduleView extends View {
     private Paint hourSeparatorPaint;
     private Paint nowLinePaint;
     private Paint eventBackgroundPaint;
-    private Paint timeTextPaint;
+    private static Paint timeTextPaint;
     private TextPaint eventTextPaint;
 
 
@@ -288,13 +286,25 @@ public class CalendarWeekScheduleView extends View {
     /**
      * Initialize time column width. Calculate value with all possible hours (supposed widest text).
      */
+
     private void initTextTimeWidth() {
-        timeTextWidth = 0;
+        timeTextWidth = computeTextWidth(context);
+    }
+
+    public static float computeTextWidth(Context context) {
+        Paint textPaint = timeTextPaint;
+        if (textPaint == null) {
+            textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            textPaint.setTextAlign(Paint.Align.RIGHT);
+            textPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_text_size));
+        }
+        float timeTextWidth = 0;
         for (int i = 0; i < 24; i++) {
             // Measure time string and get max width
             String time = formatHour(i);
-            timeTextWidth = Math.max(timeTextWidth, timeTextPaint.measureText(time));
+            timeTextWidth = Math.max(timeTextWidth, textPaint.measureText(time));
         }
+        return timeTextWidth;
     }
 
     /**
@@ -308,7 +318,7 @@ public class CalendarWeekScheduleView extends View {
         return sdf.format(hour.getTime());
     }
 
-    private String formatHour(int hour) {
+    private static String formatHour(int hour) {
         return String.format(Locale.getDefault(), "%02d:00", hour);
     }
 

@@ -1,17 +1,15 @@
 package com.victorbg.racofib.viewmodel;
 
+import com.victorbg.racofib.data.domain.exams.LoadExamsUseCase;
+import com.victorbg.racofib.data.domain.schedule.LoadTodayScheduleUseCase;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.data.model.user.User;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.exams.ExamsRepository;
-import com.victorbg.racofib.data.repository.user.UserRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -19,43 +17,30 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import timber.log.Timber;
 
 public class HomeViewModel extends ViewModel {
 
     private LiveData<Resource<List<Exam>>> exams;
-    private LiveData<User> user;
+    private LiveData<Resource<List<SubjectSchedule>>> schedule;
 
-    private ExamsRepository examsRepository;
-    private UserRepository userRepository;
 
     @Inject
-    public HomeViewModel(ExamsRepository examsRepository, UserRepository userRepository) {
-        this.examsRepository = examsRepository;
-        this.userRepository = userRepository;
-        user = userRepository.getUser();
+    public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase) {
+        schedule = loadScheduleUseCase.execute();
+        exams = loadExamsUseCase.execute();
     }
 
-    public LiveData<Resource<List<Exam>>> getExams(User user) {
-        Timber.d("getExams() called at time %d", System.currentTimeMillis());
-        if (user.subjects == null || user.subjects.size() == 0) {
-            MutableLiveData<Resource<List<Exam>>> mutableLiveData = new MutableLiveData();
-            mutableLiveData.setValue(Resource.success(new ArrayList<>()));
-            exams = mutableLiveData;
-        } else {
-            exams = examsRepository.getExams(user);
-        }
+    public LiveData<Resource<List<Exam>>> getExams() {
         return exams;
     }
 
-    public LiveData<User> getUser() {
-        return user;
+    public LiveData<Resource<List<SubjectSchedule>>> getSchedule() {
+        return schedule;
     }
 
     /**
-     * Returns the size nearest exams from today.
+     * Returns the nearest exams from today.
      * <p>
      * This must be called once it is secure the data has been fetched
      *
@@ -65,16 +50,9 @@ public class HomeViewModel extends ViewModel {
     public List<Exam> getNearestExams(int size) {
 
 
-        if (exams.getValue().data == null || exams.getValue().data.isEmpty())
+        if (exams.getValue().data == null || exams.getValue().data.isEmpty()) {
             return new ArrayList<>();
-        Comparator<Exam> c = (o1, o2) -> {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-            try {
-                return simpleDateFormat.parse(o1.startDate).after(simpleDateFormat.parse(o2.startDate)) ? 0 : 1;
-            } catch (ParseException e) {
-                return -1;
-            }
-        };
+        }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         Date currentTime = Calendar.getInstance().getTime();

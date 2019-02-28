@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentManager;
 import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.HasSupportFragmentInjector;
-import timber.log.Timber;
 
 public class AppInjector {
     private AppInjector() {

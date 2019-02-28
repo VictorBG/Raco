@@ -3,7 +3,6 @@ package com.victorbg.racofib.db;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.utils.LiveDataTestUtil;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -11,7 +10,8 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(JUnit4.class)

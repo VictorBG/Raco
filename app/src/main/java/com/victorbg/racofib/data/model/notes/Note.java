@@ -25,7 +25,7 @@ public class Note implements Parcelable {
     public String text;
 
     @NonNull
-    public String color = "#D83F53";
+    public String color = "#1976d2";
 
     @NonNull
     @SerializedName("data_modificacio")
@@ -40,7 +40,7 @@ public class Note implements Parcelable {
     public boolean favorite = false;
 
     public long getIdentifier() {
-        return (title + subject).hashCode() + (favorite ? 1 : 0);
+        return (title + subject).hashCode() + (favorite ? 1 : 0) + color.hashCode();
     }
 
     public Note() {

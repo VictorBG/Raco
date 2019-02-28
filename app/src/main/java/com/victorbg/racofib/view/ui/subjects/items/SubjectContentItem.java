@@ -1,16 +1,12 @@
 package com.victorbg.racofib.view.ui.subjects.items;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectContent;
 
 import java.util.List;

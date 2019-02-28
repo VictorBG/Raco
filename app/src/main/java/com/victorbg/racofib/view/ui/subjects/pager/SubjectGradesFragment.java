@@ -2,8 +2,6 @@ package com.victorbg.racofib.view.ui.subjects.pager;
 
 import android.os.Bundle;
 
-import com.google.gson.Gson;
-import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.view.base.BaseFragment;
 
 import androidx.annotation.Nullable;

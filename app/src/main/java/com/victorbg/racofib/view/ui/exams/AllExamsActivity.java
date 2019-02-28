@@ -15,10 +15,7 @@ import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
-import com.victorbg.racofib.view.ui.home.HomeFragment;
-import com.victorbg.racofib.view.ui.home.items.ExamItem;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
-import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +27,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
@@ -56,8 +52,6 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
 
     private HomeViewModel viewModel;
 
-    private LiveData<Resource<List<Exam>>> examsLiveData;
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
@@ -74,7 +68,7 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Exams");
+        setTitle(R.string.exams_title);
 
         setRecycler();
     }
@@ -87,17 +81,13 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
     @Override
     public void onStart() {
         super.onStart();
-        viewModel.getUser().observe(this, user -> {
-            examsLiveData = viewModel.getExams(user);
-            examsLiveData.observe(this, this::handleExams);
-        });
+        viewModel.getExams().observe(this, this::handleExams);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        viewModel.getUser().removeObservers(this);
-        examsLiveData.removeObservers(this);
+        viewModel.getExams().removeObservers(this);
     }
 
     private void setRecycler() {

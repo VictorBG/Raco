@@ -1,15 +1,12 @@
 package com.victorbg.racofib.view.ui.notes;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -17,10 +14,9 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.data.model.notes.Note;
-import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
@@ -34,8 +30,6 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
-
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
@@ -74,6 +68,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         super.onActivityCreated(savedInstanceState);
 
         publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
     }
 
     @Nullable
@@ -86,7 +82,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setRecycler();
-        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
+//        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
     }
 
     @Override
@@ -105,8 +101,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
                 Intent intent = new Intent(getContext(), NoteDetail.class);
-                //TODO: Put KEY in a more visible scope
-                intent.putExtra("NoteParam", item.getNote());
+                intent.putExtra(NoteDetail.NOTE_PARAM, item.getNote());
                 NotesFragment.this.startActivity(intent);
             }
 
@@ -124,10 +119,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
             public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
-                publicationsViewModel.addToFav(item.getNote());
-                boolean fav = item.getNote().favorite;
-                item.getNote().favorite = fav;
-                showSnackbar(getMainActivity().findViewById(R.id.parent), fav ? "Added to favorites" : "Removed from favorites");
+                Note note = publicationsViewModel.changeFavoriteState(item.getNote());
+                showSnackbar(getMainActivity().findViewById(R.id.parent), note.favorite ? "Added to favorites" : "Removed from favorites");
                 fastAdapter.notifyAdapterItemChanged(position);
             }
 
@@ -155,11 +148,9 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         publicationsViewModel.reload(force);
         swipeRefreshLayout.setRefreshing(true);
         publicationsViewModel.getPublications().observe(this, listResource -> {
-
             Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
             onChangedState(listResource.status, listResource.message);
             onChanged(listResource.data);
-
         });
     }
 

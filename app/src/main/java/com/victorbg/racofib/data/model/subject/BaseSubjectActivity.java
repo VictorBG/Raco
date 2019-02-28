@@ -3,7 +3,6 @@ package com.victorbg.racofib.data.model.subject;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.IntDef;
 
 /*

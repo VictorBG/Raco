@@ -8,21 +8,14 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.IInterceptor;
-import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.mikepenz.fastadapter.adapters.ModelAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.subject.BaseSubjectActivity;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectActivity;
-import com.victorbg.racofib.data.model.subject.SubjectContent;
 import com.victorbg.racofib.data.model.subject.SubjectEvalAct;
-import com.victorbg.racofib.databinding.FragmentSubjectInfoBinding;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.subjects.items.SubjectActivityItem;
-import com.victorbg.racofib.view.ui.subjects.items.SubjectContentItem;
 import com.victorbg.racofib.view.ui.subjects.items.SubjectEvalActivityItem;
 
 import java.util.ArrayList;
@@ -31,7 +24,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;

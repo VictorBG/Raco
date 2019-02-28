@@ -1,21 +1,15 @@
 package com.victorbg.racofib.view.base;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
-import com.afollestad.rxkprefs.Pref;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import dagger.android.AndroidInjection;
-import timber.log.Timber;
 
 public abstract class BaseThemeActivity extends AppCompatActivity implements Injectable {
 

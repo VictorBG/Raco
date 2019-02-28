@@ -5,7 +5,6 @@ import com.victorbg.racofib.data.database.dao.ExamDao;
 import com.victorbg.racofib.data.model.api.ApiListResponse;
 import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.NetworkBoundResource;
 import com.victorbg.racofib.data.repository.base.Repository;
@@ -45,7 +44,7 @@ public class ExamsRepository extends Repository {
         this.appExecutors = appExecutors;
     }
 
-    public LiveData<Resource<List<Exam>>> getExams(User user) {
+    public LiveData<Resource<List<Exam>>> getExams(List<String> subjects) {
         return new NetworkBoundResource<List<Exam>, ApiListResponse<Exam>>(appExecutors) {
 
             @Override
@@ -75,7 +74,7 @@ public class ExamsRepository extends Repository {
                 //result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
                 compositeDisposable.add(apiService.getCurrentSemester("json").flatMap(semester -> {
 
-                    String exams = Utils.getStringSubjectsApi(user.subjects);
+                    String exams = Utils.getStringSubjectsApi(subjects);
 
                     return apiService.getExams(semester.id, "json", exams).flatMap(result -> {
                         Utils.sortExamsList(result.result);

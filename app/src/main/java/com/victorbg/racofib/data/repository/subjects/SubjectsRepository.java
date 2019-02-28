@@ -3,9 +3,7 @@ package com.victorbg.racofib.data.repository.subjects;
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.repository.AppExecutors;
-import com.victorbg.racofib.data.repository.base.Repository;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.sp.PrefManager;
 
 import javax.inject.Inject;
 

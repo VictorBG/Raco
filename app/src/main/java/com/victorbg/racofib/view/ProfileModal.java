@@ -9,13 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
-import com.bumptech.glide.request.RequestOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.glide.GlideRequests;
@@ -28,7 +23,6 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,14 +41,14 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment implements I
     TextView username;
 
     private User user;
-    private String token;
+
     private LogoutListener listener;
 
     @Inject
     GlideRequests glideRequests;
 
-    public static ProfileModal getInstanceWithData(User user, String token, LogoutListener listener) {
-        return new ProfileModal().withUser(user).withToken(token).withLogout(listener);
+    public static ProfileModal getInstanceWithData(User user, LogoutListener listener) {
+        return new ProfileModal().withUser(user).withLogout(listener);
     }
 
     @SuppressLint("SetTextI18n")
@@ -73,11 +67,6 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment implements I
 
     public ProfileModal withUser(User user) {
         this.user = user;
-        return this;
-    }
-
-    public ProfileModal withToken(String token) {
-        this.token = token;
         return this;
     }
 

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.victorbg.racofib.data.model.TokenResponse;
-import com.victorbg.racofib.data.model.login.LoginData;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

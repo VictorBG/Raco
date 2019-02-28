@@ -1,8 +1,8 @@
 package com.victorbg.racofib.view.ui.notes.items;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +25,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implements ISwipeable<NoteItem, IItem> {
 
@@ -99,7 +100,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
         @Override
         public void bindView(@NonNull NoteItem item, @NonNull List<Object> payloads) {
-            StringHolder.applyToOrHide(new StringHolder(item.note.title), title);
+            StringHolder.applyToOrHide(new StringHolder(Html.fromHtml(item.note.title)), title);
             StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
 
             subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));

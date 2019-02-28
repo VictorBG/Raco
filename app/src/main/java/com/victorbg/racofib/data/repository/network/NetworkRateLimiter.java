@@ -11,6 +11,14 @@ public class NetworkRateLimiter {
         this.timeout = timeUnit.toMillis(timeout);
     }
 
+    /**
+     * Returns if the network call should be fetch based on the
+     * timeout and the last time a call has been made. It also
+     * stores the current timestamp as the last call timestamp
+     * to future checks.
+     *
+     * @return
+     */
     public synchronized boolean shouldFetch() {
         long now = now();
         if (timestamp == -1) {

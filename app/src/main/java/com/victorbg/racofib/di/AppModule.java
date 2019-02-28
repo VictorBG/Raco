@@ -2,7 +2,6 @@ package com.victorbg.racofib.di;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.ContextWrapper;
 
 import com.victorbg.racofib.AppRaco;
 import com.victorbg.racofib.data.api.ApiManager;

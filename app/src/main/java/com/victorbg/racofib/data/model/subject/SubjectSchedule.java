@@ -2,16 +2,10 @@ package com.victorbg.racofib.data.model.subject;
 
 
 import com.google.gson.annotations.SerializedName;
-import com.victorbg.racofib.data.model.user.User;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Ignore;
-import androidx.room.Index;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "SubjectSchedule",
         primaryKeys = {"id", "day_of_week", "start"})

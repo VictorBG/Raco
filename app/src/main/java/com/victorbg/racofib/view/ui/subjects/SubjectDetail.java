@@ -14,13 +14,11 @@ import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.subjects.pager.SubjectActivitiesFragment;
 import com.victorbg.racofib.view.ui.subjects.pager.SubjectContentsFragments;
-import com.victorbg.racofib.view.ui.subjects.pager.SubjectGradesFragment;
 import com.victorbg.racofib.view.ui.subjects.pager.SubjectInfoFragment;
 import com.victorbg.racofib.view.widgets.ContentLoadingProgressBar;
 import com.victorbg.racofib.viewmodel.SubjectDetailViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;

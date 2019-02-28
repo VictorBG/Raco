@@ -14,6 +14,14 @@ import java.util.Locale;
 
 public class ScheduleUtils {
 
+    /**
+     * Converts the given list of {@link SubjectSchedule} into a comprehensible list of
+     * {@link ScheduleEvent} for {@link com.victorbg.racofib.view.widgets.calendar.CalendarWeekScheduleView}
+     * to draw the events on the calendar
+     *
+     * @param list
+     * @return
+     */
     public static List<ScheduleEvent> convertToEventScheduleWeek(List<SubjectSchedule> list) {
         List<ScheduleEvent> result = new ArrayList<>();
 
@@ -32,6 +40,18 @@ public class ScheduleUtils {
         return result;
     }
 
+    /**
+     * Converts the given startTime in {@link String} in a specific format (HH:mm)
+     * into a float indicating the current hour.
+     * <p>
+     * Example:
+     * 8:30 -> 8,5
+     * 9:15 -> 9,25
+     * 10,50 -> 10,83
+     *
+     * @param startTime
+     * @return
+     */
     private static float convertStartTime(String startTime) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Calendar c = Calendar.getInstance();

@@ -148,5 +148,7 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-oss-licenses:16.0.0'
 
+    implementation 'com.jaredrummler:colorpicker:1.1.0'
+
 
 }

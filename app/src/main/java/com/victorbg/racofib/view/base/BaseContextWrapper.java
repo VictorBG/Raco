@@ -8,11 +8,8 @@ import android.os.Build;
 import android.os.LocaleList;
 
 import com.victorbg.racofib.data.sp.PrefManager;
-import com.victorbg.racofib.di.injector.Injectable;
 
 import java.util.Locale;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 

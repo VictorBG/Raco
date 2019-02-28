@@ -1,21 +1,16 @@
 package com.victorbg.racofib.utils;
 
-import android.util.Log;
-
 import com.victorbg.racofib.data.model.subject.Subject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import androidx.test.InstrumentationRegistry;
-
-import androidx.test.core.app.*;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.assertEquals;

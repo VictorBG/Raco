@@ -1,25 +1,20 @@
 package com.victorbg.racofib.view.ui.settings;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.oss.licenses.OssLicensesActivity;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.repository.user.UserRepository;
+import com.victorbg.racofib.data.domain.user.LogoutUserUseCase;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
@@ -30,7 +25,7 @@ public class SettingsActivity extends BaseActivity implements Injectable, Shared
     PrefManager prefManager;
 
     @Inject
-    UserRepository userRepository;
+    LogoutUserUseCase logoutUserUseCase;
 
     private String locale;
 
@@ -67,12 +62,12 @@ public class SettingsActivity extends BaseActivity implements Injectable, Shared
         if (key.equals("LocaleApp")) {
             if (!locale.equals(sharedPreferences.getString(key, PrefManager.LOCALE_SPANISH))) {
                 MaterialDialog materialDialog = new MaterialDialog.Builder(this)
-                        .title("Cambiar idioma")
-                        .content("Para cambiar el idioma es necesario reiniciar sesión")
-                        .positiveText("Reiniciar")
-                        .negativeText("Cancelar")
+                        .title(getString(R.string.change_language_title))
+                        .content(getString(R.string.change_language_description))
+                        .positiveText(getString(R.string.restart))
+                        .negativeText(getString(R.string.cancel))
                         .onPositive((dialog, which) -> {
-                            userRepository.clean();
+                            logoutUserUseCase.execute();
                             dialog.dismiss();
                             onBackPressed();
                         })
@@ -121,6 +116,11 @@ public class SettingsActivity extends BaseActivity implements Injectable, Shared
 
             findPreference("OpenSource").setOnPreferenceClickListener(v -> {
                 startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
+                return true;
+            });
+
+            findPreference("SubjectsColors").setOnPreferenceClickListener(v -> {
+                startActivity(new Intent(getActivity(), ColorSettingsActivity.class));
                 return true;
             });
         }

@@ -8,7 +8,6 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.utils.Utils;
-import com.victorbg.racofib.view.ui.home.items.ExamItem;
 
 import java.text.ParseException;
 import java.util.List;

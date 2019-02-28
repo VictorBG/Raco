@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.mikepenz.fastadapter.FastAdapter;
@@ -36,9 +35,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
-import timber.log.Timber;
 
 public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
@@ -68,7 +65,7 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Favorites");
+        setTitle(R.string.saved_notes_title);
 
         setRecycler();
     }
@@ -112,8 +109,7 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
             @Override
             public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
                 Intent intent = new Intent(NotesFavoritesActivity.this, NoteDetail.class);
-                //TODO: Put KEY in a more visible scope
-                intent.putExtra("NoteParam", item.getNote());
+                intent.putExtra(NoteDetail.NOTE_PARAM, item.getNote());
                 NotesFavoritesActivity.this.startActivity(intent);
             }
 
@@ -131,10 +127,10 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
             public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
-                publicationsViewModel.addToFav(item.getNote());
+                publicationsViewModel.changeFavoriteState(item.getNote());
                 itemAdapter.remove(position);
                 fastAdapter.notifyAdapterItemRemoved(position);
-                showSnackbar("Removed from favorites");
+                showSnackbar(getString(R.string.removed_from_favorites));
             }
 
             @javax.annotation.Nullable
@@ -153,10 +149,10 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
         SwipeCallback simpleSwipeCallback = new SwipeCallback((pos, dir) -> {
             fastAdapter.notifyItemChanged(pos);
-            publicationsViewModel.addToFav(itemAdapter.getAdapterItem(pos).getNote());
+            publicationsViewModel.changeFavoriteState(itemAdapter.getAdapterItem(pos).getNote());
             itemAdapter.remove(pos);
             fastAdapter.notifyAdapterItemRemoved(pos);
-            showSnackbar("Removed from favorites");
+            showSnackbar(getString(R.string.removed_from_favorites));
 
 
         }, new SwipeCallback.ItemSwipeDrawableCallback() {
@@ -181,7 +177,7 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
     public void onChanged(List<Note> notes) {
         if (notes == null || notes.size() == 0) {
-            onChangedState(Status.ERROR, "No content");
+            onChangedState(Status.ERROR, getString(R.string.no_content_message));
             return;
         }
         onChangedState(Status.SUCCESS, null);

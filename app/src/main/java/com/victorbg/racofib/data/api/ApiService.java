@@ -1,15 +1,14 @@
 package com.victorbg.racofib.data.api;
 
 import com.victorbg.racofib.data.model.TokenResponse;
-import com.victorbg.racofib.data.model.subject.Subject;
-import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.api.ApiListResponse;
 import com.victorbg.racofib.data.model.api.ApiNotesResponse;
 import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.exams.Semester;
+import com.victorbg.racofib.data.model.subject.Subject;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
-
 
 import androidx.lifecycle.LiveData;
 import io.reactivex.Single;

@@ -8,6 +8,19 @@
     <string name="seminary">Seminarios</string>
     <string name="webmail">Webmail</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="fetching_user_message">Fetching user</string>
+    <string name="fetching_subjects_message">Fetching subjects...</string>
+    <string name="fetching_schedule_message">Fetching schedule...</string>
+    <string name="added_to_favorites">Added to favorites</string>
+    <string name="removed_from_favorites">Removed from favorites</string>
+    <string name="no_content_message">No content</string>
+    <string name="saved_notes_title">Favorites</string>
+    <string name="change_language_title">Cambiar idioma</string>
+    <string name="change_language_description">Para cambiar el idioma es necesario reiniciar sesión</string>
+    <string name="restart">Reiniciar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="exams_title">Exams</string>
+    <string name="change_colors_subjects_activity_title">Cambiar colores</string>
 
     <!-- Strings related to Settings -->
 

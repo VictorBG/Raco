@@ -3,15 +3,10 @@ package com.victorbg.racofib.data.api;
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.data.sp.PrefManager;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

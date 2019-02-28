@@ -8,12 +8,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.TokenResponse;
-import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.MainActivity;
-import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.viewmodel.LoginViewModel;
 
 import java.util.Random;
@@ -49,19 +46,17 @@ public class LoginActivity extends AppCompatActivity implements Injectable {
 
         loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
 
-        STATE = randomString(24);
+
     }
 
-    private static String STATE;
-
+    private static String STATE = "PiyiidVvcoywpoAeHUtMUESuwekIVBpFZMWPSmwq";
 
     @Override
     protected void onResume() {
         super.onResume();
 
         if (getIntent().getDataString() != null && getIntent().getDataString().startsWith("apifib://login")) {
-            //loginViewModel.doLogin(getIntent().getDataString()).observe(this, this::handleLoginState);
-            loginViewModel.test(getIntent().getData(), STATE).observe(this, this::handleLoginState);
+            loginViewModel.login(getIntent().getData(), STATE).observe(this, this::handleLoginState);
         }
     }
 
@@ -93,16 +88,4 @@ public class LoginActivity extends AppCompatActivity implements Injectable {
         customTabsIntent.launchUrl(this, Uri.parse(url));
     }
 
-    public static final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    public static Random RANDOM = new Random();
-
-    public static String randomString(int len) {
-        StringBuilder sb = new StringBuilder(len);
-
-        for (int i = 0; i < len; i++) {
-            sb.append(DATA.charAt(RANDOM.nextInt(DATA.length())));
-        }
-
-        return sb.toString();
-    }
 }

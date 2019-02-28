@@ -11,10 +11,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 
-import javax.inject.Inject;
-
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 
 @SuppressLint("Registered")

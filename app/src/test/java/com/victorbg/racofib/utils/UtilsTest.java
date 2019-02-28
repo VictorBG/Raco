@@ -6,28 +6,27 @@ import com.victorbg.racofib.data.model.subject.SubjectColor;
 
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class UtilsTest {
 
     @Test
     public void getStringSubjectsApi() {
-        List<Subject> subjects = new ArrayList<>();
+        List<String> subjects = new ArrayList<>();
 
-        subjects.add(TestUtils.createSubjectWithShortName("a"));
+        subjects.add("a");
 
         assertEquals("a", Utils.getStringSubjectsApi(subjects));
 
-        subjects.add(TestUtils.createSubjectWithShortName("b"));
-        subjects.add(TestUtils.createSubjectWithShortName("c"));
-        subjects.add(TestUtils.createSubjectWithShortName("d"));
+        subjects.add("b");
+        subjects.add("c");
+        subjects.add("d");
 
         assertEquals("a,b,c,d", Utils.getStringSubjectsApi(subjects));
 

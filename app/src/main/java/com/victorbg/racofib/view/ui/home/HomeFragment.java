@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -14,12 +13,11 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.data.model.user.User;
+import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.repository.base.Resource;
+import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.exams.AllExamsActivity;
 import com.victorbg.racofib.view.ui.exams.ExamDetail;
@@ -33,7 +31,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -79,20 +76,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-
-        homeViewModel.getUser().observe(this, user -> {
-            if (user != null) {
-                if (!examsFetched) {
-//                    examsFetched = true;
-                    /*
-                    If the exams are just fetched one time, once the fragment is recreated they will not be fetched again
-                    making the layout to show no exams
-                     */
-                    homeViewModel.getExams(user).observe(this, this::handleExams);
-                }
-                handleUser(user);
-            }
-        });
+        homeViewModel.getExams().observe(this, this::handleExams);
+        homeViewModel.getSchedule().observe(this, this::handleSchedule);
     }
 
     @Nullable
@@ -185,14 +170,13 @@ public class HomeFragment extends BaseFragment implements Injectable {
         }
     }
 
-    private void handleUser(User user) {
-        if (user == null) return;
+    private void handleSchedule(Resource<List<SubjectSchedule>> schedule) {
+        if (schedule == null || schedule.status != Status.SUCCESS) return;
 
         List<ScheduledClassItem> items = new ArrayList<>();
-        noClassesTodayView.setVisibility((user.todaySubjects == null || user.todaySubjects.isEmpty()) ? View.VISIBLE : View.GONE);
+        noClassesTodayView.setVisibility((schedule.data == null || schedule.data.isEmpty()) ? View.VISIBLE : View.GONE);
 
-        if (user.todaySubjects == null) return;
-        for (SubjectSchedule note : user.todaySubjects) {
+        for (SubjectSchedule note : schedule.data) {
             items.add(new ScheduledClassItem().withScheduledClass(note));
         }
 
@@ -200,7 +184,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
         FastAdapterDiffUtil.set(itemAdapter, diffs);
         todayScheduleRecyclerView.scrollToPosition(0);
     }
-
 
     @OnClick(R.id.seeMoreExams)
     public void seeMoreExams(View view) {

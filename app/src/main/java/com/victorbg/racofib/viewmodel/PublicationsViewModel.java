@@ -1,8 +1,11 @@
 package com.victorbg.racofib.viewmodel;
 
+import com.victorbg.racofib.data.domain.UseCase;
+import com.victorbg.racofib.data.domain.notes.LoadNotesUseCase;
+import com.victorbg.racofib.data.domain.notes.LoadSavedNotesUseCase;
+import com.victorbg.racofib.data.domain.notes.NotesChangeFavoriteStateUseCase;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.notes.NotesRepository;
 
 import java.util.List;
 
@@ -13,26 +16,26 @@ import androidx.lifecycle.ViewModel;
 
 public class PublicationsViewModel extends ViewModel {
 
-    private LiveData<Resource<List<Note>>> publications = null;
+    private LiveData<Resource<List<Note>>> publications;
 
-
-    private NotesRepository publicationsRepository;
+    private UseCase<Note, Note> changeFavoriteStateUseCase;
+    private LoadNotesUseCase loadNotesUseCase;
+    private LoadSavedNotesUseCase loadSavedNotesUseCase;
 
     @Inject
-    public PublicationsViewModel(NotesRepository publicationsRepository) {
-        this.publicationsRepository = publicationsRepository;
-
+    public PublicationsViewModel(LoadSavedNotesUseCase loadSavedNotesUseCase, NotesChangeFavoriteStateUseCase notesChangeFavoriteStateUseCase, LoadNotesUseCase loadNotesUseCase) {
+        this.loadSavedNotesUseCase = loadSavedNotesUseCase;
+        this.changeFavoriteStateUseCase = notesChangeFavoriteStateUseCase;
+        this.loadNotesUseCase = loadNotesUseCase;
+        publications = loadNotesUseCase.execute();
     }
 
     public LiveData<Resource<List<Note>>> getPublications() {
-        if (publications == null) {
-            publications = publicationsRepository.getNotes();
-        }
         return publications;
     }
 
     public LiveData<List<Note>> getSavedPublications() {
-        return publicationsRepository.getSaved();
+        return loadSavedNotesUseCase.execute();
     }
 
     public void reload() {
@@ -40,16 +43,11 @@ public class PublicationsViewModel extends ViewModel {
     }
 
     public void reload(boolean force) {
-        if (force) {
-            publicationsRepository.resetTimer();
-        }
-        publications = publicationsRepository.getNotes();
+        publications = loadNotesUseCase.execute(force);
     }
 
-    public void addToFav(Note note) {
-        publicationsRepository.resetTimer();
-        note.favorite = !note.favorite;
-        publicationsRepository.addToFav(note);
+    public Note changeFavoriteState(Note note) {
+        return changeFavoriteStateUseCase.execute(note);
     }
 
 }

@@ -18,17 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.background.AttachmentDownload;
+import com.victorbg.racofib.data.domain.notes.NotesChangeFavoriteStateUseCase;
 import com.victorbg.racofib.data.model.notes.Attachment;
 import com.victorbg.racofib.data.model.notes.Note;
-
-import com.victorbg.racofib.data.repository.notes.NotesRepository;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 
@@ -47,6 +45,7 @@ import timber.log.Timber;
 
 public class NoteDetail extends BaseActivity implements Injectable {
 
+    public static final String NOTE_PARAM = "NoteParam";
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.description)
@@ -59,13 +58,13 @@ public class NoteDetail extends BaseActivity implements Injectable {
     @Inject
     AttachmentDownload attachmentDownload;
     @Inject
-    NotesRepository publicationsRepository;
+    NotesChangeFavoriteStateUseCase changeFavoriteStateUseCase;
 
     private Snackbar snackbar;
     private DownloadManager dm;
     private long enqueue;
 
-    Note note;
+    private Note note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +73,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
 
         if (getIntent().getExtras() != null) {
 
-            note = getIntent().getExtras().getParcelable("NoteParam");
+            note = getIntent().getExtras().getParcelable(NOTE_PARAM);
             if (note == null) finish();
 
             setSupportActionBar(toolbar);
@@ -179,7 +178,6 @@ public class NoteDetail extends BaseActivity implements Injectable {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (note == null) return false;
-        Timber.d("Populating menu: fav? %s", note.favorite ? "Yes" : "No");
         menu.clear();
         menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, note.favorite ? "Remove from favorites" : "Add to favorites")
                 .setIcon(note.favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white)
@@ -191,12 +189,10 @@ public class NoteDetail extends BaseActivity implements Injectable {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == Menu.FIRST) {
-            note.favorite = !note.favorite;
-            publicationsRepository.resetTimer();
-            publicationsRepository.addToFav(note);
+            note = changeFavoriteStateUseCase.execute(note);
             invalidateOptionsMenu();
 
-            showSnackbar(note.favorite ? "Added to favorites" : "Removed from favorites");
+            showSnackbar(note.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
             return true;
         }
         return super.onOptionsItemSelected(item);

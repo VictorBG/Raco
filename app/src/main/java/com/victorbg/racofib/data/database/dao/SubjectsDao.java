@@ -5,6 +5,7 @@ import com.victorbg.racofib.data.model.subject.SubjectColor;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -18,6 +19,9 @@ public interface SubjectsDao {
 
     @Query("select * from Subjects ORDER BY shortName ASC")
     Single<List<Subject>> getSubjects();
+
+    @Query("select * from Subjects ORDER BY shortName ASC")
+    LiveData<List<Subject>> getSubjectsAsLiveData();
 
     @Query("select shortName as subject,color from Subjects")
     Single<List<SubjectColor>> getColors();
@@ -33,4 +37,10 @@ public interface SubjectsDao {
 
     @Query("delete from Subjects")
     void clear();
+
+    @Query("SELECT shortName from Subjects")
+    Single<List<String>> getSubjectsNames();
+
+    @Query("UPDATE Subjects SET color=:color WHERE id=:id")
+    void changeColor(String id, String color);
 }

@@ -5,18 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.subjects.items.SubjectItem;
 import com.victorbg.racofib.viewmodel.SubjectsViewModel;
@@ -24,7 +21,6 @@ import com.victorbg.racofib.viewmodel.SubjectsViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -32,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -118,8 +113,9 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         }
 
         //Prevent recreating the whole list when there are identical items
-        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
-        FastAdapterDiffUtil.set(itemAdapter, diffs);
+        itemAdapter.setNewList(items);
+//        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
+//        FastAdapterDiffUtil.set(itemAdapter, diffs);
         recyclerView.scrollToPosition(0);
     }
 

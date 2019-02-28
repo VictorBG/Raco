@@ -1,22 +1,12 @@
 package com.victorbg.racofib.view;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import butterknife.BindView;
-import butterknife.OnClick;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
-import timber.log.Timber;
-
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,11 +23,24 @@ import com.victorbg.racofib.utils.fragment.FragmentNavigator;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
 import com.victorbg.racofib.view.ui.settings.SettingsActivity;
+import com.victorbg.racofib.view.widgets.calendar.CalendarWeekScheduleView;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
 
 import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import butterknife.BindView;
+import butterknife.OnClick;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements HasSupportFragmentInjector {
 
@@ -56,21 +59,20 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
-
     @Inject
     PrefManager prefManager;
-
-    private MainActivityViewModel mainActivityViewModel;
-    private FragmentNavigator fragmentNavigator;
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-
     @Inject
     GlideRequests glideRequests;
 
-    private int selectedFragmentId = R.id.homeFragment;
     private SearchView searchView;
+    private MainActivityViewModel mainActivityViewModel;
+    private FragmentNavigator fragmentNavigator;
+
+    private int selectedFragmentId = R.id.homeFragment;
+    private boolean scheduledRecreate = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,33 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             handleFragment(savedInstanceState.getInt("FragmentID"));
         } else {
             handleFragment(R.id.homeFragment);
+        }
+
+        computeDaysToolbarAttribs();
+    }
+
+    private void computeDaysToolbarAttribs() {
+        int today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+        if (today < 0) today = 7;
+
+
+        float startPadding = CalendarWeekScheduleView.computeTextWidth(this) + 60;
+        scheduleToolbar.setPadding((int) startPadding, 0, 0, 0);
+        if (today <= 5) {
+            if (scheduleToolbar.getChildAt(today - 1) instanceof ViewGroup) {
+                ViewGroup vg = ((ViewGroup) scheduleToolbar.getChildAt(today - 1));
+                for (int i = 0; i < vg.getChildCount(); i++) {
+                    View v = vg.getChildAt(i);
+                    if (v instanceof TextView) {
+                        ((TextView) v).setTextColor(Color.BLACK);
+                    }
+
+                    if (v instanceof ImageView) {
+                        v.setVisibility(View.VISIBLE);
+                    }
+                }
+
+            }
         }
     }
 
@@ -216,7 +245,12 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 400) {
-            internalRecreate();
+            if (scheduledRecreate) {
+                scheduledRecreate = false;
+                recreate();
+            } else {
+                internalRecreate();
+            }
         }
     }
 
@@ -238,7 +272,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     public void profileModal(View v) {
         mainActivityViewModel.getUser().observe(MainActivity.this, user -> {
             if (user != null) {
-                ProfileModal profileModal = ProfileModal.getInstanceWithData(user, mainActivityViewModel.getToken(), this::logout);
+                ProfileModal profileModal = ProfileModal.getInstanceWithData(user, this::logout);
                 profileModal.show(MainActivity.this.getSupportFragmentManager(), "profile-modal");
             }
         });
@@ -250,6 +284,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             fragmentNavigator.onFabSelected();
         }
     }
+
+
 }
 
 

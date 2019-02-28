@@ -60,13 +60,12 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         result.addSource(apiResponse, response -> {
             result.removeSource(apiResponse);
             result.removeSource(dbSource);
-
             if (response.isSuccessful()) {
 
                 //Save response from network into database
                 appExecutors.diskIO().execute(() -> saveCallResult(processResponse(response)));
 
-                //And request a new live data from which whe will observe the new data inserted into database, remember, only db
+                //And request a new live data from which we will observe the new data inserted into database, remember, only db
                 //is a trusted source
                 appExecutors.mainThread().execute(() -> result.addSource(loadFromDb(), newData -> setValue(Resource.success(newData))));
             } else {

@@ -34,6 +34,9 @@ public interface NotesDao {
     @Update
     void updateNote(Note note);
 
+    @Query("UPDATE Notes SET favorite=:favState WHERE subject=:subject AND date=:date AND title=:title")
+    void changeFavState(String subject, String date, String title, int favState);
+
     //Ignore on conflict as it has to preserve the state of favorites column
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertNotes(List<Note> notes);
@@ -43,4 +46,7 @@ public interface NotesDao {
 
     @Query("delete from Notes")
     void clear();
+
+    @Query("UPDATE Notes SET color=:color WHERE subject=:id")
+    void changeColor(String id, String color);
 }

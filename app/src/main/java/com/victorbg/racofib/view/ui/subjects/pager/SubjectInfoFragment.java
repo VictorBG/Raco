@@ -2,7 +2,6 @@ package com.victorbg.racofib.view.ui.subjects.pager;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
