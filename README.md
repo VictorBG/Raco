@@ -58,11 +58,11 @@ The auth system has been updated to authorization code grant system, but the aut
 
 **I have classes on weekend and the schedule view doesn't show them**
 
-I was not aware of classes on weekend, that's why it is designed in a 5 column grid. Anyway, please tell me and I will modify the application in order to show the 7 days (you can do it yourself if you want, it's the _visibleDays_ variable of the class [_CalendarWeekScheduleView_](https://github.com/VictorBG/RacoFib/blob/01a40a108d8b57f0273cd89d29064438805bcc83/app/src/main/java/com/victorbg/racofib/view/widgets/calendar/CalendarWeekScheduleView.java#L96).
+I was not aware of classes on weekend, that's why it is designed in a 5 column grid. Anyway, please tell me and I will modify the application in order to show the 7 days (you can do it yourself if you want, it's the _visibleDays_ variable of the class [_CalendarWeekScheduleView_](https://github.com/VictorBG/RacoFib/blob/01a40a108d8b57f0273cd89d29064438805bcc83/app/src/main/java/com/victorbg/racofib/view/widgets/calendar/CalendarWeekScheduleView.java#L96)).
 
-**I don't want the subjects to have colors**
+**I don't want the subjects to have the current colors**
 
-You can edit them or remove them in the settings, but they always will have a color, at least the red color of the app.
+You can edit them in the settings.
 
 **The information of the app is not the same than the information on the Racó**
 
@@ -70,7 +70,7 @@ The app caches the information in local databases in order to use it offline, yo
 
 **Is there any dark theme?**
 
-In development.
+Yes, in settings.
 
 ### Developed By
 
