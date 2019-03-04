@@ -6,6 +6,8 @@ import android.content.Context;
 import com.victorbg.racofib.AppRaco;
 import com.victorbg.racofib.data.api.ApiManager;
 import com.victorbg.racofib.data.api.ApiService;
+import com.victorbg.racofib.data.api.AuthService;
+import com.victorbg.racofib.data.api.TokenAuthenticator;
 import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.ExamDao;
 import com.victorbg.racofib.data.database.dao.NotesDao;
@@ -34,8 +36,20 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public ApiService provideApi(PrefManager prefManager) {
-        return ApiManager.create(prefManager);
+    public AuthService provideAuthService() {
+        return ApiManager.createAuthService();
+    }
+
+    @Singleton
+    @Provides
+    public TokenAuthenticator provideTokenAuthenticator(PrefManager prefManager, AuthService authService) {
+        return new TokenAuthenticator(prefManager, authService);
+    }
+
+    @Singleton
+    @Provides
+    public ApiService provideApi(PrefManager prefManager, TokenAuthenticator tokenAuthenticator) {
+        return ApiManager.create(prefManager, tokenAuthenticator);
     }
 
     @Singleton

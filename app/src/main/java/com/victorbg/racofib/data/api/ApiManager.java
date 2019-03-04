@@ -17,7 +17,17 @@ public class ApiManager {
 
     private static final String BASE_URL = "https://api.fib.upc.edu/v2/";
 
-    public static ApiService create(PrefManager prefManager) {
+    public static AuthService createAuthService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(new OkHttpClient())
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        return retrofit.create(AuthService.class);
+    }
+
+    public static ApiService create(PrefManager prefManager, TokenAuthenticator tokenAuthenticator) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.NONE : HttpLoggingInterceptor.Level.NONE);
 
@@ -28,7 +38,6 @@ public class ApiManager {
                 .readTimeout(5, TimeUnit.MINUTES)
                 .addInterceptor(interceptor)
                 .addInterceptor(chain -> {
-                    Timber.d("Intercepting call: %s", chain.request().toString());
                     if (chain.request().method().equals("GET")) {
                         //Don't add auth header to request that already have that header, which
                         //means the token has not been already saved into storage
@@ -49,6 +58,7 @@ public class ApiManager {
                     }
                     return chain.proceed(chain.request());
                 })
+                .authenticator(tokenAuthenticator)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

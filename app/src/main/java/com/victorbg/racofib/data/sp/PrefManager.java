@@ -66,6 +66,8 @@ public class PrefManager {
         editor.putString(TOKEN_KEY, loginData.getAccessToken());
         editor.putString(REFRESH_TOKEN_KEY, loginData.getRefreshToken());
         editor.apply();
+
+        this.token = loginData.getAccessToken();
     }
 
 
