@@ -28,6 +28,8 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity implements Injectable {
 
+    private static String STATE = "PiyiidVvcoywpoAeHUtMUESuwekIVBpFZMWPSmwq";
+
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.status_message)
@@ -49,8 +51,6 @@ public class LoginActivity extends AppCompatActivity implements Injectable {
 
     }
 
-    private static String STATE = "PiyiidVvcoywpoAeHUtMUESuwekIVBpFZMWPSmwq";
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements Injectable {
             case ERROR:
                 progressBar.setVisibility(View.GONE);
                 statusMessage.setVisibility(View.VISIBLE);
-                statusMessage.setText(state.message);
+                statusMessage.setText(R.string.general_error);
                 break;
             case SUCCESS:
                 startActivity(new Intent(this, MainActivity.class));

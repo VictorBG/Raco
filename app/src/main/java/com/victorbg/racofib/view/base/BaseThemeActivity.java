@@ -20,9 +20,6 @@ public abstract class BaseThemeActivity extends AppCompatActivity implements Inj
 
     protected boolean isDarkThemeEnabled = false;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);

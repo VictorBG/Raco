@@ -133,7 +133,7 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
         }
         List<FullExamItem> items = new ArrayList<>();
         for (Exam exam : exams) {
-            items.add(new FullExamItem().withExam(exam));
+            items.add(new FullExamItem().withExam(exam).withContext(this));
         }
 
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
@@ -147,7 +147,7 @@ public class AllExamsActivity extends BaseActivity implements Injectable {
     private void showNoContent() {
         animationView.setVisibility(View.VISIBLE);
         animationView.playAnimation();
-        errorTextView.setText("No content");
+        errorTextView.setText(getString(R.string.no_content));
         errorTextView.setVisibility(View.VISIBLE);
     }
 

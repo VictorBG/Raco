@@ -5,20 +5,20 @@
     <item
         android:id="@+id/search_menu"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="Buscar"
-        app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView"/>
+        android:title="@string/search_action"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
 
     <!--<item-->
-        <!--android:id="@+id/filter_menu"-->
-        <!--android:icon="@drawable/ic_filter_list_black_24dp"-->
-        <!--android:title="Filtrar"-->
-        <!--app:showAsAction="always" />-->
+    <!--android:id="@+id/filter_menu"-->
+    <!--android:icon="@drawable/ic_filter_list_black_24dp"-->
+    <!--android:title="Filtrar"-->
+    <!--app:showAsAction="always" />-->
 
     <item
         android:id="@+id/settings_menu"
         android:icon="@drawable/ic_settings"
-        android:title="Ajustes"
+        android:title="@string/settings"
         app:showAsAction="ifRoom" />
 
 

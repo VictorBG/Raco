@@ -17,6 +17,7 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
+import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
@@ -120,7 +121,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
                 Note note = publicationsViewModel.changeFavoriteState(item.getNote());
-                showSnackbar(getMainActivity().findViewById(R.id.parent), note.favorite ? "Added to favorites" : "Removed from favorites");
+                showSnackbar(getMainActivity().findViewById(R.id.parent), note.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
                 fastAdapter.notifyAdapterItemChanged(position);
             }
 
@@ -167,9 +168,14 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             items.add(new NoteItem().withNote(note));
         }
 
+        int oldListSize = itemAdapter.getAdapterItemCount();
         //Prevent recreating the whole list when there are identical items (based on title and subject)
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
         FastAdapterDiffUtil.set(itemAdapter, diffs);
+
+        if (oldListSize != notes.size()) {
+            ((MainActivity)getActivity()).hideToolbar();
+        }
 
     }
 

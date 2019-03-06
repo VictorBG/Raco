@@ -142,7 +142,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
                             }
                             openFile(uriString, attachment.mime);
                         } else {
-                            showSnackbar("Error downloading file");
+                            showSnackbar(getString(R.string.error_downloading_file));
                         }
                     }
                 }
@@ -154,7 +154,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
 
             dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
             enqueue = dm.enqueue(attachmentDownload.downloadFile(attachment.url, attachment.name));
-            snackbar = showSnackbar("Downloading...", Snackbar.LENGTH_INDEFINITE);
+            snackbar = showSnackbar(getString(R.string.dowloading), Snackbar.LENGTH_INDEFINITE);
         }
     }
 
@@ -179,7 +179,7 @@ public class NoteDetail extends BaseActivity implements Injectable {
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (note == null) return false;
         menu.clear();
-        menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, note.favorite ? "Remove from favorites" : "Add to favorites")
+        menu.add(Menu.NONE, Menu.FIRST, Menu.NONE, note.favorite ? getString(R.string.remove_from_favorites_action) : getString(R.string.add_to_favorites_action))
                 .setIcon(note.favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 

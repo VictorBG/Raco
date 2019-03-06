@@ -4,22 +4,22 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="Inicio" />
+        android:title="@string/start_bottom_tab" />
 
     <item
         android:id="@+id/notesFragment"
         android:icon="@drawable/ic_announcements"
-        android:title="Avisos" />
+        android:title="@string/notes_bottom_tab" />
 
     <item
         android:id="@+id/timetableFragment"
         android:icon="@drawable/ic_timetable"
-        android:title="Horario" />
+        android:title="@string/schedule_bottom_tab" />
 
     <item
         android:id="@+id/subjectsFragment"
         android:icon="@drawable/ic_subjects"
-        android:title="Asignaturas" />
+        android:title="@string/subjects_bottom_tab" />
 
 
 </menu>

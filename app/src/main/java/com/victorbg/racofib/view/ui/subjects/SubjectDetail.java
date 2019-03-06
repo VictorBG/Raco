@@ -86,7 +86,7 @@ public class SubjectDetail extends BaseActivity implements Injectable {
         }
 
         if (subject == null) {
-            Toast.makeText(this, "There was an error retrieving subject information", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -161,13 +161,13 @@ public class SubjectDetail extends BaseActivity implements Injectable {
             switch (position) {
                 default:
                 case 0:
-                    return "Información";
+                    return getString(R.string.info_subject_tab_title);
 //                case 1:
 //                    return "Notas";
                 case 1:
-                    return "Contenidos";
+                    return getString(R.string.content_subject_tab_title);
                 case 2:
-                    return "Actividades";
+                    return getString(R.string.activities_subject_tab_title);
             }
         }
     }

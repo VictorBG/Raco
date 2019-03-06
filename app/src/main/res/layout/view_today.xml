@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <TextView
@@ -12,7 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Today's timeline"
+        android:text="@string/today_timeline"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
         android:textColor="?themeSecondaryTextColor"
         android:textSize="12sp"
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:text="Mon, Oct 22, 2019"
+        tools:text="Mon, Oct 22, 2019"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -47,7 +48,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No classes today"
+        android:text="@string/no_classes_today"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Chip"
         android:textColor="?themePrimaryTextColor"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"

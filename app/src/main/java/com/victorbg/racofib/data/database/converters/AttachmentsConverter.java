@@ -8,7 +8,6 @@ import java.util.List;
 
 import androidx.room.TypeConverter;
 
-
 public class AttachmentsConverter {
     @TypeConverter
     public static String toString(List<Attachment> list) {

@@ -9,6 +9,7 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.utils.NetworkUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,7 +31,7 @@ public class GlideRequests {
     }
 
     public void loadImage(ImageView into, String from, int width, int height) {
-        GlideUrl glideUrl = new GlideUrl(from, new LazyHeaders.Builder().addHeader("Authorization", "Bearer " + prefManager.getToken()).build());
+        GlideUrl glideUrl = new GlideUrl(from, new LazyHeaders.Builder().addHeader("Authorization", NetworkUtils.prepareToken(prefManager.getToken())).build());
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_avatar).override(width, height).centerCrop();
         Glide.with(context).setDefaultRequestOptions(requestOptions).load(glideUrl).into(into);
     }

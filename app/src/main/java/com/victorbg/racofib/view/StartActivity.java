@@ -21,13 +21,13 @@ public class StartActivity extends BaseActivity implements Injectable {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        if (prefManager.isLogged()) {
+        if (prefManager.isLogged()) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
-//        } else {
-//            startActivity(new Intent(this, LoginActivity.class));
-//            finish();
-//        }
+        } else {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
 
     }
 }

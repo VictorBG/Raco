@@ -48,7 +48,7 @@
                         android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Back"
+                        android:contentDescription="@string/back"
                         android:src="@drawable/ic_arrow_back_black_24dp"
                         android:tint="?themeColorViews"
                         app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +126,7 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Información" />
+                    android:text="@string/info_subject_tab_title" />
 
                 <!--<com.google.android.material.tabs.TabItem-->
                 <!--android:layout_width="wrap_content"-->
@@ -136,13 +136,13 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Contenidos" />
+                    android:text="@string/content_subject_tab_title" />
 
                 <!--Dentro va actos evaluativos-->
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Actividades" />
+                    android:text="@string/activities_subject_tab_title" />
 
             </com.google.android.material.tabs.TabLayout>
 

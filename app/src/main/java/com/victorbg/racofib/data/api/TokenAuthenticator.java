@@ -3,20 +3,18 @@ package com.victorbg.racofib.data.api;
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.data.model.TokenResponse;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import okhttp3.Authenticator;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
-import retrofit2.Call;
 import timber.log.Timber;
 
 
@@ -37,7 +35,6 @@ public class TokenAuthenticator implements Authenticator {
 
         Timber.d("Intercepted authenticate call with code: %d", response.code());
         if (response.code() == 401) {
-            Timber.d("Refreshing token");
             retrofit2.Response<TokenResponse> refreshResponse = authService.refreshToken(
                     "refresh_token",
                     prefManager.getRefreshToken(),
@@ -50,16 +47,15 @@ public class TokenAuthenticator implements Authenticator {
                 prefManager.setLogin(refreshResponse.body());
                 return response.request()
                         .newBuilder()
-                        .header("Authorization", "Bearer: " + refreshResponse.body().getAccessToken())
+                        .header("Authorization", NetworkUtils.prepareToken(refreshResponse.body().getAccessToken()))
                         .build();
             } else {
                 return null;
             }
         } else {
-            Timber.d("Not refreshing token");
             return response.request()
                     .newBuilder()
-                    .header("Authorization", "Bearer: " + prefManager.getToken())
+                    .header("Authorization", NetworkUtils.prepareToken(prefManager.getToken()))
                     .build();
         }
     }

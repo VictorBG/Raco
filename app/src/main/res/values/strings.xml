@@ -9,8 +9,8 @@
     <string name="webmail">Webmail</string>
     <string name="title_activity_settings">Settings</string>
     <string name="fetching_user_message">Fetching user</string>
-    <string name="fetching_subjects_message">Fetching subjects...</string>
-    <string name="fetching_schedule_message">Fetching schedule...</string>
+    <string name="fetching_subjects_message">Fetching subjects…</string>
+    <string name="fetching_schedule_message">Fetching schedule…</string>
     <string name="added_to_favorites">Added to favorites</string>
     <string name="removed_from_favorites">Removed from favorites</string>
     <string name="no_content_message">No content</string>
@@ -21,9 +21,69 @@
     <string name="cancel">Cancelar</string>
     <string name="exams_title">Exams</string>
     <string name="change_colors_subjects_activity_title">Cambiar colores</string>
+    <string name="no_content">No content</string>
+    <string name="midterm">Parcial</string>
+    <string name="final_exam">Final</string>
+    <string name="lab">Laboratorio</string>
+    <string name="problems">Problemas</string>
+    <string name="theory">Teoria</string>
+    <string name="group_schedule_item">· Grupo</string>
+    <string name="error_downloading_file">Error downloading file</string>
+    <string name="dowloading">Downloading…</string>
+    <string name="remove_from_favorites_action">Remove from favorites</string>
+    <string name="add_to_favorites_action">Add to favorites</string>
+    <string name="not_class_hours_subject_eval_item">· Fuera horario lectivo</string>
+    <string name="coordinator">Responsable:</string>
+    <string name="middle_dot">·</string>
+    <string name="error_retrieving_subject_data">There was an error retrieving subject information</string>
+    <string name="info_subject_tab_title">Información</string>
+    <string name="content_subject_tab_title">Contenidos</string>
+    <string name="activities_subject_tab_title">Actividades</string>
+    <string name="general_error">Something went wrong, try again later</string>
+    <string name="back">Back</string>
+    <string name="no_incoming_exams">No incoming exams</string>
+    <string name="see_all">VER TODO</string>
+    <string name="weekly_hours">Horas semanales</string>
+    <string name="theory_dots">Teoría:</string>
+    <string name="problems_dots">Problemas:</string>
+    <string name="labs_dots">Laboratorio:</string>
+    <string name="guider_learning_dots">Aprendizaje dirigido:</string>
+    <string name="autonomous_learning_dots">Aprendizaje autónomo:</string>
+    <string name="content">Contenido</string>
+    <string name="general">General</string>
+    <string name="department_dots">Departamento:</string>
+    <string name="credits_dots">Créditos:</string>
+    <string name="mail_dots">Correo:</string>
+    <string name="website_dots">Web:</string>
+    <string name="teachers">Profesores</string>
+    <string name="description">Descripción</string>
+    <string name="docent_methodology">Metodología docente</string>
+    <string name="aval_methodology">Metodología avaluación</string>
+    <string name="requirements">Capacidades previas</string>
+    <string name="week_dots">Semana:</string>
+    <string name="duration_dots">Duración:</string>
+    <string name="type_dots">Tipo:</string>
+    <string name="logout_button_text">Logout</string>
+    <string name="today_timeline">Today\'s timeline</string>
+    <string name="no_classes_today">No classes today</string>
+    <string name="start_bottom_tab">Inicio</string>
+    <string name="notes_bottom_tab">Avisos</string>
+    <string name="schedule_bottom_tab">Horario</string>
+    <string name="subjects_bottom_tab">Asignaturas</string>
+    <string name="search_action">Buscar</string>
+
 
     <!-- Strings related to Settings -->
-
+    <string name="pref_enable_dark_mode">Habilitar modo oscuro</string>
+    <string name="pref_enable_dark_mode_title">Modo oscuro</string>
+    <string name="pref_change_cubjects_colors">Modifica los colores de cada asignatura</string>
+    <string name="pref_change_cubjects_colors_title">Colores de asignaturas</string>
+    <string name="pref_language_title">Idioma</string>
+    <string name="pref_version_title">Versión</string>
+    <string name="pref_version_summary">1.0.0</string>
+    <string name="pref_rate_app_title">Puntúa esta aplicación</string>
+    <string name="pref_help_development_title">Ayuda al desarrollo</string>
+    <string name="pref_open_source_licenses_title">Librerías de código abierto</string>
 
     <string-array name="language_list_titles">
         <item>Español</item>

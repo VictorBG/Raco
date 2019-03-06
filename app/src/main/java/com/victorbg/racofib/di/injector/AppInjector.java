@@ -7,6 +7,8 @@ import android.os.Bundle;
 import com.victorbg.racofib.AppRaco;
 import com.victorbg.racofib.di.DaggerAppComponent;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -72,7 +74,7 @@ public class AppInjector {
                     .registerFragmentLifecycleCallbacks(
                             new FragmentManager.FragmentLifecycleCallbacks() {
                                 @Override
-                                public void onFragmentCreated(FragmentManager fm, Fragment fragment,
+                                public void onFragmentCreated(@NotNull FragmentManager fm, @NotNull Fragment fragment,
                                                               Bundle savedInstanceState) {
                                     if (fragment instanceof Injectable) {
                                         AndroidSupportInjection.inject(fragment);

@@ -1,5 +1,6 @@
 package com.victorbg.racofib.view.ui.subjects.items;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,9 +19,15 @@ import butterknife.ButterKnife;
 public class SubjectEvalActivityItem extends AbstractItem<SubjectEvalActivityItem, SubjectEvalActivityItem.ViewHolder> {
 
     private SubjectEvalAct subject;
+    private Context context;
 
     public SubjectEvalActivityItem withEvalSubjectActivity(SubjectEvalAct subject) {
         this.subject = subject;
+        return this;
+    }
+
+    public SubjectEvalActivityItem withContext(Context context) {
+        this.context = context;
         return this;
     }
 
@@ -65,13 +72,9 @@ public class SubjectEvalActivityItem extends AbstractItem<SubjectEvalActivityIte
 
             String w = String.valueOf(item.subject.week);
             if (item.subject.notInClassHours) {
-                w += " · Fuera horario lectivo";
+                w += " " + context.getString(R.string.not_class_hours_subject_eval_item);
             }
-
             week.setText(w);
-
-
-
         }
 
 

@@ -124,7 +124,7 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         int errorTvVis;
         int animVis = errorTvVis = (empty) ? View.VISIBLE : View.GONE;
         errorTextView.setVisibility(errorTvVis);
-        errorTextView.setText("No content");
+        errorTextView.setText(R.string.no_content_message);
         animationView.setVisibility(animVis);
         if (empty) {
             animationView.playAnimation();

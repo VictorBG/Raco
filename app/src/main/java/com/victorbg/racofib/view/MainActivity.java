@@ -204,7 +204,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    Timber.d("On query searched: %s", query);
                     return false;
                 }
 
@@ -286,6 +285,9 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     }
 
 
+    public void hideToolbar() {
+        appBarLayout.setExpanded(false);
+    }
 }
 
 

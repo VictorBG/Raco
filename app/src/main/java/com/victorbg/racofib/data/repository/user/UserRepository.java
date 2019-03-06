@@ -128,21 +128,6 @@ public class UserRepository {
         return result;
     }
 
-    public void refreshToken() {
-        appExecutors.networkIO().execute(() -> {
-            compositeDisposable.add(apiService.refreshToken(
-                    "refresh_token",
-                    prefManager.getRefreshToken(),
-                    BuildConfig.RacoClientID,
-                    BuildConfig.RacoSecret
-            ).observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(token -> {
-                        prefManager.setLogin(token);
-                    }));
-        });
-    }
-
     private String getToken(String token) {
         return "Bearer " + token;
     }

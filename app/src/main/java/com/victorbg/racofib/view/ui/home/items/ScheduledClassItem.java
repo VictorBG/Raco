@@ -1,6 +1,7 @@
 package com.victorbg.racofib.view.ui.home.items;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,9 +23,15 @@ import butterknife.ButterKnife;
 public class ScheduledClassItem extends AbstractItem<ScheduledClassItem, ScheduledClassItem.ViewHolder> {
 
     private SubjectSchedule clazz;
+    private Context context;
 
     public ScheduledClassItem withScheduledClass(SubjectSchedule clazz) {
         this.clazz = clazz;
+        return this;
+    }
+
+    public ScheduledClassItem withContext(Context context) {
+        this.context = context;
         return this;
     }
 
@@ -83,14 +90,14 @@ public class ScheduledClassItem extends AbstractItem<ScheduledClassItem, Schedul
 
             String t = "";
             if (item.clazz.type.equalsIgnoreCase("L")) {
-                t += "Laboratorio";
+                t += item.context.getString(R.string.lab);
             } else if (item.clazz.type.equalsIgnoreCase("P")) {
-                t += "Problemas";
+                t += context.getString(R.string.problems);
             } else {
-                t += "Teoria";
+                t += context.getString(R.string.theory);
             }
 
-            t += " · Grupo " + item.clazz.group;
+            t += context.getString(R.string.group_schedule_item) + " " + item.clazz.group;
             type.setText(t);
 
 

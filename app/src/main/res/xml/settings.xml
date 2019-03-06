@@ -5,14 +5,14 @@
         <SwitchPreference
             android:icon="@drawable/ic_palette_black_24dp"
             android:key="DarkTheme"
-            android:summary="Habilitar modo oscuro"
-            android:title="Modo oscuro" />
+            android:summary="@string/pref_enable_dark_mode"
+            android:title="@string/pref_enable_dark_mode_title" />
 
         <Preference
             android:icon="@drawable/ic_palette_black_24dp"
             android:key="SubjectsColors"
-            android:summary="Modifica los colores de cada asignatura"
-            android:title="Colores de asignaturas" />
+            android:summary="@string/pref_change_cubjects_colors"
+            android:title="@string/pref_change_cubjects_colors_title" />
 
         <!--<SwitchPreference-->
         <!--android:icon="@drawable/ic_remove_black_24dp"-->
@@ -46,12 +46,12 @@
             android:entryValues="@array/language_list_values"
             android:icon="@drawable/ic_language_black_24dp"
             android:key="LocaleApp"
-            android:title="Idioma" />
-        <Preference
-            android:icon="@drawable/ic_delete_black_24dp"
-            android:key="DeleteAppData"
-            android:summary="Borra todos los datos almacenados en la app. Requiere reinicio"
-            android:title="Borrar datos almacenados" />
+            android:title="@string/pref_language_title" />
+        <!--<Preference-->
+            <!--android:icon="@drawable/ic_delete_black_24dp"-->
+            <!--android:key="DeleteAppData"-->
+            <!--android:summary="Borra todos los datos almacenados en la app. Requiere reinicio"-->
+            <!--android:title="Borrar datos almacenados" />-->
 
 
     </PreferenceCategory>
@@ -60,12 +60,12 @@
 
         <Preference
             android:icon="@drawable/ic_info_outline_black_24dp"
-            android:summary="1.0.0"
-            android:title="Versión" />
+            android:summary="@string/pref_version_summary"
+            android:title="@string/pref_version_title" />
 
         <Preference
             android:icon="@drawable/ic_star"
-            android:title="Puntúa esta aplicación">
+            android:title="@string/pref_rate_app_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://play.google.com/store/apps/details?id=com.victorbg.racofib" />
@@ -73,7 +73,7 @@
 
         <Preference
             android:icon="@drawable/ic_favorite_border_multicolor"
-            android:title="Ayuda al desarrollo">
+            android:title="@string/pref_help_development_title">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/VictorBG/RacoFib" />
@@ -82,7 +82,7 @@
         <Preference
             android:icon="@drawable/ic_github"
             android:key="OpenSource"
-            android:title="Librerías de código abierto">
+            android:title="@string/pref_open_source_licenses_title">
 
         </Preference>
 

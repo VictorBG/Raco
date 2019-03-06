@@ -1,7 +1,9 @@
 package com.victorbg.racofib.viewmodel;
 
+import android.content.Context;
 import android.net.Uri;
 
+import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.domain.user.LoginUserUseCase;
 import com.victorbg.racofib.data.repository.base.Resource;
 
@@ -29,7 +31,7 @@ public class LoginViewModel extends ViewModel {
             return loginUserUseCase.execute(code);
         } else {
             MutableLiveData<Resource<String>> r = new MutableLiveData();
-            r.setValue(Resource.error("Something went wrong: " + response.toString(), null));
+            r.setValue(Resource.error("", null));
             return r;
         }
     }

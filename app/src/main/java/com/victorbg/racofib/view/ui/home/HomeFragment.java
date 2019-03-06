@@ -43,7 +43,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 public class HomeFragment extends BaseFragment implements Injectable {
 
@@ -111,8 +110,7 @@ public class HomeFragment extends BaseFragment implements Injectable {
             @Override
             public void onClick(View v, int position, FastAdapter<ExamItem> fastAdapter, ExamItem item) {
                 Intent intent = new Intent(getContext(), ExamDetail.class);
-                //TODO: Put KEY in a more visible scope
-                intent.putExtra("ExamParam", item.getExam());
+                intent.putExtra(ExamDetail.EXAM_PARAM_KEY, item.getExam());
                 HomeFragment.this.startActivity(intent);
             }
 
@@ -138,7 +136,7 @@ public class HomeFragment extends BaseFragment implements Injectable {
         if (exams == null) return;
         List<ExamItem> items = new ArrayList<>();
         for (Exam exam : exams) {
-            items.add(new ExamItem().withExam(exam));
+            items.add(new ExamItem().withExam(exam).withContext(getContext()));
         }
 
         examsProgressBar.setVisibility(View.GONE);
@@ -151,7 +149,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
     }
 
     private void handleExams(Resource<List<Exam>> examResource) {
-        Timber.d("handleExams with status %s at time %d", examResource.status.toString(), System.currentTimeMillis());
         switch (examResource.status) {
             case SUCCESS:
                 if (examResource.data != null && examResource.data.size() > 0) {
@@ -177,7 +174,7 @@ public class HomeFragment extends BaseFragment implements Injectable {
         noClassesTodayView.setVisibility((schedule.data == null || schedule.data.isEmpty()) ? View.VISIBLE : View.GONE);
 
         for (SubjectSchedule note : schedule.data) {
-            items.add(new ScheduledClassItem().withScheduledClass(note));
+            items.add(new ScheduledClassItem().withScheduledClass(note).withContext(getContext()));
         }
 
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);

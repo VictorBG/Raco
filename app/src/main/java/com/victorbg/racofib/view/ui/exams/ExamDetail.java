@@ -70,10 +70,10 @@ public class ExamDetail extends BaseActivity implements Injectable {
 
             switch (exam.type) {
                 case "P":
-                    type.setText("Parcial");
+                    type.setText(getString(R.string.midterm));
                     break;
                 case "F":
-                    type.setText("Final");
+                    type.setText(getString(R.string.final_exam));
                     break;
                 default:
                     type.setVisibility(View.GONE);

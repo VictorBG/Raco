@@ -40,7 +40,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
-        android:text="Contenido"
+        android:text="@string/content"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textSize="18sp" />
 

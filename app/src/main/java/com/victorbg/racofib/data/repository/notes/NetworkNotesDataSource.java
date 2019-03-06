@@ -54,7 +54,7 @@ public class NetworkNotesDataSource implements DataSource<Resource<List<Note>>> 
 
         result.postValue(Resource.loading(null));
 
-        LiveData<ApiResponse<ApiNotesResponse>> apiSource = apiService.getPublications("json");
+        LiveData<ApiResponse<ApiNotesResponse>> apiSource = apiService.getNotes("json");
 
         result.addSource(apiSource, data -> {
             result.removeSource(apiSource);

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.utils.NetworkUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,7 +33,7 @@ public class AttachmentDownload {
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                         fileName);
 
-        req.addRequestHeader("Authorization", "Bearer " + prefManager.getToken());
+        req.addRequestHeader("Authorization", NetworkUtils.prepareToken(prefManager.getToken()));
         req.setNotificationVisibility(VISIBILITY_VISIBLE);
         req.setVisibleInDownloadsUi(true);
         return req;

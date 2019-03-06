@@ -53,10 +53,7 @@ public class PrefManager {
      * @return if user is logged or not
      */
     public boolean isLogged() {
-        boolean isLogged = sharedPreferences.getBoolean(LOGGED_KEY, false);
-        long expirationDate = sharedPreferences.getLong(EXPIRATION_KEY, -1);
-        if (expirationDate == -1) return false;
-        return System.currentTimeMillis() < expirationDate && isLogged;
+        return sharedPreferences.getBoolean(LOGGED_KEY, false);
     }
 
     public void setLogin(@NonNull TokenResponse loginData) {

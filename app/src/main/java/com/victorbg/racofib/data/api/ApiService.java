@@ -29,7 +29,7 @@ public interface ApiService {
 
     @Headers({"Content-Type: application/json"})
     @GET("jo/avisos")
-    LiveData<ApiResponse<ApiNotesResponse>> getPublications(@Query("format") String format);
+    LiveData<ApiResponse<ApiNotesResponse>> getNotes(@Query("format") String format);
 
     @Headers({"Content-Type: application/json"})
     @GET("jo")
@@ -41,14 +41,6 @@ public interface ApiService {
             @Field("grant_type") String grantType,
             @Field("code") String code,
             @Field("redirect_uri") String redirectURI,
-            @Field("client_id") String clientID,
-            @Field("client_secret") String client_secret);
-
-    @FormUrlEncoded
-    @POST("o/token")
-    Single<TokenResponse> refreshToken(
-            @Field("grant_type") String grantType,
-            @Field("code") String code,
             @Field("client_id") String clientID,
             @Field("client_secret") String client_secret);
 
@@ -72,7 +64,4 @@ public interface ApiService {
     @GET("assignatures/{subject}/guia")
     Single<Subject> getSubject(@Path("subject") String subject, @Query("format") String format);
 
-    @Streaming
-    @GET
-    Call<ResponseBody> downloadFile(@Url String fileUrl, @Header("Connection")String connection);
 }

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Exams"
+        android:text="@string/exams_title"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
         android:textColor="?themeSecondaryTextColor"
         android:textSize="12sp"
@@ -35,7 +35,7 @@
         android:id="@+id/noExams"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No incoming exams"
+        android:text="@string/no_incoming_exams"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Chip"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewExams"
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="VER TODO"
+        android:text="@string/see_all"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

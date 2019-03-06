@@ -1,5 +1,6 @@
 package com.victorbg.racofib.view.ui.home.items;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,9 +20,15 @@ import butterknife.ButterKnife;
 public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
 
     private Exam exam;
+    private Context context;
 
     public ExamItem withExam(Exam exam) {
         this.exam = exam;
+        return this;
+    }
+
+    public ExamItem withContext(Context context) {
+        this.context = context;
         return this;
     }
 
@@ -70,10 +77,10 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
             time.setText(item.exam.startDate);
             switch (item.exam.type) {
                 case "P":
-                    type.setText("Parcial");
+                    type.setText(item.context.getString(R.string.midterm));
                     break;
                 case "F":
-                    type.setText("Final");
+                    type.setText(item.context.getString(R.string.final_exam));
                     break;
                 default:
                     type.setVisibility(View.GONE);
