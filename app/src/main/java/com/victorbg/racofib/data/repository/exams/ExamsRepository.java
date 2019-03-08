@@ -76,6 +76,8 @@ public class ExamsRepository extends Repository {
 
                     String exams = Utils.getStringSubjectsApi(subjects);
 
+                    int a = 5;
+
                     return apiService.getExams(semester.id, "json", exams).flatMap(result -> {
                         Utils.sortExamsList(result.result);
                         return Single.just(result.result);

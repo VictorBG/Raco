@@ -11,6 +11,7 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.MainActivity;
+import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.viewmodel.LoginViewModel;
 
 import java.util.Random;

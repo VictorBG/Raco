@@ -135,9 +135,9 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     protected void onResume() {
         super.onResume();
 
-//        if (!prefManager.isLogged()) {
-//            logout();
-//        }
+        if (!prefManager.isLogged()) {
+            logout();
+        }
     }
 
     @Override

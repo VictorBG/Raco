@@ -24,14 +24,21 @@ public class HomeViewModel extends ViewModel {
     private LiveData<Resource<List<Exam>>> exams;
     private LiveData<Resource<List<SubjectSchedule>>> schedule;
 
+    private LoadExamsUseCase loadExamsUseCase;
 
     @Inject
     public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase) {
+
+        this.loadExamsUseCase = loadExamsUseCase;
+
         schedule = loadScheduleUseCase.execute();
         exams = loadExamsUseCase.execute();
     }
 
     public LiveData<Resource<List<Exam>>> getExams() {
+        if (exams.getValue() == null) {
+            this.exams = loadExamsUseCase.execute();
+        }
         return exams;
     }
 

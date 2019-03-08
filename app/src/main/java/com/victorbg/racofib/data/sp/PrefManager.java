@@ -26,6 +26,7 @@ public class PrefManager {
     private static final String LOGGED_KEY = "UserLogged";
     private static final String EXPIRATION_KEY = "TokenExpiration";
     private static final String DARK_THEME_KEY = "DarkTheme";
+    private static final String FIRST_TIME_KEY = "FirstTime";
     public static final String LOCALE_KEY = "LocaleApp";
 
     public static final String LOCALE_ENGLISH = "en";
@@ -85,6 +86,14 @@ public class PrefManager {
         editor.putString(TOKEN_KEY, null);
         editor.putString(REFRESH_TOKEN_KEY, null);
         editor.apply();
+    }
+
+    public boolean isFirstTime() {
+        boolean firstTime = sharedPreferences.getBoolean(FIRST_TIME_KEY, true);
+        if (firstTime) {
+            sharedPreferences.edit().putBoolean(FIRST_TIME_KEY, true).apply();
+        }
+        return firstTime;
     }
 
     public boolean isDarkThemeEnabled() {

@@ -174,7 +174,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         FastAdapterDiffUtil.set(itemAdapter, diffs);
 
         if (oldListSize != notes.size()) {
-            ((MainActivity)getActivity()).hideToolbar();
+            //((MainActivity)getActivity()).hideToolbar();
+            recyclerView.scrollToPosition(0);
         }
 
     }
