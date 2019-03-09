@@ -17,10 +17,10 @@ android:
   - android-$ANDROID_API
   - android-$EMULATOR_API_LEVEL
   - extra-google-m2repository
-  - extra-android-m2repository # for design library
-  - addon-google_apis-google-25 # google play services
+  - extra-android-m2repository
+  - addon-google_apis-google-25
   - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
-  - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL # the fix!
+  - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
 #  - build-tools-28.0.1
 #  - android-28
 #  - sys-img-armeabi-v7a-google_apis-25
@@ -41,7 +41,7 @@ before_install:
 before_script:
 - echo "y" | android update sdk -a --no-ui --filter android-24
 - echo "y" | android update sdk -a --no-ui --filter sys-img-armeabi-v7a-android-24
-- android list targets | grep -E '^id:' | awk -F '"' '{$1=""; print $2}' # list all targets
+- android list targets | grep -E '^id:' | awk -F '"' '{$1=""; print $2}'
 - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
 - emulator -avd test -no-skin -no-window &
 - android-wait-for-emulator
