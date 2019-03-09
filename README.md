@@ -14,10 +14,10 @@
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Download from Google Play"
-      height="80">](https://play.google.com/store/apps/details?id=com.victorbg.racofib)
+      height="80">](https://play.google.com/apps/testing/com.victorbg.racofib)
 [<img src=".github/assets/direct-apk-download.png"
       alt="Direct apk download"
-      height="80">](https://github.com/VictorBG/RacoFib/releases/tag/v0.2.0)
+      height="80">](https://github.com/VictorBG/RacoFib/releases)
 
 **The app is currently in heavy development.**
 
@@ -47,25 +47,21 @@ The app has been developed using the [official API](https://api.fib.upc.edu/)
 
 I'm open for any contribution you would like to do either by [_creating a PR_](https://github.com/VictorBG/RacoFib/compare), [_submitting an issue_](https://github.com/VictorBG/RacoFib/issues/new) on Github or proposing ideas to make the app better.
 
-You can see the [current features](https://github.com/VictorBG/RacoFib/projects/1) that are being developed at the time and contribute to one. Note that the _In Progress_ features are actively being developed and won't accept any PR until it is finished. 
+You can see the [current features](https://github.com/VictorBG/RacoFib/projects/1) that are being developed at the time and contribute to one. Note that the _In Progress_ features are actively being developed and won't accept any PR until they are finished. 
 
-### FAQ
+<!--### FAQ
 
-**I have classes on weekend and the schedule view doesn't show them**
+<!--**I have classes on weekend and the schedule view doesn't show them**
 
-I was not aware of classes on weekend, that's why it is designed in a 5 column grid. Anyway, please tell me and I will modify the application in order to show the 7 days (you can do it yourself if you want, it's the _visibleDays_ variable of the class [_CalendarWeekScheduleView_](https://github.com/VictorBG/RacoFib/blob/01a40a108d8b57f0273cd89d29064438805bcc83/app/src/main/java/com/victorbg/racofib/view/widgets/calendar/CalendarWeekScheduleView.java#L96)).
+<!--I was not aware of classes on weekend, that's why it is designed in a 5 column grid. Anyway, please tell me and I will modify the application in order to show the 7 days (you can do it yourself if you want, it's the _visibleDays_ variable of the class [_CalendarWeekScheduleView_](https://github.com/VictorBG/RacoFib/blob/01a40a108d8b57f0273cd89d29064438805bcc83/app/src/main/java/com/victorbg/racofib/view/widgets/calendar/CalendarWeekScheduleView.java#L96)).
 
-**I don't want the subjects to have the current colors**
+<!--**I don't want the subjects to have the current colors**
 
-You can edit them in the settings.
+<!--You can edit them in the settings.
 
-**The information of the app is not the same than the information on the Racó**
+<!--**Is there any dark theme?**
 
-The app caches the information in local databases in order to use it offline, you can refresh or delete this data in the settings.
-
-**Is there any dark theme?**
-
-Yes, in settings.
+<!--Yes, in settings.-->
 
 ### Developed By
 
