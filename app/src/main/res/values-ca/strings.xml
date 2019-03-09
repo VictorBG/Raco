@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">Raco</string>
+    <string name="login_button_text">Iniciar sessió</string>
+    <string name="settings">Configuració</string>
+    <string name="title_activity_settings">Configuració</string>
+    <string name="fetching_user_message">Obtenint usuari</string>
+    <string name="fetching_subjects_message">Obtenint assignatures…</string>
+    <string name="fetching_schedule_message">Obtenint horari…</string>
+    <string name="added_to_favorites">Afegit a favorits</string>
+    <string name="removed_from_favorites">Eliminat de favorits</string>
+    <string name="no_content_message">Sense contingut</string>
+    <string name="saved_notes_title">Favorits</string>
+    <string name="change_language_title">Canviar idioma</string>
+    <string name="change_language_description">Per canviar l\'idioma cal reiniciar sessió</string>
+    <string name="restart">Reiniciar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="exams_title">Exàmens</string>
+    <string name="change_colors_subjects_activity_title">Canviar colors</string>
+    <string name="no_content">Sense contingut</string>
+    <string name="midterm">Parcial</string>
+    <string name="final_exam">Final</string>
+    <string name="lab">Laboratori</string>
+    <string name="problems">Problemes</string>
+    <string name="theory">Teoria</string>
+    <string name="group_schedule_item">· Grup</string>
+    <string name="error_downloading_file">Error descarregant l\'arxiu</string>
+    <string name="dowloading">Baixant…</string>
+    <string name="remove_from_favorites_action">Eliminar de favorits</string>
+    <string name="add_to_favorites_action">Afegir a favorits</string>
+    <string name="not_class_hours_subject_eval_item">· Fora horari lectiu</string>
+    <string name="coordinator">Responsable:</string>
+    <string name="middle_dot">·</string>
+    <string name="error_retrieving_subject_data">Hi ha hagut un error en obtenir la informació</string>
+    <string name="info_subject_tab_title">Informació</string>
+    <string name="content_subject_tab_title">Continguts</string>
+    <string name="activities_subject_tab_title">Activitats</string>
+    <string name="general_error">S\'ha produït un error, torneu-ho a provar més tard</string>
+    <string name="back">Enrere</string>
+    <string name="no_incoming_exams">No hi ha exàmens propers</string>
+    <string name="see_all">VEURE TOT</string>
+    <string name="weekly_hours">Hores setmanals</string>
+    <string name="theory_dots">Teoria:</string>
+    <string name="problems_dots">Problemes:</string>
+    <string name="labs_dots">Laboratori:</string>
+    <string name="guider_learning_dots">Aprenentatge dirigit:</string>
+    <string name="autonomous_learning_dots">Aprenentatge autònom:</string>
+    <string name="content">Contingut</string>
+    <string name="general">General</string>
+    <string name="department_dots">Departament:</string>
+    <string name="credits_dots">Crèdits:</string>
+    <string name="mail_dots">Correu:</string>
+    <string name="website_dots">Web:</string>
+    <string name="teachers">Professors</string>
+    <string name="description">Descripció</string>
+    <string name="docent_methodology">Metodologia docent</string>
+    <string name="aval_methodology">Metodologia avaluació</string>
+    <string name="requirements">Capacitats prèvies</string>
+    <string name="week_dots">Setmana:</string>
+    <string name="duration_dots">Durada:</string>
+    <string name="type_dots">Tipus:</string>
+    <string name="logout_button_text">Tancar sessiò</string>
+    <string name="today_timeline">Horari d\'avui</string>
+    <string name="no_classes_today">No hi ha classes avui</string>
+    <string name="start_bottom_tab">Inici</string>
+    <string name="notes_bottom_tab">Avisos</string>
+    <string name="schedule_bottom_tab">Horari</string>
+    <string name="subjects_bottom_tab">Assignatures</string>
+    <string name="search_action">Cercar</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="pref_enable_dark_mode">Activa el mode fosc</string>
+    <string name="pref_enable_dark_mode_title">Mode fosc</string>
+    <string name="pref_change_cubjects_colors">Modifica els colors de cada assignatura</string>
+    <string name="pref_change_cubjects_colors_title">Colors d\'assignatures</string>
+    <string name="pref_language_title">Idioma</string>
+    <string name="pref_version_title">Versió</string>
+    <string name="pref_rate_app_title">Puntua aquesta aplicació</string>
+    <string name="pref_help_development_title">Ajuda al desenvolupament</string>
+    <string name="pref_open_source_licenses_title">Llibreries de codi obert</string>
+
+    <string-array name="language_list_titles">
+        <item>Espanyol</item>
+        <item>Català</item>
+        <item>Anglés</item>
+    </string-array>
+
+    <string-array name="language_list_values" translatable="false">
+        <item>es</item>
+        <item>ca</item>
+        <item>en</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">Raco</string>
+    <string name="login_button_text">Iniciar sesión</string>
+    <string name="settings">Ajustes</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="fetching_user_message">Obteniendo usuario</string>
+    <string name="fetching_subjects_message">Obteniendo asignaturas…</string>
+    <string name="fetching_schedule_message">Obteniendo horario…</string>
+    <string name="added_to_favorites">Añadido a favoritos</string>
+    <string name="removed_from_favorites">Eliminado de favoritos</string>
+    <string name="no_content_message">Sin contenido</string>
+    <string name="saved_notes_title">Favoritos</string>
+    <string name="change_language_title">Cambiar idioma</string>
+    <string name="change_language_description">Para cambiar el idioma es necesario reiniciar sesión</string>
+    <string name="restart">Reiniciar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="exams_title">Exámenes</string>
+    <string name="change_colors_subjects_activity_title">Cambiar colores</string>
+    <string name="no_content">Sin contenido</string>
+    <string name="midterm">Parcial</string>
+    <string name="final_exam">Final</string>
+    <string name="lab">Laboratorios</string>
+    <string name="problems">Problemas</string>
+    <string name="theory">Teoría</string>
+    <string name="group_schedule_item">· Grupo</string>
+    <string name="error_downloading_file">Error descargando el archivo</string>
+    <string name="dowloading">Descargando…</string>
+    <string name="remove_from_favorites_action">Eliminar de favoritos</string>
+    <string name="add_to_favorites_action">Añadir a favoritos</string>
+    <string name="not_class_hours_subject_eval_item">· Fuera horario lectivo</string>
+    <string name="coordinator">Responsable:</string>
+    <string name="middle_dot">·</string>
+    <string name="error_retrieving_subject_data">Ha ocurrido un error al obtener la información</string>
+    <string name="info_subject_tab_title">Información</string>
+    <string name="content_subject_tab_title">Contenidos</string>
+    <string name="activities_subject_tab_title">Actividades</string>
+    <string name="general_error">Ha ocurrido un error, inténtelo de nuevo más tarde</string>
+    <string name="back">Atrás</string>
+    <string name="no_incoming_exams">No hay exámenes próximos</string>
+    <string name="see_all">VER TODO</string>
+    <string name="weekly_hours">Horas semanales</string>
+    <string name="theory_dots">Teoría:</string>
+    <string name="problems_dots">Problemas:</string>
+    <string name="labs_dots">Laboratorio:</string>
+    <string name="guider_learning_dots">Aprendizaje dirigido:</string>
+    <string name="autonomous_learning_dots">Aprendizaje autónomo:</string>
+    <string name="content">Contenido</string>
+    <string name="general">General</string>
+    <string name="department_dots">Departamento:</string>
+    <string name="credits_dots">Créditos:</string>
+    <string name="mail_dots">Correo:</string>
+    <string name="website_dots">Web:</string>
+    <string name="teachers">Profesores</string>
+    <string name="description">Descripción</string>
+    <string name="docent_methodology">Metodología docente</string>
+    <string name="aval_methodology">Metodología evaluación</string>
+    <string name="requirements">Capacidades previas</string>
+    <string name="week_dots">Semana:</string>
+    <string name="duration_dots">Duración:</string>
+    <string name="type_dots">Tipo:</string>
+    <string name="logout_button_text">Cerrar sesión</string>
+    <string name="today_timeline">Horario de hoy</string>
+    <string name="no_classes_today">No hay clases hoy</string>
+    <string name="start_bottom_tab">Inicio</string>
+    <string name="notes_bottom_tab">Avisos</string>
+    <string name="schedule_bottom_tab">Horario</string>
+    <string name="subjects_bottom_tab">Asignaturas</string>
+    <string name="search_action">Buscar</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="pref_enable_dark_mode">Habilitar modo oscuro</string>
+    <string name="pref_enable_dark_mode_title">Modo oscuro</string>
+    <string name="pref_change_cubjects_colors">Modifica los colores de cada asignatura</string>
+    <string name="pref_change_cubjects_colors_title">Colores de asignaturas</string>
+    <string name="pref_language_title">Idioma</string>
+    <string name="pref_version_title">Versión</string>
+    <string name="pref_rate_app_title">Puntúa esta aplicación</string>
+    <string name="pref_help_development_title">Ayuda al desarrollo</string>
+    <string name="pref_open_source_licenses_title">Librerías de código abierto</string>
+
+    <string-array name="language_list_titles">
+        <item>Español</item>
+        <item>Catalan</item>
+        <item>Inglés</item>
+    </string-array>
+
+    <string-array name="language_list_values" translatable="false">
+        <item>es</item>
+        <item>ca</item>
+        <item>en</item>
+    </string-array>
+
+</resources>
