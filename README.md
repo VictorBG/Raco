@@ -1,8 +1,9 @@
 # Raco
 
 [![Build Status](https://travis-ci.com/VictorBG/RacoFib.svg?token=xio7T67Yoyke3FpGmCAb&branch=master)](https://travis-ci.com/VictorBG/RacoFib)
-[![codecov](https://codecov.io/gh/VictorBG/RacoFib/branch/master/graph/badge.svg?token=n4vV3gqOXM)](https://codecov.io/gh/VictorBG/RacoFib)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/825d65ffcc51441b8a328ed98af44bfd)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=VictorBG/RacoFib&amp;utm_campaign=Badge_Grade)
+<!--[![codecov](https://codecov.io/gh/VictorBG/RacoFib/branch/master/graph/badge.svg?token=n4vV3gqOXM)](https://codecov.io/gh/VictorBG/RacoFib)-->
+
 
 <div style="text-align:center; margin-bottom: 16px;"><img src=".github/assets/ic_launcher.png"
             alt="Download from Google Play"
@@ -10,16 +11,15 @@
 
 **An unofficial Android client for [El Racó](http://raco.fib.upc.edu)**.
 
-###### The app is not yet on the play store neither through direct download
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Download from Google Play"
-      height="80">](https://victorblancogarcia.com/)
+      height="80">](https://play.google.com/store/apps/details?id=com.victorbg.racofib)
 [<img src=".github/assets/direct-apk-download.png"
       alt="Direct apk download"
-      height="80">](https://victorblancogarcia.com/)
+      height="80">](https://github.com/VictorBG/RacoFib/releases/tag/v0.2.0)
 
-The app is currently in development and the things might not work correctly until the final release. The test are not done yet.
+**The app is currently in heavy development.**
 
 ### Features
 
@@ -50,12 +50,6 @@ I'm open for any contribution you would like to do either by [_creating a PR_](h
 You can see the [current features](https://github.com/VictorBG/RacoFib/projects/1) that are being developed at the time and contribute to one. Note that the _In Progress_ features are actively being developed and won't accept any PR until it is finished. 
 
 ### FAQ
-
-**Why I have to login every day?**
-
-~~The current system that is being used is the _implicit_ token grant, which doesn't return a refreshToken, that's why when the token has expired it cannot be automatically refreshed and needs the user to log in again. The [_authorization code_](https://github.com/VictorBG/RacoFib/projects/1#card-17730295) grant is scheduled but not actively in development.~~
-
-The auth system has been updated to authorization code grant system, but the automatic refresh system is not yet done.
 
 **I have classes on weekend and the schedule view doesn't show them**
 
