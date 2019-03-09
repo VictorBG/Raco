@@ -12,14 +12,11 @@ import com.victorbg.racofib.data.repository.base.Status;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import androidx.annotation.MainThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-@Singleton
+
 public class NetworkNotesDataSource implements DataSource<Resource<List<Note>>> {
 
     private ApiService apiService;
@@ -31,7 +28,7 @@ public class NetworkNotesDataSource implements DataSource<Resource<List<Note>>> 
         this(apiService, notesDao, null);
     }
 
-    @Inject
+
     public NetworkNotesDataSource(ApiService apiService, NotesDao notesDao, SaveOfflineData<List<Note>> saveData) {
         this.apiService = apiService;
         this.notesDao = notesDao;

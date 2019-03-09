@@ -8,7 +8,7 @@ import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Repository;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.repository.network.NetworkRateLimiter;
+import com.victorbg.racofib.data.repository.network.RateLimiter;
 import com.victorbg.racofib.utils.NetworkUtils;
 
 import java.util.List;
@@ -29,8 +29,8 @@ public class NotesRepository extends Repository {
     private AppExecutors appExecutors;
     private Context context;
 
-    private NetworkRateLimiter networkRateLimiter = new NetworkRateLimiter(15, TimeUnit.MINUTES);
-    private NetworkRateLimiter databaseRateLimiter = new NetworkRateLimiter(1, TimeUnit.MINUTES);
+    private RateLimiter networkRateLimiter = new RateLimiter(15, TimeUnit.MINUTES);
+    private RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
 
     private LiveData<Resource<List<Note>>> notes;
 

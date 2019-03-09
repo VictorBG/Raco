@@ -2,12 +2,12 @@ package com.victorbg.racofib.data.repository.network;
 
 import java.util.concurrent.TimeUnit;
 
-public class NetworkRateLimiter {
+public class RateLimiter {
 
     private long timestamp = -1;
     private final long timeout;
 
-    public NetworkRateLimiter(int timeout, TimeUnit timeUnit) {
+    public RateLimiter(int timeout, TimeUnit timeUnit) {
         this.timeout = timeUnit.toMillis(timeout);
     }
 
