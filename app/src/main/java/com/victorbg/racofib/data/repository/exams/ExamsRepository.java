@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 @Singleton
 public class ExamsRepository extends Repository {
@@ -32,7 +33,7 @@ public class ExamsRepository extends Repository {
 
 
     private final RateLimiter networkRateLimiter = new RateLimiter(1, TimeUnit.HOURS);
-    private final RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
+    private final RateLimiter databaseRateLimiter = new RateLimiter(15, TimeUnit.MINUTES);
 
     private LiveData<Resource<List<Exam>>> examCache = null;
 
@@ -47,8 +48,15 @@ public class ExamsRepository extends Repository {
     }
 
     public LiveData<Resource<List<Exam>>> getExams(List<String> subjects) {
+        if (subjects.size() == 0) {
+            MutableLiveData result = new MutableLiveData();
+            result.setValue(Resource.error("Subjects equal 0", null));
+            examCache = result;
+            return examCache;
+        }
         NetworkExamsDataSource examsDataSource = new NetworkExamsDataSource(apiService, examDao, new ExamsSaveOfflineData(appDatabase, appExecutors), subjects);
         if (examCache == null || NetworkUtils.isOnline(context) && networkRateLimiter.shouldFetch()) {
+            databaseRateLimiter.shouldFetch();
             examCache = examsDataSource.getRemoteData();
         } else if (examCache == null || databaseRateLimiter.shouldFetch()) {
             examCache = examsDataSource.getOfflineData();
@@ -58,6 +66,7 @@ public class ExamsRepository extends Repository {
 
     @Override
     public void clean() {
+        examCache = null;
         networkRateLimiter.reset();
         databaseRateLimiter.reset();
     }

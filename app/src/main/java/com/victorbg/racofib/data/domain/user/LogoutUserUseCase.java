@@ -36,7 +36,7 @@ public class LogoutUserUseCase extends UseCase<Void, Void> {
     @Override
     public Void execute() {
         cleaner.clean();
-        appExecutors.diskIO().execute(() -> appDatabase.clearAllTables());
+        appExecutors.diskIO().execute(appDatabase::clearAllTables);
         prefManager.logout();
         return null;
     }

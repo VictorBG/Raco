@@ -510,7 +510,7 @@ public class CalendarWeekScheduleView extends View {
             drawEvents(dayNumber, startPixel, canvas);
 
             //Draw the current time line on the correct column
-            if (dayNumber == todayNumber) {
+            if (dayNumber == todayNumber && dayNumber != 0) {
                 float startY = timeTextHeight / 2 + currentOrigin.y + startPaddingTop;
                 float beforeNow = (now.get(Calendar.HOUR_OF_DAY) - START_HOUR + now.get(Calendar.MINUTE) / 60.0f) * timeRowHeight;
                 canvas.drawLine(start, startY + beforeNow, startPixel + columnWidth, startY + beforeNow, nowLinePaint);

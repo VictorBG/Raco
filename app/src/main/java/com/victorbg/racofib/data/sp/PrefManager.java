@@ -91,7 +91,7 @@ public class PrefManager {
     public boolean isFirstTime() {
         boolean firstTime = sharedPreferences.getBoolean(FIRST_TIME_KEY, true);
         if (firstTime) {
-            sharedPreferences.edit().putBoolean(FIRST_TIME_KEY, true).apply();
+            sharedPreferences.edit().putBoolean(FIRST_TIME_KEY, false).apply();
         }
         return firstTime;
     }

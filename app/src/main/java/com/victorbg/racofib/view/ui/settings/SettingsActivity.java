@@ -45,6 +45,8 @@ public class SettingsActivity extends BaseActivity implements Injectable, Shared
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        setTitle(R.string.settings);
     }
 
     private void setPreferenceListener() {

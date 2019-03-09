@@ -11,6 +11,7 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.MainActivity;
+import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.viewmodel.LoginViewModel;
 
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements Injectable {
+public class LoginActivity extends BaseActivity implements Injectable {
 
     private static final String STATE = "PiyiidVvcoywpoAeHUtMUESuwekIVBpFZMWPSmwq";
 
@@ -84,6 +85,14 @@ public class LoginActivity extends AppCompatActivity implements Injectable {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         CustomTabsIntent customTabsIntent = builder.build();
         customTabsIntent.launchUrl(this, Uri.parse(url));
+    }
+
+    protected int getLightTheme() {
+        return R.style.AppTheme_Login;
+    }
+
+    protected int getDarkTheme() {
+        return R.style.AppTheme_Login;
     }
 
 }

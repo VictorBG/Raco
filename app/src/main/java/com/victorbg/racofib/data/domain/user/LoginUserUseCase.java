@@ -1,11 +1,15 @@
 package com.victorbg.racofib.data.domain.user;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.victorbg.racofib.data.domain.UseCase;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.user.UserRepository;
+import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.view.base.BaseContextWrapper;
 
 import java.security.InvalidParameterException;
 
@@ -24,7 +28,8 @@ public class LoginUserUseCase extends UseCase<String, LiveData<Resource<String>>
     public LoginUserUseCase(AppExecutors appExecutors, UserRepository userRepository, Context context) {
         super(appExecutors);
         this.userRepository = userRepository;
-        this.context = context;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.context = BaseContextWrapper.wrap(context, sharedPreferences.getString(PrefManager.LOCALE_KEY, PrefManager.LOCALE_SPANISH));
     }
 
     @Override
