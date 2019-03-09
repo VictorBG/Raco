@@ -54,8 +54,8 @@ public class SwipeCallback extends ItemTouchHelper.SimpleCallback {
         this.itemSwipeDrawableCallback = itemSwipeDrawableCallback;
     }
 
-    private SwipeCallback withHorizontalMarginDp(Context ctx, int dp) {
-        return withHorizontalMarginPx((int) (ctx.getResources().getDisplayMetrics().density * dp));
+    private SwipeCallback withHorizontalMarginDp(Context ctx) {
+        return withHorizontalMarginPx((int) (ctx.getResources().getDisplayMetrics().density * 16));
     }
 
     private SwipeCallback withHorizontalMarginPx(int px) {
@@ -115,7 +115,7 @@ public class SwipeCallback extends ItemTouchHelper.SimpleCallback {
             if (bgPaint == null) {
                 bgPaint = new Paint();
                 if (horizontalMargin == Integer.MAX_VALUE) {
-                    withHorizontalMarginDp(recyclerView.getContext(), 16);
+                    withHorizontalMarginDp(recyclerView.getContext());
                 }
             }
             bgPaint.setColor(isLeft ? bgColorLeft : bgColorRight);

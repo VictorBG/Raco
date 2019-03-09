@@ -41,7 +41,6 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
     @BindView(R.id.error_state_message)
     TextView errorTextView;
 
-    private SubjectsViewModel subjectsViewModel;
     private ItemAdapter<SubjectItem> itemAdapter;
 
     @Inject
@@ -50,10 +49,8 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
+        SubjectsViewModel subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
         subjectsViewModel.getSubjects().observe(this, this::onChanged);
-
-
     }
 
     @Nullable

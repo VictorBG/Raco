@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModel;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private LiveData<User> user;
+    private final LiveData<User> user;
 
-    private LogoutUserUseCase logoutUserUseCase;
+    private final LogoutUserUseCase logoutUserUseCase;
 
     @Inject
     public MainActivityViewModel(LoadUserUseCase loadUserUseCase, LogoutUserUseCase logoutUserUseCase) {

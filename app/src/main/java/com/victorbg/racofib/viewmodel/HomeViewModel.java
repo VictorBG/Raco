@@ -22,9 +22,9 @@ import androidx.lifecycle.ViewModel;
 public class HomeViewModel extends ViewModel {
 
     private LiveData<Resource<List<Exam>>> exams;
-    private LiveData<Resource<List<SubjectSchedule>>> schedule;
+    private final LiveData<Resource<List<SubjectSchedule>>> schedule;
 
-    private LoadExamsUseCase loadExamsUseCase;
+    private final LoadExamsUseCase loadExamsUseCase;
 
     @Inject
     public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase) {

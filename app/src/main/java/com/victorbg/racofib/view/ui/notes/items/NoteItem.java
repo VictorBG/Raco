@@ -25,15 +25,14 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implements ISwipeable<NoteItem, IItem> {
 
     private Note note;
 
 
-    private SimpleDateFormat format;
-    private DateFormat df;
+    private final SimpleDateFormat format;
+    private final DateFormat df;
 
     public NoteItem() {
         format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());

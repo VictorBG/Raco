@@ -23,14 +23,14 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class NotesRepository extends Repository {
 
-    private ApiService apiService;
-    private AppDatabase appDatabase;
+    private final ApiService apiService;
+    private final AppDatabase appDatabase;
 
-    private AppExecutors appExecutors;
-    private Context context;
+    private final AppExecutors appExecutors;
+    private final Context context;
 
-    private RateLimiter networkRateLimiter = new RateLimiter(15, TimeUnit.MINUTES);
-    private RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
+    private final RateLimiter networkRateLimiter = new RateLimiter(15, TimeUnit.MINUTES);
+    private final RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
 
     private LiveData<Resource<List<Note>>> notes;
 

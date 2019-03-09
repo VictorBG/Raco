@@ -17,7 +17,6 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;

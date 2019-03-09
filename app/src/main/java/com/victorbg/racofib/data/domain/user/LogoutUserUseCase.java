@@ -14,9 +14,9 @@ import javax.inject.Singleton;
 public class LogoutUserUseCase extends UseCase<Void, Void> {
 
 
-    private RepositoryCleaner cleaner;
-    private AppDatabase appDatabase;
-    private PrefManager prefManager;
+    private final RepositoryCleaner cleaner;
+    private final AppDatabase appDatabase;
+    private final PrefManager prefManager;
 
     @Inject
     public LogoutUserUseCase(AppExecutors appExecutors, RepositoryCleaner cleaner, AppDatabase appDatabase, PrefManager prefManager) {

@@ -22,10 +22,10 @@ import io.reactivex.schedulers.Schedulers;
 public class LoadExamsUseCase extends UseCase<Void, LiveData<Resource<List<Exam>>>> {
 
 
-    private ExamsRepository examsRepository;
-    private AppDatabase appDatabase;
+    private final ExamsRepository examsRepository;
+    private final AppDatabase appDatabase;
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public LoadExamsUseCase(AppExecutors appExecutors, ExamsRepository examsRepository, AppDatabase appDatabase) {

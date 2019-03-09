@@ -33,7 +33,7 @@ public class PrefManager {
     public static final String LOCALE_SPANISH = "es";
     public static final String LOCALE_CATALAN = "ca";
 
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
     private String token = null;
     private boolean darkTheme = false;
     private String locale = LOCALE_SPANISH;

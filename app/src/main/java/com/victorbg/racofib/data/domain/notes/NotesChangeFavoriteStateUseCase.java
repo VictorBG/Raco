@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 @Singleton
 public class NotesChangeFavoriteStateUseCase extends UseCase<Note, Note> {
 
-    NotesRepository repository;
+    final NotesRepository repository;
 
     @Inject
     public NotesChangeFavoriteStateUseCase(AppExecutors appExecutors, NotesRepository repository) {

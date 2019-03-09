@@ -11,8 +11,8 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class ExamsSaveOfflineData implements SaveOfflineData<List<Exam>> {
 
-    private AppDatabase appDatabase;
-    private AppExecutors appExecutors;
+    private final AppDatabase appDatabase;
+    private final AppExecutors appExecutors;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 

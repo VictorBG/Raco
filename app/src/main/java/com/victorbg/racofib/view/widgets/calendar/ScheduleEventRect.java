@@ -4,7 +4,7 @@ import android.graphics.RectF;
 
 public class ScheduleEventRect {
 
-    public ScheduleEvent event;
+    public final ScheduleEvent event;
     public RectF rectF;
     public float left;
     public float width;

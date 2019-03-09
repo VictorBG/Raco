@@ -2,11 +2,6 @@
     <string name="app_name">RacoFib</string>
     <string name="login_button_text">Iniciar sesión</string>
     <string name="settings">Ajustes</string>
-    <string name="news">Noticias</string>
-    <string name="exams">Exámenes</string>
-    <string name="labs">Laboratorios</string>
-    <string name="seminary">Seminarios</string>
-    <string name="webmail">Webmail</string>
     <string name="title_activity_settings">Ajustes</string>
     <string name="fetching_user_message">Obteniendo usuario</string>
     <string name="fetching_subjects_message">Obteniendo asignaturas…</string>

@@ -24,7 +24,7 @@ public class FragmentNavigator {
     private static final String SUBJECTS = "SubjectsFragment";
 
 
-    private FragmentManager fragmentManager;
+    private final FragmentManager fragmentManager;
     private Fragment selectedFragment;
 
     private String lastTagSelected = null;

@@ -1,7 +1,6 @@
 package com.victorbg.racofib.utils;
 
 import com.victorbg.racofib.data.model.notes.Note;
-import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectColor;
 
 import org.junit.Test;

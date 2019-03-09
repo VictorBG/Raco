@@ -19,10 +19,10 @@ import io.reactivex.schedulers.Schedulers;
 //@Singleton
 public class NotesSaveOfflineData implements SaveOfflineData<List<Note>> {
 
-    private NotesDao notesDao;
-    private SubjectsDao subjectsDao;
-    private AppExecutors appExecutors;
-    private AppDatabase appDatabase;
+    private final NotesDao notesDao;
+    private final SubjectsDao subjectsDao;
+    private final AppExecutors appExecutors;
+    private final AppDatabase appDatabase;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 

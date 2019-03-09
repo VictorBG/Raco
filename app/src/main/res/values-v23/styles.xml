@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.NoteDetail" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/md_white_1000</item>
-    </style>
-
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -16,14 +8,6 @@
         <item name="android:statusBarColor">@color/md_white_1000</item>
         <item name="android:navigationBarColor">@color/colorAccentDark</item>
         <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="AppTheme.SubjectDetail" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/md_white_1000</item>
     </style>
 
     <style name="AppTheme.SubjectDetail.Light" parent="AppTheme.Light">

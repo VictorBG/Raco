@@ -76,15 +76,15 @@ public class ProfileModal extends MaterialBottomSheetDialogFragment implements I
     }
 
     public void setDialogBorder(Dialog dialog) {
-        FrameLayout bottomSheet = (FrameLayout) Objects.requireNonNull(dialog.getWindow()).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        FrameLayout bottomSheet = Objects.requireNonNull(dialog.getWindow()).findViewById(com.google.android.material.R.id.design_bottom_sheet);
         bottomSheet.setBackground(new ColorDrawable(Color.TRANSPARENT));
-        setMargins(bottomSheet, 10, 0, 10, 20);
+        setMargins(bottomSheet);
     }
 
-    private void setMargins(View view, int left, int top, int right, int bottom) {
+    private void setMargins(View view) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            p.setMargins(left, top, right, bottom);
+            p.setMargins(10, 0, 10, 20);
             view.requestLayout();
         }
     }

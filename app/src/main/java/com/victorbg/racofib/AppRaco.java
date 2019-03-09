@@ -2,7 +2,6 @@ package com.victorbg.racofib;
 
 import android.app.Activity;
 import android.app.Application;
-import android.net.Uri;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;

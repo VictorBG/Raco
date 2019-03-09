@@ -60,10 +60,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
     ProgressBar examsProgressBar;
 
     private ItemAdapter<ScheduledClassItem> itemAdapter;
-    private FastAdapter<ScheduledClassItem> fastAdapter;
 
     private ItemAdapter<ExamItem> itemAdapterExams;
-    private FastAdapter<ExamItem> fastAdapterExams;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -103,8 +101,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
         itemAdapter = new ItemAdapter<>();
         itemAdapterExams = new ItemAdapter<>();
-        fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
-        fastAdapterExams = FastAdapter.with(Collections.singletonList(itemAdapterExams));
+        FastAdapter<ScheduledClassItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+        FastAdapter<ExamItem> fastAdapterExams = FastAdapter.with(Collections.singletonList(itemAdapterExams));
 
         fastAdapterExams.withEventHook(new ClickEventHook<ExamItem>() {
             @Override

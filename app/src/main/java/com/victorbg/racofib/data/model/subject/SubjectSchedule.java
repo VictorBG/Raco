@@ -13,7 +13,7 @@ public class SubjectSchedule {
 
     @NonNull
     @SerializedName("codi_assig")
-    public String id = "";
+    public  String id = "";
 
     @SerializedName("dia_setmana")
     @ColumnInfo(name = "day_of_week")
@@ -30,7 +30,7 @@ public class SubjectSchedule {
 
     @SerializedName("inici")
     @NonNull
-    public String start = "";
+    public  String start = "";
 
     //Why is this a String on the API? There are groups with letters?
     @SerializedName("grup")

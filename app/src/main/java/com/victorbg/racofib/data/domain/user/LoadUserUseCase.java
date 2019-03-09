@@ -13,7 +13,7 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadUserUseCase extends UseCase<Void, LiveData<User>> {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Inject
     public LoadUserUseCase(AppExecutors appExecutors, UserRepository userRepository) {

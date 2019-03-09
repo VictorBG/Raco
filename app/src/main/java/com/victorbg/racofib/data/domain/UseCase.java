@@ -4,7 +4,7 @@ import com.victorbg.racofib.data.repository.AppExecutors;
 
 public abstract class UseCase<P, R> {
 
-    protected AppExecutors appExecutors;
+    protected final AppExecutors appExecutors;
 
     public UseCase(AppExecutors appExecutors) {
         this.appExecutors = appExecutors;

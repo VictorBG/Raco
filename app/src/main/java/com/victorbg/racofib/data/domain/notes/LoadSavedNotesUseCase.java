@@ -15,7 +15,7 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadSavedNotesUseCase extends UseCase<Void, LiveData<List<Note>>> {
 
-    private AppDatabase appDatabase;
+    private final AppDatabase appDatabase;
 
     @Inject
     public LoadSavedNotesUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {

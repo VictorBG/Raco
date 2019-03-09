@@ -40,7 +40,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements HasSupportFragmentInjector {
 

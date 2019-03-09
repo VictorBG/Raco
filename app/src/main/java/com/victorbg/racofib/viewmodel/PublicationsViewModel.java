@@ -18,9 +18,9 @@ public class PublicationsViewModel extends ViewModel {
 
     private LiveData<Resource<List<Note>>> publications;
 
-    private UseCase<Note, Note> changeFavoriteStateUseCase;
-    private LoadNotesUseCase loadNotesUseCase;
-    private LoadSavedNotesUseCase loadSavedNotesUseCase;
+    private final UseCase<Note, Note> changeFavoriteStateUseCase;
+    private final LoadNotesUseCase loadNotesUseCase;
+    private final LoadSavedNotesUseCase loadSavedNotesUseCase;
 
     @Inject
     public PublicationsViewModel(LoadSavedNotesUseCase loadSavedNotesUseCase, NotesChangeFavoriteStateUseCase notesChangeFavoriteStateUseCase, LoadNotesUseCase loadNotesUseCase) {

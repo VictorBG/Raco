@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModel;
 
 public class SubjectsViewModel extends ViewModel {
 
-    private LiveData<List<Subject>> subjects;
+    private final LiveData<List<Subject>> subjects;
 
     @Inject
     public SubjectsViewModel(LoadSubjectsUseCase loadSubjectsUseCase) {

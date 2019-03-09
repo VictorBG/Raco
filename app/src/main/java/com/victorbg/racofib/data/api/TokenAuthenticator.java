@@ -20,8 +20,8 @@ import timber.log.Timber;
 
 public class TokenAuthenticator implements Authenticator {
 
-    private PrefManager prefManager;
-    private AuthService authService;
+    private final PrefManager prefManager;
+    private final AuthService authService;
 
 
     public TokenAuthenticator(PrefManager prefManager, AuthService authService) {

@@ -16,8 +16,8 @@ public class ChangeColorSubjectUseCase extends UseCase<Subject, Void> {
 
     public static final String BROADCAST_COLORS_CHANGED = "com.victorbg.racofib.colors_changed";
 
-    private AppDatabase appDatabase;
-    private NotesRepository notesRepository;
+    private final AppDatabase appDatabase;
+    private final NotesRepository notesRepository;
 
     @Inject
     public ChangeColorSubjectUseCase(AppExecutors appExecutors, AppDatabase appDatabase, NotesRepository notesRepository) {

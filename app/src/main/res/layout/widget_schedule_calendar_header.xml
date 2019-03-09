@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/schedule_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <FrameLayout
         android:layout_width="0dp"
@@ -46,7 +48,8 @@
             android:layout_width="2px"
             android:layout_height="10dp"
             android:layout_gravity="bottom"
-            android:background="?themeColorDivider" />
+            android:background="?themeColorDivider"
+            tools:ignore="PxUsage" />
 
         <ImageView
             android:layout_width="wrap_content"

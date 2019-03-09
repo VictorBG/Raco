@@ -17,8 +17,8 @@ import javax.inject.Singleton;
 @Singleton
 public class GlideRequests {
 
-    private PrefManager prefManager;
-    private Context context;
+    private final PrefManager prefManager;
+    private final Context context;
 
     @Inject
     public GlideRequests(Context context, PrefManager prefManager) {

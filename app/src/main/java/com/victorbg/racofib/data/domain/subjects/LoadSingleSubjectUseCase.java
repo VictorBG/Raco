@@ -16,7 +16,7 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadSingleSubjectUseCase extends UseCase<String, LiveData<Resource<Subject>>> {
 
-    private SubjectsRepository subjectsRepository;
+    private final SubjectsRepository subjectsRepository;
 
     @Inject
     public LoadSingleSubjectUseCase(AppExecutors appExecutors, SubjectsRepository subjectsRepository) {

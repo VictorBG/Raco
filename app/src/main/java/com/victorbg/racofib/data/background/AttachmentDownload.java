@@ -17,7 +17,7 @@ import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE;
 @Singleton
 public class AttachmentDownload {
 
-    private PrefManager prefManager;
+    private final PrefManager prefManager;
 
     @Inject
     public AttachmentDownload(PrefManager prefManager) {

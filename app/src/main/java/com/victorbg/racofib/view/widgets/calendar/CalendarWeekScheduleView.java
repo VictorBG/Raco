@@ -61,13 +61,11 @@ public class CalendarWeekScheduleView extends View {
     private float timeColumnWidth;
     private float timeRowHeight;
     private float columnWidth;
-    private int nowLineThickness = 5;
-    private int hourSeparatorHeight = 2;
 
     private ScaleGestureDetector scaleDetector;
     private GestureDetectorCompat gestureDetector;
     private OverScroller scroller;
-    private PointF currentOrigin = new PointF(0f, 0f);
+    private final PointF currentOrigin = new PointF(0f, 0f);
     private Direction currentFlingDirection = Direction.NONE;
     private Direction currentScrollDirection = Direction.NONE;
 
@@ -87,30 +85,30 @@ public class CalendarWeekScheduleView extends View {
 
     private boolean isZooming;
     private int newHourHeight = -1;
-    private int minHourHeight;
+    private final int minHourHeight;
     private int effectiveMinHourHeight;
 
-    private int columnGap = 5;
+    private final int columnGap = 5;
 
-    private int textSize;
-    private int timeCellPadding = 20;
+    private final int textSize;
+    private final int timeCellPadding = 20;
 
-    private int visibleDays = 5;
+    private final int visibleDays = 5;
 
     private int dayBackgroundColor = Color.WHITE;
     private int nowLineColor = Color.BLACK;
     private int hourSeparatorColor = Color.rgb(230, 230, 230);
-    private int hourTextColor;
+    private final int hourTextColor;
 
 
-    private int eventTextSize;
-    private int eventPadding;
-    private int startPaddingTop;
+    private final int eventTextSize;
+    private final int eventPadding;
+    private final int startPaddingTop;
 
     private boolean dimensionsInvalid = true;
 
-    private int overlappingEventGap;
-    private int eventCornerRadius;
+    private final int overlappingEventGap;
+    private final int eventCornerRadius;
 
     private final GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
 
@@ -237,6 +235,7 @@ public class CalendarWeekScheduleView extends View {
 
         // Prepare the "now" line color paint
         nowLinePaint = new Paint();
+        int nowLineThickness = 5;
         nowLinePaint.setStrokeWidth(nowLineThickness);
         nowLinePaint.setColor(nowLineColor);
 
@@ -489,6 +488,7 @@ public class CalendarWeekScheduleView extends View {
             int i = 0;
             for (int hourNumber = 0; hourNumber <= (END_HOUR - START_HOUR + 1); hourNumber++) {
                 float top = +currentOrigin.y + timeRowHeight * hourNumber + timeTextHeight / 2 + startPaddingTop;
+                int hourSeparatorHeight = 2;
                 if (top > timeTextHeight / 2 - hourSeparatorHeight && top < getHeight() && startPixel + columnWidth - start > 0) {
                     hourLines[i * 4] = start;
                     hourLines[i * 4 + 1] = top;

@@ -15,7 +15,7 @@ public class SubjectDetailViewModel extends ViewModel {
 
     private LiveData<Resource<Subject>> subject = null;
 
-    private LoadSingleSubjectUseCase loadSingleSubjectUseCase;
+    private final LoadSingleSubjectUseCase loadSingleSubjectUseCase;
 
     @Inject
     public SubjectDetailViewModel(LoadSingleSubjectUseCase loadSingleSubjectUseCase) {

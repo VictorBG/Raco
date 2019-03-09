@@ -21,6 +21,7 @@ import timber.log.Timber;
  *
  * @param <T>
  */
+@SuppressWarnings("ALL")
 public class ApiResponse<T> {
     private static final Pattern LINK_PATTERN = Pattern
             .compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"");

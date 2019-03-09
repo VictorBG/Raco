@@ -17,7 +17,7 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadNotesUseCase extends UseCase<Boolean, LiveData<Resource<List<Note>>>> {
 
-    private NotesRepository notesRepository;
+    private final NotesRepository notesRepository;
 
     @Inject
     public LoadNotesUseCase(AppExecutors appExecutors, NotesRepository notesRepository) {

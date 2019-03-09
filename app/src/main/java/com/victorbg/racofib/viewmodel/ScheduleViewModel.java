@@ -15,7 +15,7 @@ public class ScheduleViewModel extends ViewModel {
 
     private LiveData<Resource<List<SubjectSchedule>>> schedule;
 
-    private LoadScheduleUseCase scheduleUseCase;
+    private final LoadScheduleUseCase scheduleUseCase;
 
     @Inject
     public ScheduleViewModel(LoadScheduleUseCase scheduleUseCase) {

@@ -1,9 +1,7 @@
 package com.victorbg.racofib.viewmodel;
 
-import android.content.Context;
 import android.net.Uri;
 
-import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.domain.user.LoginUserUseCase;
 import com.victorbg.racofib.data.repository.base.Resource;
 
@@ -12,12 +10,11 @@ import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import timber.log.Timber;
 
 public class LoginViewModel extends ViewModel {
 
 
-    private LoginUserUseCase loginUserUseCase;
+    private final LoginUserUseCase loginUserUseCase;
 
     @Inject
     public LoginViewModel(LoginUserUseCase loginUserUseCase) {

@@ -31,16 +31,16 @@ import timber.log.Timber;
 @Singleton
 public class UserRepository {
 
-    private ApiService apiService;
-    private UserDao userDao;
-    private SubjectsDao subjectsDao;
-    private SubjectScheduleDao subjectScheduleDao;
-    private PrefManager prefManager;
-    private AppExecutors appExecutors;
+    private final ApiService apiService;
+    private final UserDao userDao;
+    private final SubjectsDao subjectsDao;
+    private final SubjectScheduleDao subjectScheduleDao;
+    private final PrefManager prefManager;
+    private final AppExecutors appExecutors;
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
 
     @Inject
     public UserRepository(AppExecutors appExecutors, AppDatabase appDatabase, PrefManager prefManager, ApiService apiService) {

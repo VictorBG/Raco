@@ -1,6 +1,5 @@
 package com.victorbg.racofib.data.repository.network;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;

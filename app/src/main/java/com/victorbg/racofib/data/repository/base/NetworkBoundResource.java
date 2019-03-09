@@ -14,9 +14,9 @@ import timber.log.Timber;
 
 public abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    protected MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
+    protected final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
 
-    protected AppExecutors appExecutors;
+    protected final AppExecutors appExecutors;
 
     @MainThread
     protected NetworkBoundResource(AppExecutors appExecutors) {

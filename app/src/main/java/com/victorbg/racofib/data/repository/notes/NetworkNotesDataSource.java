@@ -19,10 +19,10 @@ import androidx.lifecycle.MediatorLiveData;
 
 public class NetworkNotesDataSource implements DataSource<Resource<List<Note>>> {
 
-    private ApiService apiService;
-    private NotesDao notesDao;
+    private final ApiService apiService;
+    private final NotesDao notesDao;
 
-    private SaveOfflineData<List<Note>> saveOfflineData;
+    private final SaveOfflineData<List<Note>> saveOfflineData;
 
     public NetworkNotesDataSource(ApiService apiService, NotesDao notesDao) {
         this(apiService, notesDao, null);

@@ -53,9 +53,6 @@ public class SubjectDetail extends BaseActivity implements Injectable {
 
     private Subject subject;
 
-    private SubjectDetailViewModel viewModel;
-    private SubjectPagerAdapter adapter;
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
@@ -66,7 +63,7 @@ public class SubjectDetail extends BaseActivity implements Injectable {
 
         ButterKnife.bind(this, binding.getRoot());
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectDetailViewModel.class);
+        SubjectDetailViewModel viewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectDetailViewModel.class);
 
         getSubject();
 
@@ -116,7 +113,7 @@ public class SubjectDetail extends BaseActivity implements Injectable {
         fragments.add(SubjectContentsFragments.newInstance(subject));
         fragments.add(SubjectActivitiesFragment.newInstance(subject));
 
-        adapter = new SubjectPagerAdapter(getSupportFragmentManager(), fragments);
+        SubjectPagerAdapter adapter = new SubjectPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -138,7 +135,7 @@ public class SubjectDetail extends BaseActivity implements Injectable {
 
     private class SubjectPagerAdapter extends FragmentStatePagerAdapter {
 
-        private List<Fragment> fragments;
+        private final List<Fragment> fragments;
 
         public SubjectPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);

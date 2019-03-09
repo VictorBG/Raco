@@ -2,11 +2,7 @@ package com.victorbg.racofib.data.repository.exams;
 
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.dao.ExamDao;
-import com.victorbg.racofib.data.database.dao.NotesDao;
-import com.victorbg.racofib.data.model.api.ApiNotesResponse;
-import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
-import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.DataSource;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.SaveOfflineData;
@@ -14,9 +10,6 @@ import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.utils.Utils;
 
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -28,10 +21,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NetworkExamsDataSource implements DataSource<Resource<List<Exam>>> {
 
-    private ApiService apiService;
-    private ExamDao examDao;
-    private SaveOfflineData<List<Exam>> saveOfflineData;
-    private List<String> subjects;
+    private final ApiService apiService;
+    private final ExamDao examDao;
+    private final SaveOfflineData<List<Exam>> saveOfflineData;
+    private final List<String> subjects;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 

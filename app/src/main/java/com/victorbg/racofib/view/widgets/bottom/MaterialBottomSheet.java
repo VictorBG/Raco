@@ -113,11 +113,11 @@ public class MaterialBottomSheet extends AppCompatDialog {
     private View wrapInBottomSheet(int layoutResId, View view, ViewGroup.LayoutParams params) {
         FrameLayout container =
                 (FrameLayout) View.inflate(getContext(), R.layout.design_bottom_sheet, null);
-        CoordinatorLayout coordinator = (CoordinatorLayout) container.findViewById(R.id.coordinator);
+        CoordinatorLayout coordinator = container.findViewById(R.id.coordinator);
         if (layoutResId != 0 && view == null) {
             view = getLayoutInflater().inflate(layoutResId, coordinator, false);
         }
-        FrameLayout bottomSheet = (FrameLayout) coordinator.findViewById(R.id.design_bottom_sheet);
+        FrameLayout bottomSheet = coordinator.findViewById(R.id.design_bottom_sheet);
         behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setBottomSheetCallback(bottomSheetCallback);
         behavior.setHideable(cancelable);
@@ -193,7 +193,7 @@ public class MaterialBottomSheet extends AppCompatDialog {
         return themeId;
     }
 
-    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
+    private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
             new BottomSheetBehavior.BottomSheetCallback() {
                 @Override
                 public void onStateChanged(

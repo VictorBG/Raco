@@ -21,8 +21,8 @@ import io.reactivex.schedulers.Schedulers;
 @Singleton
 public class LoadTodayScheduleUseCase extends UseCase<Void, LiveData<Resource<List<SubjectSchedule>>>> {
 
-    private AppDatabase appDatabase;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final AppDatabase appDatabase;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public LoadTodayScheduleUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {

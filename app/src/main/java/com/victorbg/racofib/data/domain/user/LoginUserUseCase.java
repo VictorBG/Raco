@@ -17,8 +17,8 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoginUserUseCase extends UseCase<String, LiveData<Resource<String>>> {
 
-    private UserRepository userRepository;
-    private Context context;
+    private final UserRepository userRepository;
+    private final Context context;
 
     @Inject
     public LoginUserUseCase(AppExecutors appExecutors, UserRepository userRepository, Context context) {

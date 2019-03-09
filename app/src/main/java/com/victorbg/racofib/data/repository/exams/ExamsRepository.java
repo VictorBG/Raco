@@ -24,15 +24,15 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class ExamsRepository extends Repository {
 
-    private ApiService apiService;
-    private ExamDao examDao;
-    private AppExecutors appExecutors;
-    private AppDatabase appDatabase;
-    private Context context;
+    private final ApiService apiService;
+    private final ExamDao examDao;
+    private final AppExecutors appExecutors;
+    private final AppDatabase appDatabase;
+    private final Context context;
 
 
-    private RateLimiter networkRateLimiter = new RateLimiter(1, TimeUnit.HOURS);
-    private RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
+    private final RateLimiter networkRateLimiter = new RateLimiter(1, TimeUnit.HOURS);
+    private final RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
 
     private LiveData<Resource<List<Exam>>> examCache = null;
 

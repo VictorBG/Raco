@@ -17,10 +17,10 @@ import timber.log.Timber;
 
 public class SubjectsRepository {
 
-    private AppExecutors appExecutors;
-    private ApiService apiService;
+    private final AppExecutors appExecutors;
+    private final ApiService apiService;
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public SubjectsRepository(AppExecutors appExecutors, ApiService apiService) {

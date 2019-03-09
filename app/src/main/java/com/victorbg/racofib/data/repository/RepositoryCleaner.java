@@ -11,8 +11,8 @@ import javax.inject.Singleton;
 @Singleton
 public class RepositoryCleaner {
 
-    private Repository examsRepository;
-    private Repository notesRepository;
+    private final Repository examsRepository;
+    private final Repository notesRepository;
 
     @Inject
     public RepositoryCleaner(ExamsRepository examsRepository, NotesRepository notesRepository, AppDatabase appDatabase) {

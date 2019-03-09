@@ -8,8 +8,6 @@ import androidx.annotation.Nullable;
 
 public class SubjectGradesFragment extends BaseFragment {
 
-    private String subject;
-
     public static SubjectGradesFragment newInstance(String subject) {
         SubjectGradesFragment fragment = new SubjectGradesFragment();
 
@@ -27,6 +25,6 @@ public class SubjectGradesFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        subject = getArguments().getString("Subject");
+        String subject = getArguments().getString("Subject");
     }
 }

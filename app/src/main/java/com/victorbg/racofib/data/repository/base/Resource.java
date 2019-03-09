@@ -4,9 +4,9 @@ import javax.annotation.Nullable;
 
 public class Resource<T> {
 
-    public T data;
-    public Status status;
-    public String message;
+    public final T data;
+    public final Status status;
+    public final String message;
 
     public Resource(Status status, @Nullable T data, @Nullable String message) {
         this.data = data;

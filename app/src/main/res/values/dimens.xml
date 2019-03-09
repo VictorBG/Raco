@@ -1,26 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="extended_fab_height">64dp</dimen>
-    <dimen name="extended_fab_elevation">6dp</dimen>
-    <dimen name="extended_fab_padding_start_end">20dp</dimen>
-    <dimen name="extended_fab_text_size">14sp</dimen>
-    <dimen name="extended_fab_corner_radius">32dp</dimen>
-    <dimen name="extended_fab_icon_padding">12dp</dimen>
-    <dimen name="extended_fab_icon_size">24dp</dimen>
-    <dimen name="icon_width_height">40dp</dimen>
     <dimen name="icon_subject_detail_width_height">96dp</dimen>
-    <dimen name="icon_text">18sp</dimen>
     <dimen name="bottom_sheet_corner_radius">8dp</dimen>
 
     <dimen name="calendar_schedule_event_corner_radius">4dp</dimen>
     <dimen name="calendar_schedule_event_overlapping_gap">2dp</dimen>
     <dimen name="calendar_schedule_event_padding">8dp</dimen>
-    <dimen name="calendar_column_cell_min_height">56dp</dimen>
-    <dimen name="calendar_column_cell_min_width">96dp</dimen>
-    <dimen name="calendar_hour_size">14sp</dimen>
     <dimen name="calendar_schedule_hour_height">60dp</dimen>
     <dimen name="calendar_schedule_text_size">12sp</dimen>
-    <dimen name="calendar_schedule_text_size_event">14sp</dimen>
     <dimen name="calendar_schedule_min_hour_height">56dp</dimen>
     <dimen name="snackbar_bottom_margin">16dp</dimen>
 </resources>

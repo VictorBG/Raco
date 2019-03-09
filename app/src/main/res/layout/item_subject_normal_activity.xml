@@ -84,7 +84,6 @@
             app:layout_constraintTop_toBottomOf="@+id/hours_tv" />
 
         <TextView
-            android:id="@+id/theory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -95,7 +94,6 @@
             tools:text="5.6" />
 
         <TextView
-            android:id="@+id/autonomous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -146,7 +144,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
         <TextView
-            android:id="@+id/problems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -157,7 +154,6 @@
             tools:text="6.0" />
 
         <TextView
-            android:id="@+id/lab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -169,7 +165,6 @@
             tools:text="5.6" />
 
         <TextView
-            android:id="@+id/guided"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

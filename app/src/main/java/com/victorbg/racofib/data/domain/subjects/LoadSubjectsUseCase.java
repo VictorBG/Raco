@@ -15,7 +15,7 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadSubjectsUseCase extends UseCase<Void, LiveData<List<Subject>>> {
 
-    private SubjectsDao subjectsDao;
+    private final SubjectsDao subjectsDao;
 
     @Inject
     public LoadSubjectsUseCase(AppExecutors appExecutors, SubjectsDao subjectsDao) {
