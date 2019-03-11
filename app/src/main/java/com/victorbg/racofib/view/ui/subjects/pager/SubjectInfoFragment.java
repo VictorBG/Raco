@@ -74,14 +74,14 @@ public class SubjectInfoFragment extends BaseFragment {
 
             StringBuilder teacherTextViewText = new StringBuilder();
             if (teacher.responsable) {
-                teacherTextViewText.append(R.string.coordinator);
+                teacherTextViewText.append(getContext().getString(R.string.coordinator));
                 teacherTextViewText.append(" ");
                 teacherTextView.setTypeface(teacherTextView.getTypeface(), Typeface.BOLD);
             }
 
             teacherTextViewText.append(teacher.name);
             teacherTextViewText.append(" ");
-            teacherTextViewText.append(R.string.middle_dot);
+            teacherTextViewText.append(getContext().getString(R.string.middle_dot));
             teacherTextViewText.append(" ");
             teacherTextViewText.append(teacher.email);
 
