@@ -88,8 +88,11 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
 
         if (getActivity() instanceof BaseActivity) {
             return ((BaseActivity) getActivity()).showSnackbar(v, s, length);
+        } else {
+            Snackbar snackbar = Snackbar.make(v, s, length);
+            snackbar.show();
+            return snackbar;
         }
-        return null;
     }
 
 }
