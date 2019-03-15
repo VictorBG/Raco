@@ -1,8 +1,10 @@
 package com.victorbg.racofib.view.base;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
@@ -83,9 +85,11 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
     }
 
     public Snackbar showSnackbar(View v, String s, int length) {
-        Snackbar snackbar = Snackbar.make(v, s, length);
-        snackbar.show();
-        return snackbar;
+
+        if (getActivity() instanceof BaseActivity) {
+            return ((BaseActivity) getActivity()).showSnackbar(v, s, length);
+        }
+        return null;
     }
 
 }

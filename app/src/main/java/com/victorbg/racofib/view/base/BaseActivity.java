@@ -3,11 +3,15 @@ package com.victorbg.racofib.view.base;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 
@@ -60,6 +64,10 @@ public abstract class BaseActivity extends BaseThemeActivity implements Injectab
 
     public Snackbar showSnackbar(View v, String s, int length) {
         Snackbar snackbar = Snackbar.make(v, s, length);
+        if (isDarkThemeEnabled) {
+            snackbar.getView().setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFBDBDBD")));
+            ((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(getResources().getColor(R.color.md_light_primary_text));
+        }
         snackbar.show();
         return snackbar;
     }

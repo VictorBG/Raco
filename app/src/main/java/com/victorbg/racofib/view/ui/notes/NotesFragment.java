@@ -16,10 +16,14 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Status;
+import com.victorbg.racofib.databinding.FragmentNotesBinding;
+import com.victorbg.racofib.databinding.FragmentSubjectContentBinding;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +33,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,6 +42,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class NotesFragment extends BaseFragment implements Observer<List<Note>>, Injectable {
@@ -63,33 +69,28 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
-
-        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        FragmentNotesBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notes, container, false);
+        ButterKnife.bind(this, binding.getRoot());
+        binding.setLifecycleOwner(this);
+        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
+        binding.setNotesViewModel(publicationsViewModel);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
         setRecycler();
-//        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        new Handler().postDelayed(() -> reload(false), 100);
-
+        new Handler().postDelayed(this::reload, 100);
     }
 
     private void setRecycler() {
@@ -99,7 +100,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
-            public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
+            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
                 Intent intent = new Intent(getContext(), NoteDetail.class);
                 intent.putExtra(NoteDetail.NOTE_PARAM, item.getNote());
                 NotesFragment.this.startActivity(intent);
@@ -118,7 +119,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
-            public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
+            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
                 Note note = publicationsViewModel.changeFavoriteState(item.getNote());
                 showSnackbar(getMainActivity().findViewById(R.id.parent), note.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
                 fastAdapter.notifyAdapterItemChanged(position);
@@ -143,13 +144,15 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
     }
 
+    private void reload() {
+        reload(false);
+    }
+
     private void reload(boolean force) {
-        publicationsViewModel.getPublications().removeObservers(this);
         publicationsViewModel.reload(force);
-        swipeRefreshLayout.setRefreshing(true);
         publicationsViewModel.getPublications().observe(this, listResource -> {
             Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
-            onChangedState(listResource.status, listResource.message);
+            onChangedState(listResource.status);
             onChanged(listResource.data);
         });
     }
@@ -157,7 +160,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     @Override
     public void onStop() {
         super.onStop();
-        publicationsViewModel.getPublications().removeObservers(this);
     }
 
     public void onChanged(List<Note> notes) {
@@ -173,25 +175,13 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         FastAdapterDiffUtil.set(itemAdapter, diffs);
 
         if (oldListSize != notes.size()) {
-            //((MainActivity)getActivity()).hideToolbar();
             recyclerView.scrollToPosition(0);
+//            recyclerView.scheduleLayoutAnimation();
         }
 
     }
 
-    private void onChangedState(final Status st, String message) {
-
-        int errorTvVis;
-        int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.GONE;
-        int rvVis = (st == Status.ERROR) ? View.INVISIBLE : View.VISIBLE;
-
-        errorTextView.setVisibility(errorTvVis);
-        errorTextView.setText(message);
-        animationView.setVisibility(animVis);
-        recyclerView.setVisibility(rvVis);
-        if (animVis == View.VISIBLE) {
-            animationView.playAnimation();
-        }
+    private void onChangedState(final Status st) {
         swipeRefreshLayout.setRefreshing(st == Status.LOADING);
     }
 

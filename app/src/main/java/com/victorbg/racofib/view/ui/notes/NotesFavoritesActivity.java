@@ -73,7 +73,7 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
     @Override
     public void onStart() {
         super.onStart();
-        reload();
+//        reload();
     }
 
     @Override

@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModel;
 
 public class PublicationsViewModel extends ViewModel {
 
-    private LiveData<Resource<List<Note>>> publications;
+    public LiveData<Resource<List<Note>>> publications;
 
     private final UseCase<Note, Note> changeFavoriteStateUseCase;
     private final LoadNotesUseCase loadNotesUseCase;
@@ -39,7 +39,7 @@ public class PublicationsViewModel extends ViewModel {
     }
 
     public void reload() {
-        reload(false);
+        reload(true);
     }
 
     public void reload(boolean force) {
