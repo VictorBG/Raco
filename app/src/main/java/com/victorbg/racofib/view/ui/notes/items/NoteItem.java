@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.text.Html;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.mikepenz.fastadapter_extensions.swipe.ISwipeable;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Note;
+import com.victorbg.racofib.view.widgets.attachments.AttachmentsGroup;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -25,6 +27,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implements ISwipeable<NoteItem, IItem> {
 
@@ -76,7 +79,9 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
     @Override
     public long getIdentifier() {
-        return note.getIdentifier();
+        long a = note.id;
+        Timber.d("ID: %d", a);
+        return a;
     }
 
     public class ViewHolder extends FastAdapter.ViewHolder<NoteItem> {
@@ -89,6 +94,10 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView subject;
         @BindView(R.id.attachments)
         ImageView attachmentsView;
+        @BindView(R.id.attachmentsGroup)
+        AttachmentsGroup attachmentsGroup;
+        @BindView(R.id.attachmentsScrollView)
+        FrameLayout attachmentsScrollView;
         @BindView(R.id.saved)
         public ImageView saved;
 
@@ -115,11 +124,14 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
             if (item.note.attachments.size() == 0) {
                 attachmentsView.setVisibility(View.GONE);
+                attachmentsScrollView.setVisibility(View.GONE);
+                attachmentsGroup.removeAllViews();
             } else {
                 attachmentsView.setVisibility(View.VISIBLE);
+                attachmentsScrollView.setVisibility(View.VISIBLE);
+                attachmentsGroup.setAttachments(item.note.attachments);
             }
         }
-
 
         @Override
         public void unbindView(@NonNull NoteItem item) {

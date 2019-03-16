@@ -78,6 +78,8 @@
     <string name="pref_rate_app_title">Puntua aquesta aplicació</string>
     <string name="pref_help_development_title">Ajuda al desenvolupament</string>
     <string name="pref_open_source_licenses_title">Llibreries de codi obert</string>
+    <string name="downloading_title">Downloading file</string>
+    <string name="downloading_file_desc">Descargando archivo: %s</string>
 
     <string-array name="language_list_titles">
         <item>Espanyol</item>

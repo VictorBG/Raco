@@ -10,10 +10,16 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-@Entity(tableName = "Notes", primaryKeys = {"subject", "date", "title"})
+@Entity(tableName = "Notes")
 public class Note implements Parcelable {
+
+    @NonNull
+    @PrimaryKey
+    public long id;
+
     @NonNull
     @SerializedName("titol")
     public String title;
@@ -40,7 +46,7 @@ public class Note implements Parcelable {
     public boolean favorite = false;
 
     public long getIdentifier() {
-        return (title + subject).hashCode() + (favorite ? 1 : 0) + color.hashCode();
+        return (subject).hashCode() + (favorite ? 1 : 0) + color.hashCode();
     }
 
     public Note() {

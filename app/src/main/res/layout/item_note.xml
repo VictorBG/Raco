@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/montserrat"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toStartOf="@+id/attachments"
         app:layout_constraintStart_toEndOf="@+id/icon_text"
@@ -73,5 +74,23 @@
         app:layout_constraintTop_toBottomOf="@+id/date"
         app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
+    <HorizontalScrollView
+        android:id="@+id/attachmentsScrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/saved"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+
+        <com.victorbg.racofib.view.widgets.attachments.AttachmentsGroup
+            android:id="@+id/attachmentsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true" />
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

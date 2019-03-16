@@ -1,8 +1,10 @@
 package com.victorbg.racofib.view.base;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,14 +14,26 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.background.AttachmentDownload;
+import com.victorbg.racofib.data.model.notes.Attachment;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import butterknife.ButterKnife;
 
 @SuppressLint("Registered")
-public abstract class BaseActivity extends BaseThemeActivity implements Injectable {
+public class BaseActivity extends BaseThemeActivity implements Injectable {
+
+    @Inject
+    AttachmentDownload attachmentDownload;
+
+    private Attachment attachmentSaved = null;
 
     private String locale;
 
@@ -46,6 +60,31 @@ public abstract class BaseActivity extends BaseThemeActivity implements Injectab
         if (isDarkThemeEnabled != prefManager.isDarkThemeEnabled() ||
                 !locale.equals(sharedPreferences.getString(PrefManager.LOCALE_KEY, PrefManager.LOCALE_SPANISH))) {
             recreate();
+        }
+    }
+
+    public void downloadFile(Attachment attachment) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            this.attachmentSaved = attachment;
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        } else {
+            attachmentDownload.download(attachment, this);
+            attachmentSaved = null;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                downloadFile(attachmentSaved);
+            }
         }
     }
 
