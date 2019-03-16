@@ -102,7 +102,7 @@ public class SubjectActivitiesFragment extends BaseFragment {
                 items.add(new SubjectActivityItem().withSubjectActivity(l.get(i)).withContext(getContext()));
             } else {
                 if (l2.indexOfKey(i) >= 0) {
-                    items.add(new SubjectEvalActivityItem().withEvalSubjectActivity(l2.get(i)));
+                    items.add(new SubjectEvalActivityItem().withEvalSubjectActivity(l2.get(i)).withContext(getContext()));
                 }
             }
         }

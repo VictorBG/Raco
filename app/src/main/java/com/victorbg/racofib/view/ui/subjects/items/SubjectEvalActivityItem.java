@@ -72,7 +72,7 @@ public class SubjectEvalActivityItem extends AbstractItem<SubjectEvalActivityIte
 
             String w = String.valueOf(item.subject.week);
             if (item.subject.notInClassHours) {
-                w += " " + context.getString(R.string.not_class_hours_subject_eval_item);
+                w += " " + item.context.getString(R.string.not_class_hours_subject_eval_item);
             }
             week.setText(w);
         }
