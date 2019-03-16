@@ -108,8 +108,8 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     //Navigation components
-    implementation "android.arch.navigation:navigation-fragment:1.0.0-rc02"
-    implementation "android.arch.navigation:navigation-ui:1.0.0-rc02"
+    implementation "android.arch.navigation:navigation-fragment:1.0.0"
+    implementation "android.arch.navigation:navigation-ui:1.0.0"
 
     //Dagger
     implementation 'com.google.dagger:dagger:2.16'
@@ -149,6 +149,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-oss-licenses:16.0.2'
 
     implementation 'com.jaredrummler:colorpicker:1.1.0'
+
+    api 'com.google.guava:guava:27.1-android'
 
 
 }

@@ -232,9 +232,9 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
                 startActivityForResult(new Intent(this, SettingsActivity.class), 400);
                 break;
-//            case R.id.filter_menu:
-//                showSnackbar(findViewById(R.id.parent), "Filter");
-//                break;
+            case R.id.filter_menu:
+                fragmentNavigator.onFilterSelected();
+                break;
 
         }
         return true;

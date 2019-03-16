@@ -8,11 +8,11 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
 
-    <!--<item-->
-    <!--android:id="@+id/filter_menu"-->
-    <!--android:icon="@drawable/ic_filter_list_black_24dp"-->
-    <!--android:title="Filtrar"-->
-    <!--app:showAsAction="always" />-->
+    <item
+        android:id="@+id/filter_menu"
+        android:icon="@drawable/ic_tune_black_24dp"
+        android:title="@string/filter"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/settings_menu"

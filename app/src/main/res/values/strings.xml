@@ -81,6 +81,12 @@
     <string name="pref_open_source_licenses_title">Librerías de código abierto</string>
     <string name="downloading_title">Downloading file</string>
     <string name="downloading_file_desc">Descargando archivo: %s</string>
+    <string name="filter">Filtrar</string>
+    <string name="order">Orden</string>
+    <string name="apply">Aplicar</string>
+    <string name="order_asc">Fecha ascendiente</string>
+    <string name="order_desc">Fecha descendiente</string>
+    <string name="close">Cerrar</string>
 
     <string-array name="language_list_titles">
         <item>Español</item>

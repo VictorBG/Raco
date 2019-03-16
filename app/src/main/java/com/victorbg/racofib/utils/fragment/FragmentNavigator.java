@@ -122,4 +122,7 @@ public class FragmentNavigator {
     }
 
 
+    public void onFilterSelected() {
+        ((BaseFragment) selectedFragment).onFilterSelected();
+    }
 }

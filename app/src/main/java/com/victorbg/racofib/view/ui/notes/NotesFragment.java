@@ -17,8 +17,8 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.databinding.FragmentNotesBinding;
-import com.victorbg.racofib.databinding.FragmentSubjectContentBinding;
 import com.victorbg.racofib.di.injector.Injectable;
+import com.victorbg.racofib.utils.ConsumableBoolean;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
@@ -64,6 +64,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
     private PublicationsViewModel publicationsViewModel;
 
+    private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,9 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
+        publicationsViewModel.orderAscending.observe(this, data -> {
+            scheduledScrollToTop.setValue(true);
+        });
         setRecycler();
     }
 
@@ -174,7 +179,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
         FastAdapterDiffUtil.set(itemAdapter, diffs);
 
-        if (oldListSize != notes.size()) {
+        if (oldListSize != notes.size() || scheduledScrollToTop.getValue()) {
             recyclerView.scrollToPosition(0);
 //            recyclerView.scheduleLayoutAnimation();
         }
@@ -194,4 +199,10 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     public void onQuery(String query) {
         itemAdapter.filter(query);
     }
+
+    @Override
+    public void onFilterSelected() {
+        publicationsViewModel.onFilterClick();
+    }
 }
+

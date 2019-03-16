@@ -17,14 +17,24 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="?themeBackgroundColor"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="?themeBackgroundColor"
         android:orientation="vertical">
+
+        <include
+            android:id="@+id/filterLayout"
+            layout="@layout/filter_notes"
+            app:viewModel="@{notesViewModel}"
+            android:visibility="@{notesViewModel.filterVisibility?View.VISIBLE:View.GONE}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/filterLayout">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_notes"

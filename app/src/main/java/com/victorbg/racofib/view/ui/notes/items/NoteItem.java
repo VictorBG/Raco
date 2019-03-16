@@ -79,9 +79,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
     @Override
     public long getIdentifier() {
-        long a = note.id;
-        Timber.d("ID: %d", a);
-        return a;
+        return note.id;
     }
 
     public class ViewHolder extends FastAdapter.ViewHolder<NoteItem> {

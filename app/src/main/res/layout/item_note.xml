@@ -80,14 +80,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         app:layout_constraintEnd_toStartOf="@+id/saved"
         app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title">
 
         <com.victorbg.racofib.view.widgets.attachments.AttachmentsGroup
             android:id="@+id/attachmentsGroup"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleLine="true" />

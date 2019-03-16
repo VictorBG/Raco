@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="java.util.Map" />
+
+        <import type="com.victorbg.racofib.R" />
+
+        <variable
+            name="viewModel"
+            type="com.victorbg.racofib.viewmodel.PublicationsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?themeBackgroundColor"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/filter"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?themePrimaryTextColor" />
+
+        <com.victorbg.racofib.view.widgets.filter.FilterGroup
+            android:id="@+id/filterGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:chipSpacing="8dp"
+            app:subjectsFilter="@{viewModel.subjects}">
+
+        </com.victorbg.racofib.view.widgets.filter.FilterGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/order"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="?themePrimaryTextColor" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:checkedButton="@id/dscDateFilter"
+            android:onCheckedChanged="@{(group, id) -> viewModel.orderChanged(id)}">
+
+            <RadioButton
+                android:id="@+id/ascDateFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order_asc" />
+
+            <RadioButton
+                android:id="@+id/dscDateFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order_desc" />
+        </RadioGroup>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:onClick="@{() -> viewModel.closeFilter() }"
+                android:text="@string/close"
+                app:layout_constraintEnd_toStartOf="@+id/materialButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:onClick="@{() -> viewModel.applyFilter() }"
+                android:text="@string/apply"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?themeColorDivider" />
+
+    </LinearLayout>
+</layout>

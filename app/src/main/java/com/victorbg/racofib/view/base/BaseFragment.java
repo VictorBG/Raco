@@ -69,6 +69,12 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
 
     }
 
+    /**
+     * Dispatch the filter click. By default it has no action
+     */
+    public void onFilterSelected() {
+    }
+
     public Snackbar showSnackbar(String s) {
         return showSnackbar(s, Snackbar.LENGTH_LONG);
     }
@@ -94,5 +100,6 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
             return snackbar;
         }
     }
+
 
 }

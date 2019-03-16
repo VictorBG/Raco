@@ -79,6 +79,12 @@
     <string name="pref_help_development_title">Help development</string>
     <string name="pref_open_source_licenses_title">Open source licenses</string>
     <string name="downloading_title">Downloading file</string>
+    <string name="filter">Filtrar</string>
+    <string name="order">Orden</string>
+    <string name="apply">Aplicar</string>
+    <string name="order_asc">Fecha ascendiente</string>
+    <string name="order_desc">Fecha descendiente</string>
+    <string name="close">Cerrar</string>
 
     <string-array name="language_list_titles">
         <item>Spanish</item>
