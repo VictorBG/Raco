@@ -86,6 +86,7 @@
     <string name="order_asc">Fecha ascendiente</string>
     <string name="order_desc">Fecha descendiente</string>
     <string name="close">Cerrar</string>
+    <string name="item_detail_note_close_desc">Cerrar detalle</string>
 
     <string-array name="language_list_titles">
         <item>Español</item>

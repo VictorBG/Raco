@@ -124,26 +124,6 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
         });
 
-        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
-            @Override
-            public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
-                publicationsViewModel.changeFavoriteState(item.getNote());
-                itemAdapter.remove(position);
-                fastAdapter.notifyAdapterItemRemoved(position);
-                showSnackbar(getString(R.string.removed_from_favorites));
-            }
-
-            @javax.annotation.Nullable
-            @Override
-            public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof NoteItem.ViewHolder) {
-                    return ((NoteItem.ViewHolder) viewHolder).saved;
-                }
-                return null;
-            }
-
-        });
-
         Drawable removeFromFav = getDrawable(R.drawable.ic_remove_fav);
         int removeFromFavColor = getResources().getColor(R.color.md_red_400);
 

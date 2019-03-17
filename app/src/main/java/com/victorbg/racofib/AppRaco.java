@@ -30,13 +30,13 @@ public class AppRaco extends Application implements HasActivityInjector {
     public void onCreate() {
         super.onCreate();
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-
-        if (BuildConfig.DEBUG) {
-            LeakCanary.install(this);
-        }
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//
+//        if (BuildConfig.DEBUG) {
+//            LeakCanary.install(this);
+//        }
 
         AppInjector.init(this);
 

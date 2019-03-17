@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -90,14 +91,13 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView date;
         @BindView(R.id.icon_text)
         TextView subject;
-        @BindView(R.id.attachments)
-        ImageView attachmentsView;
         @BindView(R.id.attachmentsGroup)
         AttachmentsGroup attachmentsGroup;
         @BindView(R.id.attachmentsScrollView)
         FrameLayout attachmentsScrollView;
-        @BindView(R.id.saved)
-        public ImageView saved;
+        @BindView(R.id.item_container)
+        public ConstraintLayout container;
+
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -111,8 +111,6 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
             subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
 
-            saved.setImageResource(!item.note.favorite ? R.drawable.ic_favorite_border_black_24dp : R.drawable.ic_favorite_red);
-
             try {
                 Date d = format.parse(item.note.date);
                 StringHolder.applyToOrHide(new StringHolder(df.format(d)), date);
@@ -121,11 +119,9 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
             }
 
             if (item.note.attachments.size() == 0) {
-                attachmentsView.setVisibility(View.GONE);
                 attachmentsScrollView.setVisibility(View.GONE);
                 attachmentsGroup.removeAllViews();
             } else {
-                attachmentsView.setVisibility(View.VISIBLE);
                 attachmentsScrollView.setVisibility(View.VISIBLE);
                 attachmentsGroup.setAttachments(item.note.attachments);
             }

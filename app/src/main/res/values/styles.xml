@@ -7,6 +7,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/md_grey_300</item>
         <item name="android:navigationBarColor">@color/colorAccentDark</item>
+        <item name="android:windowContentTransitions">true</item>
+        <!-- specify enter and exit transitions -->
     </style>
 
 
@@ -26,6 +28,9 @@
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowContentTransitions">true</item>
+        <!-- specify enter and exit transitions -->
+
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -91,11 +96,32 @@
         <item name="android:navigationBarColor">@color/md_black_1000</item>
     </style>
 
+    <style name="AppTheme.NoteDetail.Light.Dialog" parent="AppTheme.NoteDetail.Light">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFrame">@drawable/rect_border_dark</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
     <style name="AppTheme.NoteDetail.Dark" parent="AppTheme.Dark">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/md_black_1000</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppTheme.NoteDetail.Dark.Dialog" parent="AppTheme.NoteDetail.Dark">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFrame">@drawable/rect_border_dark</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
     <style name="AppTheme.Login" parent="Theme.MaterialComponents.Light.NoActionBar">

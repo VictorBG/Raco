@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
                 scheduleToolbar.setVisibility(View.GONE);
                 break;
             case R.id.notesFragment:
-                fab.show();
+                fab.hide();
                 scheduleToolbar.setVisibility(View.GONE);
                 break;
             case R.id.timetableFragment:
@@ -283,9 +283,12 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         }
     }
 
-
     public void hideToolbar() {
         appBarLayout.setExpanded(false);
+    }
+
+    public void showToolbar() {
+        appBarLayout.setExpanded(true);
     }
 }
 

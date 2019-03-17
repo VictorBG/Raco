@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+//apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -48,6 +51,7 @@ android {
 dependencies {
 
     def room_version = "2.0.0"
+    def work_version = "1.0.0"
 
     //Default
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -140,7 +144,7 @@ dependencies {
 
     implementation 'com.afollestad:aesthetic:1.0.0-beta05'
 
-    def work_version = "1.0.0"
+
 
     implementation "android.arch.work:work-runtime:$work_version"
     implementation "android.arch.work:work-rxjava2:$work_version"
@@ -151,6 +155,8 @@ dependencies {
     implementation 'com.jaredrummler:colorpicker:1.1.0'
 
     api 'com.google.guava:guava:27.1-android'
+
+    implementation 'me.saket:inboxrecyclerview:1.0.0-rc1'
 
 
 }

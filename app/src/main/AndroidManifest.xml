@@ -49,6 +49,10 @@
         <activity
             android:name=".view.ui.notes.NoteDetail"
             android:theme="@style/AppTheme.NoteDetail.Light" />
+
+        <activity
+            android:name=".view.ui.notes.DialogNoteDetail"
+            android:theme="@style/AppTheme.NoteDetail.Light.Dialog" />
         <activity
             android:name=".view.ui.exams.ExamDetail"
             android:theme="@style/AppTheme.NoteDetail.Light" />

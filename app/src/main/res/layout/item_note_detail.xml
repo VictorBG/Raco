@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.Html" />
+
+        <import type="com.victorbg.racofib.data.model.notes.Note" />
+
+        <variable
+            name="note"
+            type="androidx.lifecycle.LiveData&lt;Note&gt;" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?themeBackgroundColor"
+        android:transitionName="@string/transition_note_to_detail_name">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@{Html.fromHtml(note.title)}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    app:layout_constraintEnd_toStartOf="@+id/closeItem"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Lorem ipsum dolor sit amet" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center"
+                    android:text="@{note.subject}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    app:layout_constraintStart_toStartOf="@+id/title"
+                    app:layout_constraintTop_toBottomOf="@+id/title"
+                    tools:text="TextView" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:autoLink="all"
+                    android:linksClickable="true"
+                    android:text="@{note.getParsedText()}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textIsSelectable="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/title"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    tools:text="Lorem ipsum dolor sit amet" />
+
+                <com.victorbg.racofib.view.widgets.attachments.AttachmentsGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    app:attachments="@{note.attachments}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/description"
+                    app:layout_constraintTop_toBottomOf="@+id/description" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/middle_dot"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@{note.getTime()}"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintStart_toEndOf="@+id/textView22"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+
+                <ImageButton
+                    android:id="@+id/closeItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/item_detail_note_close_desc"
+                    android:onClick="closeItem"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

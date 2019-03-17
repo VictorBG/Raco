@@ -4,6 +4,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -11,7 +12,8 @@
     android:focusable="true"
     android:orientation="vertical"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="16dp"
+    android:transitionName="@string/transition_note_to_detail_name">
 
     <TextView
         android:id="@+id/icon_text"
@@ -37,7 +39,7 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintEnd_toStartOf="@+id/attachments"
+        app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toEndOf="@+id/icon_text"
         app:layout_constraintTop_toTopOf="@+id/icon_text"
         tools:text="Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet" />
@@ -51,45 +53,23 @@
         app:layout_constraintTop_toTopOf="@+id/icon_text"
         tools:text="21 Dic" />
 
-    <ImageView
-        android:id="@+id/attachments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/date"
-        app:layout_constraintEnd_toStartOf="@+id/date"
-        app:layout_constraintTop_toTopOf="@+id/date"
-        app:srcCompat="@drawable/ic_baseline_attachment_24px" />
-
-    <ImageButton
-        android:id="@+id/saved"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@null"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date"
-        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
     <HorizontalScrollView
         android:id="@+id/attachmentsScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/saved"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title">
 
         <com.victorbg.racofib.view.widgets.attachments.AttachmentsGroup
             android:id="@+id/attachmentsGroup"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:singleLine="true" />
     </HorizontalScrollView>
 

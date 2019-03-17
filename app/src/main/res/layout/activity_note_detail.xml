@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?themeBackgroundColor"
-    android:fitsSystemWindows="true">
+    android:transitionName="@string/transition_note_to_detail_name">
 
     <!--app:layout_behavior="com.victorbg.racofib.utils.ShadowScrollBehavior"-->
     <com.google.android.material.appbar.AppBarLayout
@@ -36,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="0dp"
+            android:id="@+id/content"
             android:paddingBottom="16dp">
 
             <TextView

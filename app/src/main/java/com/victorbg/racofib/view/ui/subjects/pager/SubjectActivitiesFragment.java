@@ -107,7 +107,6 @@ public class SubjectActivitiesFragment extends BaseFragment {
             }
         }
 
-
         itemAdapter.setNewList(items);
 
     }

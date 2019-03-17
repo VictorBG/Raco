@@ -1,46 +1,44 @@
 package com.victorbg.racofib.view.ui.notes;
 
-import android.Manifest;
-import android.app.DownloadManager;
-import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.animation.Animator;
+import android.annotation.TargetApi;
+import android.app.SharedElementCallback;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
+import android.transition.TransitionSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.victorbg.racofib.BuildConfig;
+import com.google.android.material.appbar.AppBarLayout;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.background.AttachmentDownload;
 import com.victorbg.racofib.data.domain.notes.NotesChangeFavoriteStateUseCase;
-import com.victorbg.racofib.data.model.notes.Attachment;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.widgets.attachments.AttachmentsGroup;
 
-import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import butterknife.BindView;
-import timber.log.Timber;
 
 public class NoteDetail extends BaseActivity implements Injectable {
 
@@ -53,13 +51,13 @@ public class NoteDetail extends BaseActivity implements Injectable {
     AttachmentsGroup chipGroup;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.content)
+    ConstraintLayout content;
 
     @Inject
     NotesChangeFavoriteStateUseCase changeFavoriteStateUseCase;
-
-    private Snackbar snackbar;
-    private DownloadManager dm;
-    private long enqueue;
 
     private Note note;
 
@@ -68,15 +66,21 @@ public class NoteDetail extends BaseActivity implements Injectable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_detail);
 
+
+        postponeEnterTransition();
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         if (getIntent().getExtras() != null) {
 
             note = getIntent().getExtras().getParcelable(NOTE_PARAM);
             if (note == null) finish();
 
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle(note.subject);
 
+            appBarLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(note.color)));
             title.setText(note.title);
             description.setText(Html.fromHtml(note.text.replaceAll("\n", "<br>")));
             description.setMovementMethod(new LinkMovementMethod());
@@ -85,10 +89,12 @@ public class NoteDetail extends BaseActivity implements Injectable {
                 chipGroup.setVisibility(View.GONE);
             } else {
                 chipGroup.setVisibility(View.VISIBLE);
-                chipGroup.removeAllViews();
                 chipGroup.setAttachments(note.attachments);
             }
+
             invalidateOptionsMenu();
+            startEnterAnimation();
+            startPostponedEnterTransition();
         } else {
             finish();
         }
@@ -119,6 +125,8 @@ public class NoteDetail extends BaseActivity implements Injectable {
 
     @Override
     public void onBackPressed() {
+        startExitTransition();
+
         finishAfterTransition();
     }
 
@@ -126,6 +134,35 @@ public class NoteDetail extends BaseActivity implements Injectable {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void startEnterAnimation() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(250);
+        TransitionSet transitionSet = new TransitionSet();
+        transitionSet.addTransition(bounds);
+        transitionSet.addTransition(new Fade(Fade.IN).setDuration(250));
+        transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
+        getWindow().setSharedElementEnterTransition(transitionSet);
+
+        content.setAlpha(0);
+        appBarLayout.setAlpha(0);
+
+        appBarLayout.animate().setDuration(200).alpha(1.0f).setStartDelay(50).setInterpolator(new AccelerateInterpolator()).start();
+        content.animate().setDuration(100).alpha(1.0f).setStartDelay(100).setInterpolator(new AccelerateInterpolator()).start();
+    }
+
+    private void startExitTransition() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(250);
+
+//        TransitionSet transitionSet = new TransitionSet();
+//        transitionSet.addTransition(bounds);
+//        transitionSet.addTransition(new Fade(Fade.OUT).setDuration(100));
+//        transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
+//        getWindow().setSharedElementReturnTransition(transitionSet);
+        appBarLayout.animate().setDuration(200).alpha(.0f).setInterpolator(new AccelerateInterpolator()).start();
+        content.animate().setDuration(100).alpha(.0f).setInterpolator(new AccelerateInterpolator()).start();
     }
 
     @Override

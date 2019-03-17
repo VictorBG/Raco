@@ -1,11 +1,22 @@
 package com.victorbg.racofib.view.ui.notes;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.ChangeTransform;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -19,7 +30,9 @@ import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.databinding.FragmentNotesBinding;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.utils.ConsumableBoolean;
+import com.victorbg.racofib.utils.DisplayUtils;
 import com.victorbg.racofib.view.base.BaseFragment;
+import com.victorbg.racofib.view.transitions.SlideExplode;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 
@@ -43,18 +56,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import me.saket.inboxrecyclerview.InboxRecyclerView;
+import me.saket.inboxrecyclerview.page.ExpandablePageLayout;
+import me.saket.inboxrecyclerview.page.PageStateChangeCallbacks;
 import timber.log.Timber;
 
 public class NotesFragment extends BaseFragment implements Observer<List<Note>>, Injectable {
 
     @BindView(R.id.recycler_notes)
-    RecyclerView recyclerView;
+    InboxRecyclerView recyclerView;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.animation_view)
     LottieAnimationView animationView;
     @BindView(R.id.error_state_message)
     TextView errorTextView;
+    @BindView(R.id.notePageLayout)
+    ExpandablePageLayout notePageLayout;
+
 
     private ItemAdapter<NoteItem> itemAdapter;
     FastAdapter<NoteItem> fastAdapter;
@@ -86,9 +106,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
-        publicationsViewModel.orderAscending.observe(this, data -> {
-            scheduledScrollToTop.setValue(true);
-        });
+        publicationsViewModel.orderAscending.observe(this, data -> scheduledScrollToTop.setValue(true));
         setRecycler();
     }
 
@@ -106,9 +124,13 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
             public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
-                Intent intent = new Intent(getContext(), NoteDetail.class);
-                intent.putExtra(NoteDetail.NOTE_PARAM, item.getNote());
-                NotesFragment.this.startActivity(intent);
+//                Intent intent = new Intent(getContext(), DialogNoteDetail.class);
+//                intent.putExtra(NoteDetail.NOTE_PARAM, item.getNote());
+//                ActivityOptions activityOptions = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+//                NotesFragment.this.startActivity(intent, activityOptions.toBundle());
+                publicationsViewModel.selectedNote.setValue(item.getNote());
+                recyclerView.expandItem(item.getIdentifier());
+                getMainActivity().hideToolbar();
             }
 
             @javax.annotation.Nullable
@@ -122,30 +144,34 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         });
 
-        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
-            @Override
-            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
-                Note note = publicationsViewModel.changeFavoriteState(item.getNote());
-                showSnackbar(getMainActivity().findViewById(R.id.parent), note.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
-                fastAdapter.notifyAdapterItemChanged(position);
-            }
-
-            @javax.annotation.Nullable
-            @Override
-            public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof NoteItem.ViewHolder) {
-                    return ((NoteItem.ViewHolder) viewHolder).saved;
-                }
-                return null;
-            }
-
-        });
-
         itemAdapter.getItemFilter().withFilterPredicate((item, constraint) -> item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fastAdapter);
+        recyclerView.setExpandablePage(notePageLayout);
+        notePageLayout.setPullToCollapseThresholdDistance((int) DisplayUtils.convertDpToPixel(56f));
+        notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
+            @Override
+            public void onPageAboutToExpand(long l) {
+
+            }
+
+            @Override
+            public void onPageExpanded() {
+                swipeRefreshLayout.setEnabled(false);
+            }
+
+            @Override
+            public void onPageAboutToCollapse(long l) {
+
+            }
+
+            @Override
+            public void onPageCollapsed() {
+                swipeRefreshLayout.setEnabled(true);
+                getMainActivity().showToolbar();
+            }
+        });
 
     }
 
@@ -154,17 +180,13 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     private void reload(boolean force) {
+        publicationsViewModel.getPublications().removeObservers(this);
         publicationsViewModel.reload(force);
         publicationsViewModel.getPublications().observe(this, listResource -> {
             Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
             onChangedState(listResource.status);
             onChanged(listResource.data);
         });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     public void onChanged(List<Note> notes) {
@@ -181,13 +203,21 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
         if (oldListSize != notes.size() || scheduledScrollToTop.getValue()) {
             recyclerView.scrollToPosition(0);
-//            recyclerView.scheduleLayoutAnimation();
         }
 
     }
 
     private void onChangedState(final Status st) {
-        swipeRefreshLayout.setRefreshing(st == Status.LOADING);
+        boolean refresh = st == Status.LOADING;
+        if (swipeRefreshLayout.isRefreshing() == refresh) return;
+        swipeRefreshLayout.setRefreshing(refresh);
+    }
+
+    @OnClick(R.id.closeItem)
+    public void closeItem(View v) {
+        if (notePageLayout.isExpanded()) {
+            recyclerView.collapse();
+        }
     }
 
     @Override

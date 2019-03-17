@@ -41,6 +41,7 @@ public class PublicationsViewModel extends ViewModel {
     public final MutableLiveData<Boolean> filterVisibility = new MutableLiveData<>();
     public LiveData<Map<String, SubjectFilter>> subjects = new MutableLiveData<>();
     public MutableLiveData<Boolean> orderAscending = new MutableLiveData<>();
+    public MutableLiveData<Note> selectedNote = new MutableLiveData<>();
 
 
     private final UseCase<Note, Note> changeFavoriteStateUseCase;
@@ -57,6 +58,7 @@ public class PublicationsViewModel extends ViewModel {
 
         filterVisibility.setValue(false);
         orderAscending.setValue(false);
+        selectedNote.setValue(Note.createEmptyNote());
 
         loadPublications(false);
         loadSubjects(loadSubjectsUseCase);

@@ -2,11 +2,18 @@ package com.victorbg.racofib.data.model.notes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.SpannedString;
 
 import com.google.gson.annotations.SerializedName;
 import com.victorbg.racofib.data.database.converters.AttachmentsConverter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -53,6 +60,17 @@ public class Note implements Parcelable {
 
     }
 
+    public static Note createEmptyNote() {
+        Note note = new Note();
+        note.title = "";
+        note.text = "";
+        note.date = "";
+        note.subject = "";
+        note.id = 1;
+        note.attachments = new ArrayList<>();
+        return note;
+    }
+
     public Note(Parcel in) {
         this.title = in.readString();
         this.subject = in.readString();
@@ -88,4 +106,18 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
+
+    public Spanned getParsedText() {
+        return text == null ? new SpannedString("") : Html.fromHtml(text.replaceAll("\n", "<br>"));
+    }
+
+    public String getTime() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        try {
+            return df.format(format.parse(date));
+        } catch (Exception ignore) {
+            return "";
+        }
+    }
 }

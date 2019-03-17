@@ -7,6 +7,7 @@ import com.victorbg.racofib.view.base.BaseThemeActivity;
 import com.victorbg.racofib.view.ui.exams.AllExamsActivity;
 import com.victorbg.racofib.view.ui.exams.ExamDetail;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
+import com.victorbg.racofib.view.ui.notes.DialogNoteDetail;
 import com.victorbg.racofib.view.ui.notes.NoteDetail;
 import com.victorbg.racofib.view.ui.notes.NotesFavoritesActivity;
 import com.victorbg.racofib.view.ui.settings.ColorSettingsActivity;
@@ -53,5 +54,8 @@ public abstract class ActivitiesModule {
 
     @ContributesAndroidInjector
     abstract ColorSettingsActivity contirbuteColorSettingsActivity();
+
+    @ContributesAndroidInjector
+    abstract DialogNoteDetail contirbuteDialogNoteDetail();
 
 }
