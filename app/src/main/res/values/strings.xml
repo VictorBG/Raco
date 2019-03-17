@@ -79,6 +79,8 @@
     <string name="pref_rate_app_title">Puntúa esta aplicación</string>
     <string name="pref_help_development_title">Ayuda al desarrollo</string>
     <string name="pref_open_source_licenses_title">Librerías de código abierto</string>
+
+
     <string name="downloading_title">Downloading file</string>
     <string name="downloading_file_desc" translatable="false">Descargando archivo: %s</string>
     <string name="filter">Filtrar</string>

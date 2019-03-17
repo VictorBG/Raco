@@ -9,51 +9,6 @@
     android:orientation="vertical"
     tools:context=".view.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:background="?themeToolbarColor"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentInsetEnd="0dp"
-            android:contentInsetRight="0dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:contentInsetRight="0dp"
-            app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_marginStart="8dp"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:riv_corner_radius="56dip" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.Toolbar>
-
-        <include layout="@layout/widget_schedule_calendar_header" />
-    </com.google.android.material.appbar.AppBarLayout>
-
     <FrameLayout
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
@@ -61,28 +16,13 @@
         android:paddingBottom="56dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:src="@drawable/ic_favorite_border_white"
-        app:fabSize="normal"
-        app:layout_anchor="@id/bottom_navigation"
-        app:layout_anchorGravity="end"
-        app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
-        app:useCompatPadding="true" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/colorAccent"
-        app:layout_behavior="com.victorbg.racofib.view.widgets.bottom.BottomNavigationBehavior"
-        app:layout_scrollFlags="scroll|enterAlways|snap"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:backgroundTint="@color/accent"
+        app:navigationIcon="@drawable/ic_menu_black_24dp" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

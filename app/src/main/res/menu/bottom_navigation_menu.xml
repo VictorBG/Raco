@@ -3,23 +3,27 @@
 
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_twotone_home_24px"
         android:title="@string/start_bottom_tab" />
 
     <item
         android:id="@+id/notesFragment"
-        android:icon="@drawable/ic_announcements"
+        android:icon="@drawable/ic_twotone_note_24px"
         android:title="@string/notes_bottom_tab" />
 
     <item
         android:id="@+id/timetableFragment"
-        android:icon="@drawable/ic_timetable"
+        android:icon="@drawable/ic_twotone_schedule_24px"
         android:title="@string/schedule_bottom_tab" />
 
     <item
         android:id="@+id/subjectsFragment"
-        android:icon="@drawable/ic_subjects"
+        android:icon="@drawable/ic_twotone_book_24px"
         android:title="@string/subjects_bottom_tab" />
+    <item
+        android:id="@+id/settings_menu"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
 
 
 </menu>

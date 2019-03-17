@@ -95,6 +95,10 @@ public class PublicationsViewModel extends ViewModel {
      * @param force
      */
     private void loadPublications(boolean force) {
+        if (!force && publications.getValue() != null) {
+            publications.setValue(publications.getValue());
+            return;
+        }
         LiveData<Resource<List<Note>>> data = loadNotesUseCase.execute(force);
         publications.addSource(data, result -> {
             if (result.status != Status.LOADING) {

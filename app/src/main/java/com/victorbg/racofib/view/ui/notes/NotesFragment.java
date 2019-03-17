@@ -1,22 +1,11 @@
 package com.victorbg.racofib.view.ui.notes;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.transition.ChangeBounds;
-import android.transition.ChangeImageTransform;
-import android.transition.ChangeTransform;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -32,7 +21,6 @@ import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.utils.ConsumableBoolean;
 import com.victorbg.racofib.utils.DisplayUtils;
 import com.victorbg.racofib.view.base.BaseFragment;
-import com.victorbg.racofib.view.transitions.SlideExplode;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 

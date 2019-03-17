@@ -1,10 +1,8 @@
 package com.victorbg.racofib.view.base;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;

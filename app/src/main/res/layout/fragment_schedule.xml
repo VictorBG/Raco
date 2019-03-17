@@ -5,6 +5,8 @@
     android:background="?themeBackgroundColor"
     android:orientation="vertical">
 
+    <include layout="@layout/widget_schedule_calendar_header" />
+
     <com.victorbg.racofib.view.widgets.calendar.CalendarWeekScheduleView
         android:id="@+id/scheduleView"
         android:layout_width="match_parent"
