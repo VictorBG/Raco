@@ -29,7 +29,7 @@
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
-        <!-- specify enter and exit transitions -->
+        <!-- specify enter and exit transitions -->*
 
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -43,7 +43,7 @@
         <item name="themeBackgroundColor">@color/md_dark_background</item>
         <item name="themeColorViews">@color/md_white_1000</item>
         <item name="themeToolbarColor">@color/accent</item>
-        <item name="android:statusBarColor">@color/md_dark_statusbar</item>
+        <item name="android:statusBarColor">@color/md_dark_appbar</item>
         <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="themeColorDivider">@color/md_dark_dividers</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
