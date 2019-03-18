@@ -55,13 +55,24 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
     private boolean profileOpened = false;
     private int selectedItem = R.id.homeFragment;
 
-    public static MainBottomNavigationView getMenu(MenuListener menuListener) {
-        return new MainBottomNavigationView().withListener(menuListener);
+    public static MainBottomNavigationView getMenu(MenuListener menuListener, int id) {
+        return new MainBottomNavigationView().withListener(menuListener).withInitialMenu(id);
     }
 
     private MainBottomNavigationView withListener(MenuListener listener) {
         this.menuListener = listener;
         return this;
+    }
+
+    private MainBottomNavigationView withInitialMenu(int initialId) {
+        this.selectedItem = initialId;
+        return this;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @SuppressLint("SetTextI18n")
@@ -79,10 +90,8 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
         navigationView.getMenu().findItem(selectedItem).setChecked(true);
 
         navigationView.setNavigationItemSelectedListener(menuItem -> {
-            navigationView.getMenu().findItem(selectedItem).setChecked(false);
-            selectedItem = menuItem.getItemId();
-            navigationView.getMenu().findItem(selectedItem).setChecked(true);
-            menuListener.onMenuClick(selectedItem);
+            selectItem(menuItem.getItemId(), true);
+
             return true;
         });
 
@@ -98,8 +107,43 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
 //            }
         });
 
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState);
+        }
+
         return rootView;
     }
+
+    public void selectItem(int id, boolean dispatchClick) {
+        navigationView.getMenu().findItem(selectedItem).setChecked(false);
+        selectedItem = id;
+        navigationView.getMenu().findItem(selectedItem).setChecked(true);
+        if (dispatchClick && menuListener != null) {
+            menuListener.onMenuClick(selectedItem);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(saveInstanceState(outState));
+    }
+
+    public Bundle saveInstanceState(@Nullable Bundle savedInstanceState) {
+        return saveInstance(savedInstanceState);
+    }
+
+    public void restoreInstanceState(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) return;
+        selectItem(savedInstanceState.getInt("SelectedItem"), false);
+    }
+
+
+    private Bundle saveInstance(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) return savedInstanceState;
+        savedInstanceState.putInt("SelectedItem", selectedItem);
+        return savedInstanceState;
+    }
+
 
     @SuppressLint("SetTextI18n")
     private void displayUserInfo() {

@@ -96,6 +96,12 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
         publicationsViewModel.orderAscending.observe(this, data -> scheduledScrollToTop.setValue(true));
         setRecycler();
+
+        publicationsViewModel.getPublications().observe(this, listResource -> {
+            Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
+            onChangedState(listResource.status);
+            onChanged(listResource.data);
+        });
     }
 
     @Override
@@ -112,10 +118,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
             public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
-//                Intent intent = new Intent(getContext(), DialogNoteDetail.class);
-//                intent.putExtra(NoteDetail.NOTE_PARAM, item.getNote());
-//                ActivityOptions activityOptions = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
-//                NotesFragment.this.startActivity(intent, activityOptions.toBundle());
                 publicationsViewModel.selectedNote.setValue(item.getNote());
                 recyclerView.expandItem(item.getIdentifier());
                 getMainActivity().hideToolbar();
@@ -168,13 +170,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     private void reload(boolean force) {
-        publicationsViewModel.getPublications().removeObservers(this);
         publicationsViewModel.reload(force);
-        publicationsViewModel.getPublications().observe(this, listResource -> {
-            Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
-            onChangedState(listResource.status);
-            onChanged(listResource.data);
-        });
     }
 
     public void onChanged(List<Note> notes) {

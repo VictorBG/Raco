@@ -61,33 +61,25 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (savedInstanceState != null) {
+            this.selectedFragmentId = savedInstanceState.getInt("FragmentID");
+        }
+
         setSupportActionBar(bottomAppBar);
 
         fragmentNavigator = new FragmentNavigator(this);
-
-//        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-//            handleFragment(menuItem.getItemId());
-//            return true;
-//        });
-//
-//        bottomNavigationView.setOnNavigationItemReselectedListener(menuItem -> {
-//        });
 
         bottomAppBar.setNavigationOnClickListener(v -> mainBottomNavigationView.show(MainActivity.this.getSupportFragmentManager(), "nav-view"));
 
         mainBottomNavigationView = MainBottomNavigationView.getMenu(id -> {
             mainBottomNavigationView.dismiss();
             handleFragment(id);
-        });
+        }, selectedFragmentId);
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
 
+        handleFragment(selectedFragmentId);
 
-        if (savedInstanceState != null) {
-            handleFragment(savedInstanceState.getInt("FragmentID"));
-        } else {
-            handleFragment(R.id.homeFragment);
-        }
     }
 
     @Override
@@ -101,6 +93,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        mainBottomNavigationView.onSaveInstanceState(outState);
         outState.putInt("FragmentID", selectedFragmentId);
         super.onSaveInstanceState(outState);
     }
