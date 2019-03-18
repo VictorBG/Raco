@@ -123,9 +123,11 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
             }
             return;
         }
-        navigationView.getMenu().findItem(selectedItem).setChecked(false);
-        selectedItem = id;
-        navigationView.getMenu().findItem(selectedItem).setChecked(true);
+        if (id != R.id.settings_menu) {
+            navigationView.getMenu().findItem(selectedItem).setChecked(false);
+            selectedItem = id;
+            navigationView.getMenu().findItem(selectedItem).setChecked(true);
+        }
         if (dispatchClick && menuListener != null) {
             menuListener.onMenuClick(selectedItem);
         }

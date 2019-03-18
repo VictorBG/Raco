@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#232f34</color>
     <!--<color name="colorAccent">#1976d2</color>-->
     <color name="colorAccent">#F9AA33</color>
-    <color name="colorAccentDark">#004ba0</color>
+    <color name="colorAccentDark">#E08B09</color>
 
     <color name="bg_circle_default">@color/colorAccent</color>
 
