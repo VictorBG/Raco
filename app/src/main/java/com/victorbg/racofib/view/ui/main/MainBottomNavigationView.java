@@ -28,6 +28,8 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
 
     public interface MenuListener {
         void onMenuClick(int id);
+
+        void onMenuRepeatClick(int id);
     }
 
     @BindView(R.id.profileLayout)
@@ -115,6 +117,12 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
     }
 
     public void selectItem(int id, boolean dispatchClick) {
+        if (selectedItem == id) {
+            if (dispatchClick && menuListener != null) {
+                menuListener.onMenuRepeatClick(id);
+            }
+            return;
+        }
         navigationView.getMenu().findItem(selectedItem).setChecked(false);
         selectedItem = id;
         navigationView.getMenu().findItem(selectedItem).setChecked(true);

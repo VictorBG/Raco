@@ -1,6 +1,5 @@
 package com.victorbg.racofib.view.ui.notes;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -108,9 +107,9 @@ public class NotesFavoritesActivity extends BaseActivity implements Injectable {
         fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
             @Override
             public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
-                Intent intent = new Intent(NotesFavoritesActivity.this, NoteDetail.class);
-                intent.putExtra(NoteDetail.NOTE_PARAM, item.getNote());
-                NotesFavoritesActivity.this.startActivity(intent);
+//                Intent intent = new Intent(NotesFavoritesActivity.this, NoteDetail.class);
+//                intent.putExtra("TEST", item.getNote());
+//                NotesFavoritesActivity.this.startActivity(intent);
             }
 
             @javax.annotation.Nullable

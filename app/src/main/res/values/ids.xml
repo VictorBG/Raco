@@ -2,4 +2,6 @@
 <resources>
     <item name="eval_act" type="id" />
     <item name="normal_act" type="id" />
+    <item name="allExamsFragment" type="id" />
+    <item name="subjectDetailFragment" type="id" />
 </resources>

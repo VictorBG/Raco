@@ -43,9 +43,9 @@ public class DialogCustomContent extends BaseActivity {
         int height = size.y;
 
         if (height > width) {
-            getWindow().setLayout((int) (width * .9), (int) (height * .9));
+            getWindow().setLayout((int) (width * .8), (int) (height * .8));
         } else {
-            getWindow().setLayout((int) (width * .7), (int) (height * .8));
+            getWindow().setLayout((int) (width * .6), (int) (height * .8));
         }
     }
 

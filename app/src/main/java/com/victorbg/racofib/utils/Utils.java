@@ -176,4 +176,8 @@ public class Utils {
         Collections.sort(list, comparator);
     }
 
+    public static long getTimeFromDate(String date, String format) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        return simpleDateFormat.parse(date).getTime();
+    }
 }

@@ -1,15 +1,22 @@
 package com.victorbg.racofib.data.model.exams;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
+import com.victorbg.racofib.R;
+import com.victorbg.racofib.utils.Utils;
+
+import java.text.ParseException;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import timber.log.Timber;
 
 @Entity(tableName = "Exams")
 public class Exam implements Parcelable {
@@ -41,6 +48,27 @@ public class Exam implements Parcelable {
     @Ignore
     public final String standardFormat = "yyyy-MM-dd'T'HH:mm:ss";
 
+
+    public String getExamTimeInterval() {
+        try {
+            return Utils.getFormattedPeriod(startDate, endDate, standardFormat);
+        } catch (ParseException e) {
+            Timber.w(e);
+            return "";
+        }
+    }
+
+
+    public String getType(Context context) {
+        switch (type) {
+            case "P":
+                return context.getString(R.string.midterm);
+            case "F":
+                return context.getString(R.string.final_exam);
+            default:
+                return "";
+        }
+    }
 
     public Exam() {
     }

@@ -4,11 +4,8 @@ import com.victorbg.racofib.view.MainActivity;
 import com.victorbg.racofib.view.StartActivity;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.base.BaseThemeActivity;
-import com.victorbg.racofib.view.ui.exams.AllExamsActivity;
-import com.victorbg.racofib.view.ui.exams.ExamDetail;
+import com.victorbg.racofib.view.ui.exams.DialogExamDetail;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
-import com.victorbg.racofib.view.ui.notes.DialogNoteDetail;
-import com.victorbg.racofib.view.ui.notes.NoteDetail;
 import com.victorbg.racofib.view.ui.notes.NotesFavoritesActivity;
 import com.victorbg.racofib.view.ui.settings.ColorSettingsActivity;
 import com.victorbg.racofib.view.ui.settings.SettingsActivity;
@@ -35,19 +32,10 @@ public abstract class ActivitiesModule {
     abstract NotesFavoritesActivity contirbuteNotesFavoritesActivity();
 
     @ContributesAndroidInjector
-    abstract NoteDetail contirbuteNoteDetail();
-
-    @ContributesAndroidInjector
     abstract BaseThemeActivity contirbuteBaseThemeActivity();
 
     @ContributesAndroidInjector
     abstract BaseActivity contirbuteBaseActivity();
-
-    @ContributesAndroidInjector
-    abstract ExamDetail contirbuteExamDetail();
-
-    @ContributesAndroidInjector
-    abstract AllExamsActivity contirbuteAllExamsActivity();
 
     @ContributesAndroidInjector
     abstract SettingsActivity contirbuteSettingsActivity();
@@ -56,6 +44,6 @@ public abstract class ActivitiesModule {
     abstract ColorSettingsActivity contirbuteColorSettingsActivity();
 
     @ContributesAndroidInjector
-    abstract DialogNoteDetail contirbuteDialogNoteDetail();
+    abstract DialogExamDetail contirbuteDialogExamDetail();
 
 }

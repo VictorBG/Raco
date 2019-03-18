@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.utils.Utils;
@@ -75,24 +76,8 @@ public class FullExamItem extends AbstractItem<FullExamItem, FullExamItem.ViewHo
         public void bindView(@NonNull FullExamItem item, @NonNull List<Object> payloads) {
             subject.setText(item.exam.subject);
             time.setText(item.exam.startDate);
-            switch (item.exam.type) {
-                case "P":
-                    type.setText(item.context.getString(R.string.midterm));
-                    break;
-                case "F":
-                    type.setText(item.context.getString(R.string.final_exam));
-                    break;
-                default:
-                    type.setVisibility(View.GONE);
-            }
-
-            try {
-                time.setText(Utils.getFormattedPeriod(item.exam.startDate, item.exam.endDate, item.exam.standardFormat));
-            } catch (ParseException e) {
-                e.printStackTrace();
-                time.setVisibility(View.GONE);
-            }
-
+            StringHolder.applyToOrHide(new StringHolder(item.exam.getType(item.context)), type);
+            StringHolder.applyToOrHide(new StringHolder(item.exam.getExamTimeInterval()), time);
         }
 
         @Override

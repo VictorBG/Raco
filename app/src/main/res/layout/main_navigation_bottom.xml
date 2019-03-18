@@ -62,12 +62,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/logout"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="@string/logout_button_text"
+            app:backgroundTint="@color/accent"
             app:layout_constraintEnd_toStartOf="@+id/guideline9"
             app:layout_constraintStart_toStartOf="@+id/guideline9"
             app:layout_constraintTop_toBottomOf="@+id/username"
@@ -87,13 +88,13 @@
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view"
             android:layout_width="match_parent"
-            app:itemTextAppearance="@style/NavigationDrawerTextStyle"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@color/primary"
             android:padding="8dp"
             app:itemIconTint="@drawable/drawer_item_text_color"
+            app:itemTextAppearance="@style/NavigationDrawerTextStyle"
             app:itemTextColor="@drawable/drawer_item_text_color"
             app:menu="@menu/bottom_navigation_menu" />
 

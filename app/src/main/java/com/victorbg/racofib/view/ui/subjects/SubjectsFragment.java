@@ -78,9 +78,15 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
         fastAdapter.withEventHook(new ClickEventHook<SubjectItem>() {
             @Override
             public void onClick(View v, int position, FastAdapter<SubjectItem> fastAdapter, SubjectItem item) {
-                Intent i = new Intent(getContext(), SubjectDetail.class);
-                i.putExtra(SubjectDetail.SUBJECT_OBJECT_KEY, item.getSubject());
-                startActivity(i);
+//                Intent i = new Intent(getContext(), SubjectDetail.class);
+//                i.putExtra(SubjectDetail.SUBJECT_OBJECT_KEY, item.getSubject());
+//                startActivity(i);
+                Bundle arguments = new Bundle();
+                arguments.putParcelable(SubjectDetailFragment.SUBJECT_OBJECT_KEY, item.getSubject());
+                SubjectDetailFragment subjectDetailFragment = new SubjectDetailFragment();
+                subjectDetailFragment.setArguments(arguments);
+                getMainActivity().replaceByFragment(R.id.subjectDetailFragment, subjectDetailFragment);
+                getMainActivity().handleFragmentMainUI(R.id.subjectDetailFragment);
             }
 
             @javax.annotation.Nullable

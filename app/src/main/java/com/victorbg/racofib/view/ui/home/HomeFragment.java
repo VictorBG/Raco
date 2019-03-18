@@ -1,5 +1,6 @@
 package com.victorbg.racofib.view.ui.home;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,11 +20,12 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
-import com.victorbg.racofib.view.ui.exams.AllExamsActivity;
-import com.victorbg.racofib.view.ui.exams.ExamDetail;
+import com.victorbg.racofib.view.ui.exams.DialogExamDetail;
 import com.victorbg.racofib.view.ui.home.items.ExamItem;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,7 +69,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
     ViewModelProvider.Factory viewModelFactory;
 
     private HomeViewModel homeViewModel;
-    private boolean examsFetched = false;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -106,10 +107,11 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
         fastAdapterExams.withEventHook(new ClickEventHook<ExamItem>() {
             @Override
-            public void onClick(View v, int position, FastAdapter<ExamItem> fastAdapter, ExamItem item) {
-                Intent intent = new Intent(getContext(), ExamDetail.class);
-                intent.putExtra(ExamDetail.EXAM_PARAM_KEY, item.getExam());
-                HomeFragment.this.startActivity(intent);
+            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<ExamItem> fastAdapter, @NotNull ExamItem item) {
+                Intent intent = new Intent(getContext(), DialogExamDetail.class);
+                intent.putExtra(DialogExamDetail.EXAM_PARAM_KEY, item.getExam());
+                ActivityOptions activityOptions = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+                HomeFragment.this.startActivity(intent, activityOptions.toBundle());
             }
 
             @javax.annotation.Nullable
@@ -182,6 +184,7 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
     @OnClick(R.id.seeMoreExams)
     public void seeMoreExams(View view) {
-        startActivity(new Intent(getContext(), AllExamsActivity.class));
+//        startActivity(new Intent(getContext(), AllExamsActivity.class));
+        getMainActivity().handleFragment(R.id.allExamsFragment);
     }
 }

@@ -47,23 +47,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.ui.notes.NoteDetail"
-            android:theme="@style/AppTheme.NoteDetail.Light" />
-
-        <activity
-            android:name=".view.ui.notes.DialogNoteDetail"
-            android:theme="@style/AppTheme.NoteDetail.Light.Dialog" />
-        <activity
-            android:name=".view.ui.exams.ExamDetail"
-            android:theme="@style/AppTheme.NoteDetail.Light" />
-        <activity
             android:name=".view.ui.subjects.SubjectDetail"
             android:theme="@style/AppTheme.SubjectDetail.Light" />
         <activity
             android:name=".view.ui.notes.NotesFavoritesActivity"
-            android:theme="@style/AppTheme.NoteDetail.Light" />
-        <activity
-            android:name=".view.ui.exams.AllExamsActivity"
             android:theme="@style/AppTheme.NoteDetail.Light" />
 
         <activity
@@ -77,6 +64,10 @@
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".view.ui.exams.DialogExamDetail"
+            android:theme="@style/AppTheme.NoteDetail.Light.Dialog">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

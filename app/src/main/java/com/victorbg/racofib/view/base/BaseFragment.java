@@ -69,8 +69,22 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
 
     /**
      * Dispatch the filter click. By default it has no action
+     *
+     * Deprectaed: use {@link #onItemClick(int)}
      */
+    @Deprecated
     public void onFilterSelected() {
+    }
+
+    /**
+     * Dispatch the event with id to the fragments that
+     * override this method.
+     *
+     * @param id ID of the event
+     * @return true if handled, false otherwise
+     */
+    public boolean onItemClick(int id) {
+        return false;
     }
 
     public Snackbar showSnackbar(String s) {
@@ -101,7 +115,7 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
 
 
     /**
-     * Override to get the back pressed state
+     * Override to get the back pressed event
      *
      * @return
      */
