@@ -95,7 +95,11 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         super.onViewCreated(view, savedInstanceState);
         swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
         publicationsViewModel.orderAscending.observe(this, data -> scheduledScrollToTop.setValue(true));
+
         setRecycler();
+
+        swipeRefreshLayout.setColorSchemeColors(getContext().getResources().getColor(R.color.accent),
+                getContext().getResources().getColor(R.color.primary));
 
         publicationsViewModel.getPublications().observe(this, listResource -> {
             Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
@@ -120,7 +124,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
                 publicationsViewModel.selectedNote.setValue(item.getNote());
                 recyclerView.expandItem(item.getIdentifier());
-                getMainActivity().hideToolbar();
             }
 
             @javax.annotation.Nullable
@@ -149,6 +152,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onPageExpanded() {
                 swipeRefreshLayout.setEnabled(false);
+                getMainActivity().setBottomBarUI(R.menu.note_detail_menu, false, true);
             }
 
             @Override
@@ -159,7 +163,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onPageCollapsed() {
                 swipeRefreshLayout.setEnabled(true);
-                getMainActivity().showToolbar();
+                getMainActivity().setBottomBarUI(R.menu.notes_menu, true, false);
             }
         });
 
@@ -217,6 +221,17 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     @Override
     public void onFilterSelected() {
         publicationsViewModel.onFilterClick();
+    }
+
+
+    @Override
+    public boolean onBackPressed() {
+        if (notePageLayout.isExpanded()) {
+            recyclerView.collapse();
+            return true;
+        } else {
+            return super.onBackPressed();
+        }
     }
 }
 

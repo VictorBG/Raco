@@ -62,6 +62,11 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     }
 
     @Override
+    public boolean onBackPressed() {
+        return false;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         scheduleViewModel.getSchedule(true).observe(this, this::onChanged);

@@ -91,6 +91,7 @@
     <string name="close">Cerrar</string>
     <string name="transition_note_to_detail_name" translatable="false">NoteDetailSharedContainer</string>
     <string name="item_detail_note_close_desc">Cerrar detalle</string>
+    <string name="font_size_detail_note_menu">Tamaño letra</string>
 
     <string-array name="language_list_titles">
         <item>Español</item>

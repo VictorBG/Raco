@@ -10,6 +10,7 @@ import com.victorbg.racofib.view.ui.schedule.ScheduleFragment;
 import com.victorbg.racofib.view.ui.subjects.SubjectsFragment;
 
 import java.util.Objects;
+import java.util.Stack;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,8 +26,9 @@ public class FragmentNavigator {
 
 
     private final FragmentManager fragmentManager;
-    private Fragment selectedFragment;
+    private BaseFragment selectedFragment;
 
+    private Stack<Integer> fragmentsIds = new Stack<>();
     private String lastTagSelected = null;
 
 
@@ -34,7 +36,36 @@ public class FragmentNavigator {
         this.fragmentManager = ((AppCompatActivity) activity).getSupportFragmentManager();
     }
 
+
+    public boolean propagateBackClick() {
+        if (selectedFragment == null) return false;
+        return selectedFragment.onBackPressed();
+    }
+
+    public boolean popBack() {
+
+        if (fragmentsIds.empty()) {
+            return false;
+        } else {
+            fragmentsIds.pop();
+            if (fragmentsIds.empty()) {
+                return false;
+            } else {
+                replaceFragment(fragmentsIds.pop());
+                return true;
+            }
+        }
+    }
+
+    public int getCurrentFragmentId() {
+        if (fragmentsIds.empty()) return 0;
+        return fragmentsIds.peek();
+    }
+
     public void replaceFragment(int id) {
+
+        fragmentsIds.push(id);
+
         switch (id) {
             case R.id.homeFragment:
             default:
@@ -70,7 +101,7 @@ public class FragmentNavigator {
             fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag(lastTagSelected)).commit();
         }
 
-        selectedFragment = fr;
+        selectedFragment = (BaseFragment) fr;
         lastTagSelected = tag;
 
         if (!Objects.equals(tag, HOME) && fragmentManager.findFragmentByTag(HOME) != null) {
@@ -95,7 +126,7 @@ public class FragmentNavigator {
     }
 
 
-    private Fragment getFragment(String key) {
+    private BaseFragment getFragment(String key) {
         switch (key) {
             default:
             case HOME:

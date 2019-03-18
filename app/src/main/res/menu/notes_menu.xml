@@ -13,4 +13,10 @@
         android:icon="@drawable/ic_tune_black_24dp"
         android:title="@string/filter"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/saved_menu"
+        android:icon="@drawable/ic_favorite_border_white"
+        android:title="@string/saved_notes_title"
+        app:showAsAction="always" />
 </menu>

@@ -171,7 +171,7 @@ public class MaterialBottomSheet extends AppCompatDialog {
         if (!canceledOnTouchOutsideSet) {
             TypedArray a =
                     getContext()
-                            .obtainStyledAttributes(new int[] {android.R.attr.windowCloseOnTouchOutside});
+                            .obtainStyledAttributes(new int[]{android.R.attr.windowCloseOnTouchOutside});
             canceledOnTouchOutside = a.getBoolean(0, true);
             a.recycle();
             canceledOnTouchOutsideSet = true;
@@ -204,6 +204,7 @@ public class MaterialBottomSheet extends AppCompatDialog {
                 }
 
                 @Override
-                public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                }
             };
 }

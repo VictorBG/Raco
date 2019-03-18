@@ -100,4 +100,12 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
     }
 
 
+    /**
+     * Override to get the back pressed state
+     *
+     * @return
+     */
+    public boolean onBackPressed() {
+        return false;
+    }
 }
