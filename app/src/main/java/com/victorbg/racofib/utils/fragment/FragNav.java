@@ -135,7 +135,7 @@ public class FragNav {
             }
         }
 
-        selectedFragment = (BaseFragment) fr;
+        selectedFragment = (BaseFragment) (fr == null ? arrayFragment : fr);
         lastTagSelected = tag;
     }
 
