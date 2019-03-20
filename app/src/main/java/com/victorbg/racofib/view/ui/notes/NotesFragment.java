@@ -1,6 +1,7 @@
 package com.victorbg.racofib.view.ui.notes;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -47,6 +49,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.saket.inboxrecyclerview.InboxRecyclerView;
 import me.saket.inboxrecyclerview.page.ExpandablePageLayout;
+import me.saket.inboxrecyclerview.page.InterceptResult;
 import me.saket.inboxrecyclerview.page.PageStateChangeCallbacks;
 import timber.log.Timber;
 
@@ -62,6 +65,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     TextView errorTextView;
     @BindView(R.id.notePageLayout)
     ExpandablePageLayout notePageLayout;
+    @BindView(R.id.nested_scroll_note)
+    NestedScrollView scrollView;
 
 
     private ItemAdapter<NoteItem> itemAdapter;
@@ -134,7 +139,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
                 }
                 return null;
             }
-
         });
 
         itemAdapter.getItemFilter().withFilterPredicate((item, constraint) -> item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
@@ -143,6 +147,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         recyclerView.setAdapter(fastAdapter);
         recyclerView.setExpandablePage(notePageLayout);
         notePageLayout.setPullToCollapseThresholdDistance((int) DisplayUtils.convertDpToPixel(56f));
+        notePageLayout.setPullToCollapseInterceptor((downX, downY, upwardPull) -> scrollView.canScrollVertically(upwardPull ? 1 : -1) ? InterceptResult.INTERCEPTED : InterceptResult.IGNORED);
         notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
             @Override
             public void onPageAboutToExpand(long l) {
@@ -163,7 +168,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
             @Override
             public void onPageCollapsed() {
-
+                scrollView.scrollTo(0, 0);
             }
         });
 

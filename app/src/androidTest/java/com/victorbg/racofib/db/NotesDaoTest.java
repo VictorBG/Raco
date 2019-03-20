@@ -43,6 +43,7 @@ public class NotesDaoTest extends DbTest {
         note.subject = "subject";
         note.date = "date";
         note.title = "title";
+        note.id = 1;
 
 
         db.notesDao().clear();
@@ -56,6 +57,7 @@ public class NotesDaoTest extends DbTest {
         note2.subject = "subject2";
         note2.date = "date2";
         note2.title = "title2";
+        note2.id = 2;
 
         db.notesDao().insert(note);
         db.notesDao().insert(note2);
