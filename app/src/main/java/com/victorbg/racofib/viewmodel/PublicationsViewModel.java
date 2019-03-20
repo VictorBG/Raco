@@ -2,9 +2,7 @@ package com.victorbg.racofib.viewmodel;
 
 import android.util.ArrayMap;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.squareup.haha.guava.collect.Collections2;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.domain.UseCase;
 import com.victorbg.racofib.data.domain.notes.LoadNotesUseCase;
@@ -17,11 +15,7 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.view.widgets.filter.SubjectFilter;
 
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;

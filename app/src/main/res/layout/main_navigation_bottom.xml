@@ -61,7 +61,7 @@
             tools:text="victor.blanco.garcia" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/logout"
+            android:id="@+id/closeSession"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

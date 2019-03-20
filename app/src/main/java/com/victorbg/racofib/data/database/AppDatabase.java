@@ -1,6 +1,7 @@
 package com.victorbg.racofib.data.database;
 
 import com.victorbg.racofib.data.database.converters.AttachmentsConverter;
+import com.victorbg.racofib.data.database.converters.GradesConverter;
 import com.victorbg.racofib.data.database.dao.ExamDao;
 import com.victorbg.racofib.data.database.dao.NotesDao;
 import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
@@ -17,7 +18,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 @Database(entities = {User.class, Subject.class, SubjectSchedule.class, Note.class, Exam.class}, version = 1, exportSchema = false)
-@TypeConverters({AttachmentsConverter.class})
+@TypeConverters({AttachmentsConverter.class, GradesConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();

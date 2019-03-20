@@ -5,6 +5,7 @@ import com.victorbg.racofib.view.StartActivity;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.base.BaseThemeActivity;
 import com.victorbg.racofib.view.ui.exams.DialogExamDetail;
+import com.victorbg.racofib.view.ui.grades.GradeDialog;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
 import com.victorbg.racofib.view.ui.notes.NotesFavoritesActivity;
 import com.victorbg.racofib.view.ui.settings.ColorSettingsActivity;
@@ -45,5 +46,8 @@ public abstract class ActivitiesModule {
 
     @ContributesAndroidInjector
     abstract DialogExamDetail contirbuteDialogExamDetail();
+
+    @ContributesAndroidInjector
+    abstract GradeDialog contirbuteGradeDialog();
 
 }

@@ -95,6 +95,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
         setSupportActionBar(bottomAppBar);
 
+        fab.setOnClickListener(v -> fragmentNavigator.onFabSelected(v));
+
         drawerArrowDrawable = new DrawerArrowDrawable(this);
 
         fragmentNavigator = new FragNav(this)
@@ -108,8 +110,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
 
         bottomAppBar.setNavigationOnClickListener(v -> {
-            if (drawerArrowDrawable.getProgress() == 1.0f) {
-                if (fragmentNavigator.popBack()) {
+            if (!showNavigation) {
+                if (!fragmentNavigator.propagateBackClick() && fragmentNavigator.popBack()) {
                     handleFragmentMainUI(fragmentNavigator.getCurrentFragmentId());
                 }
                 //For every click the nav is shown, and if it is not prevented to show multiple navs
@@ -131,6 +133,13 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             @Override
             public void onMenuRepeatClick(int id) {
 
+            }
+
+            @Override
+            public void onLogoutClick() {
+                mainActivityViewModel.logout();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
             }
         }, selectedFragmentId);
 
@@ -183,14 +192,22 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
                 fab.hide();
                 setBottomBarUI(R.menu.notes_menu, true, false);
                 setNavIconProgress(0, true);
+                fab.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_white));
+                bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
                 break;
             case R.id.homeFragment:
             case R.id.subjectsFragment:
             case R.id.timetableFragment:
-            case R.id.gradesFragment:
                 fab.hide();
                 setBottomBarUI(R.menu.main_menu, true, false);
                 setNavIconProgress(0, true);
+                break;
+            case R.id.gradesFragment:
+                setBottomBarUI(R.menu.main_menu, true, false);
+                setNavIconProgress(0, true);
+                fab.setImageDrawable(getDrawable(R.drawable.ic_add_black_24dp));
+                bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+                fab.show();
                 break;
             case R.id.allExamsFragment:
             case R.id.subjectDetailFragment:
@@ -200,6 +217,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
         }
     }
+
+    private boolean showNavigation = true;
 
     public void setBottomBarUI(int menuId, boolean showNavigation, boolean showFab) {
         this.menuId = menuId;
@@ -212,7 +231,12 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         }
 
         bottomAppBar.replaceMenu(menuId);
-        setNavIcon(showNavigation ? drawerArrowDrawable : null);
+        setNavIcon(drawerArrowDrawable);
+//        setNavIcon(showNavigation ? drawerArrowDrawable : null);
+        if (this.showNavigation != showNavigation) {
+            this.showNavigation = showNavigation;
+            setNavIconProgress(showNavigation ? 0 : 1, true);
+        }
     }
 
     private void setNavIcon(Drawable navIcon) {

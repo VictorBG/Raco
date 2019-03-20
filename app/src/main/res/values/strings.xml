@@ -94,6 +94,11 @@
     <string name="font_size_detail_note_menu" translatable="false">Tamaño letra</string>
     <string name="grades_bottom_tab">Notas</string>
     <string name="save_to_calendar">Guardar en el calendario</string>
+    <string name="grade_name_dialog_edit">Nombre</string>
+    <string name="grade_percent_dialog_Edit">Porcentaje</string>
+    <string name="grade_grade_dialog_edit">Nota</string>
+    <string name="save">Guardar</string>
+    <string name="delete">Eliminar</string>
 
     <string-array name="language_list_titles">
         <item>Español</item>

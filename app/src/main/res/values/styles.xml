@@ -183,5 +183,15 @@
         <item name="android:background">@drawable/profile_sheet_background</item>
     </style>
 
+    <style name="ProgressTextGoal">
+        <item name="android:id">@id/progress_text</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:gravity">end</item>
+        <item name="android:textColor">?themePrimaryTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 
 </resources>

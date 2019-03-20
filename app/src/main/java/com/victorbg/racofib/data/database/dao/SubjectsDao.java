@@ -10,8 +10,10 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 import io.reactivex.Single;
 
+import static androidx.room.OnConflictStrategy.IGNORE;
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
@@ -26,14 +28,20 @@ public interface SubjectsDao {
     @Query("select shortName as subject,color from Subjects")
     Single<List<SubjectColor>> getColors();
 
-    @Insert(onConflict = REPLACE)
+    @Query("SELECT * FROM Subjects WHERE shortName=:parameter")
+    LiveData<Subject> getSubject(String parameter);
+
+    @Insert(onConflict = IGNORE)
     void insert(Subject subject);
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     void insert(List<Subject> subject);
 
     @Delete
     void delete(Subject s);
+
+    @Update
+    void update(Subject subject);
 
     @Query("delete from Subjects")
     void clear();
@@ -43,4 +51,6 @@ public interface SubjectsDao {
 
     @Query("UPDATE Subjects SET color=:color WHERE id=:id")
     void changeColor(String id, String color);
+
+
 }

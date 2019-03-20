@@ -2,6 +2,7 @@ package com.victorbg.racofib.di;
 
 import com.victorbg.racofib.view.ProfileModal;
 import com.victorbg.racofib.view.ui.exams.FragmentAllExams;
+import com.victorbg.racofib.view.ui.grades.GradesFragment;
 import com.victorbg.racofib.view.ui.home.HomeFragment;
 import com.victorbg.racofib.view.ui.main.MainBottomNavigationView;
 import com.victorbg.racofib.view.ui.notes.NotesFragment;
@@ -37,5 +38,8 @@ public abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract SubjectDetailFragment contributeSubjectDetailFragment();
+
+    @ContributesAndroidInjector
+    abstract GradesFragment contributeGradesFragment();
 
 }

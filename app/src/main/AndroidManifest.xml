@@ -66,8 +66,11 @@
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".view.ui.exams.DialogExamDetail"
-            android:theme="@style/AppTheme.NoteDetail.Light.Dialog">
-        </activity>
+            android:theme="@style/AppTheme.NoteDetail.Light.Dialog" />
+
+        <activity
+            android:name=".view.ui.grades.GradeDialog"
+            android:theme="@style/AppTheme.NoteDetail.Light.Dialog" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -1,6 +1,7 @@
 package com.victorbg.racofib.view.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -55,7 +56,7 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
      * Dispatch click event of fab to the fragments that have overrode this method
      * and are available
      */
-    public void onFabSelected() {
+    public void onFabSelected(View v) {
     }
 
     /**
@@ -69,7 +70,7 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
 
     /**
      * Dispatch the filter click. By default it has no action
-     *
+     * <p>
      * Deprectaed: use {@link #onItemClick(int)}
      */
     @Deprecated
@@ -122,4 +123,5 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
     public boolean onBackPressed() {
         return false;
     }
+
 }

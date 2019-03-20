@@ -47,6 +47,7 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         scheduleViewModel = ViewModelProviders.of(this, viewModelFactory).get(ScheduleViewModel.class);
+        scheduleViewModel.getSchedule(true).observe(this, this::onChanged);
     }
 
     @Nullable
@@ -59,24 +60,12 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         computeDaysToolbarAttribs();
+
     }
 
     @Override
     public boolean onBackPressed() {
         return false;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        scheduleViewModel.getSchedule(true).observe(this, this::onChanged);
-    }
-
-    //TODO onStop or onPause?
-    @Override
-    public void onPause() {
-        super.onPause();
-        scheduleViewModel.getSchedule(false).removeObservers(this);
     }
 
     private void onChanged(Resource<List<SubjectSchedule>> schedule) {
@@ -98,7 +87,7 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
                 for (int i = 0; i < vg.getChildCount(); i++) {
                     View v = vg.getChildAt(i);
                     if (v instanceof TextView) {
-                        ((TextView) v).setTextColor(Color.BLACK);
+                        ((TextView) v).setTextColor(Color.WHITE);
                     }
 
                     if (v instanceof ImageView) {

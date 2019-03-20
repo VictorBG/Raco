@@ -2,6 +2,7 @@ package com.victorbg.racofib.di;
 
 import android.util.ArrayMap;
 
+import com.victorbg.racofib.viewmodel.GradesViewModel;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
 import com.victorbg.racofib.viewmodel.LoginViewModel;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
@@ -37,6 +38,7 @@ public class AppViewModelFactory implements ViewModelProvider.Factory {
         creators.put(SubjectsViewModel.class, viewModelSubComponent::subjectsViewModel);
         creators.put(SubjectDetailViewModel.class, viewModelSubComponent::subjectDetailViewModel);
         creators.put(ScheduleViewModel.class, viewModelSubComponent::scheduleViewModel);
+        creators.put(GradesViewModel.class, viewModelSubComponent::gradesViewModel);
     }
 
     @Override

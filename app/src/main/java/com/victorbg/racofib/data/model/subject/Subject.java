@@ -5,7 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.victorbg.racofib.data.database.converters.GradesConverter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,8 @@ public class Subject implements Parcelable {
     public String name;
 
     public String color;
+
+    public List<Grade> grades = new ArrayList<>();
 
     //region ignored attributes
 
@@ -113,6 +117,7 @@ public class Subject implements Parcelable {
         dest.writeString(this.shortName);
         dest.writeString(this.name);
         dest.writeString(this.color);
+        dest.writeString(GradesConverter.toString(grades));
     }
 
     public Subject() {
@@ -126,6 +131,7 @@ public class Subject implements Parcelable {
         this.shortName = in.readString();
         this.name = in.readString();
         this.color = in.readString();
+        this.grades = GradesConverter.toList(in.readString());
     }
 
     public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {

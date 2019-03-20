@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.View;
 
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.utils.ConsumableBoolean;
@@ -143,8 +144,8 @@ public class FragNav {
         return selectedFragment;
     }
 
-    public void onFabSelected() {
-        ((BaseFragment) selectedFragment).onFabSelected();
+    public void onFabSelected(View v) {
+        selectedFragment.onFabSelected(v);
     }
 
     public void onQuery(String query) {

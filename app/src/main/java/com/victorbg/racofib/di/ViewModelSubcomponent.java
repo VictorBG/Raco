@@ -1,5 +1,6 @@
 package com.victorbg.racofib.di;
 
+import com.victorbg.racofib.viewmodel.GradesViewModel;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
 import com.victorbg.racofib.viewmodel.LoginViewModel;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
@@ -25,4 +26,5 @@ public interface ViewModelSubcomponent {
     SubjectsViewModel subjectsViewModel();
     SubjectDetailViewModel subjectDetailViewModel();
     ScheduleViewModel scheduleViewModel();
+    GradesViewModel gradesViewModel();
 }

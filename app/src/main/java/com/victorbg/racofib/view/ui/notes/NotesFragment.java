@@ -146,24 +146,24 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
             @Override
             public void onPageAboutToExpand(long l) {
-
-            }
-
-            @Override
-            public void onPageExpanded() {
                 swipeRefreshLayout.setEnabled(false);
                 getMainActivity().setBottomBarUI(R.menu.note_detail_menu, false, true);
             }
 
             @Override
-            public void onPageAboutToCollapse(long l) {
+            public void onPageExpanded() {
 
             }
 
             @Override
-            public void onPageCollapsed() {
+            public void onPageAboutToCollapse(long l) {
                 swipeRefreshLayout.setEnabled(true);
                 getMainActivity().setBottomBarUI(R.menu.notes_menu, true, false);
+            }
+
+            @Override
+            public void onPageCollapsed() {
+
             }
         });
 
@@ -209,7 +209,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     @Override
-    public void onFabSelected() {
+    public void onFabSelected(View v) {
         startActivity(new Intent(getContext(), NotesFavoritesActivity.class));
     }
 

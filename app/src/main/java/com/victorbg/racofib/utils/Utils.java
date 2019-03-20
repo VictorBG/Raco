@@ -5,12 +5,14 @@ import android.content.Context;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.notes.Note;
+import com.victorbg.racofib.data.model.subject.Grade;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectColor;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -179,5 +181,28 @@ public class Utils {
     public static long getTimeFromDate(String date, String format) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return simpleDateFormat.parse(date).getTime();
+    }
+
+    public static float calculateGrade(List<Grade> grades) {
+        float result = .0f;
+
+        for (Grade grade : grades) {
+            result += grade.grade * (grade.percent / 100);
+        }
+
+        if (result > 10f) {
+            result = 10f;
+        }
+
+        return result;
+    }
+
+    public static String[] getSubjectsArray(List<Subject> subjects) {
+        String[] result = new String[subjects.size()];
+        int i = 0;
+        for (Subject subject : subjects) {
+            result[i++] = subject.shortName;
+        }
+        return result;
     }
 }

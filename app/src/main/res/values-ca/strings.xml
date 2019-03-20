@@ -89,6 +89,10 @@
     <string name="item_detail_note_close_desc">Cerrar detalle</string>
     <string name="grades_bottom_tab">Notas</string>
     <string name="save_to_calendar">Guardar en el calendario</string>
+    <string name="grade_name_dialog_edit">Nombre</string>
+    <string name="grade_grade_dialog_edit">Nota</string>
+    <string name="save">Guardar</string>
+    <string name="delete">Eliminar</string>
 
     <string-array name="language_list_titles">
         <item>Espanyol</item>

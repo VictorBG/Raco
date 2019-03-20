@@ -1,12 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?themeBackgroundColor"
-    android:fontFamily="@font/work_sans_medium"
-    android:gravity="center"
-    android:text="GradesFragment · In development"
-    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-    android:textSize="18sp">
+    android:background="?themeBackgroundColor">
 
-</TextView>
+    <FrameLayout
+        android:id="@+id/spinnerContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/schedule_bg_ripple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="AC" />
+    </FrameLayout>
+
+    <com.victorbg.racofib.view.widgets.grades.GradesChart
+        android:id="@+id/gradesChart"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:circleColor="@color/accent"
+        app:circleWidth="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerContainer" />
+
+    <RelativeLayout
+        android:id="@+id/progress_text_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toTopOf="@+id/gradesChart"
+        app:layout_constraintEnd_toEndOf="@+id/gradesChart"
+        app:layout_constraintStart_toStartOf="@+id/gradesChart"
+        app:layout_constraintTop_toBottomOf="@+id/gradesChart"
+        tools:ignore="MissingConstraints">
+
+        <TextSwitcher style="@style/ProgressTextGoal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/progress_text"
+            android:layout_toEndOf="@id/progress_text"
+            android:text="/10"
+            android:textColor="#ff9aa0a6"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gradesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gradesChart" />
+</androidx.constraintlayout.widget.ConstraintLayout>

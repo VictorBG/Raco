@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment implements Injectable {
 
@@ -30,6 +31,8 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
         void onMenuClick(int id);
 
         void onMenuRepeatClick(int id);
+
+        void onLogoutClick();
     }
 
     @BindView(R.id.profileLayout)
@@ -129,7 +132,7 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
             navigationView.getMenu().findItem(selectedItem).setChecked(true);
         }
         if (dispatchClick && menuListener != null) {
-            menuListener.onMenuClick(selectedItem);
+            menuListener.onMenuClick(id);
         }
     }
 
@@ -162,5 +165,12 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
             username.setText(user.username);
             glideRequests.loadImage(profileImage, user.photoUrl);
         });
+    }
+
+    @OnClick(R.id.closeSession)
+    public void closeSession(View v) {
+        if (menuListener != null) {
+            menuListener.onLogoutClick();
+        }
     }
 }

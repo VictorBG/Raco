@@ -157,7 +157,7 @@ public class FragmentNavigator {
     }
 
     public void onFabSelected() {
-        ((BaseFragment) selectedFragment).onFabSelected();
+//        ((BaseFragment) selectedFragment).onFabSelected();
     }
 
     public void onQuery(String query) {
