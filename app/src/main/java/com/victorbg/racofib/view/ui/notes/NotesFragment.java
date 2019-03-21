@@ -146,7 +146,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fastAdapter);
         recyclerView.setExpandablePage(notePageLayout);
-        notePageLayout.setPullToCollapseThresholdDistance((int) DisplayUtils.convertDpToPixel(56f));
         notePageLayout.setPullToCollapseInterceptor((downX, downY, upwardPull) -> scrollView.canScrollVertically(upwardPull ? 1 : -1) ? InterceptResult.INTERCEPTED : InterceptResult.IGNORED);
         notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
             @Override

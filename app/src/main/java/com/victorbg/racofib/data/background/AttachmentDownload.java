@@ -167,6 +167,7 @@ public class AttachmentDownload {
                         openFile(uriString, attachment.mime);
                     } else if (c.moveToFirst() && DownloadManager.STATUS_FAILED == c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
                         Toast.makeText(context, R.string.error_downloading_file, Toast.LENGTH_LONG).show();
+                        Timber.d(c.getString(c.getColumnIndex(DownloadManager.COLUMN_STATUS)));
                     }
                     context.unregisterReceiver(receiver);
                     listener.onDownloadFinish();
