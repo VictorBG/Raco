@@ -18,6 +18,7 @@ import com.victorbg.racofib.data.background.AttachmentDownload;
 import com.victorbg.racofib.data.model.notes.Attachment;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
+import com.victorbg.racofib.view.MainActivity;
 
 import javax.inject.Inject;
 
@@ -107,7 +108,13 @@ public class BaseActivity extends BaseThemeActivity implements Injectable {
             snackbar.getView().setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFBDBDBD")));
             ((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(getResources().getColor(R.color.md_light_primary_text));
         }
+
+        snackbar = customSnackbarAnchor(snackbar);
         snackbar.show();
+        return snackbar;
+    }
+
+    protected Snackbar customSnackbarAnchor(Snackbar snackbar) {
         return snackbar;
     }
 }

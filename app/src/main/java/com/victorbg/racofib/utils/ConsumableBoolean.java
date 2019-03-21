@@ -1,7 +1,8 @@
 package com.victorbg.racofib.utils;
 
 /**
- * A special boolean that is consumed once retrieved.
+ * A special boolean that is consumed.
+ * <p>
  * {@link Boolean#TRUE} is converted to {@link Boolean#FALSE}
  * once retrieved, otherwise the value is not modified
  */

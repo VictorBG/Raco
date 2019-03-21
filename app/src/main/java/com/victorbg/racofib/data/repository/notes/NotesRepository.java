@@ -76,7 +76,7 @@ public class NotesRepository extends Repository {
     }
 
     public void addToFav(Note note) {
-        appDatabase.notesDao().changeFavState(note.subject, note.date, note.title, note.favorite ? 1 : 0);
+        appDatabase.notesDao().changeFavState(note.id, note.favorite ? 1 : 0);
     }
 
     @Override

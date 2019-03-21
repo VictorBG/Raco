@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -58,6 +59,24 @@ public class Note implements Parcelable {
 
     public Note() {
 
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Note) {
+            Note n = (Note) obj;
+
+            return n.color.equals(color)
+//                    && n.favorite == favorite
+                    && n.id == id
+                    && n.subject.equals(subject)
+                    && n.title.equals(title)
+                    && n.date.equals(date)
+                    && n.attachments.equals(attachments)
+                    && n.text.equals(text);
+        }
+
+        return false;
     }
 
     public static Note createEmptyNote() {

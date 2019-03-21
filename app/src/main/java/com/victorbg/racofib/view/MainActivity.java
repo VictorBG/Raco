@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -77,7 +79,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
     private int selectedFragmentId = R.id.homeFragment;
     private int menuId = R.menu.main_menu;
-    private ConsumableBoolean scheduledRecreate = new ConsumableBoolean(false);
+
 
     private MainBottomNavigationView mainBottomNavigationView;
 
@@ -302,14 +304,10 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.settings_menu:
-                startActivityForResult(new Intent(this, SettingsActivity.class), 400);
-                break;
-            case R.id.filter_menu:
-                fragmentNavigator.onFilterSelected();
-                break;
-
+        if (item.getItemId() == R.id.settings_menu) {
+            startActivityForResult(new Intent(this, SettingsActivity.class), 400);
+        } else {
+            fragmentNavigator.onItemClick(item.getItemId());
         }
         return true;
     }
@@ -317,11 +315,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 400) {
-            if (scheduledRecreate.getValue()) {
-                recreate();
-            } else {
-                internalRecreate();
-            }
+            internalRecreate();
         }
     }
 
@@ -347,6 +341,13 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     public void popBack() {
         fragmentNavigator.popBack();
         handleFragmentMainUI(fragmentNavigator.getCurrentFragmentId());
+    }
+
+
+    @Override
+    protected Snackbar customSnackbarAnchor(Snackbar snackbar) {
+        snackbar.setAnchorView(fab.getVisibility() == View.VISIBLE ? fab : bottomAppBar);
+        return snackbar;
     }
 }
 

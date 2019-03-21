@@ -164,7 +164,5 @@ public class FragmentNavigator {
         ((BaseFragment) selectedFragment).onQuery(query);
     }
 
-    public void onFilterSelected() {
-        ((BaseFragment) selectedFragment).onFilterSelected();
-    }
+
 }

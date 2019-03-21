@@ -2,9 +2,11 @@ package com.victorbg.racofib.view.ui.notes.items;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -93,6 +95,8 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView subject;
         @BindView(R.id.attachmentsGroup)
         AttachmentsGroup attachmentsGroup;
+        @BindView(R.id.favButton)
+        public ImageButton favButton;
         @BindView(R.id.attachmentsScrollView)
         FrameLayout attachmentsScrollView;
         @BindView(R.id.item_container)
@@ -106,24 +110,41 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
 
         @Override
         public void bindView(@NonNull NoteItem item, @NonNull List<Object> payloads) {
-            StringHolder.applyToOrHide(new StringHolder(Html.fromHtml(item.note.title)), title);
-            StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
 
-            subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
+            if (payloads.isEmpty()) {
+                StringHolder.applyToOrHide(new StringHolder(Html.fromHtml(item.note.title)), title);
+                StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
 
-            try {
-                Date d = format.parse(item.note.date);
-                StringHolder.applyToOrHide(new StringHolder(df.format(d)), date);
-            } catch (ParseException e) {
-                StringHolder.applyToOrHide(new StringHolder(item.note.date), date);
-            }
+                subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
 
-            if (item.note.attachments.size() == 0) {
-                attachmentsScrollView.setVisibility(View.GONE);
-                attachmentsGroup.removeAllViews();
+                try {
+                    Date d = format.parse(item.note.date);
+                    StringHolder.applyToOrHide(new StringHolder(df.format(d)), date);
+                } catch (ParseException e) {
+                    StringHolder.applyToOrHide(new StringHolder(item.note.date), date);
+                }
+
+                if (item.note.attachments.size() == 0) {
+                    attachmentsScrollView.setVisibility(View.GONE);
+                    attachmentsGroup.removeAllViews();
+                } else {
+                    attachmentsScrollView.setVisibility(View.VISIBLE);
+                    attachmentsGroup.setAttachments(item.note.attachments);
+                }
+
+                favButton.setImageResource(item.note.favorite ? R.drawable.ic_favorite_red : R.drawable.ic_favorite_border_multicolor);
             } else {
-                attachmentsScrollView.setVisibility(View.VISIBLE);
-                attachmentsGroup.setAttachments(item.note.attachments);
+                Bundle bundle = (Bundle) payloads.get(0);
+
+                for (String key : bundle.keySet()) {
+                    if (key.equals("color")) {
+                        subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(bundle.getString("color"))));
+                    } else if (key.equals("favorite")) {
+                        favButton.setImageResource(bundle.getBoolean("favorite") ? R.drawable.ic_favorite_red : R.drawable.ic_favorite_border_multicolor);
+                    }
+                }
+
+
             }
         }
 

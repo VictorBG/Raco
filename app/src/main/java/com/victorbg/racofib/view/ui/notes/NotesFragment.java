@@ -78,6 +78,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     private PublicationsViewModel publicationsViewModel;
 
     private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
+    private final ConsumableBoolean preventReload = new ConsumableBoolean(false);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +142,29 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             }
         });
 
+        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
+            @Override
+            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
+                preventReload.setValue(true);
+                Note n = publicationsViewModel.changeFavoriteState(item.getNote());
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("favorite", n.favorite);
+                fastAdapter.notifyAdapterItemChanged(position, bundle);
+
+                showSnackbar(n.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
+
+            }
+
+            @javax.annotation.Nullable
+            @Override
+            public View onBind(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof NoteItem.ViewHolder) {
+                    return ((NoteItem.ViewHolder) viewHolder).favButton;
+                }
+                return null;
+            }
+        });
+
         itemAdapter.getItemFilter().withFilterPredicate((item, constraint) -> item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -182,15 +206,15 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     public void onChanged(List<Note> notes) {
-        if (notes == null || notes.isEmpty()) return;
+        if (notes == null || notes.isEmpty() || preventReload.getValue()) return;
         List<NoteItem> items = new ArrayList<>();
         for (Note note : notes) {
             items.add(new NoteItem().withNote(note));
         }
 
         int oldListSize = itemAdapter.getAdapterItemCount();
-        //Prevent recreating the whole list when there are identical items (based on title and subject)
-        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
+        //Prevent recreating the whole list when there are identical items
+        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items, new NotesDiffCallback());
         FastAdapterDiffUtil.set(itemAdapter, diffs);
 
         if (oldListSize != notes.size() || scheduledScrollToTop.getValue()) {
@@ -223,10 +247,12 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     @Override
-    public void onFilterSelected() {
-        publicationsViewModel.onFilterClick();
+    public boolean onItemClick(int id) {
+        if (id == R.id.filter_menu) {
+            publicationsViewModel.onFilterClick();
+        }
+        return super.onItemClick(id);
     }
-
 
     @Override
     public boolean onBackPressed() {

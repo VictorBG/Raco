@@ -38,7 +38,7 @@ public class PublicationsViewModel extends ViewModel {
     public MutableLiveData<Note> selectedNote = new MutableLiveData<>();
 
 
-    private final UseCase<Note, Note> changeFavoriteStateUseCase;
+    private final NotesChangeFavoriteStateUseCase changeFavoriteStateUseCase;
     private final LoadNotesUseCase loadNotesUseCase;
     private final LoadSavedNotesUseCase loadSavedNotesUseCase;
 
@@ -94,12 +94,11 @@ public class PublicationsViewModel extends ViewModel {
             return;
         }
         LiveData<Resource<List<Note>>> data = loadNotesUseCase.execute(force);
-        publications.addSource(data, result -> {
-            if (result.status != Status.LOADING) {
-                publications.removeSource(data);
-            }
-            publications.setValue(result);
-        });
+        //            if (result.status != Status.LOADING) {
+//                publications.removeSource(data);
+//            }
+        publications.removeSource(data);
+        publications.addSource(data, publications::setValue);
     }
 
     /**

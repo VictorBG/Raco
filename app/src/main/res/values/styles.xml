@@ -29,6 +29,7 @@
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:colorBackground">@color/md_dark_background</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

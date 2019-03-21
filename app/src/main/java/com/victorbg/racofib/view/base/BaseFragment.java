@@ -68,14 +68,6 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
 
     }
 
-    /**
-     * Dispatch the filter click. By default it has no action
-     * <p>
-     * Deprectaed: use {@link #onItemClick(int)}
-     */
-    @Deprecated
-    public void onFilterSelected() {
-    }
 
     /**
      * Dispatch the event with id to the fragments that

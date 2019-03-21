@@ -152,9 +152,8 @@ public class FragNav {
         ((BaseFragment) selectedFragment).onQuery(query);
     }
 
-    public void onFilterSelected() {
-        ((BaseFragment) selectedFragment).onFilterSelected();
+    public void onItemClick(int id) {
+        selectedFragment.onItemClick(id);
     }
-
 
 }
