@@ -26,12 +26,14 @@ import com.victorbg.racofib.view.ui.exams.FragmentAllExams;
 import com.victorbg.racofib.view.ui.grades.GradesFragment;
 import com.victorbg.racofib.view.ui.home.HomeFragment;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
+import com.victorbg.racofib.view.ui.main.MainBottomBarRules;
 import com.victorbg.racofib.view.ui.main.MainBottomNavigationView;
 import com.victorbg.racofib.view.ui.notes.NotesFragment;
 import com.victorbg.racofib.view.ui.schedule.ScheduleFragment;
 import com.victorbg.racofib.view.ui.settings.SettingsActivity;
 import com.victorbg.racofib.view.ui.subjects.SubjectDetailFragment;
 import com.victorbg.racofib.view.ui.subjects.SubjectsFragment;
+import com.victorbg.racofib.view.widgets.bottom.BottomBarNavigator;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -75,15 +77,10 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     private SearchView searchView;
     private MainActivityViewModel mainActivityViewModel;
     private FragNav fragmentNavigator;
-
-
-    private int selectedFragmentId = R.id.homeFragment;
-    private int menuId = R.menu.main_menu;
-
-
+    private BottomBarNavigator bottomBarNavigator;
     private MainBottomNavigationView mainBottomNavigationView;
 
-    private DrawerArrowDrawable drawerArrowDrawable;
+    private int selectedFragmentId = R.id.homeFragment;
 
 
     @Override
@@ -95,12 +92,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             this.selectedFragmentId = savedInstanceState.getInt("FragmentID");
         }
 
-        setSupportActionBar(bottomAppBar);
-
-        fab.setOnClickListener(v -> fragmentNavigator.onFabSelected(v));
-
-        drawerArrowDrawable = new DrawerArrowDrawable(this);
-
         fragmentNavigator = new FragNav(this)
                 .addFragment(R.id.homeFragment, new HomeFragment())
                 .addFragment(R.id.notesFragment, new NotesFragment())
@@ -111,25 +102,70 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
                 .addFragment(R.id.subjectDetailFragment, new SubjectDetailFragment());
 
 
-        bottomAppBar.setNavigationOnClickListener(v -> {
-            if (!showNavigation) {
-                if (!fragmentNavigator.propagateBackClick() && fragmentNavigator.popBack()) {
-                    handleFragmentMainUI(fragmentNavigator.getCurrentFragmentId());
+        bottomBarNavigator = BottomBarNavigator.createNavigatorWithFAB(this, fragmentNavigator, bottomAppBar, fab);
+        bottomBarNavigator.addRules(MainBottomBarRules.getMainActivityRules());
+        bottomBarNavigator.setNavigationListener(new BottomBarNavigator.NavigationListener() {
+            @Override
+            public void onNavigationClick(View v) {
+                //Prevent to show try to show multiple adds by clicking the menu icon
+                //while the menu is popping up, thus causing an exception
+                //due it is already added on the stack and cannot be added again
+                if (!mainBottomNavigationView.isVisible()) {
+                    mainBottomNavigationView.show(MainActivity.this.getSupportFragmentManager(), "nav-view");
                 }
-                //For every click the nav is shown, and if it is not prevented to show multiple navs
-                //it will crash, it's forbidden to show the same fragment more than once. To prevent
-                //this check if it is not visible (isHidden() is not the same than !isVisible())
-            } else if (drawerArrowDrawable.getProgress() == 0.0f && !mainBottomNavigationView.isVisible()) {
-                mainBottomNavigationView.show(MainActivity.this.getSupportFragmentManager(), "nav-view");
             }
-            //Discard clicks while the drawable is being animated
+
+            @Override
+            public void onNavigationMade(int destinationId) {
+                mainBottomNavigationView.selectItem(destinationId, false);
+            }
+
+            @Override
+            public boolean onItemClick(MenuItem menuItem) {
+                return false;
+            }
+
+            @Override
+            public void onMenuReplaced(int id, Menu menu) {
+                if (id == R.menu.notes_menu) {
+                    searchView = (SearchView) menu.getItem(0).getActionView();
+                    searchView.setMaxWidth(Integer.MAX_VALUE);
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            if (fragmentNavigator != null) {
+                                fragmentNavigator.onQuery(newText);
+                            }
+                            return false;
+                        }
+                    });
+
+                    searchView.setOnCloseListener(() -> {
+                        if (fragmentNavigator != null) {
+                            fragmentNavigator.onQuery(null);
+                        }
+                        return false;
+                    });
+                }
+            }
         });
 
         mainBottomNavigationView = MainBottomNavigationView.getMenu(new MainBottomNavigationView.MenuListener() {
             @Override
             public void onMenuClick(int id) {
                 mainBottomNavigationView.dismiss();
-                handleFragment(id);
+                if (id == R.id.settings_menu) {
+                    startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 400);
+                } else {
+                    selectedFragmentId = id;
+                    bottomBarNavigator.navigate(id, null);
+                }
+//                mainBottomNavigationView.dismiss();
             }
 
             @Override
@@ -145,9 +181,11 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             }
         }, selectedFragmentId);
 
-        mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
+        mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).
 
-        handleFragment(selectedFragmentId);
+                get(MainActivityViewModel.class);
+
+        bottomBarNavigator.navigate(selectedFragmentId, null);
 
     }
 
@@ -171,145 +209,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         fragmentNavigator.replaceByFragment(id, fragment);
     }
 
-    public void handleFragment(int selectedFragmentId) {
-        handleFragment(selectedFragmentId, null);
-    }
-
-    public void handleFragment(int selectedFragmentId, @Nullable Bundle arguments) {
-        if (selectedFragmentId == R.id.settings_menu) {
-            startActivityForResult(new Intent(this, SettingsActivity.class), 400);
-            return;
-        }
-
-        this.selectedFragmentId = selectedFragmentId;
-        fragmentNavigator.replaceFragment(selectedFragmentId, arguments);
-        invalidateOptionsMenu();
-        handleFragmentMainUI(selectedFragmentId);
-    }
-
-    public void handleFragmentMainUI(int selectedFragmentId) {
-        switch (selectedFragmentId) {
-            default:
-            case R.id.notesFragment:
-                fab.hide();
-                setBottomBarUI(R.menu.notes_menu, true, false);
-                setNavIconProgress(0, true);
-                fab.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_white));
-                bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                break;
-            case R.id.homeFragment:
-            case R.id.subjectsFragment:
-            case R.id.timetableFragment:
-                fab.hide();
-                setBottomBarUI(R.menu.main_menu, true, false);
-                setNavIconProgress(0, true);
-                break;
-            case R.id.gradesFragment:
-                setBottomBarUI(R.menu.main_menu, true, false);
-                setNavIconProgress(0, true);
-                fab.setImageDrawable(getDrawable(R.drawable.ic_add_black_24dp));
-                bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                fab.show();
-                break;
-            case R.id.allExamsFragment:
-            case R.id.subjectDetailFragment:
-                fab.hide();
-                setBottomBarUI(R.menu.main_menu, true, false);
-                setNavIconProgress(1, true);
-
-        }
-    }
-
-    private boolean showNavigation = true;
-
-    public void setBottomBarUI(int menuId, boolean showNavigation, boolean showFab) {
-        this.menuId = menuId;
-        invalidateOptionsMenu();
-
-        if (showFab) {
-            fab.show();
-        } else {
-            fab.hide();
-        }
-
-        bottomAppBar.replaceMenu(menuId);
-        setNavIcon(drawerArrowDrawable);
-//        setNavIcon(showNavigation ? drawerArrowDrawable : null);
-        if (this.showNavigation != showNavigation) {
-            this.showNavigation = showNavigation;
-            setNavIconProgress(showNavigation ? 0 : 1, true);
-        }
-    }
-
-    private void setNavIcon(Drawable navIcon) {
-        bottomAppBar.setNavigationIcon(navIcon);
-    }
-
-    private void setNavIconProgress(@FloatRange(from = 0.0, to = 1.0) float progress, boolean animate) {
-        if (bottomAppBar.getNavigationIcon() == null) return;
-        if (drawerArrowDrawable.getProgress() != progress) {
-            if (!animate) {
-                drawerArrowDrawable.setProgress(progress);
-            } else {
-                ValueAnimator valueAnimator = ValueAnimator.ofFloat(drawerArrowDrawable.getProgress(), progress)
-                        .setDuration(250);
-                valueAnimator.addUpdateListener(animation -> drawerArrowDrawable.setProgress((Float) animation.getAnimatedValue()));
-                valueAnimator.start();
-
-            }
-        }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(menuId, menu);
-        bottomAppBar.replaceMenu(menuId);
-
-        if (menuId == R.menu.notes_menu) {
-            searchView = (SearchView) menu.getItem(0).getActionView();
-            searchView.setMaxWidth(Integer.MAX_VALUE);
-            final int textViewID = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-            final AutoCompleteTextView searchTextView = searchView.findViewById(textViewID);
-            try {
-                Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-                mCursorDrawableRes.setAccessible(true);
-                mCursorDrawableRes.set(searchTextView, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-            } catch (Exception e) {
-            }
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    if (fragmentNavigator != null) {
-                        fragmentNavigator.onQuery(newText);
-                    }
-                    return false;
-                }
-            });
-
-            searchView.setOnCloseListener(() -> {
-                if (fragmentNavigator != null) {
-                    fragmentNavigator.onQuery(null);
-                }
-                return false;
-            });
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.settings_menu) {
-            startActivityForResult(new Intent(this, SettingsActivity.class), 400);
-        } else {
-            fragmentNavigator.onItemClick(item.getItemId());
-        }
-        return true;
+    public void navigate(int id, @Nullable Bundle arguments, boolean applyNavigation) {
+        bottomBarNavigator.navigate(id, arguments, applyNavigation);
     }
 
     @Override
@@ -320,34 +221,31 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     }
 
     @Override
-    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
-        return dispatchingAndroidInjector;
-    }
-
-    @Override
     public void onBackPressed() {
         if (searchView != null && !searchView.isIconified()) {
             searchView.onActionViewCollapsed();
         } else if (!fragmentNavigator.propagateBackClick()) {
-            if (fragmentNavigator.popBack()) {
-                mainBottomNavigationView.selectItem(fragmentNavigator.getCurrentFragmentId(), false);
-                handleFragmentMainUI(fragmentNavigator.getCurrentFragmentId());
-            } else {
+            if (!bottomBarNavigator.onBackPressed()) {
                 super.onBackPressed();
             }
+
         }
     }
 
     public void popBack() {
         fragmentNavigator.popBack();
-        handleFragmentMainUI(fragmentNavigator.getCurrentFragmentId());
+        bottomBarNavigator.navigate(fragmentNavigator.getCurrentFragmentId(), null, false);
     }
-
 
     @Override
     protected Snackbar customSnackbarAnchor(Snackbar snackbar) {
         snackbar.setAnchorView(fab.getVisibility() == View.VISIBLE ? fab : bottomAppBar);
         return snackbar;
+    }
+
+    @Override
+    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
+        return dispatchingAndroidInjector;
     }
 }
 

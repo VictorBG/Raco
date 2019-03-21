@@ -1,7 +1,6 @@
 package com.victorbg.racofib.view.ui.notes;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.databinding.FragmentNotesBinding;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.utils.ConsumableBoolean;
-import com.victorbg.racofib.utils.DisplayUtils;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
@@ -175,7 +173,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onPageAboutToExpand(long l) {
                 swipeRefreshLayout.setEnabled(false);
-                getMainActivity().setBottomBarUI(R.menu.note_detail_menu, false, true);
+                getMainActivity().navigate(R.id.noteDetailFragment, null, false);
             }
 
             @Override
@@ -186,7 +184,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onPageAboutToCollapse(long l) {
                 swipeRefreshLayout.setEnabled(true);
-                getMainActivity().setBottomBarUI(R.menu.notes_menu, true, false);
+                getMainActivity().navigate(R.id.notesFragment, null, false);
             }
 
             @Override

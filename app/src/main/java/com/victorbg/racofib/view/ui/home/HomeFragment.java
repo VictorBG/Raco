@@ -185,6 +185,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
     @OnClick(R.id.seeMoreExams)
     public void seeMoreExams(View view) {
 //        startActivity(new Intent(getContext(), AllExamsActivity.class));
-        getMainActivity().handleFragment(R.id.allExamsFragment);
+        getMainActivity().navigate(R.id.allExamsFragment, null, true);
     }
 }

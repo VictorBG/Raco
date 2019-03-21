@@ -4,4 +4,5 @@
     <item name="normal_act" type="id" />
     <item name="allExamsFragment" type="id" />
     <item name="subjectDetailFragment" type="id" />
+    <item name="noteDetailFragment" type="id" />
 </resources>

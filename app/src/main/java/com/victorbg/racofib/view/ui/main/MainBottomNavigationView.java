@@ -77,7 +77,6 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @SuppressLint("SetTextI18n")
@@ -112,9 +111,6 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
 //            }
         });
 
-        if (savedInstanceState != null) {
-            restoreInstanceState(savedInstanceState);
-        }
 
         return rootView;
     }
@@ -135,28 +131,6 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
             menuListener.onMenuClick(id);
         }
     }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(saveInstanceState(outState));
-    }
-
-    public Bundle saveInstanceState(@Nullable Bundle savedInstanceState) {
-        return saveInstance(savedInstanceState);
-    }
-
-    public void restoreInstanceState(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) return;
-        selectItem(savedInstanceState.getInt("SelectedItem"), false);
-    }
-
-
-    private Bundle saveInstance(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) return savedInstanceState;
-        savedInstanceState.putInt("SelectedItem", selectedItem);
-        return savedInstanceState;
-    }
-
 
     @SuppressLint("SetTextI18n")
     private void displayUserInfo() {

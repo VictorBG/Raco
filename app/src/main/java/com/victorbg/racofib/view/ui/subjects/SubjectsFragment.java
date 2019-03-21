@@ -1,6 +1,5 @@
 package com.victorbg.racofib.view.ui.subjects;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,7 +85,7 @@ public class SubjectsFragment extends BaseFragment implements Injectable {
                 SubjectDetailFragment subjectDetailFragment = new SubjectDetailFragment();
                 subjectDetailFragment.setArguments(arguments);
                 getMainActivity().replaceByFragment(R.id.subjectDetailFragment, subjectDetailFragment);
-                getMainActivity().handleFragmentMainUI(R.id.subjectDetailFragment);
+                getMainActivity().navigate(R.id.subjectDetailFragment, null, true);
             }
 
             @javax.annotation.Nullable
