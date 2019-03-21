@@ -93,6 +93,10 @@ public class FragNav {
         selectedFragment = (BaseFragment) fragment;
     }
 
+    public boolean idExists(int id) {
+        return fragmentArray.indexOfKey(id) >= 0;
+    }
+
     public void replaceFragment(int id) {
         replaceFragment(id, null);
     }

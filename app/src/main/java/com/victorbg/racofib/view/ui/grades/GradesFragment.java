@@ -175,7 +175,7 @@ public class GradesFragment extends BaseFragment implements Injectable {
     private void openDialog(View v, int index, boolean newGrade) {
         Intent intent = new Intent(getContext(), GradeDialog.class);
         intent.putExtra(GradeDialog.SUBJECT_PARAM, currentSubject);
-        intent.putExtra(GradeDialog.GRADE_INDEX_PARAM, index);
+        intent.putExtra(GradeDialog.GRADE_INDEX_PARAM, Math.max(0, index));
         intent.putExtra(GradeDialog.NEW_GRADE_PARAM, newGrade);
         ActivityOptions activityOptions = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
         startActivity(intent, activityOptions.toBundle());

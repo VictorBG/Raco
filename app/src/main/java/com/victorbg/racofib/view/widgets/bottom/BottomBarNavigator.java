@@ -3,7 +3,7 @@ package com.victorbg.racofib.view.widgets.bottom;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
 
@@ -11,12 +11,9 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.utils.fragment.FragNav;
-import com.victorbg.racofib.utils.fragment.FragmentNavigator;
-import com.victorbg.racofib.view.MainActivity;
-
-import java.util.List;
 
 import androidx.annotation.FloatRange;
+import androidx.annotation.Nullable;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 
 public class BottomBarNavigator {
@@ -28,7 +25,6 @@ public class BottomBarNavigator {
     private static final int DRAWER_MODE_NAVIGATION_PROGRESS = 0;
     private static final int DRAWER_MODE_BACK_PROGRESS = 1;
 
-    private Context context;
     private FragNav fragmentNavigator;
     private BottomAppBar bottomAppBar;
     private FloatingActionButton floatingActionButton;
@@ -53,9 +49,8 @@ public class BottomBarNavigator {
         this.bottomAppBar = bottomAppBar;
         this.floatingActionButton = floatingActionButton;
         this.fragmentNavigator = fragmentNavigator;
-        this.context = context;
 
-        this.navigationIcon = new DrawerArrowDrawable(this.context);
+        this.navigationIcon = new DrawerArrowDrawable(context);
 
         floatingActionButton.setOnClickListener(fragmentNavigator::onFabSelected);
 
@@ -65,11 +60,7 @@ public class BottomBarNavigator {
                 if (currentRule.navigationMode == NAVIGATION_MODE_NAVIGATION && listener != null) {
                     listener.onNavigationClick(v);
                 } else if (currentRule.navigationMode == NAVIGATION_MODE_BACK) {
-                    if (!fragmentNavigator.propagateBackClick()) {
-                        if (fragmentNavigator.popBack()) {
-                            applyRule(fragmentNavigator.getCurrentFragmentId());
-                        }
-                    }
+                    onBackPressed();
                 }
             }
 //            } else if (drawerArrowDrawable.getProgress() == 0.0f && !mainBottomNavigationView.isVisible()) {
@@ -185,6 +176,31 @@ public class BottomBarNavigator {
         bottomAppBar.setNavigationIcon(drawable);
     }
 
+    public void setFabIcon(int icon) {
+        floatingActionButton.setImageResource(icon);
+    }
+
+    public void navigate(int id, @Nullable Bundle arguments) {
+        if (fragmentNavigator.idExists(id)) {
+            fragmentNavigator.replaceFragment(id, arguments);
+        }
+
+        if (rules.indexOfKey(id) >= 0) {
+            applyRule(id);
+        }
+    }
+
+    public void onBackPressed() {
+        if (!fragmentNavigator.propagateBackClick()) {
+            if (fragmentNavigator.popBack()) {
+                applyRule(fragmentNavigator.getCurrentFragmentId());
+                if (listener != null) {
+                    listener.onNavigationMade(fragmentNavigator.getCurrentFragmentId());
+                }
+            }
+        }
+    }
+
     public BottomBarNavigator addRule(int id, Rule rule) {
         this.rules.put(id, rule);
         return this;
@@ -200,5 +216,7 @@ public class BottomBarNavigator {
 
     public interface NavigationListener {
         void onNavigationClick(View v);
+
+        void onNavigationMade(int destinationId);
     }
 }

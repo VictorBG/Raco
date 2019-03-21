@@ -50,16 +50,16 @@ public class GradeDialog extends DialogCustomContent implements Injectable {
                 finish();
             }
 
-            index = getIntent().getExtras().getInt(GRADE_INDEX_PARAM);
-            if (index < 0 || index >= subject.grades.size()) {
-                Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-            if (newGrade) {
+            if (!newGrade) {
+                index = getIntent().getExtras().getInt(GRADE_INDEX_PARAM);
+                if (index < 0 || index >= subject.grades.size()) {
+                    Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            } else {
                 Grade grade = new Grade();
                 grade.title = "";
-                subject.grades.add(index, grade);
+                subject.grades.add(grade);
             }
 
             gradeObservableField.set(subject.grades.get(index));
