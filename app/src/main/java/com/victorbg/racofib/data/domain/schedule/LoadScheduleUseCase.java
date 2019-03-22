@@ -33,8 +33,12 @@ public class LoadScheduleUseCase extends UseCase<Void, LiveData<Resource<List<Su
     }
 
     /**
-     * For every emission of subjects returns the schedule associated. It it util when the colors of the
-     * subjects changes this also emits a new schedule with the correct colors
+     * For every emission of subjects returns the schedule associated. It is util when the colors of the
+     * subjects changes this also emits a new schedule with the correct colors.
+     * <p>
+     * TODO (Victor) Maybe this doesn't emit a new schedule when the colors changes or the
+     * implementation in the view layer is not correct to handle multiple emissions, in theory
+     * this should have the described behavior
      *
      * @return
      */

@@ -60,7 +60,7 @@ public class FragmentAllExams extends BaseFragment implements Injectable {
 
         setRecycler();
 
-        viewModel.getExams().observe(this, this::handleExams);
+        viewModel.getCachedExams().observe(this, this::bindExams);
     }
 
 
@@ -89,15 +89,6 @@ public class FragmentAllExams extends BaseFragment implements Injectable {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fastAdapter);
-    }
-
-    private void handleExams(Resource<List<Exam>> resource) {
-        switch (resource.status) {
-            case SUCCESS:
-                bindExams(resource.data);
-            default:
-                break;
-        }
     }
 
     private void bindExams(List<Exam> exams) {

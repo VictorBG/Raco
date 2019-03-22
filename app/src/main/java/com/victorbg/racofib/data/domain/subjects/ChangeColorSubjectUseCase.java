@@ -31,6 +31,19 @@ public class ChangeColorSubjectUseCase extends UseCase<Subject, Void> {
         throw new InvalidParameterException("execute cannot be called with an invalid parameter");
     }
 
+    /**
+     * Change the colors of the databases that have the color as parameter:
+     * {@link com.victorbg.racofib.data.database.dao.SubjectsDao} and
+     * {@link com.victorbg.racofib.data.database.dao.NotesDao}.
+     * <p>
+     * TODO(V): Should change Notes database to have a relation with Subjects directly?
+     * The notes databases has no direct relation to subjects databases in order
+     * to get the color due there are notes that are not related with subjects, and I do not
+     * know (or don't remember) how to handle this type of situations in sql
+     *
+     * @param parameter
+     * @return
+     */
     @Override
     public Void execute(Subject parameter) {
         appExecutors.diskIO().execute(() -> {

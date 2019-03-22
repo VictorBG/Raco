@@ -21,6 +21,11 @@ public class ExamsSaveOfflineData implements SaveOfflineData<List<Exam>> {
         this.appExecutors = appExecutors;
     }
 
+    /**
+     * Save the provided list of exams into the database
+     *
+     * @param data
+     */
     @Override
     public void saveData(List<Exam> data) {
         appExecutors.diskIO().execute(() ->

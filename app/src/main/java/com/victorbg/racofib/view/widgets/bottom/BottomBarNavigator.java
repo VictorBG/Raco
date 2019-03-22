@@ -17,8 +17,16 @@ import com.victorbg.racofib.utils.fragment.FragNav;
 import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
-import butterknife.internal.ListenerClass;
 
+/**
+ * Manages the state of the {@link BottomAppBar}, {@link FragNav} and {@link FloatingActionButton}
+ * (if provided)
+ * <p>
+ * The state is represented in {@link Rule}, that every destination must have in order
+ * to apply them when {@link #navigate(int, Bundle, boolean)} is called with that destination. It
+ * is possible that there are destinations with no {@link Rule} attached, in that case it is ignores
+ * but is hardly recommended to attach one to them
+ */
 public class BottomBarNavigator {
 
     public static final int NAVIGATION_MODE_NONE = 0;

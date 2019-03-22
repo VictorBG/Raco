@@ -49,7 +49,7 @@ public class NotesRepository extends Repository {
      * if it should not be fetch from remote (less than 15 minutes between calls,
      * {@link #networkRateLimiter}) it is fetched from database, and in case it is being
      * fetched a lot from the database (calls within a minute, {@link #databaseRateLimiter})
-     * it is retrieved from the local cache.
+     * it is retrieved from the local cache (which will never be dirty).
      *
      * @return
      */

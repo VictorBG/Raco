@@ -15,6 +15,7 @@ import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.utils.NetworkUtils;
 import com.victorbg.racofib.utils.Utils;
 
 import javax.inject.Inject;
@@ -84,6 +85,8 @@ public class UserRepository {
      * @param context {@link Context to get the texts}
      * @param code    {@link String} code returned by the API to auth the user
      * @return {@link LiveData} with the state of the login and a message
+     * <p>
+     * TODO: LoadUserInfoUseCase preserving the current state of the databases
      */
     public LiveData<Resource<String>> authUser(Context context, String code) {
         MutableLiveData<Resource<String>> result = new MutableLiveData<>();
@@ -128,8 +131,17 @@ public class UserRepository {
         return result;
     }
 
+    /**
+     * Returns the token provided with the 'Bearer' prefix.
+     * <p>
+     * Deprecated, use {@link com.victorbg.racofib.utils.NetworkUtils#prepareToken(String)} directly
+     *
+     * @param token
+     * @return
+     */
+    @Deprecated
     private String getToken(String token) {
-        return "Bearer " + token;
+        return NetworkUtils.prepareToken(token);
     }
 
 }

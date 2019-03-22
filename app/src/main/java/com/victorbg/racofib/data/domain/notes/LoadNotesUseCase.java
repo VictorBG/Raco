@@ -35,7 +35,6 @@ public class LoadNotesUseCase extends UseCase<Boolean, LiveData<Resource<List<No
 
     @Override
     public LiveData<Resource<List<Note>>> execute(Boolean force) {
-
         if (force) {
             notesRepository.resetTimer();
         }

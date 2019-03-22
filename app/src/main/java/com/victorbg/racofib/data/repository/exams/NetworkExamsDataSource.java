@@ -36,6 +36,18 @@ public class NetworkExamsDataSource implements DataSource<Resource<List<Exam>>> 
         this.subjects = subjects;
     }
 
+    /**
+     * Returns the remote data of exams.
+     * <p>
+     * It first gets the last semester, in order to get the last exams, and then
+     * the exams of this semester with the subjects short name as filter.
+     * <p>
+     * Once retrieved it is stored in the database (if {@link SaveOfflineData} provided)
+     * and then returns the LiveData with the current fetched values.
+     *
+     * @return
+     * @throws RuntimeException if not {@link SaveOfflineData} has been provided
+     */
     @Override
     public LiveData<Resource<List<Exam>>> getRemoteData() {
         MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData();
@@ -74,6 +86,11 @@ public class NetworkExamsDataSource implements DataSource<Resource<List<Exam>>> 
 
     }
 
+    /**
+     * Returns the offline data of the exams directly from the database.
+     *
+     * @return The LiveData provided by the database ready to observe
+     */
     @Override
     public LiveData<Resource<List<Exam>>> getOfflineData() {
         MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData();

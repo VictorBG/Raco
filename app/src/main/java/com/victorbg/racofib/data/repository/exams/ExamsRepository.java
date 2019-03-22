@@ -47,6 +47,16 @@ public class ExamsRepository extends Repository {
         this.context = context;
     }
 
+    /**
+     * Returns the exams from the database depending on the last time they were fetched
+     * from network or from database, and if the cache is dirty or not (null)
+     * <p>
+     * If no subjects is provided it just returns an error {@link Resource}
+     *
+     * @param subjects The short names of the subjects to retrieve their exams
+     * @return The exams of the provided subjects
+     */
+
     public LiveData<Resource<List<Exam>>> getExams(List<String> subjects) {
         if (subjects.size() == 0) {
             MutableLiveData result = new MutableLiveData();

@@ -1,16 +1,11 @@
 package com.victorbg.racofib.view;
 
-import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,9 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
-import com.victorbg.racofib.utils.ConsumableBoolean;
 import com.victorbg.racofib.utils.fragment.FragNav;
-import com.victorbg.racofib.utils.fragment.FragmentNavigator;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.exams.FragmentAllExams;
 import com.victorbg.racofib.view.ui.grades.GradesFragment;
@@ -38,17 +31,9 @@ import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
 import javax.inject.Inject;
 
-import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -107,7 +92,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         bottomBarNavigator.setNavigationListener(new BottomBarNavigator.NavigationListener() {
             @Override
             public void onNavigationClick(View v) {
-                //Prevent to show try to show multiple adds by clicking the menu icon
+                //Prevent to try to show multiple adds by clicking the menu icon
                 //while the menu is popping up, thus causing an exception
                 //due it is already added on the stack and cannot be added again
                 if (!mainBottomNavigationView.isVisible()) {
@@ -165,7 +150,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
                     selectedFragmentId = id;
                     bottomBarNavigator.navigate(id, null);
                 }
-//                mainBottomNavigationView.dismiss();
             }
 
             @Override

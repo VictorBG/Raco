@@ -10,7 +10,7 @@ public class NetworkUtils {
      * Checks if the device is online or not
      *
      * @param context
-     * @return
+     * @return If the device is online or not
      */
     public static boolean isOnline(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -22,7 +22,7 @@ public class NetworkUtils {
      * Returns the provided token with the correct token type at the beginning
      *
      * @param token
-     * @return
+     * @return The token correctly formatted
      */
     public static String prepareToken(String token) {
         return "Bearer " + token;

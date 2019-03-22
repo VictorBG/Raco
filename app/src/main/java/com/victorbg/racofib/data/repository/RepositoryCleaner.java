@@ -20,6 +20,11 @@ public class RepositoryCleaner {
         this.notesRepository = notesRepository;
     }
 
+    /**
+     * Cleans all the repositories from data (repository!=database), thus
+     * involving that the next time the data is fetched in one of these
+     * repositories it must be fetched from network
+     */
     public void clean() {
         examsRepository.clean();
         notesRepository.clean();

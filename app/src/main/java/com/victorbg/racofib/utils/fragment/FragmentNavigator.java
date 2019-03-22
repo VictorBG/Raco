@@ -18,6 +18,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+/**
+ * This navigator has been deprecated in favour of {@link FragNav},
+ * which allows more options and is expandable
+ */
+@Deprecated
 public class FragmentNavigator {
 
     private static final String HOME = "HomeFragment";

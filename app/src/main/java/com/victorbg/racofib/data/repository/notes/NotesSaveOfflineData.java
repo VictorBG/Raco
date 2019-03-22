@@ -46,7 +46,7 @@ public class NotesSaveOfflineData implements SaveOfflineData<List<Note>> {
      * to every item.
      * <p>
      * If there was an error assigning the colors just insert the data with the
-     * default color value, which is the accent app color
+     * default color value
      *
      * @param data
      */
@@ -62,7 +62,7 @@ public class NotesSaveOfflineData implements SaveOfflineData<List<Note>> {
 
                 }).observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(colors -> notesDao.insertNotes(colors),
+                        .subscribe(notesDao::insertNotes,
                                 error -> notesDao.insertNotes(data)));
     }
 }

@@ -1,5 +1,6 @@
 package com.victorbg.racofib.viewmodel;
 
+import com.victorbg.racofib.data.domain.exams.LoadCacheExamsUseCase;
 import com.victorbg.racofib.data.domain.exams.LoadExamsUseCase;
 import com.victorbg.racofib.data.domain.schedule.LoadTodayScheduleUseCase;
 import com.victorbg.racofib.data.model.exams.Exam;
@@ -25,14 +26,19 @@ public class HomeViewModel extends ViewModel {
     private final LiveData<Resource<List<SubjectSchedule>>> schedule;
 
     private final LoadExamsUseCase loadExamsUseCase;
+    private final LoadCacheExamsUseCase loadCacheExamsUseCase;
 
     @Inject
-    public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase) {
-
+    public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase, LoadCacheExamsUseCase loadCacheExamsUseCase) {
         this.loadExamsUseCase = loadExamsUseCase;
+        this.loadCacheExamsUseCase = loadCacheExamsUseCase;
 
         schedule = loadScheduleUseCase.execute();
         exams = loadExamsUseCase.execute();
+    }
+
+    public LiveData<List<Exam>> getCachedExams() {
+        return loadCacheExamsUseCase.execute();
     }
 
     public LiveData<Resource<List<Exam>>> getExams() {
