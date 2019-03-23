@@ -4,16 +4,21 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         mavenCentral()
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+        maven { url 'https://maven.fabric.io/public' }
 
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
+
+        classpath 'io.fabric.tools:gradle:1.26.1'
         classpath('com.dicedmelon.gradle:jacoco-android:0.1.3') {
             exclude group: 'org.codehaus.groovy', module: 'groovy-all'
         }
         classpath 'com.google.android.gms:oss-licenses-plugin:0.9.4'
+        classpath 'com.google.gms:google-services:4.2.0'
+
 
 //        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21"
 //        classpath 'org.codehaus.groovy:groovy-all:2.4.12'
@@ -34,12 +39,10 @@ allprojects {
         mavenCentral()
         maven { url "https://maven.google.com" }
 
+
     }
 }
 
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-}
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
