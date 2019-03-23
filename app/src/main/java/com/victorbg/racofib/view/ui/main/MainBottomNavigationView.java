@@ -2,13 +2,20 @@ package com.victorbg.racofib.view.ui.main;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
@@ -25,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment implements Injectable {
+public class MainBottomNavigationView extends BottomSheetDialogFragment implements Injectable {
 
     public interface MenuListener {
         void onMenuClick(int id);
@@ -77,6 +84,13 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);  // setContentView called here
+        ((View) getView().getParent()).setBackgroundColor(Color.TRANSPARENT);
     }
 
     @SuppressLint("SetTextI18n")
@@ -86,6 +100,13 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
         View rootView = inflater.inflate(R.layout.main_navigation_bottom, container);
 
         ButterKnife.bind(this, rootView);
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         LayoutTransition transition = new LayoutTransition();
         transition.setAnimateParentHierarchy(false);
@@ -110,9 +131,6 @@ public class MainBottomNavigationView extends MaterialBottomSheetDialogFragment 
 //                transition.hideChild(constraintLayout, profileLayout, View.GONE);
 //            }
         });
-
-
-        return rootView;
     }
 
     public void selectItem(int id, boolean dispatchClick) {

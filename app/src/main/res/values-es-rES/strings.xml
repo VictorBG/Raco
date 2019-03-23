@@ -78,13 +78,13 @@
     <string name="pref_rate_app_title">Puntúa esta aplicación</string>
     <string name="pref_help_development_title">Ayuda al desarrollo</string>
     <string name="pref_open_source_licenses_title">Librerías de código abierto</string>
-    <string name="downloading_title">Downloading file</string>
+    <string name="downloading_title">Descargando archivo</string>
     <string name="downloading_file_desc">Descargando archivo: %s</string>
-    <string name="filter">Filtrar</string>
+    <string name="filter">Filtro</string>
     <string name="order">Orden</string>
     <string name="apply">Aplicar</string>
-    <string name="order_asc">Fecha ascendiente</string>
-    <string name="order_desc">Fecha descendiente</string>
+    <string name="order_asc">Fecha ↑</string>
+    <string name="order_desc">Fecha ↓</string>
     <string name="close">Cerrar</string>
     <string name="item_detail_note_close_desc">Cerrar detalle</string>
     <string name="grades_bottom_tab">Notas</string>
@@ -105,5 +105,6 @@
         <item>ca</item>
         <item>en</item>
     </string-array>
+    <string name="grade_percent_dialog_Edit">Porcentaje</string>
 
 </resources>

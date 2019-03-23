@@ -78,18 +78,18 @@
     <string name="pref_rate_app_title">Puntua aquesta aplicació</string>
     <string name="pref_help_development_title">Ajuda al desenvolupament</string>
     <string name="pref_open_source_licenses_title">Llibreries de codi obert</string>
-    <string name="downloading_title">Downloading file</string>
-    <string name="downloading_file_desc">Descargando archivo: %s</string>
-    <string name="filter">Filtrar</string>
-    <string name="order">Orden</string>
+    <string name="downloading_title">Descarregant archiu</string>
+    <string name="downloading_file_desc">Descarregant archiu: %s</string>
+    <string name="filter">Filtre</string>
+    <string name="order">Ordre</string>
     <string name="apply">Aplicar</string>
-    <string name="order_asc">Fecha ascendiente</string>
-    <string name="order_desc">Fecha descendiente</string>
-    <string name="close">Cerrar</string>
-    <string name="item_detail_note_close_desc">Cerrar detalle</string>
-    <string name="grades_bottom_tab">Notas</string>
-    <string name="save_to_calendar">Guardar en el calendario</string>
-    <string name="grade_name_dialog_edit">Nombre</string>
+    <string name="order_asc">Data ↑</string>
+    <string name="order_desc">Data ↓</string>
+    <string name="close">Tancar</string>
+    <string name="item_detail_note_close_desc">Tancar detall</string>
+    <string name="grades_bottom_tab">Notes</string>
+    <string name="save_to_calendar">Guardar al calendari</string>
+    <string name="grade_name_dialog_edit">Nom</string>
     <string name="grade_grade_dialog_edit">Nota</string>
     <string name="save">Guardar</string>
     <string name="delete">Eliminar</string>
@@ -105,5 +105,6 @@
         <item>ca</item>
         <item>en</item>
     </string-array>
+    <string name="grade_percent_dialog_Edit">Percentatge</string>
 
 </resources>

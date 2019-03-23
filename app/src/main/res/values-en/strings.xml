@@ -79,19 +79,19 @@
     <string name="pref_help_development_title">Help development</string>
     <string name="pref_open_source_licenses_title">Open source licenses</string>
     <string name="downloading_title">Downloading file</string>
-    <string name="filter">Filtrar</string>
-    <string name="order">Orden</string>
-    <string name="apply">Aplicar</string>
-    <string name="order_asc">Fecha ascendiente</string>
-    <string name="order_desc">Fecha descendiente</string>
-    <string name="close">Cerrar</string>
-    <string name="item_detail_note_close_desc">Cerrar detalle</string>
-    <string name="grades_bottom_tab">Notas</string>
-    <string name="save_to_calendar">Guardar en el calendario</string>
-    <string name="grade_name_dialog_edit">Nombre</string>
-    <string name="grade_grade_dialog_edit">Nota</string>
-    <string name="save">Guardar</string>
-    <string name="delete">Eliminar</string>
+    <string name="filter">Filter</string>
+    <string name="order">Sort</string>
+    <string name="apply">Apply</string>
+    <string name="order_asc">Date ↑</string>
+    <string name="order_desc">Date ↓</string>
+    <string name="close">Close</string>
+    <string name="item_detail_note_close_desc">Close detail</string>
+    <string name="grades_bottom_tab">Grades</string>
+    <string name="save_to_calendar">Add to calendar</string>
+    <string name="grade_name_dialog_edit">Name</string>
+    <string name="grade_grade_dialog_edit">Grade</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
 
     <string-array name="language_list_titles">
         <item>Spanish</item>
@@ -104,5 +104,7 @@
         <item>ca</item>
         <item>en</item>
     </string-array>
+    <string name="downloading_file_desc">Downloading file: %s</string>
+    <string name="grade_percent_dialog_Edit">Percent</string>
 
 </resources>

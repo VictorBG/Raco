@@ -13,6 +13,8 @@
 
 
     <style name="AppTheme.Light" parent="AppTheme">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:colorBackground">@color/md_light_background</item>
         <item name="themeColorPrimary">@color/colorPrimary</item>
         <item name="themeColorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="themeColorAccent">@color/colorAccent</item>
@@ -29,6 +31,7 @@
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
         <item name="android:colorBackground">@color/md_dark_background</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="colorPrimary">@color/colorAccent</item>
@@ -51,6 +54,7 @@
 
     <style name="AppTheme.Settings.Light" parent="Theme.MaterialComponents.Light">
         <item name="themeColorPrimary">@color/colorPrimary</item>
+        <item name="android:colorBackground">?themeBackgroundColor</item>
         <item name="themeColorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="themeColorAccent">@color/colorAccent</item>
         <item name="themePrimaryTextColor">@android:color/primary_text_light</item>
@@ -73,6 +77,7 @@
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="themeColorPrimary">@color/colorPrimary</item>
         <item name="themeColorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorBackground">?themeBackgroundColor</item>
         <item name="themeColorAccent">@color/colorAccent</item>
         <item name="themePrimaryTextColor">@android:color/primary_text_dark</item>
         <item name="themeSecondaryTextColor">@color/secondary_text_color_dark</item>
@@ -181,7 +186,8 @@
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/profile_sheet_background</item>
+        <!--<item name="android:background">@drawable/profile_sheet_background</item>-->
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="ProgressTextGoal">
