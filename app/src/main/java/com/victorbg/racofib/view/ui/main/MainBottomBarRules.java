@@ -66,7 +66,7 @@ public class MainBottomBarRules {
                         BottomBarNavigator.NAVIGATION_MODE_BACK,
                         R.menu.main_menu,
                         R.drawable.ic_favorite_border_white,
-                        View.VISIBLE));
+                        View.GONE));
 
 
         return result;

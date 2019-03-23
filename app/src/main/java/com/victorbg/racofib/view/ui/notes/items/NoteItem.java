@@ -95,8 +95,6 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         TextView subject;
         @BindView(R.id.attachmentsGroup)
         AttachmentsGroup attachmentsGroup;
-        @BindView(R.id.favButton)
-        public ImageButton favButton;
         @BindView(R.id.attachmentsScrollView)
         FrameLayout attachmentsScrollView;
         @BindView(R.id.item_container)
@@ -112,6 +110,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
         public void bindView(@NonNull NoteItem item, @NonNull List<Object> payloads) {
 
             if (payloads.isEmpty()) {
+                Timber.d("binding view");
                 StringHolder.applyToOrHide(new StringHolder(Html.fromHtml(item.note.title)), title);
                 StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
 
@@ -132,16 +131,15 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
                     attachmentsGroup.setAttachments(item.note.attachments);
                 }
 
-                favButton.setImageResource(item.note.favorite ? R.drawable.ic_favorite_red : R.drawable.ic_favorite_border_multicolor);
             } else {
-                Bundle bundle = (Bundle) payloads.get(0);
 
+                Bundle bundle = (Bundle) payloads.get(0);
+                Timber.d("binding view with payload %s and bundle %s", payloads, bundle.toString());
                 for (String key : bundle.keySet()) {
                     if (key.equals("color")) {
                         subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(bundle.getString("color"))));
-                    } else if (key.equals("favorite")) {
-                        favButton.setImageResource(bundle.getBoolean("favorite") ? R.drawable.ic_favorite_red : R.drawable.ic_favorite_border_multicolor);
                     }
+
                 }
 
 

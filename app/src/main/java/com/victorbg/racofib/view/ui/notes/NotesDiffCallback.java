@@ -28,9 +28,9 @@ public class NotesDiffCallback implements DiffCallback<NoteItem> {
             result.putString("color", newItem.getNote().color);
         }
 
-//        if (newItem.getNote().favorite != oldItem.getNote().favorite) {
-//            result.putBoolean("favorite", !oldItem.getNote().favorite);
-//        }
+        if (newItem.getNote().favorite != oldItem.getNote().favorite) {
+            result.putBoolean("favorite", !oldItem.getNote().favorite);
+        }
 
         if (result.isEmpty()) {
             return null;

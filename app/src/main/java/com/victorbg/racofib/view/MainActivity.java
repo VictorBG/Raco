@@ -193,6 +193,10 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         fragmentNavigator.replaceByFragment(id, fragment);
     }
 
+    public void setFabIcon(int icon) {
+        bottomBarNavigator.setFabIcon(icon);
+    }
+
     public void navigate(int id, @Nullable Bundle arguments, boolean applyNavigation) {
         bottomBarNavigator.navigate(id, arguments, applyNavigation);
     }

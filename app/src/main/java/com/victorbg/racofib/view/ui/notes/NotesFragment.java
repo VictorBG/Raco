@@ -15,6 +15,7 @@ import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Note;
+import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.databinding.FragmentNotesBinding;
 import com.victorbg.racofib.di.injector.Injectable;
@@ -78,6 +79,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
     private final ConsumableBoolean preventReload = new ConsumableBoolean(false);
 
+    private List<Note> scheduledUpdate = null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,29 +143,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             }
         });
 
-        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
-            @Override
-            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
-                preventReload.setValue(true);
-                Note n = publicationsViewModel.changeFavoriteState(item.getNote());
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("favorite", n.favorite);
-                fastAdapter.notifyAdapterItemChanged(position, bundle);
-
-                showSnackbar(n.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
-
-            }
-
-            @javax.annotation.Nullable
-            @Override
-            public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof NoteItem.ViewHolder) {
-                    return ((NoteItem.ViewHolder) viewHolder).favButton;
-                }
-                return null;
-            }
-        });
-
         itemAdapter.getItemFilter().withFilterPredicate((item, constraint) -> item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -178,7 +158,9 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
             @Override
             public void onPageExpanded() {
-
+//                if (publicationsViewModel.selectedNote.getValue() != null) {
+//                    getMainActivity().setFabIcon(publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white);
+//                }
             }
 
             @Override
@@ -190,6 +172,10 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onPageCollapsed() {
                 scrollView.scrollTo(0, 0);
+                if (scheduledUpdate != null) {
+                    onChanged(scheduledUpdate);
+                    scheduledUpdate = null;
+                }
             }
         });
 
@@ -204,7 +190,13 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     }
 
     public void onChanged(List<Note> notes) {
-        if (notes == null || notes.isEmpty() || preventReload.getValue()) return;
+        if (notes == null || notes.isEmpty()) return;
+
+        if (notePageLayout.isExpanded()) {
+            scheduledUpdate = new ArrayList<>(notes);
+            return;
+        }
+
         List<NoteItem> items = new ArrayList<>();
         for (Note note : notes) {
             items.add(new NoteItem().withNote(note));
@@ -236,7 +228,12 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
     @Override
     public void onFabSelected(View v) {
-        startActivity(new Intent(getContext(), NotesFavoritesActivity.class));
+        if (notePageLayout.isExpanded()) {
+            Note n = publicationsViewModel.changeFavoriteState(publicationsViewModel.selectedNote.getValue());
+            publicationsViewModel.selectedNote.setValue(n);
+            getMainActivity().setFabIcon(publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white);
+            showSnackbar(n.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
+        }
     }
 
     @Override
