@@ -82,7 +82,7 @@
     <string-array name="language_list_titles">
         <item>Spanish</item>
         <item>Catalan</item>
-        <item>Inglish</item>
+        <item>English</item>
     </string-array>
 
     <string-array name="language_list_values" translatable="false">
