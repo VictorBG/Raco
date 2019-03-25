@@ -115,12 +115,12 @@ public class ColorSettingsActivity extends BaseActivity implements Injectable, C
 
     @Override
     protected int getLightTheme() {
-        return R.style.AppTheme_NoteDetail_Light;
+            return R.style.AppTheme_SubjectDetail_Light;
     }
 
     @Override
     protected int getDarkTheme() {
-        return R.style.AppTheme_NoteDetail_Dark;
+        return R.style.AppTheme_SubjectDetail_Dark;
     }
 
     @Override

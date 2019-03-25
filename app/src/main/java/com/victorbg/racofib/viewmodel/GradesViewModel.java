@@ -58,17 +58,11 @@ public class GradesViewModel extends ViewModel {
     }
 
     public void selectSubject(int index) {
-        if (subjects == null || subjects.getValue() == null || subjects.getValue().size() <= index) {
+        if (subjects.getValue() == null || subjects.getValue().size() <= index) {
             return;
         }
         this.indexSelected = index;
         selectSubject(subjects.getValue().get(index).shortName);
     }
 
-    public void addGrade(Grade grade) {
-        Subject s = subject.getValue();
-        s.grades.add(grade);
-        subject.setValue(s);
-        saveSubjectUseCase.execute(subject.getValue());
-    }
 }

@@ -30,17 +30,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/md_light_statusbar</item>
-        <item name="android:navigationBarColor">@color/md_black_1000</item>
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
-
-    <style name="AppTheme.SubjectDetail.Dark" parent="AppTheme.Dark">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/md_dark_statusbar</item>
+        <item name="android:statusBarColor">@color/colorAccentDark</item>
         <item name="android:navigationBarColor">@color/md_black_1000</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
+
 </resources>
