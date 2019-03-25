@@ -7,9 +7,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.crash.component.FirebaseCrashRegistrar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -72,6 +75,9 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Crashlytics.log("Activity created");
+
 
         if (savedInstanceState != null) {
             this.selectedFragmentId = savedInstanceState.getInt("FragmentID");

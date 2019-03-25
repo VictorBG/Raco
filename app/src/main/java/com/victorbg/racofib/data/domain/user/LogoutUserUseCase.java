@@ -10,6 +10,8 @@ import com.victorbg.racofib.data.sp.PrefManager;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import timber.log.Timber;
+
 @Singleton
 public class LogoutUserUseCase extends UseCase<Void, Void> {
 
@@ -35,9 +37,19 @@ public class LogoutUserUseCase extends UseCase<Void, Void> {
      */
     @Override
     public Void execute() {
-        cleaner.clean();
-        appExecutors.diskIO().execute(appDatabase::clearAllTables);
-        prefManager.logout();
+        try {
+            appDatabase.beginTransaction();
+            appDatabase.clearAllTables();
+            appDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            appDatabase.endTransaction();
+            Timber.d(e, "Exception while clearing tables");
+        } finally {
+            cleaner.clean();
+            prefManager.logout();
+            appDatabase.endTransaction();
+        }
+
         return null;
     }
 
