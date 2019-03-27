@@ -1,17 +1,13 @@
 package com.victorbg.racofib.view.ui.grades;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.subject.Grade;
-import com.victorbg.racofib.view.ui.exams.FullExamItem;
 
 import java.util.List;
 import java.util.Locale;

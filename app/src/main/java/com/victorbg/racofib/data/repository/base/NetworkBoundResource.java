@@ -107,8 +107,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     /**
      * Called when a fetch has failed
      */
-    @MainThread
-    protected void onFetchFailed() {
+    @MainThread protected void onFetchFailed() {
     }
 
     public final LiveData<Resource<ResultType>> getAsLiveData() {

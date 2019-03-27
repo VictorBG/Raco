@@ -56,12 +56,12 @@ public class SettingsActivity extends BaseActivity implements Injectable, Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("DarkTheme")) {
+        if ("DarkTheme".equals(key)) {
             prefManager.refreshDarkTheme();
             recreate();
         }
 
-        if (key.equals("LocaleApp")) {
+        if ("LocaleApp".equals(key)) {
             if (!locale.equals(sharedPreferences.getString(key, PrefManager.LOCALE_SPANISH))) {
                 MaterialDialog materialDialog = new MaterialDialog.Builder(this)
                         .title(getString(R.string.change_language_title))

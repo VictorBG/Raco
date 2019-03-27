@@ -18,7 +18,6 @@ import com.victorbg.racofib.data.background.AttachmentDownload;
 import com.victorbg.racofib.data.model.notes.Attachment;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.view.MainActivity;
 
 import javax.inject.Inject;
 

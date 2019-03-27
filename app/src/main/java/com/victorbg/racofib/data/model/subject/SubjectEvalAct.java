@@ -4,10 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class SubjectEvalAct extends BaseSubjectActivity {
 
-    public SubjectEvalAct() {
-
-    }
-
     @SerializedName("fora_horaris")
     public boolean notInClassHours;
 
@@ -35,5 +31,9 @@ public class SubjectEvalAct extends BaseSubjectActivity {
     @Override
     public int getType() {
         return EVALUATION_ACTIVITY;
+    }
+
+    public SubjectEvalAct() {
+
     }
 }

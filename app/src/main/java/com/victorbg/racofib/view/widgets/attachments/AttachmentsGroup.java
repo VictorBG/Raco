@@ -1,13 +1,10 @@
 package com.victorbg.racofib.view.widgets.attachments;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Attachment;
@@ -15,8 +12,6 @@ import com.victorbg.racofib.view.base.BaseActivity;
 
 import java.util.List;
 
-
-import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 public class AttachmentsGroup extends ChipGroup {

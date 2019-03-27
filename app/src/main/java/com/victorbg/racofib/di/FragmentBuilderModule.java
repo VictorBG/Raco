@@ -1,6 +1,5 @@
 package com.victorbg.racofib.di;
 
-import com.victorbg.racofib.view.ProfileModal;
 import com.victorbg.racofib.view.ui.exams.FragmentAllExams;
 import com.victorbg.racofib.view.ui.grades.GradesFragment;
 import com.victorbg.racofib.view.ui.home.HomeFragment;
@@ -27,8 +26,6 @@ public abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract ScheduleFragment contributeScheduleFragment();
 
-    @ContributesAndroidInjector
-    abstract ProfileModal contributeProfileModal();
 
     @ContributesAndroidInjector
     abstract MainBottomNavigationView contributeMainBottomNavigationView();

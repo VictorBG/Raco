@@ -61,9 +61,10 @@ public class GradesFragment extends BaseFragment implements Injectable {
 
     private GradesViewModel gradesViewModel;
     private ItemAdapter<GradeItem> itemAdapter;
-    private FastAdapter<GradeItem> fastAdapter;
 
     private Subject currentSubject;
+
+    private ViewSwitcher.ViewFactory factory = () -> new TextView(getContext(), null, 0, R.style.ProgressTextGoal);
 
     @Nullable
     @Override
@@ -107,8 +108,6 @@ public class GradesFragment extends BaseFragment implements Injectable {
         });
     }
 
-    private ViewSwitcher.ViewFactory factory = () -> new TextView(getContext(), null, 0, R.style.ProgressTextGoal);
-
     private void handleSubject(Subject subject) {
         if (subject != null) {
             currentSubject = subject;
@@ -144,7 +143,7 @@ public class GradesFragment extends BaseFragment implements Injectable {
 
     private void setRecycler() {
         itemAdapter = new ItemAdapter<>();
-        fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+        FastAdapter<GradeItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
 
         fastAdapter.withEventHook(new ClickEventHook<GradeItem>() {
             @Override

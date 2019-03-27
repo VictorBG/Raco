@@ -13,12 +13,12 @@ public class BaseSubjectActivity {
     public static final int ACTIVITY = 1;
     public static final int EVALUATION_ACTIVITY = 1 << 2;
 
+    public int id;
+
     @IntDef({ACTIVITY, EVALUATION_ACTIVITY})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ActivityType {
     }
-
-    public int id;
 
     public @ActivityType
     int getType() {

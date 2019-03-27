@@ -153,11 +153,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
             }
 
             @Override
-            public void onMenuRepeatClick(int id) {
-
-            }
-
-            @Override
             public void onLogoutClick() {
                 mainActivityViewModel.logout();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));

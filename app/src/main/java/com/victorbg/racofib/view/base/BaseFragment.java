@@ -1,7 +1,6 @@
 package com.victorbg.racofib.view.base;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -52,9 +51,12 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
         return (MainActivity) baseActivity;
     }
 
+
     /**
      * Dispatch click event of fab to the fragments that have overrode this method
      * and are available
+     *
+     * @param v
      */
     public void onFabSelected(View v) {
     }
@@ -68,7 +70,6 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
 
     }
 
-
     /**
      * Dispatch the event with id to the fragments that
      * override this method.
@@ -79,6 +80,7 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
     public boolean onItemClick(int id) {
         return false;
     }
+
 
     public Snackbar showSnackbar(String s) {
         return showSnackbar(s, Snackbar.LENGTH_LONG);

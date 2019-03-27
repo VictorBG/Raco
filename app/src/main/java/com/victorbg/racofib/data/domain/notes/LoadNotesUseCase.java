@@ -2,18 +2,15 @@ package com.victorbg.racofib.data.domain.notes;
 
 import com.victorbg.racofib.data.domain.UseCase;
 import com.victorbg.racofib.data.model.notes.Note;
-import com.victorbg.racofib.data.model.subject.SubjectsFilter;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.notes.NotesRepository;
-import com.victorbg.racofib.view.widgets.filter.SubjectFilter;
 
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 

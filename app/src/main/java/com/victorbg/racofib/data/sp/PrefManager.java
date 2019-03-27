@@ -36,9 +36,6 @@ public class PrefManager {
     private final SharedPreferences sharedPreferences;
     private String token = null;
     private boolean darkTheme = false;
-    private String locale = LOCALE_SPANISH;
-
-    private boolean localeFetched = false;
 
     @Inject
     public PrefManager(Application application) {

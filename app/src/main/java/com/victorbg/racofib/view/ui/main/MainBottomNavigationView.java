@@ -34,14 +34,6 @@ import butterknife.OnClick;
 
 public class MainBottomNavigationView extends BottomSheetDialogFragment implements Injectable {
 
-    public interface MenuListener {
-        void onMenuClick(int id);
-
-        void onMenuRepeatClick(int id);
-
-        void onLogoutClick();
-    }
-
     @BindView(R.id.profileLayout)
     ConstraintLayout profileLayout;
     @BindView(R.id.profile_image)
@@ -59,7 +51,6 @@ public class MainBottomNavigationView extends BottomSheetDialogFragment implemen
 
     @Inject
     LoadUserUseCase loadUserUseCase;
-
 
     @Inject
     GlideRequests glideRequests;
@@ -135,9 +126,9 @@ public class MainBottomNavigationView extends BottomSheetDialogFragment implemen
 
     public void selectItem(int id, boolean dispatchClick) {
         if (selectedItem == id) {
-            if (dispatchClick && menuListener != null) {
-                menuListener.onMenuRepeatClick(id);
-            }
+//            if (dispatchClick && menuListener != null) {
+//                menuListener.onMenuRepeatClick(id);
+//            }
             return;
         }
         if (id != R.id.settings_menu) {
@@ -164,5 +155,12 @@ public class MainBottomNavigationView extends BottomSheetDialogFragment implemen
         if (menuListener != null) {
             menuListener.onLogoutClick();
         }
+    }
+
+
+    public interface MenuListener {
+        void onMenuClick(int id);
+
+        void onLogoutClick();
     }
 }

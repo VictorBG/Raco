@@ -17,25 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SwipeCallback extends ItemTouchHelper.SimpleCallback {
 
-    public interface ItemSwipeCallback {
-
-        /**
-         * Called when an item has been swiped
-         *
-         * @param position  position of item in the adapter
-         * @param direction direction the item was swiped
-         */
-        void itemSwiped(int position, int direction);
-
-    }
-
-    public interface ItemSwipeDrawableCallback {
-        Drawable getDrawable(int position);
-
-        @ColorInt
-        int getColor(int position);
-    }
-
     private final ItemSwipeCallback itemSwipeCallback;
     private final ItemSwipeDrawableCallback itemSwipeDrawableCallback;
 
@@ -150,5 +131,24 @@ public class SwipeCallback extends ItemTouchHelper.SimpleCallback {
             }
         }
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+    }
+
+    public interface ItemSwipeDrawableCallback {
+        Drawable getDrawable(int position);
+
+        @ColorInt
+        int getColor(int position);
+    }
+
+    public interface ItemSwipeCallback {
+
+        /**
+         * Called when an item has been swiped
+         *
+         * @param position  position of item in the adapter
+         * @param direction direction the item was swiped
+         */
+        void itemSwiped(int position, int direction);
+
     }
 }

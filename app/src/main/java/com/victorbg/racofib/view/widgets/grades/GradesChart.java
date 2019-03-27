@@ -159,7 +159,7 @@ public class GradesChart extends View {
 
             @Override
             public void onAnimationRepeat(Animator animation) {
-
+                runningAnimation = true;
             }
         });
         valueAnimator.start();
