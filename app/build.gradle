@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
-apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -156,9 +155,6 @@ dependencies {
     implementation 'me.saket:inboxrecyclerview:1.0.0-rc1'
 
     implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.9') {
-        transitive = true //by def is true
-    }
 
     //¿? The build fails without this
     //Related question asked hours ago: https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver
@@ -169,4 +165,3 @@ dependencies {
 
 }
 
-apply plugin: 'com.google.gms.google-services'

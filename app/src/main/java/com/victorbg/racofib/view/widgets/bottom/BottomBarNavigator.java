@@ -245,10 +245,9 @@ public class BottomBarNavigator {
 
     public BottomBarNavigator addRules(SparseArray<Rule> rules, boolean overwrite) {
         for (int i = 0; i < rules.size(); i++) {
-            if (!overwrite && this.rules.indexOfKey(rules.keyAt(i)) >= 0) {
-                continue;
+            if (overwrite || this.rules.indexOfKey(rules.keyAt(i)) < 0) {
+                this.rules.put(rules.keyAt(i), rules.valueAt(i));
             }
-            this.rules.put(rules.keyAt(i), rules.valueAt(i));
         }
         return this;
     }

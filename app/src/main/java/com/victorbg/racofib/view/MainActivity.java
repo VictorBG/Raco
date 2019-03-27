@@ -7,12 +7,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.crash.component.FirebaseCrashRegistrar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -76,9 +73,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Crashlytics.log("Activity created");
-
-
         if (savedInstanceState != null) {
             this.selectedFragmentId = savedInstanceState.getInt("FragmentID");
         }
@@ -98,7 +92,7 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         bottomBarNavigator.setNavigationListener(new BottomBarNavigator.NavigationListener() {
             @Override
             public void onNavigationClick(View v) {
-                //Prevent to try to show multiple adds by clicking the menu icon
+                //Prevent to try to show multiple menus by clicking the menu icon
                 //while the menu is popping up, thus causing an exception
                 //due it is already added on the stack and cannot be added again
                 if (!mainBottomNavigationView.isVisible()) {

@@ -3,12 +3,9 @@ package com.victorbg.racofib.viewmodel;
 import com.victorbg.racofib.data.domain.subjects.LoadSubjectDatabaseUseCase;
 import com.victorbg.racofib.data.domain.subjects.LoadSubjectsUseCase;
 import com.victorbg.racofib.data.domain.subjects.SaveSubjectUseCase;
-import com.victorbg.racofib.data.model.subject.Grade;
 import com.victorbg.racofib.data.model.subject.Subject;
-import com.victorbg.racofib.utils.ConsumableBoolean;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,14 +22,14 @@ public class GradesViewModel extends ViewModel {
 
     private LiveData<Subject> currentSource;
 
-    private SaveSubjectUseCase saveSubjectUseCase;
+
     private LoadSubjectDatabaseUseCase loadSubjectDatabaseUseCase;
 
     private int indexSelected = 0;
 
     @Inject
-    public GradesViewModel(LoadSubjectsUseCase loadSubjectsUseCase, SaveSubjectUseCase saveSubjectUseCase, LoadSubjectDatabaseUseCase loadSubjectDatabaseUseCase) {
-        this.saveSubjectUseCase = saveSubjectUseCase;
+    public GradesViewModel(LoadSubjectsUseCase loadSubjectsUseCase, LoadSubjectDatabaseUseCase loadSubjectDatabaseUseCase) {
+
         this.loadSubjectDatabaseUseCase = loadSubjectDatabaseUseCase;
 
         LiveData<List<Subject>> subjects = loadSubjectsUseCase.execute();

@@ -18,7 +18,6 @@ import android.widget.ViewSwitcher;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.Grade;
@@ -26,8 +25,6 @@ import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.utils.Utils;
 import com.victorbg.racofib.view.base.BaseFragment;
-import com.victorbg.racofib.view.ui.exams.DialogExamDetail;
-import com.victorbg.racofib.view.ui.exams.FullExamItem;
 import com.victorbg.racofib.view.widgets.grades.GradesChart;
 import com.victorbg.racofib.viewmodel.GradesViewModel;
 
@@ -44,7 +41,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
