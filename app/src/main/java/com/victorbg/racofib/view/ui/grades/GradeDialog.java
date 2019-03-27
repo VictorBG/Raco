@@ -60,6 +60,7 @@ public class GradeDialog extends DialogCustomContent implements Injectable {
                 Grade grade = new Grade();
                 grade.title = "";
                 subject.grades.add(grade);
+                index = subject.grades.size() - 1;
             }
 
             gradeObservableField.set(subject.grades.get(index));
