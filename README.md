@@ -4,7 +4,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/825d65ffcc51441b8a328ed98af44bfd)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=VictorBG/RacoFib&amp;utm_campaign=Badge_Grade)
 <!--[![codecov](https://codecov.io/gh/VictorBG/RacoFib/branch/master/graph/badge.svg?token=n4vV3gqOXM)](https://codecov.io/gh/VictorBG/RacoFib)-->
 
-<div style="text-align:center; margin-bottom: 16px;"><img src=".github/assets/ic_launcher_round.png"
+<div style="text-align:center; margin-bottom: 16px;"><img src=".github/assets/ic_launcher.png"
             alt="Download from Google Play"
             height="150">
 
