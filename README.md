@@ -13,7 +13,7 @@
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Download from Google Play"
-      height="80">](https://play.google.com/apps/testing/com.victorbg.racofib)
+      height="80">](https://play.google.com/store/apps/details?id=com.victorbg.racofib)
 [<img src=".github/assets/direct-apk-download.png"
       alt="Direct apk download"
       height="80">](https://github.com/VictorBG/RacoFib/releases)
