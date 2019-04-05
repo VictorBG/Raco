@@ -106,5 +106,11 @@
     </string-array>
     <string name="downloading_file_desc">Downloading file: %s</string>
     <string name="grade_percent_dialog_Edit">Percent</string>
+    <string name="monday_one_letter">M</string>
+    <string name="tue__one_letter">T</string>
+    <string name="wed_one_letter">W</string>
+    <string name="thur_one_letter">T</string>
+    <string name="fri_one_letter">F</string>
+    <string name="error_saving_event">Error while saving the event</string>
 
 </resources>

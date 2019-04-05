@@ -106,5 +106,11 @@
         <item>en</item>
     </string-array>
     <string name="grade_percent_dialog_Edit">Porcentaje</string>
+    <string name="monday_one_letter">L</string>
+    <string name="tue__one_letter">M</string>
+    <string name="wed_one_letter">X</string>
+    <string name="thur_one_letter">J</string>
+    <string name="fri_one_letter">V</string>
+    <string name="error_saving_event">Error al guardar el evento.</string>
 
 </resources>

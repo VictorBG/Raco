@@ -99,6 +99,12 @@
     <string name="grade_grade_dialog_edit">Nota</string>
     <string name="save">Guardar</string>
     <string name="delete">Eliminar</string>
+    <string name="monday_one_letter">L</string>
+    <string name="tue__one_letter">M</string>
+    <string name="wed_one_letter">X</string>
+    <string name="thur_one_letter">J</string>
+    <string name="fri_one_letter">V</string>
+    <string name="error_saving_event">No ha sido posible guardar el evento</string>
 
     <string-array name="language_list_titles">
         <item>Español</item>

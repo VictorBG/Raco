@@ -72,11 +72,11 @@ public class DialogExamDetail extends DialogCustomContent implements Injectable 
             if (intent != null && intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
             } else {
-                Toast.makeText(this, "No ha sido posible guardar el evento", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_saving_event), Toast.LENGTH_SHORT).show();
             }
         } catch (ParseException e) {
             Timber.w(e);
-            Toast.makeText(this, "No ha sido posible guardar el evento", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_saving_event), Toast.LENGTH_SHORT).show();
         }
 
     }
