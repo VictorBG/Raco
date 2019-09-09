@@ -18,7 +18,6 @@
       alt="Direct apk download"
       height="80">](https://github.com/VictorBG/RacoFib/releases)
 
-_The app is currently in development._
 
 <img src=".github/assets/ss-1.png" width="800" />
 
