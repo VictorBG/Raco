@@ -55,7 +55,6 @@ public class GradesChart extends View {
     }
 
     private void init(Context context) {
-
         TypedArray typedArray = context.obtainStyledAttributes(R.styleable.GradesChart);
 
         color = typedArray.getColor(R.styleable.GradesChart_circleColor, Color.BLACK);
@@ -63,14 +62,12 @@ public class GradesChart extends View {
 
         typedArray.recycle();
 
-
         outCircle = new Paint();
         outCircle.setAntiAlias(true);
         outCircle.setStyle(Paint.Style.STROKE);
         outCircle.setStrokeCap(Paint.Cap.ROUND);
         outCircle.setColor(color);
         outCircle.setStrokeWidth(width);
-
 
         guideCircle = new Paint();
         guideCircle.setColor(context.getResources().getColor(R.color.md_grey_700));
@@ -109,7 +106,6 @@ public class GradesChart extends View {
                 MeasureSpec.getSize(widthMeasureSpec) - (width / 2f),
                 MeasureSpec.getSize(heightMeasureSpec) - (width / 2f)
         );
-
     }
 
     int guideCircleGapAngle = 5;
@@ -118,7 +114,6 @@ public class GradesChart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
 
         //draw dash path
         int guideCircleAngle = 270;
@@ -163,7 +158,5 @@ public class GradesChart extends View {
             }
         });
         valueAnimator.start();
-
     }
-
 }

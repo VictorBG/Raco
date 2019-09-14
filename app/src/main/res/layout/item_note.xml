@@ -15,33 +15,35 @@
     android:transitionName="@string/transition_note_to_detail_name">
 
     <TextView
-        android:id="@+id/icon_text"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/note_icon_background"
-        android:gravity="center"
-        android:maxLength="3"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:textColor="@color/md_white_1000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="IDI" />
+      android:id="@+id/icon_text"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginStart="16dp"
+      android:layout_centerInParent="true"
+      android:background="@drawable/note_icon_background"
+      android:gravity="center"
+      android:maxLength="4"
+      android:textAppearance="@style/TextAppearance.AppCompat.Button"
+      android:textColor="@color/md_white_1000"
+      android:textSize="12sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="PROP" />
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/montserrat"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintEnd_toStartOf="@+id/date"
-        app:layout_constraintStart_toEndOf="@+id/icon_text"
-        app:layout_constraintTop_toTopOf="@+id/icon_text"
-        tools:text="Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet" />
+      android:id="@+id/title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="8dp"
+      android:fontFamily="@font/montserrat"
+      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      android:textSize="14sp"
+      app:layout_constraintEnd_toStartOf="@+id/date"
+      app:layout_constraintStart_toEndOf="@+id/icon_text"
+      app:layout_constraintTop_toTopOf="@+id/icon_text"
+      tools:text="Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet" />
 
     <TextView
         android:id="@+id/date"

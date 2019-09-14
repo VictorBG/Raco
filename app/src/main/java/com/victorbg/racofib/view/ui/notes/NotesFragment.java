@@ -24,6 +24,7 @@ import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -54,209 +55,227 @@ import timber.log.Timber;
 
 public class NotesFragment extends BaseFragment implements Observer<List<Note>>, Injectable {
 
-    @BindView(R.id.recycler_notes)
-    InboxRecyclerView recyclerView;
-    @BindView(R.id.swipe)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.animation_view)
-    LottieAnimationView animationView;
-    @BindView(R.id.error_state_message)
-    TextView errorTextView;
-    @BindView(R.id.notePageLayout)
-    ExpandablePageLayout notePageLayout;
-    @BindView(R.id.nested_scroll_note)
-    NestedScrollView scrollView;
+  @BindView(R.id.recycler_notes)
+  InboxRecyclerView recyclerView;
+  @BindView(R.id.swipe)
+  SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R.id.animation_view)
+  LottieAnimationView animationView;
+  @BindView(R.id.error_state_message)
+  TextView errorTextView;
+  @BindView(R.id.notePageLayout)
+  ExpandablePageLayout notePageLayout;
+  @BindView(R.id.nested_scroll_note)
+  NestedScrollView scrollView;
 
 
-    private ItemAdapter<NoteItem> itemAdapter;
-    FastAdapter<NoteItem> fastAdapter;
+  private ItemAdapter<NoteItem> itemAdapter;
+  FastAdapter<NoteItem> fastAdapter;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+  @Inject
+  ViewModelProvider.Factory viewModelFactory;
 
-    private PublicationsViewModel publicationsViewModel;
+  private PublicationsViewModel publicationsViewModel;
 
-    private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
-    private final ConsumableBoolean preventReload = new ConsumableBoolean(false);
+  private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
 
-    private List<Note> scheduledUpdate = null;
+  private List<Note> scheduledUpdate = null;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentNotesBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notes, container, false);
-        ButterKnife.bind(this, binding.getRoot());
-        binding.setLifecycleOwner(this);
-        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
-        binding.setNotesViewModel(publicationsViewModel);
-        return binding.getRoot();
-    }
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    FragmentNotesBinding binding = DataBindingUtil
+        .inflate(inflater, R.layout.fragment_notes, container, false);
+    ButterKnife.bind(this, binding.getRoot());
+    binding.setLifecycleOwner(this);
+    publicationsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        .get(PublicationsViewModel.class);
+    binding.setNotesViewModel(publicationsViewModel);
+    return binding.getRoot();
+  }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
-        publicationsViewModel.orderAscending.observe(this, data -> scheduledScrollToTop.setValue(true));
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
+    publicationsViewModel.orderAscending.observe(this, data -> scheduledScrollToTop.setValue(true));
 
-        setRecycler();
+    setRecycler();
 
-        swipeRefreshLayout.setColorSchemeColors(getContext().getResources().getColor(R.color.accent),
-                getContext().getResources().getColor(R.color.primary));
+    swipeRefreshLayout.setColorSchemeColors(getContext().getResources().getColor(R.color.accent),
+        getContext().getResources().getColor(R.color.primary));
 
-        publicationsViewModel.getPublications().observe(this, listResource -> {
-            Timber.d("Data observed with status %s and time %d", listResource.status.toString(), System.currentTimeMillis());
-            onChangedState(listResource.status);
-            onChanged(listResource.data);
-        });
-    }
+    publicationsViewModel.getPublications().observe(this, listResource -> {
+      Timber.d("Data observed with status %s and time %d", listResource.status.toString(),
+          System.currentTimeMillis());
+      onChangedState(listResource.status);
+      onChanged(listResource.data);
+    });
+  }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        new Handler().postDelayed(this::reload, 100);
-    }
+  @Override
+  public void onResume() {
+    super.onResume();
+    new Handler().postDelayed(this::reload, 100);
+  }
 
-    private void setRecycler() {
+  private void setRecycler() {
 
-        itemAdapter = new ItemAdapter<>();
-        fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+    itemAdapter = new ItemAdapter<>();
+    fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
 
-        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
-            @Override
-            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter, @NotNull NoteItem item) {
-                publicationsViewModel.selectedNote.setValue(item.getNote());
-                recyclerView.expandItem(item.getIdentifier());
-            }
+    fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
+      @Override
+      public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter,
+          @NotNull NoteItem item) {
+        publicationsViewModel.selectedNote.setValue(item.getNote());
+        recyclerView.expandItem(item.getIdentifier());
+      }
 
-            @javax.annotation.Nullable
-            @Override
-            public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof NoteItem.ViewHolder) {
-                    return ((NoteItem.ViewHolder) viewHolder).itemView;
-                }
-                return null;
-            }
-        });
+      @javax.annotation.Nullable
+      @Override
+      public View onBind(RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder instanceof NoteItem.ViewHolder) {
+          return ((NoteItem.ViewHolder) viewHolder).itemView;
+        }
+        return null;
+      }
+    });
 
-        itemAdapter.getItemFilter().withFilterPredicate((item, constraint) -> item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(fastAdapter);
-        recyclerView.setExpandablePage(notePageLayout);
-        notePageLayout.setPullToCollapseInterceptor((downX, downY, upwardPull) -> scrollView.canScrollVertically(upwardPull ? 1 : -1) ? InterceptResult.INTERCEPTED : InterceptResult.IGNORED);
-        notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
-            @Override
-            public void onPageAboutToExpand(long l) {
-                swipeRefreshLayout.setEnabled(false);
-                getMainActivity().navigate(R.id.noteDetailFragment, null, false);
-            }
+    itemAdapter.getItemFilter().withFilterPredicate(
+        (item, constraint) -> item.getNote().title.toLowerCase()
+            .contains(constraint.toString().toLowerCase()));
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setAdapter(fastAdapter);
+    recyclerView.setExpandablePage(notePageLayout);
+    notePageLayout.setPullToCollapseInterceptor(
+        (downX, downY, upwardPull) -> scrollView.canScrollVertically(upwardPull ? 1 : -1)
+            ? InterceptResult.INTERCEPTED : InterceptResult.IGNORED);
+    notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
+      @Override
+      public void onPageAboutToExpand(long l) {
+        swipeRefreshLayout.setEnabled(false);
+        getMainActivity().navigate(R.id.noteDetailFragment, null, false);
+      }
 
-            @Override
-            public void onPageExpanded() {
+      @Override
+      public void onPageExpanded() {
 //                if (publicationsViewModel.selectedNote.getValue() != null) {
 //                    getMainActivity().setFabIcon(publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white);
 //                }
-            }
+      }
 
-            @Override
-            public void onPageAboutToCollapse(long l) {
-                swipeRefreshLayout.setEnabled(true);
-                getMainActivity().navigate(R.id.notesFragment, null, false);
-            }
+      @Override
+      public void onPageAboutToCollapse(long l) {
+        swipeRefreshLayout.setEnabled(true);
+        getMainActivity().navigate(R.id.notesFragment, null, false);
+      }
 
-            @Override
-            public void onPageCollapsed() {
-                scrollView.scrollTo(0, 0);
-                if (scheduledUpdate != null) {
-                    onChanged(scheduledUpdate);
-                    scheduledUpdate = null;
-                }
-            }
-        });
-
-    }
-
-    private void reload() {
-        reload(false);
-    }
-
-    private void reload(boolean force) {
-        publicationsViewModel.reload(force);
-    }
-
-    public void onChanged(List<Note> notes) {
-        if (notes == null || notes.isEmpty()) return;
-
-        if (notePageLayout.isExpanded()) {
-            scheduledUpdate = new ArrayList<>(notes);
-            return;
+      @Override
+      public void onPageCollapsed() {
+        scrollView.scrollTo(0, 0);
+        if (scheduledUpdate != null) {
+          onChanged(scheduledUpdate);
+          scheduledUpdate = null;
         }
+      }
+    });
 
-        List<NoteItem> items = new ArrayList<>();
-        for (Note note : notes) {
-            items.add(new NoteItem().withNote(note));
-        }
+  }
 
-        int oldListSize = itemAdapter.getAdapterItemCount();
-        //Prevent recreating the whole list when there are identical items
-        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items, new NotesDiffCallback());
-        FastAdapterDiffUtil.set(itemAdapter, diffs);
+  private void reload() {
+    reload(false);
+  }
 
-        if (oldListSize != notes.size() || scheduledScrollToTop.getValue()) {
-            recyclerView.scrollToPosition(0);
-        }
+  private void reload(boolean force) {
+    publicationsViewModel.reload(force);
+  }
 
+  public void onChanged(List<Note> notes) {
+    if (notes == null || notes.isEmpty()) {
+      return;
     }
 
-    private void onChangedState(final Status st) {
-        boolean refresh = st == Status.LOADING;
-        if (swipeRefreshLayout.isRefreshing() == refresh) return;
-        swipeRefreshLayout.setRefreshing(refresh);
+    if (notePageLayout.isExpanded()) {
+      scheduledUpdate = new ArrayList<>(notes);
+      return;
     }
 
-    @OnClick(R.id.closeItem)
-    public void closeItem(View v) {
-        if (notePageLayout.isExpanded()) {
-            recyclerView.collapse();
-        }
+    List<NoteItem> items = notes
+        .stream()
+        .filter((note) -> !note.subject.contains("#"))
+        .map((note) -> new NoteItem().withNote(note))
+        .collect(Collectors.toList());
+
+    int oldListSize = itemAdapter.getAdapterItemCount();
+    //Prevent recreating the whole list when there are identical items
+    DiffUtil.DiffResult diffs = FastAdapterDiffUtil
+        .calculateDiff(itemAdapter, items, new NotesDiffCallback());
+    FastAdapterDiffUtil.set(itemAdapter, diffs);
+
+    if (oldListSize != notes.size() || scheduledScrollToTop.getValue()) {
+      recyclerView.scrollToPosition(0);
     }
 
-    @Override
-    public void onFabSelected(View v) {
-        if (notePageLayout.isExpanded()) {
-            Note n = publicationsViewModel.changeFavoriteState(publicationsViewModel.selectedNote.getValue());
-            publicationsViewModel.selectedNote.setValue(n);
-            getMainActivity().setFabIcon(publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white);
-            showSnackbar(n.favorite ? getString(R.string.added_to_favorites) : getString(R.string.removed_from_favorites));
-        }
-    }
+  }
 
-    @Override
-    public void onQuery(String query) {
-        itemAdapter.filter(query);
+  private void onChangedState(final Status st) {
+    boolean refresh = st == Status.LOADING;
+    if (swipeRefreshLayout.isRefreshing() == refresh) {
+      return;
     }
+    swipeRefreshLayout.setRefreshing(refresh);
+  }
 
-    @Override
-    public boolean onItemClick(int id) {
-        if (id == R.id.filter_menu) {
-            publicationsViewModel.onFilterClick();
-        }
-        return super.onItemClick(id);
+  @OnClick(R.id.closeItem)
+  public void closeItem(View v) {
+    if (notePageLayout.isExpanded()) {
+      recyclerView.collapse();
     }
+  }
 
-    @Override
-    public boolean onBackPressed() {
-        if (notePageLayout.isExpanded()) {
-            recyclerView.collapse();
-            return true;
-        } else {
-            return super.onBackPressed();
-        }
+  @Override
+  public void onFabSelected(View v) {
+    if (notePageLayout.isExpanded()) {
+      Note n = publicationsViewModel
+          .changeFavoriteState(publicationsViewModel.selectedNote.getValue());
+      publicationsViewModel.selectedNote.setValue(n);
+      getMainActivity().setFabIcon(
+          publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white
+              : R.drawable.ic_favorite_border_white);
+      showSnackbar(n.favorite ? getString(R.string.added_to_favorites)
+          : getString(R.string.removed_from_favorites));
     }
+  }
+
+  @Override
+  public void onQuery(String query) {
+    itemAdapter.filter(query);
+  }
+
+  @Override
+  public boolean onItemClick(int id) {
+    if (id == R.id.filter_menu) {
+      publicationsViewModel.onFilterClick();
+    }
+    return super.onItemClick(id);
+  }
+
+  @Override
+  public boolean onBackPressed() {
+    if (notePageLayout.isExpanded()) {
+      recyclerView.collapse();
+      return true;
+    } else {
+      return super.onBackPressed();
+    }
+  }
 }
 

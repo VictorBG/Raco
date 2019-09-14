@@ -1,5 +1,6 @@
 package com.victorbg.racofib.viewmodel;
 
+import android.graphics.Color;
 import com.victorbg.racofib.data.domain.subjects.LoadSubjectDatabaseUseCase;
 import com.victorbg.racofib.data.domain.subjects.LoadSubjectsUseCase;
 import com.victorbg.racofib.data.domain.subjects.SaveSubjectUseCase;
@@ -57,6 +58,14 @@ public class GradesViewModel extends ViewModel {
 
     public MutableLiveData<Subject> getSubject() {
         return subject;
+    }
+
+    public Integer getColorSubject(int position) {
+        try {
+            return Color.parseColor(subjects.getValue().get(position).color);
+        } catch (Exception ignore) {
+            return 0;
+        }
     }
 
     public void selectSubject(String subject) {

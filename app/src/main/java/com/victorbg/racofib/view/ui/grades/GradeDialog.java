@@ -22,80 +22,84 @@ import butterknife.OnClick;
 
 public class GradeDialog extends DialogCustomContent implements Injectable {
 
-    public static final String SUBJECT_PARAM = "SubjectParam";
-    public static final String GRADE_INDEX_PARAM = "GradeIndexParam";
-    public static final String NEW_GRADE_PARAM = "NewGradeParam";
+  public static final String SUBJECT_PARAM = "SubjectParam";
+  public static final String GRADE_INDEX_PARAM = "GradeIndexParam";
+  public static final String NEW_GRADE_PARAM = "NewGradeParam";
 
-    private Subject subject;
-    private int index;
+  private Subject subject;
+  private int index;
 
-    private ObservableField<Grade> gradeObservableField = new ObservableField<>();
+  private ObservableField<Grade> gradeObservableField = new ObservableField<>();
 
-    @Inject
-    SaveSubjectUseCase saveSubjectUseCase;
+  @Inject
+  SaveSubjectUseCase saveSubjectUseCase;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-        boolean newGrade = false;
+    boolean newGrade = false;
 
-        try {
-            newGrade = getIntent().getExtras().getBoolean(NEW_GRADE_PARAM);
+    try {
+      newGrade = getIntent().getExtras().getBoolean(NEW_GRADE_PARAM);
 
+      subject = getIntent().getExtras().getParcelable(SUBJECT_PARAM);
+      if (subject == null) {
+        Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
+            .show();
+        finish();
+      }
 
-            subject = getIntent().getExtras().getParcelable(SUBJECT_PARAM);
-            if (subject == null) {
-                Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-            if (!newGrade) {
-                index = getIntent().getExtras().getInt(GRADE_INDEX_PARAM);
-                if (index < 0 || index >= subject.grades.size()) {
-                    Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            } else {
-                Grade grade = new Grade();
-                grade.title = "";
-                subject.grades.add(grade);
-                index = subject.grades.size() - 1;
-            }
-
-            gradeObservableField.set(subject.grades.get(index));
-        } catch (Exception ignore) {
-            Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
-            finish();
+      if (!newGrade) {
+        index = getIntent().getExtras().getInt(GRADE_INDEX_PARAM);
+        if (index < 0 || index >= subject.grades.size()) {
+          Toast
+              .makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
+              .show();
+          finish();
         }
+      } else {
+        Grade grade = new Grade();
+        grade.title = "";
+        subject.grades.add(grade);
+        index = subject.grades.size() - 1;
+      }
 
-        ActivityGradeDialogBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_grade_dialog);
-        binding.setGrade(gradeObservableField);
-        binding.setNewGrade(newGrade);
-
-        ButterKnife.bind(this, binding.getRoot());
+      gradeObservableField.set(subject.grades.get(index));
+    } catch (Exception ignore) {
+      Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
+          .show();
+      finish();
     }
 
+    ActivityGradeDialogBinding binding = DataBindingUtil
+        .setContentView(this, R.layout.activity_grade_dialog);
+    binding.setGrade(gradeObservableField);
+    binding.setNewGrade(newGrade);
 
-    @OnClick(R.id.save)
-    public void save(View v) {
-        subject.grades.remove(index);
-        subject.grades.add(index, gradeObservableField.get());
-        saveSubjectUseCase.execute(subject);
-        finishAfterTransition();
-    }
+    ButterKnife.bind(this, binding.getRoot());
+  }
 
-    @OnClick(R.id.close)
-    public void close(View v) {
-        finishAfterTransition();
-    }
 
-    @OnClick(R.id.delete)
-    public void delete(View v) {
-        subject.grades.remove(index);
-        saveSubjectUseCase.execute(subject);
-        finishAfterTransition();
-    }
+  @OnClick(R.id.save)
+  public void save(View v) {
+    subject.grades.remove(index);
+    subject.grades.add(index, gradeObservableField.get());
+    saveSubjectUseCase.execute(subject);
+    finishAfterTransition();
+  }
+
+  @OnClick(R.id.close)
+  public void close(View v) {
+    finishAfterTransition();
+  }
+
+  @OnClick(R.id.delete)
+  public void delete(View v) {
+    subject.grades.remove(index);
+    saveSubjectUseCase.execute(subject);
+    finishAfterTransition();
+  }
 
 
 }

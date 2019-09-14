@@ -3,11 +3,11 @@ apply plugin: 'jacoco-android'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.victorbg.racofib"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion 24
+        targetSdkVersion 29
         versionCode 7
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -46,8 +46,8 @@ android {
 
 dependencies {
 
-    def room_version = "2.0.0"
-    def work_version = "1.0.0"
+    def room_version = "2.1.0"
+    def work_version = "1.0.1"
 
     //Default
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -57,15 +57,15 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation "androidx.test.ext:junit:1.1.0"
-    testImplementation 'androidx.test:core:1.1.0'
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    testImplementation 'androidx.test:core:1.2.0'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
-    androidTestImplementation "androidx.arch.core:core-testing:2.0.1"
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
-    implementation 'androidx.annotation:annotation:1.0.2'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
+    implementation 'androidx.annotation:annotation:1.1.0'
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -90,7 +90,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     //MDC Android
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation 'com.google.android.material:material:1.1.0-alpha10'
 
     //FastAdapter
     implementation 'com.mikepenz:fastadapter:3.3.1'
@@ -146,7 +146,7 @@ dependencies {
     implementation "android.arch.work:work-rxjava2:$work_version"
     androidTestImplementation "android.arch.work:work-testing:$work_version"
 
-    implementation 'com.google.android.gms:play-services-oss-licenses:16.0.2'
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
     implementation 'com.jaredrummler:colorpicker:1.1.0'
 
@@ -154,14 +154,14 @@ dependencies {
 
     implementation 'me.saket:inboxrecyclerview:1.0.0-rc1'
 
-    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
 
     //¿? The build fails without this
     //Related question asked hours ago: https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver
     //Maybe there's an error on the online dependencies that are not download, idk
-    implementation 'androidx.arch.core:core-common:2.0.1'
-    implementation 'androidx.arch.core:core-testing:2.0.1'
-    implementation 'androidx.arch.core:core-runtime:2.0.1'
+    implementation 'androidx.arch.core:core-common:2.1.0'
+    implementation 'androidx.arch.core:core-testing:2.1.0'
+    implementation 'androidx.arch.core:core-runtime:2.1.0'
 
 }
 
