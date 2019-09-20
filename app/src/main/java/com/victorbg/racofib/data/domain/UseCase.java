@@ -13,7 +13,7 @@ public abstract class UseCase<P, R> {
     /**
      * Executes the use case without parameters
      *
-     * @return
+     * @return R
      */
 
     public abstract R execute();
@@ -21,8 +21,8 @@ public abstract class UseCase<P, R> {
     /**
      * Executes the use case with parameters
      *
-     * @param parameter
-     * @return
+     * @param parameter P
+     * @return R
      */
     public abstract R execute(P parameter);
 }

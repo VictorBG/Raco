@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import com.airbnb.lottie.LottieAnimationView;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -14,6 +15,7 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
+import com.victorbg.racofib.view.ui.subjects.SubjectsFragmentDirections.ActionSubjectsFragmentToSubjectDetailFragment2;
 import com.victorbg.racofib.view.ui.subjects.items.SubjectItem;
 import com.victorbg.racofib.viewmodel.SubjectsViewModel;
 
@@ -30,107 +32,94 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import org.jetbrains.annotations.NotNull;
 
 public class SubjectsFragment extends BaseFragment implements Injectable {
 
-    @BindView(R.id.recycler_notes)
-    RecyclerView recyclerView;
-    @BindView(R.id.animation_view)
-    LottieAnimationView animationView;
-    @BindView(R.id.error_state_message)
-    TextView errorTextView;
+  @BindView(R.id.recycler_notes)
+  RecyclerView recyclerView;
+  @BindView(R.id.animation_view)
+  LottieAnimationView animationView;
+  @BindView(R.id.error_state_message)
+  TextView errorTextView;
 
-    private ItemAdapter<SubjectItem> itemAdapter;
+  private ItemAdapter<SubjectItem> itemAdapter;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+  @Inject
+  ViewModelProvider.Factory viewModelFactory;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        SubjectsViewModel subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
-        subjectsViewModel.getSubjects().observe(this, this::onChanged);
-    }
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    SubjectsViewModel subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
+    subjectsViewModel.getSubjects().observe(this, this::onChanged);
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_subjects, container, false);
-    }
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_subjects, container, false);
+  }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setRecycler();
-    }
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    setRecycler();
+  }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+  private void setRecycler() {
+    itemAdapter = new ItemAdapter<>();
+    FastAdapter<SubjectItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
 
-    }
+    fastAdapter.withEventHook(new ClickEventHook<SubjectItem>() {
+      @Override
+      public void onClick(@NotNull View v, int position, @NotNull FastAdapter<SubjectItem> fastAdapter,
+          @NotNull SubjectItem item) {
+        ActionSubjectsFragmentToSubjectDetailFragment2 action = SubjectsFragmentDirections
+            .actionSubjectsFragmentToSubjectDetailFragment2(item.getSubject());
+        Navigation.findNavController(v).navigate(R.id.subjectDetailFragment, action.getArguments());
+      }
 
-    private void setRecycler() {
-        itemAdapter = new ItemAdapter<>();
-        FastAdapter<SubjectItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
-
-        fastAdapter.withEventHook(new ClickEventHook<SubjectItem>() {
-            @Override
-            public void onClick(View v, int position, FastAdapter<SubjectItem> fastAdapter, SubjectItem item) {
-//                Intent i = new Intent(getContext(), SubjectDetail.class);
-//                i.putExtra(SubjectDetail.SUBJECT_OBJECT_KEY, item.getSubject());
-//                startActivity(i);
-                Bundle arguments = new Bundle();
-                arguments.putParcelable(SubjectDetailFragment.SUBJECT_OBJECT_KEY, item.getSubject());
-                SubjectDetailFragment subjectDetailFragment = new SubjectDetailFragment();
-                subjectDetailFragment.setArguments(arguments);
-                getMainActivity().replaceByFragment(R.id.subjectDetailFragment, subjectDetailFragment);
-                getMainActivity().navigate(R.id.subjectDetailFragment, null, true);
-            }
-
-            @javax.annotation.Nullable
-            @Override
-            public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof SubjectItem.ViewHolder) {
-                    return ((SubjectItem.ViewHolder) viewHolder).cardView;
-                }
-                return null;
-            }
-
-        });
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(fastAdapter);
-    }
-
-    public void onChanged(List<Subject> list) {
-        if (list == null || list.isEmpty()) {
-            setLayout(true);
-            return;
+      @javax.annotation.Nullable
+      @Override
+      public View onBind(RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder instanceof SubjectItem.ViewHolder) {
+          return ((SubjectItem.ViewHolder) viewHolder).cardView;
         }
-        setLayout(false);
-        List<SubjectItem> items = new ArrayList<>();
-        for (Subject subject : list) {
-            items.add(new SubjectItem().withSubject(subject));
-        }
+        return null;
+      }
 
-        //Prevent recreating the whole list when there are identical items
-        itemAdapter.setNewList(items);
-//        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
-//        FastAdapterDiffUtil.set(itemAdapter, diffs);
-        recyclerView.scrollToPosition(0);
+    });
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setAdapter(fastAdapter);
+  }
+
+  public void onChanged(List<Subject> list) {
+    if (list == null || list.isEmpty()) {
+      setLayout(true);
+      return;
+    }
+    setLayout(false);
+    List<SubjectItem> items = new ArrayList<>();
+    for (Subject subject : list) {
+      items.add(new SubjectItem().withSubject(subject));
     }
 
-    private void setLayout(boolean empty) {
+    itemAdapter.setNewList(items);
+    recyclerView.scrollToPosition(0);
+  }
 
-        int errorTvVis;
-        int animVis = errorTvVis = (empty) ? View.VISIBLE : View.GONE;
-        errorTextView.setVisibility(errorTvVis);
-        errorTextView.setText(R.string.no_content_message);
-        animationView.setVisibility(animVis);
-        if (empty) {
-            animationView.playAnimation();
-        }
+  private void setLayout(boolean empty) {
 
+    int errorTvVis;
+    int animVis = errorTvVis = (empty) ? View.VISIBLE : View.GONE;
+    errorTextView.setVisibility(errorTvVis);
+    errorTextView.setText(R.string.no_content_message);
+    animationView.setVisibility(animVis);
+    if (empty) {
+      animationView.playAnimation();
     }
+
+  }
 }

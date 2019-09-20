@@ -21,41 +21,42 @@
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/filterLayout"
-            layout="@layout/filter_notes"
-            android:visibility="@{notesViewModel.filterVisibility?View.VISIBLE:View.GONE}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:viewModel="@{notesViewModel}" />
+<!--        <include-->
+<!--            android:id="@+id/filterLayout"-->
+<!--            layout="@layout/filter_notes"-->
+<!--            android:visibility="@{notesViewModel.filterVisibility?View.VISIBLE:View.GONE}"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:viewModel="@{notesViewModel}" />-->
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/filterLayout">
+          android:id="@+id/swipe"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
                 <me.saket.inboxrecyclerview.InboxRecyclerView
-                    android:id="@+id/recycler_notes"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="vertical"
-                    android:transitionGroup="false"
-                    tools:listitem="@layout/item_note" />
+                  android:id="@+id/recycler_notes"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:scrollbars="vertical"
+                  android:transitionGroup="false"
+                  tools:listitem="@layout/item_note" />
 
                 <me.saket.inboxrecyclerview.page.ExpandablePageLayout
-                    android:id="@+id/notePageLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                  android:id="@+id/notePageLayout"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
 
                     <include
-                        layout="@layout/item_note_detail"
-                        app:note="@{notesViewModel.selectedNote}" />
+                      layout="@layout/item_note_detail"
+                      app:note="@{notesViewModel.selectedNote}" />
                 </me.saket.inboxrecyclerview.page.ExpandablePageLayout>
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

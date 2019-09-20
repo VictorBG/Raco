@@ -41,8 +41,6 @@ import timber.log.Timber;
 
 public class SubjectDetailFragment extends BaseFragment implements Injectable {
 
-    public static final String SUBJECT_OBJECT_KEY = "SubjectObject";
-
     @BindView(R.id.tabs)
     TabLayout tabLayout;
     @BindView(R.id.progress_subject)
@@ -58,7 +56,6 @@ public class SubjectDetailFragment extends BaseFragment implements Injectable {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-
 
     @Nullable
     @Override
@@ -83,11 +80,8 @@ public class SubjectDetailFragment extends BaseFragment implements Injectable {
     }
 
     private boolean getSubject() {
-        if (getArguments() != null && getArguments().containsKey(SUBJECT_OBJECT_KEY)) {
-            subject = getArguments().getParcelable(SUBJECT_OBJECT_KEY);
-            getArguments().remove(SUBJECT_OBJECT_KEY);
-        }
-        return subject != null;
+        subject =  SubjectDetailFragmentArgs.fromBundle(getArguments()).getSubject();
+        return true;
     }
 
     private void handleSubjectResource(Resource<Subject> resource) {

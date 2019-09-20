@@ -131,11 +131,11 @@ public class MainBottomNavigationView extends BottomSheetDialogFragment implemen
 //            }
             return;
         }
-        if (id != R.id.settings_menu) {
-            navigationView.getMenu().findItem(selectedItem).setChecked(false);
-            selectedItem = id;
-            navigationView.getMenu().findItem(selectedItem).setChecked(true);
-        }
+//        if (id != R.id.settings_menu) {
+//            navigationView.getMenu().findItem(selectedItem).setChecked(false);
+//            selectedItem = id;
+//            navigationView.getMenu().findItem(selectedItem).setChecked(true);
+//        }
         if (dispatchClick && menuListener != null) {
             menuListener.onMenuClick(id);
         }

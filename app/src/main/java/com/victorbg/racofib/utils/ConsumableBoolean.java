@@ -1,5 +1,7 @@
 package com.victorbg.racofib.utils;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * A special boolean that is consumed.
  * <p>
@@ -8,22 +10,18 @@ package com.victorbg.racofib.utils;
  */
 public class ConsumableBoolean {
 
-    private Boolean bool = Boolean.FALSE;
+    private AtomicBoolean bool = new AtomicBoolean(false);
 
     public ConsumableBoolean(Boolean initialState) {
         setValue(initialState);
     }
 
     public Boolean getValue() {
-        Boolean copy = bool;
-        if (bool == Boolean.TRUE) {
-            bool = Boolean.FALSE;
-        }
-        return copy;
+        return bool.getAndSet(false);
     }
 
     public ConsumableBoolean setValue(Boolean bool) {
-        this.bool = bool;
+        this.bool.set(bool);
         return this;
     }
 }

@@ -7,7 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
@@ -46,8 +50,8 @@ import dagger.android.support.HasSupportFragmentInjector;
  */
 public class MainActivity extends BaseActivity implements HasSupportFragmentInjector {
 
-    @BindView(R.id.bar)
-    BottomAppBar bottomAppBar;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomBarNavigator;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @Inject
@@ -62,8 +66,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     private SearchView searchView;
     private MainActivityViewModel mainActivityViewModel;
     private FragNav fragmentNavigator;
-    private BottomBarNavigator bottomBarNavigator;
-    private MainBottomNavigationView mainBottomNavigationView;
 
     private int selectedFragmentId = R.id.homeFragment;
 
@@ -81,91 +83,92 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
                 .addFragment(R.id.homeFragment, new HomeFragment())
                 .addFragment(R.id.notesFragment, new NotesFragment())
                 .addFragment(R.id.gradesFragment, new GradesFragment())
-                .addFragment(R.id.timetableFragment, new ScheduleFragment())
+                .addFragment(R.id.scheduleFragment, new ScheduleFragment())
                 .addFragment(R.id.subjectsFragment, new SubjectsFragment())
                 .addFragment(R.id.allExamsFragment, new FragmentAllExams())
                 .addFragment(R.id.subjectDetailFragment, new SubjectDetailFragment());
 
+        NavController navController = Navigation.findNavController(this, R.id.contentContainer);
+        NavigationUI.setupWithNavController(bottomBarNavigator, navController);
 
-        bottomBarNavigator = BottomBarNavigator.createNavigatorWithFAB(this, fragmentNavigator, bottomAppBar, fab);
-        bottomBarNavigator.addRules(MainBottomBarRules.getMainActivityRules());
-        bottomBarNavigator.setNavigationListener(new BottomBarNavigator.NavigationListener() {
-            @Override
-            public void onNavigationClick(View v) {
-                //Prevent to try to show multiple menus by clicking the menu icon
-                //while the menu is popping up, thus causing an exception
-                //due it is already added on the stack and cannot be added again
-                if (!mainBottomNavigationView.isVisible()) {
-                    mainBottomNavigationView.show(MainActivity.this.getSupportFragmentManager(), "nav-view");
-                }
-            }
-
-            @Override
-            public void onNavigationMade(int destinationId) {
-                mainBottomNavigationView.selectItem(destinationId, false);
-            }
-
-            @Override
-            public boolean onItemClick(MenuItem menuItem) {
-                return false;
-            }
-
-            @Override
-            public void onMenuReplaced(int id, Menu menu) {
-                if (id == R.menu.notes_menu) {
-                    searchView = (SearchView) menu.getItem(0).getActionView();
-                    searchView.setMaxWidth(Integer.MAX_VALUE);
-                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit(String query) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onQueryTextChange(String newText) {
-                            if (fragmentNavigator != null) {
-                                fragmentNavigator.onQuery(newText);
-                            }
-                            return false;
-                        }
-                    });
-
-                    searchView.setOnCloseListener(() -> {
-                        if (fragmentNavigator != null) {
-                            fragmentNavigator.onQuery(null);
-                        }
-                        return false;
-                    });
-                }
-            }
-        });
-
-        mainBottomNavigationView = MainBottomNavigationView.getMenu(new MainBottomNavigationView.MenuListener() {
-            @Override
-            public void onMenuClick(int id) {
-                mainBottomNavigationView.dismiss();
-                if (id == R.id.settings_menu) {
-                    startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 400);
-                } else {
-                    selectedFragmentId = id;
-                    bottomBarNavigator.navigate(id, null);
-                }
-            }
-
-            @Override
-            public void onLogoutClick() {
-                mainActivityViewModel.logout();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            }
-        }, selectedFragmentId);
+//        bottomBarNavigator = BottomBarNavigator.createNavigatorWithFAB(this, fragmentNavigator, bottomAppBar, fab);
+//        bottomBarNavigator.addRules(MainBottomBarRules.getMainActivityRules());
+//        bottomBarNavigator.setNavigationListener(new BottomBarNavigator.NavigationListener() {
+//            @Override
+//            public void onNavigationClick(View v) {
+//                //Prevent to try to show multiple menus by clicking the menu icon
+//                //while the menu is popping up, thus causing an exception
+//                //due it is already added on the stack and cannot be added again
+//                if (!mainBottomNavigationView.isVisible()) {
+//                    mainBottomNavigationView.show(MainActivity.this.getSupportFragmentManager(), "nav-view");
+//                }
+//            }
+//
+//            @Override
+//            public void onNavigationMade(int destinationId) {
+//                mainBottomNavigationView.selectItem(destinationId, false);
+//            }
+//
+//            @Override
+//            public boolean onItemClick(MenuItem menuItem) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onMenuReplaced(int id, Menu menu) {
+//                if (id == R.menu.notes_menu) {
+//                    searchView = (SearchView) menu.getItem(0).getActionView();
+//                    searchView.setMaxWidth(Integer.MAX_VALUE);
+//                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//                        @Override
+//                        public boolean onQueryTextSubmit(String query) {
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onQueryTextChange(String newText) {
+//                            if (fragmentNavigator != null) {
+//                                fragmentNavigator.onQuery(newText);
+//                            }
+//                            return false;
+//                        }
+//                    });
+//
+//                    searchView.setOnCloseListener(() -> {
+//                        if (fragmentNavigator != null) {
+//                            fragmentNavigator.onQuery(null);
+//                        }
+//                        return false;
+//                    });
+//                }
+//            }
+//        });
+//
+//        mainBottomNavigationView = MainBottomNavigationView.getMenu(new MainBottomNavigationView.MenuListener() {
+//            @Override
+//            public void onMenuClick(int id) {
+//                mainBottomNavigationView.dismiss();
+//                if (id == R.id.settings_menu) {
+//                    startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), 400);
+//                } else {
+//                    selectedFragmentId = id;
+//                    bottomBarNavigator.navigate(id, null);
+//                }
+//            }
+//
+//            @Override
+//            public void onLogoutClick() {
+//                mainActivityViewModel.logout();
+//                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                finish();
+//            }
+//        }, selectedFragmentId);
+//
+//
+//        bottomBarNavigator.navigate(selectedFragmentId, null);
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).
-
-                get(MainActivityViewModel.class);
-
-        bottomBarNavigator.navigate(selectedFragmentId, null);
-
+            get(MainActivityViewModel.class);
     }
 
     @Override
@@ -184,20 +187,17 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         super.onSaveInstanceState(outState);
     }
 
-    public void replaceByFragment(int id, Fragment fragment) {
-        fragmentNavigator.replaceByFragment(id, fragment);
-    }
-
     public void setFabIcon(int icon) {
-        bottomBarNavigator.setFabIcon(icon);
+//        bottomBarNavigator.setFabIcon(icon);
     }
 
     public void navigate(int id, @Nullable Bundle arguments, boolean applyNavigation) {
-        bottomBarNavigator.navigate(id, arguments, applyNavigation);
+//        bottomBarNavigator.navigate(id, arguments, applyNavigation);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 400) {
             internalRecreate();
         }
@@ -208,21 +208,20 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
         if (searchView != null && !searchView.isIconified()) {
             searchView.onActionViewCollapsed();
         } else if (!fragmentNavigator.propagateBackClick()) {
-            if (!bottomBarNavigator.onBackPressed()) {
+//            if (!bottomBarNavigator.onBackPressed()) {
                 super.onBackPressed();
-            }
-
+//            }
         }
     }
 
     public void popBack() {
         fragmentNavigator.popBack();
-        bottomBarNavigator.navigate(fragmentNavigator.getCurrentFragmentId(), null, false);
+//        bottomBarNavigator.navigate(fragmentNavigator.getCurrentFragmentId(), null, false);
     }
 
     @Override
     protected Snackbar customSnackbarAnchor(Snackbar snackbar) {
-        snackbar.setAnchorView(fab.getVisibility() == View.VISIBLE ? fab : bottomAppBar);
+        snackbar.setAnchorView(fab.getVisibility() == View.VISIBLE ? fab : bottomBarNavigator);
         return snackbar;
     }
 

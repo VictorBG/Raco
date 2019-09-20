@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/main_nav"
+  app:startDestination="@id/homeFragment">
+  <fragment
+    android:id="@+id/homeFragment"
+    android:name="com.victorbg.racofib.view.ui.home.HomeFragment"
+    android:label="fragment_home"
+    tools:layout="@layout/fragment_home" />
+  <fragment
+    android:id="@+id/notesFragment"
+    android:name="com.victorbg.racofib.view.ui.notes.NotesFragment"
+    android:label="fragment_notes"
+    tools:layout="@layout/fragment_notes" />
+  <fragment
+    android:id="@+id/gradesFragment"
+    android:name="com.victorbg.racofib.view.ui.grades.GradesFragment"
+    android:label="fragment_grades"
+    tools:layout="@layout/fragment_grades" />
+  <fragment
+    android:id="@+id/scheduleFragment"
+    android:name="com.victorbg.racofib.view.ui.schedule.ScheduleFragment"
+    android:label="fragment_schedule"
+    tools:layout="@layout/fragment_schedule" />
+  <fragment
+    android:id="@+id/subjectsFragment"
+    android:name="com.victorbg.racofib.view.ui.subjects.SubjectsFragment"
+    android:label="fragment_subjects"
+    tools:layout="@layout/fragment_subjects" >
+    <action
+      android:id="@+id/action_subjectsFragment_to_subjectDetailFragment2"
+      app:destination="@id/subjectDetailFragment" >
+    </action>
+  </fragment>
+  <fragment
+    android:id="@+id/subjectDetailFragment"
+    android:name="com.victorbg.racofib.view.ui.subjects.SubjectDetailFragment"
+    android:label="fragment_subject"
+    tools:layout="@layout/fragment_subject" >
+    <argument
+      android:name="subject"
+      app:argType="com.victorbg.racofib.data.model.subject.Subject" />
+  </fragment>
+</navigation>

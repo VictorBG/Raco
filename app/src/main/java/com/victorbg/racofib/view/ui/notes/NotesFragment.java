@@ -1,6 +1,5 @@
 package com.victorbg.racofib.view.ui.notes;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Note;
-import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.databinding.FragmentNotesBinding;
 import com.victorbg.racofib.di.injector.Injectable;
@@ -94,8 +92,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         .inflate(inflater, R.layout.fragment_notes, container, false);
     ButterKnife.bind(this, binding.getRoot());
     binding.setLifecycleOwner(this);
-    publicationsViewModel = ViewModelProviders.of(this, viewModelFactory)
-        .get(PublicationsViewModel.class);
+    publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
     binding.setNotesViewModel(publicationsViewModel);
     return binding.getRoot();
   }

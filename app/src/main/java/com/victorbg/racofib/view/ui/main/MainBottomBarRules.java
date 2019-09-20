@@ -26,7 +26,7 @@ public class MainBottomBarRules {
                         R.drawable.ic_add_black_24dp,
                         View.GONE));
 
-        result.put(R.id.timetableFragment,
+        result.put(R.id.scheduleFragment,
                 new BottomBarNavigator.Rule(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER,
                         BottomBarNavigator.NAVIGATION_MODE_NAVIGATION,
                         R.menu.main_menu,
