@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
@@ -22,71 +24,68 @@ import androidx.lifecycle.ViewModel;
 
 public class HomeViewModel extends ViewModel {
 
-    private LiveData<Resource<List<Exam>>> exams;
-    private final LiveData<Resource<List<SubjectSchedule>>> schedule;
+  private LiveData<Resource<List<Exam>>> exams;
+  private final LiveData<Resource<List<SubjectSchedule>>> schedule;
 
-    private final LoadExamsUseCase loadExamsUseCase;
-    private final LoadCacheExamsUseCase loadCacheExamsUseCase;
+  private final LoadExamsUseCase loadExamsUseCase;
+  private final LoadCacheExamsUseCase loadCacheExamsUseCase;
 
-    @Inject
-    public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase, LoadCacheExamsUseCase loadCacheExamsUseCase) {
-        this.loadExamsUseCase = loadExamsUseCase;
-        this.loadCacheExamsUseCase = loadCacheExamsUseCase;
+  @Inject
+  public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase,
+      LoadCacheExamsUseCase loadCacheExamsUseCase) {
+    this.loadExamsUseCase = loadExamsUseCase;
+    this.loadCacheExamsUseCase = loadCacheExamsUseCase;
 
-        schedule = loadScheduleUseCase.execute();
-        exams = loadExamsUseCase.execute();
+    schedule = loadScheduleUseCase.execute();
+    exams = loadExamsUseCase.execute();
+  }
+
+  public LiveData<List<Exam>> getCachedExams() {
+    return loadCacheExamsUseCase.execute();
+  }
+
+  public LiveData<Resource<List<Exam>>> getExams() {
+    if (exams.getValue() == null) {
+      this.exams = loadExamsUseCase.execute();
+    }
+    return exams;
+  }
+
+  public LiveData<Resource<List<SubjectSchedule>>> getSchedule() {
+    return schedule;
+  }
+
+  /**
+   * Returns the nearest exams from today.
+   * <p>
+   * This must be called once it is secure the data has been fetched
+   *
+   * @param size size of the result list
+   * @return The list of size nearest exams
+   */
+
+  //FIXME: Esto es una basura, ponlo en un LiveData y observalo...
+  public List<Exam> getNearestExams(int size) {
+
+    if (exams.getValue().data == null || exams.getValue().data.isEmpty()) {
+      return new ArrayList<>();
     }
 
-    public LiveData<List<Exam>> getCachedExams() {
-        return loadCacheExamsUseCase.execute();
-    }
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+    Date currentTime = Calendar.getInstance().getTime();
 
-    public LiveData<Resource<List<Exam>>> getExams() {
-        if (exams.getValue() == null) {
-            this.exams = loadExamsUseCase.execute();
-        }
-        return exams;
-    }
-
-    public LiveData<Resource<List<SubjectSchedule>>> getSchedule() {
-        return schedule;
-    }
-
-    /**
-     * Returns the nearest exams from today.
-     * <p>
-     * This must be called once it is secure the data has been fetched
-     *
-     * @param size size of the result list
-     * @return The list of size nearest exams
-     */
-    public List<Exam> getNearestExams(int size) {
-
-
-        if (exams.getValue().data == null || exams.getValue().data.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-        Date currentTime = Calendar.getInstance().getTime();
-        int index;
-
-        for (index = 0; index < exams.getValue().data.size(); index++) {
-            try {
-                if (simpleDateFormat.parse(exams.getValue().data.get(index).startDate).after(currentTime)) {
-                    break;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-                break;
-            }
-        }
-
-        if (index < 0 || index >= exams.getValue().data.size()) {
-            index = exams.getValue().data.size() - 1;
-        }
-        return exams.getValue().data.subList(index, Math.min(exams.getValue().data.size(), index + size));
-    }
-
-
+    return exams.getValue().data.stream().filter(exam -> {
+      try {
+        return simpleDateFormat.parse(exam.startDate).after(currentTime);
+      } catch (ParseException e) {
+        return false;
+      }
+    }).sorted((exam1, exam2) -> {
+      try {
+        return simpleDateFormat.parse(exam1.startDate).compareTo(simpleDateFormat.parse(exam2.startDate));
+      } catch (ParseException e) {
+        return 0;
+      }
+    }).limit(size).collect(Collectors.toList());
+  }
 }

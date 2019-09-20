@@ -112,5 +112,6 @@
     <string name="thur_one_letter">J</string>
     <string name="fri_one_letter">V</string>
     <string name="error_saving_event">Error al guardar el evento.</string>
+  <string name="profile_bottom_tab">Profile</string>
 
 </resources>

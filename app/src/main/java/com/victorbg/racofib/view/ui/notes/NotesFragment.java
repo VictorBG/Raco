@@ -244,9 +244,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
       Note n = publicationsViewModel
           .changeFavoriteState(publicationsViewModel.selectedNote.getValue());
       publicationsViewModel.selectedNote.setValue(n);
-      getMainActivity().setFabIcon(
-          publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white
-              : R.drawable.ic_favorite_border_white);
+      getMainActivity()
+          .setFabIcon(publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white);
       showSnackbar(n.favorite ? getString(R.string.added_to_favorites)
           : getString(R.string.removed_from_favorites));
     }

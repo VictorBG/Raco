@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_twotone_donut_small_24px"
+        android:icon="@drawable/ic_twotone_home_24px"
         android:title="@string/start_bottom_tab" />
 
     <item
         android:id="@+id/notesFragment"
-        android:icon="@drawable/ic_twotone_note_24px"
+        android:icon="@drawable/ic_inbox"
         android:title="@string/notes_bottom_tab" />
 
     <item
         android:id="@+id/gradesFragment"
-        android:icon="@drawable/ic_twotone_category_24px"
+        android:icon="@drawable/ic_grades"
         android:title="@string/grades_bottom_tab" />
 
     <item
@@ -23,8 +23,8 @@
 
     <item
         android:id="@+id/subjectsFragment"
-        android:icon="@drawable/ic_twotone_book_24px"
-        android:title="@string/subjects_bottom_tab" />
+        android:icon="@drawable/ic_face"
+        android:title="@string/profile_bottom_tab" />
 
 <!--    <item-->
 <!--        android:id="@+id/settings_menu"-->

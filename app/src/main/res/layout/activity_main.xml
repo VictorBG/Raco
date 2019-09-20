@@ -15,7 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:background="@color/primary"
-    app:itemIconTint="@color/md_grey_500"
+    app:itemIconTint="@color/bottom_nav_view_item_tint"
     app:itemTextColor="@color/md_white_1000"
     app:layout_insetEdge="bottom"
     app:menu="@menu/bottom_navigation_menu" />

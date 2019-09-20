@@ -129,7 +129,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
         recyclerViewExams.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         todayScheduleRecyclerView.setAdapter(fastAdapter);
         recyclerViewExams.setAdapter(fastAdapterExams);
-
     }
 
     private void bindExams(List<Exam> exams) {
@@ -160,7 +159,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
                 noExams.setVisibility(View.VISIBLE);
                 break;
             case LOADING:
-
                 examsProgressBar.setVisibility(View.VISIBLE);
                 noExams.setVisibility(View.GONE);
                 break;
