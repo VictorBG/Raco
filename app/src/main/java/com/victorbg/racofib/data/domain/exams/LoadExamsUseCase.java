@@ -7,6 +7,7 @@ import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.exams.ExamsRepository;
 
+import com.victorbg.racofib.utils.Utils;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,39 +23,43 @@ import io.reactivex.schedulers.Schedulers;
 public class LoadExamsUseCase extends UseCase<Void, LiveData<Resource<List<Exam>>>> {
 
 
-    private final ExamsRepository examsRepository;
-    private final AppDatabase appDatabase;
+  private final ExamsRepository examsRepository;
+  private final AppDatabase appDatabase;
 
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    @Inject
-    public LoadExamsUseCase(AppExecutors appExecutors, ExamsRepository examsRepository, AppDatabase appDatabase) {
-        super(appExecutors);
-        this.examsRepository = examsRepository;
-        this.appDatabase = appDatabase;
-    }
+  @Inject
+  public LoadExamsUseCase(AppExecutors appExecutors, ExamsRepository examsRepository, AppDatabase appDatabase) {
+    super(appExecutors);
+    this.examsRepository = examsRepository;
+    this.appDatabase = appDatabase;
+  }
 
-    @Override
-    public LiveData<Resource<List<Exam>>> execute() {
-        MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData<>();
-        result.setValue(Resource.loading(null));
-        appExecutors.diskIO().execute(() ->
-                compositeDisposable.add(appDatabase.subjectsDao().getSubjectsNames()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(subjects -> {
-                            result.addSource(examsRepository.getExams(subjects), data -> {
-                                appExecutors.mainThread().execute(() -> result.setValue(data));
-                            });
-                        }, error -> {
-                            appExecutors.mainThread().execute(() -> result.setValue(Resource.error(error.getMessage(), null)));
-                        }))
-        );
-        return result;
-    }
+  @Override
+  public LiveData<Resource<List<Exam>>> execute() {
+    MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData<>();
+    result.setValue(Resource.loading(null));
+    appExecutors.diskIO().execute(() ->
+        compositeDisposable.add(appDatabase.subjectsDao().getSubjectsNames()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(subjects -> {
+              result.addSource(examsRepository.getExams(subjects), data -> {
+                compositeDisposable.add(appDatabase.subjectsDao().getColors()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(colors -> {
+                      Utils.assignColorsToExams(colors, data.data);
+                      appExecutors.mainThread().execute(() -> result.setValue(data));
+                    }));
+              });
+            }, error -> appExecutors.mainThread().execute(() -> result.setValue(Resource.error(error.getMessage(), null)))))
+    );
+    return result;
+  }
 
-    @Override
-    public LiveData<Resource<List<Exam>>> execute(Void parameter) {
-        return execute();
-    }
+  @Override
+  public LiveData<Resource<List<Exam>>> execute(Void parameter) {
+    return execute();
+  }
 }

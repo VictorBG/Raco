@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_twotone_home_24px"
-        android:title="@string/start_bottom_tab" />
+  <item
+    android:id="@+id/homeFragment"
+    android:icon="@drawable/ic_twotone_home_24px"
+    android:title="@string/start_bottom_tab" />
 
-    <item
-        android:id="@+id/notesFragment"
-        android:icon="@drawable/ic_inbox"
-        android:title="@string/notes_bottom_tab" />
+  <item
+    android:id="@+id/notesFragment"
+    android:icon="@drawable/ic_inbox"
+    android:title="@string/notes_bottom_tab" />
 
-    <item
-        android:id="@+id/gradesFragment"
-        android:icon="@drawable/ic_grades"
-        android:title="@string/grades_bottom_tab" />
+  <item
+    android:id="@+id/gradesFragment"
+    android:icon="@drawable/ic_grades"
+    android:title="@string/grades_bottom_tab" />
 
-    <item
-        android:id="@+id/scheduleFragment"
-        android:icon="@drawable/ic_twotone_schedule_24px"
-        android:title="@string/schedule_bottom_tab" />
+  <item
+    android:id="@+id/scheduleFragment"
+    android:icon="@drawable/ic_twotone_schedule_24px"
+    android:title="@string/schedule_bottom_tab" />
 
-    <item
-        android:id="@+id/subjectsFragment"
-        android:icon="@drawable/ic_face"
-        android:title="@string/profile_bottom_tab" />
+  <item
+    android:id="@+id/subjectsFragment"
+    android:icon="@drawable/ic_face"
+    android:title="@string/profile_bottom_tab" />
 
-<!--    <item-->
-<!--        android:id="@+id/settings_menu"-->
-<!--        android:icon="@drawable/ic_settings"-->
-<!--        android:title="@string/settings" />-->
 </menu>

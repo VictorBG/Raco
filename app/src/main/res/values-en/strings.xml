@@ -113,5 +113,6 @@
     <string name="fri_one_letter">F</string>
     <string name="error_saving_event">Error while saving the event</string>
   <string name="profile_bottom_tab">Profile</string>
+  <string name="upcoming_exams">Upcoming exams</string>
 
 </resources>

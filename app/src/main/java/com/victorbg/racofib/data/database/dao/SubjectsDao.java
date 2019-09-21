@@ -52,5 +52,8 @@ public interface SubjectsDao {
     @Query("UPDATE Subjects SET color=:color WHERE id=:id")
     void changeColor(String id, String color);
 
+    @Query("select color from Subjects where id=:id")
+    Single<List<SubjectColor>> getColor(String id);
+
 
 }

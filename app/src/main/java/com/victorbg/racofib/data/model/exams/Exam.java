@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.model.ColoredResource;
 import com.victorbg.racofib.utils.Utils;
 
 import java.text.ParseException;
@@ -19,7 +20,7 @@ import androidx.room.PrimaryKey;
 import timber.log.Timber;
 
 @Entity(tableName = "Exams")
-public class Exam implements Parcelable {
+public class Exam extends ColoredResource implements Parcelable {
 
     @NonNull
     @PrimaryKey
@@ -110,4 +111,9 @@ public class Exam implements Parcelable {
             return new Exam[size];
         }
     };
+
+    @Override
+    public String getSubject() {
+        return subject;
+    }
 }

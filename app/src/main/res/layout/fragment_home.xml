@@ -18,8 +18,5 @@
 
         <include layout="@layout/view_home_fragments" />
 
-        <!--<include layout="@layout/view_extra_options" />-->
-
-
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

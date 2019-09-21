@@ -106,6 +106,7 @@
     <string name="fri_one_letter">V</string>
     <string name="error_saving_event">No ha sido posible guardar el evento</string>
   <string name="profile_bottom_tab">Profile</string>
+  <string name="upcoming_exams">Upcoming exams</string>
 
   <string-array name="language_list_titles">
         <item>Español</item>

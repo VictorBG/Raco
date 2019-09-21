@@ -12,9 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/work_sans_medium"
-        android:text="@string/exams_title"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-        android:textSize="14sp"
+        android:text="@string/upcoming_exams"
         app:layout_constraintBottom_toBottomOf="@+id/seeMoreExams"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +23,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:minHeight="150dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView

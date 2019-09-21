@@ -19,7 +19,7 @@
         android:drawableStart="@drawable/ic_access_time_black_24dp"
         android:drawablePadding="4dp"
         android:gravity="center"
-        android:text="08:00 - 10:00"
+        tools:text="08:00 - 10:00"
         android:textColor="?themeSecondaryTextColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
