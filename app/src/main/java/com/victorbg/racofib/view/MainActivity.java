@@ -2,15 +2,17 @@ package com.victorbg.racofib.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.SearchView;
-
-import androidx.navigation.NavController;
+import androidx.annotation.Nullable;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import butterknife.BindView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,35 +21,13 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
-import com.victorbg.racofib.utils.fragment.FragNav;
 import com.victorbg.racofib.view.base.BaseActivity;
-import com.victorbg.racofib.view.ui.exams.FragmentAllExams;
-import com.victorbg.racofib.view.ui.grades.GradesFragment;
-import com.victorbg.racofib.view.ui.home.HomeFragment;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
-import com.victorbg.racofib.view.ui.main.MainBottomBarRules;
-import com.victorbg.racofib.view.ui.main.MainBottomNavigationView;
-import com.victorbg.racofib.view.ui.notes.NotesFragment;
-import com.victorbg.racofib.view.ui.schedule.ScheduleFragment;
-import com.victorbg.racofib.view.ui.settings.SettingsActivity;
-import com.victorbg.racofib.view.ui.subjects.SubjectDetailFragment;
-import com.victorbg.racofib.view.ui.subjects.SubjectsFragment;
-import com.victorbg.racofib.view.widgets.bottom.BottomBarNavigator;
-import com.victorbg.racofib.view.widgets.bottom.BottomNavigationViewHelper;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
-
-import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Inject;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import butterknife.BindView;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import java.util.Optional;
+import javax.inject.Inject;
 
 /**
  * Mainly manages the state of the fragments and the {@link BottomAppBar}
@@ -58,6 +38,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
   BottomNavigationView bottomBarNavigator;
   @BindView(R.id.fab)
   FloatingActionButton fab;
+  @BindView(R.id.parent)
+  View parent;
 
   @Inject
   DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
@@ -70,27 +52,23 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
   @Inject
   LoadUserUseCase loadUserUseCase;
 
-  private NavController navController;
-  private SearchView searchView;
   private MainActivityViewModel mainActivityViewModel;
-  private FragNav fragmentNavigator;
-
-  private int selectedFragmentId = R.id.homeFragment;
-
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    if (savedInstanceState != null) {
-      this.selectedFragmentId = savedInstanceState.getInt("FragmentID");
-    }
+    parent.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    ViewCompat.setOnApplyWindowInsetsListener(parent,
+        (v, insets) -> {
+          insets = ViewCompat.onApplyWindowInsets(v, insets);
+          parent.setPadding(parent.getPaddingLeft(), insets.getSystemWindowInsetTop(), parent.getPaddingRight(), parent.getPaddingBottom());
+          return insets;
+        });
 
-    navController = Navigation.findNavController(this, R.id.contentContainer);
-    NavigationUI.setupWithNavController(bottomBarNavigator, navController);
+    NavigationUI.setupWithNavController(bottomBarNavigator, Navigation.findNavController(this, R.id.contentContainer));
 
-//    BottomNavigationViewHelper.disableIconTintListAt(bottomBarNavigator, 4);
     bottomBarNavigator.setItemIconTintList(null);
     loadUserUseCase.execute().observe(this, user ->
         Optional.ofNullable(user).ifPresent(u ->
@@ -110,40 +88,11 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
   }
 
   @Override
-  protected void onSaveInstanceState(@NotNull Bundle outState) {
-    outState.putInt("FragmentID", selectedFragmentId);
-    super.onSaveInstanceState(outState);
-  }
-
-  public void setFabIcon(int icon) {
-//        bottomBarNavigator.setFabIcon(icon);
-  }
-
-  public void navigate(int id, @Nullable Bundle arguments, boolean applyNavigation) {
-//        bottomBarNavigator.navigate(id, arguments, applyNavigation);
-  }
-
-  @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == 400) {
       internalRecreate();
     }
-  }
-
-  @Override
-  public void onBackPressed() {
-    if (searchView != null && !searchView.isIconified()) {
-      searchView.onActionViewCollapsed();
-    } else {
-      super.onBackPressed();
-    }
-  }
-
-  public void popBack() {
-    navController.popBackStack();
-//    fragmentNavigator.popBack();
-//        bottomBarNavigator.navigate(fragmentNavigator.getCurrentFragmentId(), null, false);
   }
 
   @Override

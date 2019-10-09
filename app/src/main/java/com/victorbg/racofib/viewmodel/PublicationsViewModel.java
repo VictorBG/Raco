@@ -51,8 +51,8 @@ public class PublicationsViewModel extends ViewModel {
     orderAscending.setValue(false);
     selectedNote.setValue(Note.createEmptyNote());
 
-    loadPublications(false);
     loadSubjects(loadSubjectsUseCase);
+    loadPublications(false);
   }
 
   /**
@@ -62,7 +62,7 @@ public class PublicationsViewModel extends ViewModel {
   private void loadSubjects(LoadSubjectsUseCase loadSubjectsUseCase) {
     subjects = Transformations.map(loadSubjectsUseCase.execute(), s -> {
       Map<String, SubjectFilter> result = new ArrayMap<>();
-      for (Subject subject : s) {
+      s.forEach(subject -> {
         if (subjects != null && subjects.getValue() != null &&
             subjects.getValue().containsKey(subject.shortName)) {
           result.put(subject.shortName, subjects.getValue().get(subject.shortName));
@@ -72,7 +72,7 @@ public class PublicationsViewModel extends ViewModel {
           subjectsFilter.checked = true;
           result.put(subject.shortName, subjectsFilter);
         }
-      }
+      });
       return result;
     });
   }
@@ -106,20 +106,29 @@ public class PublicationsViewModel extends ViewModel {
   public LiveData<Resource<List<Note>>> getPublications() {
     return Transformations.map(publications, notes -> {
       if (notes.status == Status.SUCCESS) {
-        return Resource.success(notes.data.stream().filter(input ->
-            subjects != null && subjects.getValue() != null
-                && ((subjects.getValue().containsKey(input.subject) && subjects.getValue()
-                .get(input.subject).checked))
-                || (subjects.getValue() != null && !subjects.getValue().containsKey(input.subject)))
-            .sorted((o1, o2) -> {
-              try {
-                return orderAscending.getValue() ?
-                    format.parse(o1.date).compareTo(format.parse(o2.date)) :
-                    format.parse(o2.date).compareTo(format.parse(o1.date));
-              } catch (Exception ignore) {
-                return 0;
-              }
-            }).collect(Collectors.toList()));
+        return Resource.success(notes.data.stream().sorted((o1, o2) -> {
+          try {
+            return orderAscending.getValue() ?
+                format.parse(o1.date).compareTo(format.parse(o2.date)) :
+                format.parse(o2.date).compareTo(format.parse(o1.date));
+          } catch (Exception ignore) {
+            return 0;
+          }
+        }).collect(Collectors.toList()));
+//        return Resource.success(notes.data.stream().filter(input ->
+//            subjects != null && subjects.getValue() != null
+//                && ((subjects.getValue().containsKey(input.subject) && subjects.getValue()
+//                .get(input.subject).checked))
+//                || (subjects.getValue() != null && !subjects.getValue().containsKey(input.subject)))
+//            .sorted((o1, o2) -> {
+//              try {
+//                return orderAscending.getValue() ?
+//                    format.parse(o1.date).compareTo(format.parse(o2.date)) :
+//                    format.parse(o2.date).compareTo(format.parse(o1.date));
+//              } catch (Exception ignore) {
+//                return 0;
+//              }
+//            }).collect(Collectors.toList()));
       } else {
         return notes;
       }

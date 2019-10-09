@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
@@ -129,7 +130,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
   }
 
   private void bindExams(List<Exam> exams) {
-    if (exams == null) {
+    if (exams == null || exams.isEmpty()) {
+      noExams.setVisibility(View.VISIBLE);
       return;
     }
 
@@ -146,10 +148,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
   private void handleExams(Resource<List<Exam>> examResource) {
     switch (examResource.status) {
       case SUCCESS:
-        if (examResource.data != null && examResource.data.size() > 0) {
-          bindExams(homeViewModel.getNearestExams(5));
-          break;
-        }
+        bindExams(examResource.data);
+        break;
       case ERROR:
         examsProgressBar.setVisibility(View.GONE);
         noExams.setVisibility(View.VISIBLE);
@@ -180,7 +180,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
   @OnClick(R.id.seeMoreExams)
   public void seeMoreExams(View view) {
-//        startActivity(new Intent(getContext(), AllExamsActivity.class));
-    getMainActivity().navigate(R.id.allExamsFragment, null, true);
+//    Navigation.findNavController(this, R.id.contentContainer).navigate();
   }
 }

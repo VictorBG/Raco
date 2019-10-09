@@ -1,5 +1,6 @@
 package com.victorbg.racofib.viewmodel;
 
+import androidx.lifecycle.Transformations;
 import com.victorbg.racofib.data.domain.exams.LoadCacheExamsUseCase;
 import com.victorbg.racofib.data.domain.exams.LoadExamsUseCase;
 import com.victorbg.racofib.data.domain.schedule.LoadTodayScheduleUseCase;
@@ -24,20 +25,18 @@ import androidx.lifecycle.ViewModel;
 
 public class HomeViewModel extends ViewModel {
 
-  private LiveData<Resource<List<Exam>>> exams;
+  private final LiveData<Resource<List<Exam>>> exams;
   private final LiveData<Resource<List<SubjectSchedule>>> schedule;
 
-  private final LoadExamsUseCase loadExamsUseCase;
   private final LoadCacheExamsUseCase loadCacheExamsUseCase;
 
   @Inject
   public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase,
       LoadCacheExamsUseCase loadCacheExamsUseCase) {
-    this.loadExamsUseCase = loadExamsUseCase;
     this.loadCacheExamsUseCase = loadCacheExamsUseCase;
 
     schedule = loadScheduleUseCase.execute();
-    exams = loadExamsUseCase.execute();
+    exams = Transformations.map(loadExamsUseCase.execute(), input -> Resource.success(getUpcomingExams(input.data)));
   }
 
   public LiveData<List<Exam>> getCachedExams() {
@@ -45,9 +44,6 @@ public class HomeViewModel extends ViewModel {
   }
 
   public LiveData<Resource<List<Exam>>> getExams() {
-    if (exams.getValue() == null) {
-      this.exams = loadExamsUseCase.execute();
-    }
     return exams;
   }
 
@@ -55,28 +51,22 @@ public class HomeViewModel extends ViewModel {
     return schedule;
   }
 
-  /**
-   * Returns the nearest exams from today.
-   * <p>
-   * This must be called once it is secure the data has been fetched
-   *
-   * @param size size of the result list
-   * @return The list of size nearest exams
-   */
+  private List<Exam> getUpcomingExams(List<Exam> exams) {
 
-  //FIXME: Esto es una basura, ponlo en un LiveData y observalo...
-  public List<Exam> getNearestExams(int size) {
-
-    if (exams.getValue().data == null || exams.getValue().data.isEmpty()) {
+    if (exams == null || exams.isEmpty()) {
       return new ArrayList<>();
     }
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
     Date currentTime = Calendar.getInstance().getTime();
+    Calendar limitTimeCalendar = Calendar.getInstance();
+    limitTimeCalendar.add(Calendar.MONTH, 2);
+    Date limitTime = limitTimeCalendar.getTime();
 
-    return exams.getValue().data.stream().filter(exam -> {
+    return exams.stream().filter(exam -> {
       try {
-        return simpleDateFormat.parse(exam.startDate).after(currentTime);
+        Date examDate = simpleDateFormat.parse(exam.startDate);
+        return examDate.after(currentTime) && examDate.before(limitTime);
       } catch (ParseException e) {
         return false;
       }
@@ -86,6 +76,6 @@ public class HomeViewModel extends ViewModel {
       } catch (ParseException e) {
         return 0;
       }
-    }).limit(size).collect(Collectors.toList());
+    }).collect(Collectors.toList());
   }
 }

@@ -8,7 +8,11 @@
     android:id="@+id/homeFragment"
     android:name="com.victorbg.racofib.view.ui.home.HomeFragment"
     android:label="fragment_home"
-    tools:layout="@layout/fragment_home" />
+    tools:layout="@layout/fragment_home" >
+    <action
+      android:id="@+id/action_homeFragment_to_fragmentAllExams"
+      app:destination="@id/fragmentAllExams" />
+  </fragment>
   <fragment
     android:id="@+id/notesFragment"
     android:name="com.victorbg.racofib.view.ui.notes.NotesFragment"
@@ -43,4 +47,8 @@
       android:name="subject"
       app:argType="com.victorbg.racofib.data.model.subject.Subject" />
   </fragment>
+  <fragment
+    android:id="@+id/fragmentAllExams"
+    android:label="fragmentAllExams"
+    android:name="com.victorbg.racofib.view.ui.exams.FragmentAllExams" />
 </navigation>

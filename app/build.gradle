@@ -90,7 +90,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     //MDC Android
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
 
     //FastAdapter
     implementation 'com.mikepenz:fastadapter:3.3.1'
@@ -158,7 +158,7 @@ dependencies {
 
     //¿? The build fails without this
     //Related question asked hours ago: https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver
-    //Maybe there's an error on the online dependencies that are not download, idk
+    //Maybe there's an error on the online dependencies that are not downloaded
     implementation 'androidx.arch.core:core-common:2.1.0'
     implementation 'androidx.arch.core:core-testing:2.1.0'
     implementation 'androidx.arch.core:core-runtime:2.1.0'

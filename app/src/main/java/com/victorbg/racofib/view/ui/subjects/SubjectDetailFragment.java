@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.navigation.Navigation;
 import com.google.android.material.tabs.TabLayout;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.Subject;
@@ -68,7 +69,7 @@ public class SubjectDetailFragment extends BaseFragment implements Injectable {
 
         if (!getSubject()) {
             Toast.makeText(getContext(), getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
-            getMainActivity().popBack();
+            Navigation.findNavController(getActivity(), R.id.contentContainer).popBackStack();
         }
 
         subjectLiveData = viewModel.getSubject(subject.shortName);

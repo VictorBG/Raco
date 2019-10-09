@@ -66,7 +66,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
   @BindView(R.id.nested_scroll_note)
   NestedScrollView scrollView;
 
-
   private ItemAdapter<NoteItem> itemAdapter;
   FastAdapter<NoteItem> fastAdapter;
 
@@ -145,9 +144,8 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
       }
     });
 
-    itemAdapter.getItemFilter().withFilterPredicate(
-        (item, constraint) -> item.getNote().title.toLowerCase()
-            .contains(constraint.toString().toLowerCase()));
+    itemAdapter.getItemFilter().withFilterPredicate((item, constraint) ->
+        item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     recyclerView.setAdapter(fastAdapter);
@@ -159,20 +157,15 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
       @Override
       public void onPageAboutToExpand(long l) {
         swipeRefreshLayout.setEnabled(false);
-        getMainActivity().navigate(R.id.noteDetailFragment, null, false);
       }
 
       @Override
       public void onPageExpanded() {
-//                if (publicationsViewModel.selectedNote.getValue() != null) {
-//                    getMainActivity().setFabIcon(publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white);
-//                }
       }
 
       @Override
       public void onPageAboutToCollapse(long l) {
         swipeRefreshLayout.setEnabled(true);
-        getMainActivity().navigate(R.id.notesFragment, null, false);
       }
 
       @Override
@@ -225,29 +218,15 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
   private void onChangedState(final Status st) {
     boolean refresh = st == Status.LOADING;
-    if (swipeRefreshLayout.isRefreshing() == refresh) {
-      return;
+    if (swipeRefreshLayout.isRefreshing() != refresh) {
+      swipeRefreshLayout.setRefreshing(refresh);
     }
-    swipeRefreshLayout.setRefreshing(refresh);
   }
 
   @OnClick(R.id.closeItem)
   public void closeItem(View v) {
     if (notePageLayout.isExpanded()) {
       recyclerView.collapse();
-    }
-  }
-
-  @Override
-  public void onFabSelected(View v) {
-    if (notePageLayout.isExpanded()) {
-      Note n = publicationsViewModel
-          .changeFavoriteState(publicationsViewModel.selectedNote.getValue());
-      publicationsViewModel.selectedNote.setValue(n);
-      getMainActivity()
-          .setFabIcon(publicationsViewModel.selectedNote.getValue().favorite ? R.drawable.ic_favorite_white : R.drawable.ic_favorite_border_white);
-      showSnackbar(n.favorite ? getString(R.string.added_to_favorites)
-          : getString(R.string.removed_from_favorites));
     }
   }
 

@@ -5,8 +5,8 @@
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/md_white_1000</item>
-        <item name="android:navigationBarColor">@color/primary_dark</item>
+        <item name="android:statusBarColor">#B3FFFFFF</item>
+        <item name="android:navigationBarColor">#B3FFFFFF</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
@@ -20,7 +20,6 @@
         <item name="themeColorViews">@color/md_black_1000</item>
         <item name="themeToolbarColor">@color/accent</item>
         <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="android:statusBarColor">@color/md_light_statusbar</item>
         <item name="themeColorDivider">@color/md_light_dividers</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -30,8 +29,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorAccentDark</item>
-        <item name="android:navigationBarColor">@color/md_black_1000</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
