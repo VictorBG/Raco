@@ -36,7 +36,10 @@ public class HomeViewModel extends ViewModel {
     this.loadCacheExamsUseCase = loadCacheExamsUseCase;
 
     schedule = loadScheduleUseCase.execute();
-    exams = Transformations.map(loadExamsUseCase.execute(), input -> Resource.success(getUpcomingExams(input.data)));
+    exams = Transformations.map(loadExamsUseCase.execute(), input -> {
+      input.data = getUpcomingExams(input.data);
+      return input;
+    });
   }
 
   public LiveData<List<Exam>> getCachedExams() {
