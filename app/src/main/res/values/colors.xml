@@ -10,5 +10,6 @@
 
     <color name="secondary_text_color_light">#323232</color>
     <color name="secondary_text_color_dark">#bebebe</color>
+    <color name="primary_text_color_dark">#ffffffff</color>
 
 </resources>

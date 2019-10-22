@@ -12,7 +12,6 @@
         <item name="teal_400" type="color">#26a69a</item>
         <item name="green_400" type="color">#2baf2b</item>
         <item name="light_green_400" type="color">#9ccc65</item>
-        <item name="lime_400" type="color">#d4e157</item>
         <item name="orange_400" type="color">#ffa726</item>
         <item name="brown_400" type="color">#8d6e63</item>
     </string-array>
@@ -29,7 +28,6 @@
         <item name="teal_500" type="color">#009688</item>
         <item name="green_500" type="color">#259b24</item>
         <item name="light_green_500" type="color">#8bc34a</item>
-        <item name="lime_500" type="color">#cddc39</item>
         <item name="orange_500" type="color">#ff9800</item>
         <item name="deep_orange_500" type="color">#ff5722</item>
         <item name="brown_500" type="color">#795548</item>

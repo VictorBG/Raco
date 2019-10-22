@@ -4,9 +4,9 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/parent"
-  android:paddingTop="?attr/actionBarSize"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:paddingTop="?attr/actionBarSize"
   android:orientation="vertical"
   tools:context=".view.MainActivity">
 
@@ -26,13 +26,14 @@
     style="@style/Widget.MaterialComponents.FloatingActionButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:src="@drawable/ic_favorite_border_white"
-    app:backgroundTint="@color/accent"
-    app:useCompatPadding="true"
-    app:layout_anchorGravity="end"
     android:layout_marginBottom="16dp"
+    android:src="@drawable/ic_favorite_border_white"
+    android:visibility="gone"
+    app:backgroundTint="@color/accent"
     app:layout_anchor="@id/bottom_navigation"
-    app:tint="@color/md_white_1000" />
+    app:layout_anchorGravity="end"
+    app:tint="@color/md_white_1000"
+    app:useCompatPadding="true" />
 
   <fragment
     android:id="@+id/contentContainer"

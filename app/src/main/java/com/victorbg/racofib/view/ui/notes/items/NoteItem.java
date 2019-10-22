@@ -94,6 +94,8 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
     TextView date;
     @BindView(R.id.icon_text)
     TextView subject;
+    @BindView(R.id.assig)
+    TextView subjectTitle;
     @BindView(R.id.attachmentsGroup)
     AttachmentsGroup attachmentsGroup;
     @BindView(R.id.attachmentsScrollView)
@@ -114,6 +116,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
           StringHolder.applyToOrHide(new StringHolder(item.note.subject), subject);
         }
         StringHolder.applyToOrHide(new StringHolder(Html.fromHtml(item.note.title)), title);
+        StringHolder.applyToOrHide(new StringHolder(item.note.subject), subjectTitle);
         subject.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.note.color)));
 
         try {
@@ -147,6 +150,7 @@ public class NoteItem extends AbstractItem<NoteItem, NoteItem.ViewHolder> implem
     public void unbindView(@NonNull NoteItem item) {
       title.setText(null);
       date.setText(null);
+      subjectTitle.setText(null);
     }
   }
 }

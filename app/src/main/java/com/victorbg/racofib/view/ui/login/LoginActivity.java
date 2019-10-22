@@ -17,7 +17,6 @@ import com.victorbg.racofib.viewmodel.LoginViewModel;
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -33,6 +32,8 @@ public class LoginActivity extends BaseActivity implements Injectable {
     ProgressBar progressBar;
     @BindView(R.id.status_message)
     TextView statusMessage;
+    @BindView(R.id.parent)
+    View parent;
 
     private LoginViewModel loginViewModel;
 
@@ -45,9 +46,8 @@ public class LoginActivity extends BaseActivity implements Injectable {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        parent.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
-
-
     }
 
     @Override

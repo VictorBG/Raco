@@ -11,7 +11,7 @@
     android:clickable="true"
     android:focusable="true"
     android:paddingTop="8dp"
-    android:paddingBottom="16dp"
+    android:paddingBottom="8dp"
     android:transitionName="@string/transition_note_to_detail_name">
 
     <TextView
@@ -22,11 +22,12 @@
       android:layout_marginStart="16dp"
       android:layout_centerInParent="true"
       android:background="@drawable/note_icon_background"
+      android:fontFamily="@font/roboto_light"
       android:gravity="center"
-      android:maxLength="4"
+      android:maxLength="1"
       android:textAppearance="@style/TextAppearance.AppCompat.Button"
       android:textColor="@color/md_white_1000"
-      android:textSize="12sp"
+      android:textSize="22sp"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:text="PROP" />
@@ -35,42 +36,53 @@
       android:id="@+id/title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:layout_marginEnd="16dp"
+      android:fontFamily="@font/roboto"
+      android:textAppearance="@style/TextAppearance.AppCompat.Large"
+      android:textSize="16sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@+id/assig"
+      app:layout_constraintTop_toBottomOf="@+id/assig"
+      tools:text="Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet" />
+    <TextView
+      android:id="@+id/assig"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
       android:layout_marginEnd="8dp"
-      android:fontFamily="@font/montserrat"
+      android:fontFamily="@font/work_sans_medium"
       android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-      android:textSize="14sp"
+      android:textSize="12sp"
       app:layout_constraintEnd_toStartOf="@+id/date"
       app:layout_constraintStart_toEndOf="@+id/icon_text"
       app:layout_constraintTop_toTopOf="@+id/icon_text"
-      tools:text="Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet" />
-
+      tools:text="PROP" />
     <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/icon_text"
-        tools:text="21 Dic" />
+      android:id="@+id/date"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      android:textSize="12sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/icon_text"
+      tools:text="21 Dic" />
 
 
     <HorizontalScrollView
-        android:id="@+id/attachmentsScrollView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/title"
-        app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/title">
+      android:id="@+id/attachmentsScrollView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      app:layout_constraintEnd_toEndOf="@+id/title"
+      app:layout_constraintStart_toStartOf="@+id/title"
+      app:layout_constraintTop_toBottomOf="@+id/title">
 
         <com.victorbg.racofib.view.widgets.attachments.AttachmentsGroup
-            android:id="@+id/attachmentsGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:singleLine="true" />
+          android:id="@+id/attachmentsGroup"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:singleLine="true" />
     </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

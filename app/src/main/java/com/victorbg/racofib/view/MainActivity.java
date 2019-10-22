@@ -1,9 +1,12 @@
 package com.victorbg.racofib.view;
 
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;

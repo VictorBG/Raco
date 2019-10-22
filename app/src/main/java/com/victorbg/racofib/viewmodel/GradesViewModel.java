@@ -1,20 +1,16 @@
 package com.victorbg.racofib.viewmodel;
 
 import android.graphics.Color;
-import com.victorbg.racofib.data.domain.subjects.LoadSubjectDatabaseUseCase;
-import com.victorbg.racofib.data.domain.subjects.LoadSubjectsUseCase;
-import com.victorbg.racofib.data.domain.subjects.SaveSubjectUseCase;
-import com.victorbg.racofib.data.model.subject.Subject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.victorbg.racofib.data.domain.subjects.LoadSubjectDatabaseUseCase;
+import com.victorbg.racofib.data.domain.subjects.LoadSubjectsUseCase;
+import com.victorbg.racofib.data.model.subject.Subject;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
 
 public class GradesViewModel extends ViewModel {
 
