@@ -2,12 +2,22 @@ package com.victorbg.racofib.view.ui.notes;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DimenRes;
+
+import butterknife.BindDimen;
+
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.appbar.AppBarLayout;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil;
@@ -23,6 +33,7 @@ import com.victorbg.racofib.view.ui.notes.items.NoteItem;
 import com.victorbg.racofib.viewmodel.PublicationsViewModel;
 
 import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -33,6 +44,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -42,6 +55,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,204 +67,230 @@ import timber.log.Timber;
 
 public class NotesFragment extends BaseFragment implements Observer<List<Note>>, Injectable {
 
-  @BindView(R.id.recycler_notes)
-  InboxRecyclerView recyclerView;
-  @BindView(R.id.swipe)
-  SwipeRefreshLayout swipeRefreshLayout;
-  @BindView(R.id.animation_view)
-  LottieAnimationView animationView;
-  @BindView(R.id.error_state_message)
-  TextView errorTextView;
-  @BindView(R.id.notePageLayout)
-  ExpandablePageLayout notePageLayout;
-  @BindView(R.id.nested_scroll_note)
-  NestedScrollView scrollView;
+    @BindView(R.id.recycler_notes)
+    InboxRecyclerView recyclerView;
+    @BindView(R.id.swipe)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.animation_view)
+    LottieAnimationView animationView;
+    @BindView(R.id.error_state_message)
+    TextView errorTextView;
+    @BindView(R.id.notePageLayout)
+    ExpandablePageLayout notePageLayout;
+    @BindView(R.id.nested_scroll_note)
+    NestedScrollView scrollView;
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.searchEditText)
+    AppCompatEditText searchEditText;
+    @BindView(R.id.closeSearch)
+    ImageView closeSearch;
+    @BindDimen(R.dimen.refresher_offset)
+    int refreshOffset;
 
-  private ItemAdapter<NoteItem> itemAdapter;
-  FastAdapter<NoteItem> fastAdapter;
+    private ItemAdapter<NoteItem> itemAdapter;
+    FastAdapter<NoteItem> fastAdapter;
 
-  @Inject
-  ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
-  private PublicationsViewModel publicationsViewModel;
+    private PublicationsViewModel publicationsViewModel;
 
-  private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
+    private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
 
-  private List<Note> scheduledUpdate = null;
+    private List<Note> scheduledUpdate = null;
 
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-  }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-  @Nullable
-  @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    FragmentNotesBinding binding = DataBindingUtil
-        .inflate(inflater, R.layout.fragment_notes, container, false);
-    ButterKnife.bind(this, binding.getRoot());
-    binding.setLifecycleOwner(this);
-    publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
-    binding.setNotesViewModel(publicationsViewModel);
-    return binding.getRoot();
-  }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FragmentNotesBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notes, container, false);
+        ButterKnife.bind(this, binding.getRoot());
+        binding.setLifecycleOwner(this);
+        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
+        binding.setNotesViewModel(publicationsViewModel);
+        return binding.getRoot();
+    }
 
-  @Override
-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
-    publicationsViewModel.orderAscending.observe(this, data -> scheduledScrollToTop.setValue(true));
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-    setRecycler();
+        swipeRefreshLayout.setProgressViewOffset(false, refreshOffset, refreshOffset + (swipeRefreshLayout.getProgressViewEndOffset() / 2));
+        swipeRefreshLayout.setOnRefreshListener(() -> reload(true));
+        publicationsViewModel.orderAscending.observe(this, data -> scheduledScrollToTop.setValue(true));
 
-    swipeRefreshLayout.setColorSchemeColors(getContext().getResources().getColor(R.color.accent),
-        getContext().getResources().getColor(R.color.primary));
+        setRecycler();
 
-    publicationsViewModel.getPublications().observe(this, listResource -> {
-      Timber.d("Data observed with status %s and time %d", listResource.status.toString(),
-          System.currentTimeMillis());
-      onChangedState(listResource.status);
-      onChanged(listResource.data);
-    });
-  }
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.accent), ContextCompat.getColor(getContext(), R.color.primary));
 
-  @Override
-  public void onResume() {
-    super.onResume();
-    new Handler().postDelayed(this::reload, 100);
-  }
+        publicationsViewModel.getPublications().observe(this, listResource -> {
+            onChangedState(listResource.status);
+            onChanged(listResource.data);
+        });
 
-  private void setRecycler() {
+        searchEditText.setOnFocusChangeListener((v, hasFocus) -> closeSearch.setVisibility(hasFocus ? View.VISIBLE : View.GONE));
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    itemAdapter = new ItemAdapter<>();
-    fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+            }
 
-    fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
-      @Override
-      public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter,
-          @NotNull NoteItem item) {
-        publicationsViewModel.selectedNote.setValue(item.getNote());
-        recyclerView.expandItem(item.getIdentifier());
-      }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                itemAdapter.filter(s);
+            }
 
-      @javax.annotation.Nullable
-      @Override
-      public View onBind(RecyclerView.ViewHolder viewHolder) {
-        if (viewHolder instanceof NoteItem.ViewHolder) {
-          return ((NoteItem.ViewHolder) viewHolder).itemView;
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new Handler().postDelayed(this::reload, 100);
+    }
+
+    private void setRecycler() {
+
+        itemAdapter = new ItemAdapter<>();
+        fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+
+        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
+            @Override
+            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter,
+                                @NotNull NoteItem item) {
+                publicationsViewModel.selectedNote.setValue(item.getNote());
+                recyclerView.expandItem(item.getIdentifier());
+            }
+
+            @javax.annotation.Nullable
+            @Override
+            public View onBind(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof NoteItem.ViewHolder) {
+                    return ((NoteItem.ViewHolder) viewHolder).itemView;
+                }
+                return null;
+            }
+        });
+
+        itemAdapter.getItemFilter().withFilterPredicate((item, constraint) ->
+                item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(fastAdapter);
+        recyclerView.setExpandablePage(notePageLayout);
+        notePageLayout.pushParentToolbarOnExpand(appBarLayout);
+        notePageLayout.setPullToCollapseInterceptor(
+                (downX, downY, upwardPull) -> scrollView.canScrollVertically(upwardPull ? 1 : -1)
+                        ? InterceptResult.INTERCEPTED : InterceptResult.IGNORED);
+        notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
+            @Override
+            public void onPageAboutToExpand(long l) {
+                swipeRefreshLayout.setEnabled(false);
+            }
+
+            @Override
+            public void onPageExpanded() {
+            }
+
+            @Override
+            public void onPageAboutToCollapse(long l) {
+                swipeRefreshLayout.setEnabled(true);
+            }
+
+            @Override
+            public void onPageCollapsed() {
+                scrollView.scrollTo(0, 0);
+                if (scheduledUpdate != null) {
+                    onChanged(scheduledUpdate);
+                    scheduledUpdate = null;
+                }
+            }
+        });
+
+    }
+
+    private void reload() {
+        reload(false);
+    }
+
+    private void reload(boolean force) {
+        publicationsViewModel.reload(force);
+    }
+
+    public void onChanged(List<Note> notes) {
+        if (notes == null || notes.isEmpty()) {
+            return;
         }
-        return null;
-      }
-    });
 
-    itemAdapter.getItemFilter().withFilterPredicate((item, constraint) ->
-        item.getNote().title.toLowerCase().contains(constraint.toString().toLowerCase()));
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    recyclerView.setAdapter(fastAdapter);
-    recyclerView.setExpandablePage(notePageLayout);
-    notePageLayout.setPullToCollapseInterceptor(
-        (downX, downY, upwardPull) -> scrollView.canScrollVertically(upwardPull ? 1 : -1)
-            ? InterceptResult.INTERCEPTED : InterceptResult.IGNORED);
-    notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
-      @Override
-      public void onPageAboutToExpand(long l) {
-        swipeRefreshLayout.setEnabled(false);
-      }
-
-      @Override
-      public void onPageExpanded() {
-      }
-
-      @Override
-      public void onPageAboutToCollapse(long l) {
-        swipeRefreshLayout.setEnabled(true);
-      }
-
-      @Override
-      public void onPageCollapsed() {
-        scrollView.scrollTo(0, 0);
-        if (scheduledUpdate != null) {
-          onChanged(scheduledUpdate);
-          scheduledUpdate = null;
+        if (notePageLayout.isExpanded()) {
+            scheduledUpdate = new ArrayList<>(notes);
+            return;
         }
-      }
-    });
 
-  }
+        List<NoteItem> items = notes
+                .stream()
+                .filter((note) -> !note.subject.contains("#"))
+                .map((note) -> new NoteItem().withNote(note))
+                .collect(Collectors.toList());
 
-  private void reload() {
-    reload(false);
-  }
+        int oldListSize = itemAdapter.getAdapterItemCount();
+        //Prevent recreating the whole list when there are identical items
+        DiffUtil.DiffResult diffs = FastAdapterDiffUtil
+                .calculateDiff(itemAdapter, items, new NotesDiffCallback());
+        FastAdapterDiffUtil.set(itemAdapter, diffs);
 
-  private void reload(boolean force) {
-    publicationsViewModel.reload(force);
-  }
+        if (oldListSize != notes.size() || scheduledScrollToTop.getValue()) {
+            recyclerView.scrollToPosition(0);
+        }
 
-  public void onChanged(List<Note> notes) {
-    if (notes == null || notes.isEmpty()) {
-      return;
     }
 
-    if (notePageLayout.isExpanded()) {
-      scheduledUpdate = new ArrayList<>(notes);
-      return;
+    private void onChangedState(final Status st) {
+        boolean refresh = st == Status.LOADING;
+        if (swipeRefreshLayout.isRefreshing() != refresh) {
+            swipeRefreshLayout.setRefreshing(refresh);
+        }
     }
 
-    List<NoteItem> items = notes
-        .stream()
-        .filter((note) -> !note.subject.contains("#"))
-        .map((note) -> new NoteItem().withNote(note))
-        .collect(Collectors.toList());
-
-    int oldListSize = itemAdapter.getAdapterItemCount();
-    //Prevent recreating the whole list when there are identical items
-    DiffUtil.DiffResult diffs = FastAdapterDiffUtil
-        .calculateDiff(itemAdapter, items, new NotesDiffCallback());
-    FastAdapterDiffUtil.set(itemAdapter, diffs);
-
-    if (oldListSize != notes.size() || scheduledScrollToTop.getValue()) {
-      recyclerView.scrollToPosition(0);
+    @OnClick(R.id.closeItem)
+    public void closeItem(View v) {
+        if (notePageLayout.isExpanded()) {
+            recyclerView.collapse();
+        }
     }
 
-  }
-
-  private void onChangedState(final Status st) {
-    boolean refresh = st == Status.LOADING;
-    if (swipeRefreshLayout.isRefreshing() != refresh) {
-      swipeRefreshLayout.setRefreshing(refresh);
+    @OnClick(R.id.closeSearch)
+    public void closeSearch(View v) {
+        searchEditText.setText(null);
+        hideKeyboard(searchEditText);
+        searchEditText.clearFocus();
     }
-  }
 
-  @OnClick(R.id.closeItem)
-  public void closeItem(View v) {
-    if (notePageLayout.isExpanded()) {
-      recyclerView.collapse();
+    @Override
+    public boolean onItemClick(int id) {
+        if (id == R.id.filter_menu) {
+            publicationsViewModel.onFilterClick();
+        }
+        return super.onItemClick(id);
     }
-  }
 
-  @Override
-  public void onQuery(String query) {
-    itemAdapter.filter(query);
-  }
-
-  @Override
-  public boolean onItemClick(int id) {
-    if (id == R.id.filter_menu) {
-      publicationsViewModel.onFilterClick();
+    @Override
+    public boolean onBackPressed() {
+        if (notePageLayout.isExpanded()) {
+            recyclerView.collapse();
+            return true;
+        } else {
+            return super.onBackPressed();
+        }
     }
-    return super.onItemClick(id);
-  }
-
-  @Override
-  public boolean onBackPressed() {
-    if (notePageLayout.isExpanded()) {
-      recyclerView.collapse();
-      return true;
-    } else {
-      return super.onBackPressed();
-    }
-  }
 }
 

@@ -4,6 +4,190 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            app:layout_behavior=".view.widgets.SearchBarBehavior">
+
+            <!--        <include-->
+            <!--            android:id="@+id/filterLayout"-->
+            <!--            layout="@layout/filter_notes"-->
+            <!--            android:visibility="@{notesViewModel.filterVisibility?View.VISIBLE:View.GONE}"-->
+            <!--            app:layout_constraintStart_toStartOf="parent"-->
+            <!--            app:layout_constraintTop_toTopOf="parent"-->
+            <!--            app:viewModel="@{notesViewModel}" />-->
+
+            <TextView
+                android:id="@+id/error_state_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@{notesViewModel.publications.message}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:visibility="@{notesViewModel.publications.status == Status.ERROR? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="@+id/animation_view"
+                app:layout_constraintStart_toStartOf="@+id/animation_view"
+                app:layout_constraintTop_toBottomOf="@+id/animation_view"
+                tools:text="Lorem Ipsum dolor sit amet" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <me.saket.inboxrecyclerview.InboxRecyclerView
+                        android:id="@+id/recycler_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:paddingTop="80dp"
+                        android:scrollbars="vertical"
+                        android:transitionGroup="false"
+                        tools:listitem="@layout/item_note" />
+
+                    <me.saket.inboxrecyclerview.page.ExpandablePageLayout
+                        android:id="@+id/notePageLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <include
+                            layout="@layout/item_note_detail"
+                            app:note="@{notesViewModel.selectedNote}" />
+                    </me.saket.inboxrecyclerview.page.ExpandablePageLayout>
+                </FrameLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="@{notesViewModel.publications.status == Status.ERROR?View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline4"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/empty_state" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/search_materialCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?themeSurfaceColor"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:cardUseCompatPadding="true"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:animateLayoutChanges="true"
+                    android:layoutDirection="locale"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:contentDescription="@null"
+                        android:focusable="true"
+                        android:padding="14dp"
+                        android:src="@drawable/ic_tune_black_24dp"
+                        android:tint="?themeColorViews"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/closeSearch"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:contentDescription="@null"
+                        android:focusable="true"
+                        android:padding="14dp"
+                        android:src="@drawable/ic_close_black_24dp"
+                        android:tint="?themeColorViews"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/searchEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:gravity="start|center_vertical"
+                        android:hint="Search..."
+                        android:imeOptions="actionSearch|flagNoExtractUi"
+                        android:inputType="text|textNoSuggestions"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:privateImeOptions="nm"
+                        android:singleLine="true"
+                        android:textColor="?themePrimaryTextColor"
+                        android:textColorHint="?themeSecondaryTextColor"
+                        android:textSize="14sp"
+                        android:windowSoftInputMode="stateAlwaysHidden|adjustNothing"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                        app:layout_constraintStart_toEndOf="@id/closeSearch"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="HardcodedText" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <data>
 
         <import type="com.victorbg.racofib.data.repository.base.Status" />
@@ -14,93 +198,4 @@
             name="notesViewModel"
             type="com.victorbg.racofib.viewmodel.PublicationsViewModel" />
     </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
-
-<!--        <include-->
-<!--            android:id="@+id/filterLayout"-->
-<!--            layout="@layout/filter_notes"-->
-<!--            android:visibility="@{notesViewModel.filterVisibility?View.VISIBLE:View.GONE}"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:viewModel="@{notesViewModel}" />-->
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-          android:id="@+id/swipe"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent">
-
-            <FrameLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-                <me.saket.inboxrecyclerview.InboxRecyclerView
-                  android:id="@+id/recycler_notes"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:scrollbars="vertical"
-                  android:transitionGroup="false"
-                  tools:listitem="@layout/item_note" />
-
-                <me.saket.inboxrecyclerview.page.ExpandablePageLayout
-                  android:id="@+id/notePageLayout"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent">
-
-                    <include
-                      layout="@layout/item_note_detail"
-                      app:note="@{notesViewModel.selectedNote}" />
-                </me.saket.inboxrecyclerview.page.ExpandablePageLayout>
-            </FrameLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:visibility="@{notesViewModel.publications.status == Status.ERROR?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/empty_state" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <TextView
-            android:id="@+id/error_state_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@{notesViewModel.publications.message}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:visibility="@{notesViewModel.publications.status == Status.ERROR?View.VISIBLE:View.GONE}"
-            app:layout_constraintEnd_toEndOf="@+id/animation_view"
-            app:layout_constraintStart_toStartOf="@+id/animation_view"
-            app:layout_constraintTop_toBottomOf="@+id/animation_view"
-            tools:text="Lorem Ipsum dolor sit amet" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

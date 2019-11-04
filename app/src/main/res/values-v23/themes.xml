@@ -23,6 +23,7 @@
         <item name="themeColorDivider">@color/md_light_dividers</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="themeSurfaceColor">@color/md_grey_100</item>
     </style>
 
     <style name="AppTheme.SubjectDetail.Light" parent="AppTheme.Light">

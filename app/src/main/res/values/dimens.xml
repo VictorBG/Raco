@@ -11,4 +11,6 @@
     <dimen name="calendar_schedule_min_hour_height">56dp</dimen>
     <dimen name="snackbar_bottom_margin">16dp</dimen>
     <dimen name="md_corner_radius">16dp</dimen>
+
+    <dimen name="refresher_offset">80dp</dimen>
 </resources>

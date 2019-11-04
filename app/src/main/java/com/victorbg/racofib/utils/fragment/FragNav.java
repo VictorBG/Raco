@@ -144,16 +144,8 @@ public class FragNav {
         lastTagSelected = tag;
     }
 
-    public Fragment getSelectedFragment() {
-        return selectedFragment;
-    }
-
     public void onFabSelected(View v) {
         selectedFragment.onFabSelected(v);
-    }
-
-    public void onQuery(String query) {
-        ((BaseFragment) selectedFragment).onQuery(query);
     }
 
     public void onItemClick(int id) {

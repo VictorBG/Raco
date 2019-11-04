@@ -26,7 +26,7 @@
       android:gravity="center"
       android:maxLength="1"
       android:textAppearance="@style/TextAppearance.AppCompat.Button"
-      android:textColor="@color/md_white_1000"
+      android:textColor="?themeBackgroundColor"
       android:textSize="22sp"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"

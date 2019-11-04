@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.utils.Keyboard;
 import com.victorbg.racofib.view.MainActivity;
 
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -62,15 +64,6 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
     }
 
     /**
-     * Dispatch the current query done in the {@link MainActivity}
-     *
-     * @param query
-     */
-    public void onQuery(String query) {
-
-    }
-
-    /**
      * Dispatch the event with id to the fragments that
      * override this method.
      *
@@ -116,6 +109,10 @@ public abstract class BaseFragment extends Fragment implements HasFragmentInject
      */
     public boolean onBackPressed() {
         return false;
+    }
+
+    public void hideKeyboard(View v) {
+        Keyboard.hideKeyboardFrom(getContext(), v);
     }
 
 }

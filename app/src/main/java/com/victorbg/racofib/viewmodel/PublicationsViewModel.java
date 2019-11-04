@@ -135,6 +135,10 @@ public class PublicationsViewModel extends ViewModel {
     });
   }
 
+  public void setSelectedNote(Note note) {
+    this.selectedNote.setValue(note);
+  }
+
   public LiveData<List<Note>> getSavedPublications() {
     return loadSavedNotesUseCase.execute();
   }

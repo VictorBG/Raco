@@ -1,5 +1,6 @@
 package com.victorbg.racofib.viewmodel;
 
+import com.victorbg.racofib.data.domain.UseCase;
 import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
 import com.victorbg.racofib.data.domain.user.LogoutUserUseCase;
 import com.victorbg.racofib.data.model.user.User;
@@ -13,7 +14,7 @@ public class MainActivityViewModel extends ViewModel {
 
     private final LiveData<User> user;
 
-    private final LogoutUserUseCase logoutUserUseCase;
+    private final UseCase<Void, Void> logoutUserUseCase;
 
     @Inject
     public MainActivityViewModel(LoadUserUseCase loadUserUseCase, LogoutUserUseCase logoutUserUseCase) {

@@ -20,7 +20,8 @@
             android:theme="@style/AppTheme.Settings.Light" />
         <activity
             android:name=".view.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -72,9 +73,9 @@
             android:name=".view.ui.grades.GradeDialog"
             android:theme="@style/AppTheme.NoteDetail.Light.Dialog" />
 
-      <meta-data
-        android:name="preloaded_fonts"
-        android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

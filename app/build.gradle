@@ -54,7 +54,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleDependency
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     testImplementation 'junit:junit:4.12'
@@ -90,7 +90,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     //MDC Android
-    implementation 'com.google.android.material:material:1.1.0-beta01'
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
 
     //FastAdapter
     implementation 'com.mikepenz:fastadapter:3.3.1'
@@ -152,9 +152,9 @@ dependencies {
 
     api 'com.google.guava:guava:27.1-android'
 
-    implementation 'me.saket:inboxrecyclerview:1.0.0-rc1'
+    implementation 'me.saket:inboxrecyclerview:2.0.0-beta3'
 
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
 
     //¿? The build fails without this
     //Related question asked hours ago: https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver

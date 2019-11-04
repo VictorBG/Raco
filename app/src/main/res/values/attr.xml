@@ -7,6 +7,7 @@
     <attr name="themePrimaryTextColor" format="reference" />
     <attr name="themeSecondaryTextColor" format="reference" />
     <attr name="themeBackgroundColor" format="reference" />
+    <attr name="themeSurfaceColor" format="reference" />
     <attr name="themeToolbarColor" format="reference" />
     <attr name="themeColorViews" format="reference" />
     <attr name="themeToolbarTheme" format="reference" />

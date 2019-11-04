@@ -26,6 +26,7 @@
         <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="themeColorDivider">@color/md_light_dividers</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="themeSurfaceColor">@color/md_grey_100</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
@@ -47,6 +48,7 @@
         <item name="themeToolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="themeColorDivider">@color/md_dark_dividers</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="themeSurfaceColor">@color/md_grey_800</item>
     </style>
 
     <style name="AppTheme.Settings.Light" parent="Theme.MaterialComponents.Light">
