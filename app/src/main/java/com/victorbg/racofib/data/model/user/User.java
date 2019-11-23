@@ -31,4 +31,8 @@ public class User {
     @ColumnInfo(name = "photo")
     public String photoUrl;
 
+    public String getFullname() {
+        return name + " " + surnames;
+    }
+
 }

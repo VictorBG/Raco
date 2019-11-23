@@ -167,6 +167,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             @Override
             public void onClick(@NotNull View v, int position, @NotNull FastAdapter<NoteItem> fastAdapter,
                                 @NotNull NoteItem item) {
+
                 publicationsViewModel.selectedNote.setValue(item.getNote());
                 recyclerView.expandItem(item.getIdentifier());
             }
@@ -194,6 +195,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
         notePageLayout.addStateChangeCallbacks(new PageStateChangeCallbacks() {
             @Override
             public void onPageAboutToExpand(long l) {
+                appBarLayout.setExpanded(true, false);
                 swipeRefreshLayout.setEnabled(false);
             }
 

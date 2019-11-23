@@ -28,7 +28,7 @@ public interface NotesDao {
     @Query("UPDATE Notes SET color=:color WHERE color=:initialColor")
     void updateColors(String initialColor, String color);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Note note);
 
     @Update
@@ -38,6 +38,7 @@ public interface NotesDao {
     void changeFavState(long id, int favState);
 
     //Ignore on conflict as it has to preserve the state of favorites column
+    // lol n
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertNotes(List<Note> notes);
 

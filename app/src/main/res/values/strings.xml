@@ -107,8 +107,10 @@
     <string name="error_saving_event">No ha sido posible guardar el evento</string>
   <string name="profile_bottom_tab">Profile</string>
   <string name="upcoming_exams">Upcoming exams</string>
+    <string name="add_grade_fab">Añadir nota</string>
+    <string name="grade">Nota</string>
 
-  <string-array name="language_list_titles">
+    <string-array name="language_list_titles">
         <item>Español</item>
         <item>Catalan</item>
         <item>Inglés</item>

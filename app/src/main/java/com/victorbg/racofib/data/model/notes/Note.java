@@ -42,7 +42,7 @@ public class Note implements Parcelable {
     public String color = "#1976d2";
 
     @NonNull
-    @SerializedName("data_modificacio")
+    @SerializedName("data_insercio")
     public String date;
 
     @TypeConverters(AttachmentsConverter.class)

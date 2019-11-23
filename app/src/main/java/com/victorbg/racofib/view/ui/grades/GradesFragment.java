@@ -13,6 +13,7 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
 import com.google.android.material.tabs.TabLayout.Tab;
@@ -30,6 +31,7 @@ import com.victorbg.racofib.viewmodel.GradesViewModel;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -41,162 +43,165 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class GradesFragment extends BaseFragment implements Injectable {
 
-  @BindView(R.id.gradesChart)
-  GradesChart gradesChart;
-  @BindView(R.id.progress_text)
-  TextSwitcher progressView;
-  @BindView(R.id.gradesRecycler)
-  RecyclerView recyclerView;
-  @BindView(R.id.tabLayout)
-  TabLayout tabLayout;
+    @BindView(R.id.gradesChart)
+    GradesChart gradesChart;
+    @BindView(R.id.progress_text)
+    TextSwitcher progressView;
+    @BindView(R.id.gradesRecycler)
+    RecyclerView recyclerView;
+    @BindView(R.id.tabLayout)
+    TabLayout tabLayout;
 
-  @Inject
-  ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
-  private GradesViewModel gradesViewModel;
-  private ItemAdapter<GradeItem> itemAdapter;
+    private GradesViewModel gradesViewModel;
+    private ItemAdapter<GradeItem> itemAdapter;
+    private GradeDialog gradeDialog;
+    private Subject currentSubject;
 
-  private Subject currentSubject;
+    private ViewSwitcher.ViewFactory factory = () -> new TextView(getContext(), null, 0,
+            R.style.ProgressTextGoal);
 
-  private ViewSwitcher.ViewFactory factory = () -> new TextView(getContext(), null, 0,
-      R.style.ProgressTextGoal);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_grades, container, false);
+    }
 
-  @Nullable
-  @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_grades, container, false);
-  }
+    @SuppressLint("DefaultLocale")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        gradesChart.setColor(getContext().getResources().getColor(R.color.accent));
 
-  @SuppressLint("DefaultLocale")
-  @Override
-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+        progressView.setFactory(factory);
+        progressView.setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_up));
+        progressView.setOutAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_up));
 
-    gradesChart.setColor(getContext().getResources().getColor(R.color.accent));
+        setRecycler();
 
-    progressView.setFactory(factory);
-    progressView.setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_up));
-    progressView.setOutAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_up));
+        gradesViewModel = ViewModelProviders.of(this, viewModelFactory).get(GradesViewModel.class);
 
-    setRecycler();
+        tabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+                gradesViewModel.selectSubject(tab.getPosition());
+                int selectedColor = gradesViewModel.getColorSubject(tab.getPosition());
+                tabLayout.setTabTextColors(getContext().getColor(R.color.secondary_text_color_dark), selectedColor);
+                tabLayout.setSelectedTabIndicatorColor(selectedColor);
+            }
 
-    gradesViewModel = ViewModelProviders.of(this, viewModelFactory).get(GradesViewModel.class);
+            @Override
+            public void onTabUnselected(Tab tab) {
 
-    tabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
-      @Override
-      public void onTabSelected(Tab tab) {
-        gradesViewModel.selectSubject(tab.getPosition());
-        int selectedColor = gradesViewModel.getColorSubject(tab.getPosition());
-        tabLayout.setTabTextColors(getContext().getColor(R.color.secondary_text_color_dark), selectedColor);
-        tabLayout.setSelectedTabIndicatorColor(selectedColor);
-      }
+            }
 
-      @Override
-      public void onTabUnselected(Tab tab) {
+            @Override
+            public void onTabReselected(Tab tab) {
 
-      }
+            }
+        });
 
-      @Override
-      public void onTabReselected(Tab tab) {
+        gradesViewModel.getSubject().observe(this, this::handleSubject);
+        gradesViewModel.getSubjects().observe(this, subjects -> subjects.forEach((subject) -> {
+            Tab tab = tabLayout.newTab();
+            tab.setText(subject.shortName);
+            tabLayout.addTab(tab);
+        }));
+    }
 
-      }
-    });
+    private void handleSubject(Subject subject) {
+        if (subject != null) {
+            currentSubject = subject;
 
-    gradesViewModel.getSubject().observe(this, this::handleSubject);
-    gradesViewModel.getSubjects().observe(this, subjects -> subjects.forEach((subject) -> {
-      Tab tab = tabLayout.newTab();
-      tab.setText(subject.shortName);
-      tabLayout.addTab(tab);
-    }));
-  }
+            gradesChart.setColor(Color.parseColor(subject.color));
 
-  private void handleSubject(Subject subject) {
-    if (subject != null) {
-      currentSubject = subject;
+            float grade = Utils.calculateGrade(subject.grades);
 
-      gradesChart.setColor(Color.parseColor(subject.color));
+            String gradeText = String.format(Locale.getDefault(), "%.2f", grade);
+            if (!gradeText.contentEquals(((TextView) progressView.getCurrentView()).getText())) {
+                progressView.setText(String.format(Locale.getDefault(), "%.2f", grade));
+            }
+            gradesChart.setPercent(grade / 10f * 100);
 
-      float grade = Utils.calculateGrade(subject.grades);
+            long id;
+            try {
+                id = Long.parseLong(subject.id);
+            } catch (NumberFormatException nfe) {
+                id = subject.shortName.hashCode();
+            }
 
-      String gradeText = String.format(Locale.getDefault(), "%.2f", grade);
-      if (!gradeText.contentEquals(((TextView) progressView.getCurrentView()).getText())) {
-        progressView.setText(String.format(Locale.getDefault(), "%.2f", grade));
-      }
-      gradesChart.setPercent(grade / 10f * 100);
+            long finalId = id;
+            AtomicInteger index = new AtomicInteger();
+            index.set(1);
+            List<GradeItem> items = subject.grades
+                    .stream()
+                    .map((g) -> new GradeItem().withGrade(g).setId(finalId * index.getAndIncrement()))
+                    .collect(Collectors.toList());
 
-      long id;
-      try {
-        id = Long.parseLong(subject.id);
-      } catch (NumberFormatException nfe) {
-        id = subject.shortName.hashCode();
-      }
-
-      long finalId = id;
-      AtomicInteger index = new AtomicInteger();
-      index.set(1);
-      List<GradeItem> items = subject.grades
-          .stream()
-          .map((g) -> new GradeItem().withGrade(g).setId(finalId * index.getAndIncrement()))
-          .collect(Collectors.toList());
-
-      itemAdapter.setNewList(items);
+            itemAdapter.setNewList(items);
 
 //            DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
 //            FastAdapterDiffUtil.set(itemAdapter, diffs);
-    }
-  }
-
-  private void setRecycler() {
-    itemAdapter = new ItemAdapter<>();
-    FastAdapter<GradeItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
-
-    fastAdapter.withEventHook(new ClickEventHook<GradeItem>() {
-      @Override
-      public void onClick(@NotNull View v, int position,
-          @NotNull FastAdapter<GradeItem> fastAdapter, @NotNull GradeItem item) {
-        openDialog(v, position, false);
-      }
-
-      @javax.annotation.Nullable
-      @Override
-      public View onBind(RecyclerView.ViewHolder viewHolder) {
-        if (viewHolder instanceof GradeItem.ViewHolder) {
-          return ((GradeItem.ViewHolder) viewHolder).itemView;
         }
-        return null;
-      }
+    }
 
-    });
+    private void setRecycler() {
+        itemAdapter = new ItemAdapter<>();
+        FastAdapter<GradeItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
 
-    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    recyclerView.setAdapter(fastAdapter);
-  }
+        fastAdapter.withEventHook(new ClickEventHook<GradeItem>() {
+            @Override
+            public void onClick(@NotNull View v, int position,
+                                @NotNull FastAdapter<GradeItem> fastAdapter, @NotNull GradeItem item) {
+                openDialog(v, position, false);
+            }
+
+            @javax.annotation.Nullable
+            @Override
+            public View onBind(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof GradeItem.ViewHolder) {
+                    return ((GradeItem.ViewHolder) viewHolder).itemView;
+                }
+                return null;
+            }
+
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(fastAdapter);
+    }
 
 
-  private void openDialog(View v, int index, boolean newGrade) {
-    Intent intent = new Intent(getContext(), GradeDialog.class);
-    intent.putExtra(GradeDialog.SUBJECT_PARAM, currentSubject);
-    intent.putExtra(GradeDialog.GRADE_INDEX_PARAM, Math.max(0, index));
-    intent.putExtra(GradeDialog.NEW_GRADE_PARAM, newGrade);
-    ActivityOptions activityOptions = ActivityOptions
-        .makeScaleUpAnimation(v, 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
-    startActivity(intent, activityOptions.toBundle());
-  }
+    private void openDialog(View v, int index, boolean newGrade) {
+        if (gradeDialog != null && gradeDialog.isVisible()) {
+            gradeDialog.dismiss();
+        }
 
+        gradeDialog = new GradeDialog().withSubject(currentSubject);
+        if (newGrade) {
+            gradeDialog.isNewGrade(getContext());
+        } else {
+            gradeDialog.atPosition(Math.max(0, index));
+        }
+        gradeDialog.show(getActivity().getSupportFragmentManager(), "gradeDialog");
+    }
 
-  @Override
-  public void onFabSelected(View v) {
-    openDialog(v, currentSubject.grades.size() - 1, true);
-  }
-
-
+    @OnClick(R.id.addGrade)
+    public void addGrade(View v) {
+        openDialog(v, currentSubject.grades.size() - 1, true);
+    }
 }

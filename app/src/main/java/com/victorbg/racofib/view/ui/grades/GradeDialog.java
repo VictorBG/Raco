@@ -1,105 +1,95 @@
 package com.victorbg.racofib.view.ui.grades;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableField;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.domain.subjects.SaveSubjectUseCase;
 import com.victorbg.racofib.data.model.subject.Grade;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.databinding.ActivityGradeDialogBinding;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.view.widgets.DialogCustomContent;
 
 import javax.inject.Inject;
 
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableField;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GradeDialog extends DialogCustomContent implements Injectable {
+public class GradeDialog extends BottomSheetDialogFragment implements Injectable {
 
-  public static final String SUBJECT_PARAM = "SubjectParam";
-  public static final String GRADE_INDEX_PARAM = "GradeIndexParam";
-  public static final String NEW_GRADE_PARAM = "NewGradeParam";
+    private Subject subject;
+    private int index;
+    private boolean isNewGrade = false;
 
-  private Subject subject;
-  private int index;
+    private ObservableField<Grade> gradeObservableField = new ObservableField<>();
 
-  private ObservableField<Grade> gradeObservableField = new ObservableField<>();
+    @Inject
+    SaveSubjectUseCase saveSubjectUseCase;
 
-  @Inject
-  SaveSubjectUseCase saveSubjectUseCase;
-
-  @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    boolean newGrade = false;
-
-    try {
-      newGrade = getIntent().getExtras().getBoolean(NEW_GRADE_PARAM);
-
-      subject = getIntent().getExtras().getParcelable(SUBJECT_PARAM);
-      if (subject == null) {
-        Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
-            .show();
-        finish();
-      }
-
-      if (!newGrade) {
-        index = getIntent().getExtras().getInt(GRADE_INDEX_PARAM);
-        if (index < 0 || index >= subject.grades.size()) {
-          Toast
-              .makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
-              .show();
-          finish();
-        }
-      } else {
-        Grade grade = new Grade();
-        grade.title = "";
-        subject.grades.add(grade);
-        index = subject.grades.size() - 1;
-      }
-
-      gradeObservableField.set(subject.grades.get(index));
-    } catch (Exception ignore) {
-      Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
-          .show();
-      finish();
+    public GradeDialog withSubject(@NonNull Subject subject) {
+        this.subject = subject;
+        return this;
     }
 
-    ActivityGradeDialogBinding binding = DataBindingUtil
-        .setContentView(this, R.layout.activity_grade_dialog);
-    binding.setGrade(gradeObservableField);
-    binding.setNewGrade(newGrade);
+    public void isNewGrade(Context context) {
+        Grade grade = new Grade();
+        grade.title = context.getString(R.string.grade) + " #" + subject.grades.size() + 1;
+        subject.grades.add(grade);
+        index = subject.grades.size() - 1;
+        isNewGrade = true;
+    }
 
-    ButterKnife.bind(this, binding.getRoot());
-  }
+    public void atPosition(@IntRange(from = 0) int index) {
+        this.index = index;
+    }
 
-
-  @OnClick(R.id.save)
-  public void save(View v) {
-    subject.grades.remove(index);
-    subject.grades.add(index, gradeObservableField.get());
-    saveSubjectUseCase.execute(subject);
-    finishAfterTransition();
-  }
-
-  @OnClick(R.id.close)
-  public void close(View v) {
-    finishAfterTransition();
-  }
-
-  @OnClick(R.id.delete)
-  public void delete(View v) {
-    subject.grades.remove(index);
-    saveSubjectUseCase.execute(subject);
-    finishAfterTransition();
-  }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        gradeObservableField.set(subject.grades.get(index));
+    }
 
 
+    @SuppressLint("SetTextI18n")
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ActivityGradeDialogBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_grade_dialog, container, false);
+        binding.setGrade(gradeObservableField);
+        binding.setNewGrade(isNewGrade);
+        ButterKnife.bind(this, binding.getRoot());
+        return binding.getRoot();
+    }
+
+
+    @OnClick(R.id.save)
+    public void save(View v) {
+        subject.grades.remove(index);
+        subject.grades.add(index, gradeObservableField.get());
+        saveSubjectUseCase.execute(subject);
+        dismiss();
+    }
+
+    @OnClick(R.id.close)
+    public void closeDialog(View v) {
+        dismiss();
+    }
+
+    @OnClick(R.id.delete)
+    public void delete(View v) {
+        subject.grades.remove(index);
+        saveSubjectUseCase.execute(subject);
+        dismiss();
+    }
 }

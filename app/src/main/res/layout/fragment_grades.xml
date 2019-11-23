@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,28 +7,28 @@
     android:background="?themeBackgroundColor">
 
     <com.google.android.material.tabs.TabLayout
-      android:id="@+id/tabLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:tabTextColor="?themePrimaryTextColor"
-      android:background="?themeBackgroundColor"
-      app:tabMode="fixed"
-      app:tabIndicator="@drawable/tab_indicators"/>
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?themeBackgroundColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabIndicator="@drawable/tab_indicators"
+        app:tabMode="fixed"
+        app:tabTextColor="?themePrimaryTextColor" />
 
     <com.victorbg.racofib.view.widgets.grades.GradesChart
-      android:id="@+id/gradesChart"
-      android:layout_width="180dp"
-      android:layout_height="180dp"
-      android:layout_marginTop="24dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginEnd="8dp"
-      app:circleColor="@color/accent"
-      app:circleWidth="5dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+        android:id="@+id/gradesChart"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:circleColor="@color/accent"
+        app:circleWidth="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <RelativeLayout
         android:id="@+id/progress_text_container"
@@ -57,4 +56,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gradesChart" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/addGrade"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/add_grade_fab"
+        android:textColor="@color/md_white_1000"
+        app:iconTint="@color/md_white_1000"
+        app:icon="@drawable/ic_add_black_24dp"
+        app:backgroundTint="@color/accent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

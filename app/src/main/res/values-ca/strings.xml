@@ -114,5 +114,7 @@
     <string name="error_saving_event">S\'ha produït un error en desar l’esdeveniment</string>
   <string name="profile_bottom_tab">Profile</string>
   <string name="upcoming_exams">Upcoming exams</string>
+    <string name="add_grade_fab">Añadir nota</string>
+    <string name="grade">Nota</string>
 
 </resources>

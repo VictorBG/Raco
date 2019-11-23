@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:elevation="0dp"
     android:background="@drawable/schedule_bg_ripple"
     android:backgroundTint="@color/md_orange_500"
     android:clickable="true"
