@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,10 +71,7 @@ public class GradesFragment extends BaseFragment implements Injectable {
     private ItemAdapter<GradeItem> itemAdapter;
     private GradeDialog gradeDialog;
     private Subject currentSubject;
-
-    private ViewSwitcher.ViewFactory factory = () -> new TextView(getContext(), null, 0,
-            R.style.ProgressTextGoal);
-
+    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -85,9 +83,9 @@ public class GradesFragment extends BaseFragment implements Injectable {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        gradesChart.setColor(getContext().getResources().getColor(R.color.accent));
+        gradesChart.setColor(ContextCompat.getColor(getContext(), R.color.accent));
 
-        progressView.setFactory(factory);
+        progressView.setFactory(() -> new TextView(getContext(), null, 0, R.style.ProgressTextGoal));
         progressView.setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_up));
         progressView.setOutAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_up));
 
