@@ -49,8 +49,6 @@ The app has been developed using the [official API](https://api.fib.upc.edu/)
 
 I'm open for any contribution you would like to do either by [_creating a PR_](https://github.com/VictorBG/RacoFib/compare), [_submitting an issue_](https://github.com/VictorBG/RacoFib/issues/new) on Github or proposing ideas to make the app better.
 
-You can see the [current features](https://github.com/VictorBG/RacoFib/projects/1) that are being developed at the time and contribute to one. Note that the _In Progress_ features are actively being developed and won't accept any PR until they are finished. 
-
 ### Developed By
 
 - Víctor Blanco
