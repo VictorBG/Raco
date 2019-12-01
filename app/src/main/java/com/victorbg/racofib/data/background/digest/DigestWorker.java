@@ -20,6 +20,7 @@ import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.model.notes.Note;
+import com.victorbg.racofib.data.notification.NotificationCenter;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.data.repository.notes.NotesRepository;
@@ -87,52 +88,19 @@ public class DigestWorker extends ListenableWorker implements LifecycleOwner {
             offlineNotes.observe(this, dbNotes -> {
                 if (dbNotes.status == Status.SUCCESS) {
                     notes.removeAll(dbNotes.data);
-                    if (notes.size() > 0) {
-                        if (notes.size() > 4) {
-
-                            Notify.create(getApplicationContext())
-                                    .setTitle(String.format(Locale.getDefault(), "There are %d new publications", notes.size()))
-                                    .setContent(String.format(Locale.getDefault(), "%d new publications from %s",
-                                            notes.size(),
-                                            Utils.getSubjectNames(notes)))
-                                    .setImportance(Notify.NotificationImportance.HIGH)
-                                    .show();
-                            completer.set(Result.success());
-                        } else {
-                            if (notes.size() == 1) {
-                                Note note = notes.get(0);
-                                subjectsDao.getColorBySubject(note.subject)
-                                        .observeOn(AndroidSchedulers.from(Looper.myLooper()))
-                                        .subscribeOn(Schedulers.io())
-                                        .subscribe(subjectColor -> {
-                                            Notify.create(getApplicationContext())
-                                                    .setTitle(String.format(Locale.getDefault(), "There is a new publication from %s", note.subject))
-                                                    .setContent(note.title.substring(0, 80) + "...")
-                                                    .setColor(Color.parseColor(subjectColor))
-                                                    .setImportance(Notify.NotificationImportance.HIGH)
-                                                    .setSmallIcon(R.drawable.ic_notification)
-                                                    .setLargeIcon(R.drawable.ic_notification)
-                                                    .show();
-                                            completer.set(Result.success());
-                                        });
-
-                            } else {
-                                String messageBody = notes
-                                        .stream()
-                                        .map(n -> n.title.substring(0, 30) + "...")
-                                        .collect(Collectors.joining("\n"));
-
-                                Notify.create(getApplicationContext())
-                                        .setTitle(String.format(Locale.getDefault(), "There are %d new publications", notes.size()))
-                                        .setContent(messageBody)
-                                        .setImportance(Notify.NotificationImportance.HIGH)
-                                        .setSmallIcon(R.drawable.ic_notification)
-                                        .setLargeIcon(R.drawable.ic_notification)
-                                        .show();
-                                completer.set(Result.success());
-                            }
-
-                        }
+                    if (notes.size() == 1) {
+                        Note note = notes.get(0);
+                        subjectsDao.getColorBySubject(note.subject)
+                                .observeOn(AndroidSchedulers.from(Looper.myLooper()))
+                                .subscribeOn(Schedulers.io())
+                                .subscribe(subjectColor -> {
+                                    note.color = subjectColor;
+                                    NotificationCenter.showSingleNote(getApplicationContext(), note);
+                                    completer.set(Result.success());
+                                });
+                    } else {
+                        NotificationCenter.showNotesNotification(getApplicationContext(), notes);
+                        completer.set(Result.success());
                     }
                 } else if (dbNotes.status == Status.ERROR) {
                     completer.set(Result.failure());
