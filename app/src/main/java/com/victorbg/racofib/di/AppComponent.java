@@ -4,6 +4,7 @@ package com.victorbg.racofib.di;
 import android.app.Application;
 
 import com.victorbg.racofib.AppRaco;
+import com.victorbg.racofib.data.background.digest.CustomWorkerFactory;
 import com.victorbg.racofib.data.sp.PrefManager;
 
 import javax.inject.Singleton;
@@ -13,7 +14,7 @@ import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 
 @Singleton
-@Component(modules = {AppModule.class, AndroidInjectionModule.class, ActivitiesModule.class})
+@Component(modules = {AppModule.class, AndroidInjectionModule.class, ActivitiesModule.class, WorkerModule.class})
 public interface AppComponent {
 
     @Component.Builder
@@ -27,5 +28,7 @@ public interface AppComponent {
     void inject(AppRaco appClass);
 
     PrefManager getPrefManager();
+
+    CustomWorkerFactory factory();
 
 }

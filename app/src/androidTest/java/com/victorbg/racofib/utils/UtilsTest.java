@@ -1,5 +1,6 @@
 package com.victorbg.racofib.utils;
 
+import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.model.subject.Subject;
 
 import org.junit.Test;
@@ -77,7 +78,6 @@ public class UtilsTest {
         }
 
     }
-
 
     private List<Subject> createRandomSubjectsList(int length) {
         List<Subject> result = new ArrayList<>();

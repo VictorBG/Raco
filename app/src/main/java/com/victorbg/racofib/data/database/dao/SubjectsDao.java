@@ -11,6 +11,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
 import io.reactivex.Single;
 
 import static androidx.room.OnConflictStrategy.IGNORE;
@@ -54,6 +55,9 @@ public interface SubjectsDao {
 
     @Query("select color from Subjects where id=:id")
     Single<List<SubjectColor>> getColor(String id);
+
+    @Query("select color from Subjects where shortName=:shortName")
+    Single<String> getColorBySubject(String shortName);
 
 
 }

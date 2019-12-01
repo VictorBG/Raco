@@ -33,6 +33,7 @@ public class NotesRepository extends Repository {
     private final RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
 
     private LiveData<Resource<List<Note>>> notes;
+    private NetworkNotesDataSource networkNotesDataSource;
 
     @Inject
     public NotesRepository(AppDatabase appDatabase, AppExecutors appExecutors, ApiService apiService, Context context) {
@@ -40,6 +41,8 @@ public class NotesRepository extends Repository {
         this.apiService = apiService;
         this.appExecutors = appExecutors;
         this.context = context;
+
+        this.networkNotesDataSource = new NetworkNotesDataSource(apiService, appDatabase.notesDao(), new NotesSaveOfflineData(appDatabase, appExecutors));
     }
 
     /**
@@ -55,13 +58,16 @@ public class NotesRepository extends Repository {
      */
     @MainThread
     public LiveData<Resource<List<Note>>> getNotes() {
-        NetworkNotesDataSource networkNotesDataSource = new NetworkNotesDataSource(apiService, appDatabase.notesDao(), new NotesSaveOfflineData(appDatabase, appExecutors));
         if (notes == null || NetworkUtils.isOnline(context) && networkRateLimiter.shouldFetch()) {
             notes = networkNotesDataSource.getRemoteData();
         } else if (notes == null || databaseRateLimiter.shouldFetch()) {
-            notes = networkNotesDataSource.getOfflineData();
+            notes = getOfflineNotes();
         }
         return notes;
+    }
+
+    public LiveData<Resource<List<Note>>> getOfflineNotes() {
+        return networkNotesDataSource.getOfflineData();
     }
 
     public void resetTimer() {

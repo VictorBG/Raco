@@ -49,6 +49,7 @@ dependencies {
 
     def room_version = "2.1.0"
     def work_version = "1.0.1"
+    def futures_version = "1.0.0"
 
     //Default
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -164,6 +165,8 @@ dependencies {
     implementation 'androidx.arch.core:core-runtime:2.1.0'
 
     implementation 'com.github.florent37:arclayout:1.0.5'
+    implementation 'com.github.isradeleon:Notify-Android:1.0.3'
+    implementation "androidx.concurrent:concurrent-futures:$futures_version"
 
 }
 

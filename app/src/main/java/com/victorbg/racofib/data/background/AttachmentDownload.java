@@ -28,6 +28,7 @@ import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+
 import timber.log.Timber;
 
 import static android.content.Context.DOWNLOAD_SERVICE;

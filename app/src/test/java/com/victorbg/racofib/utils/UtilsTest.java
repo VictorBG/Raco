@@ -68,4 +68,40 @@ public class UtilsTest {
             assertThat(list.get(i), greaterThan(list.get(i - 1)));
         }
     }
+
+    @Test
+    public void getSubjectNames() {
+        List<Note> notes1 = new ArrayList<Note>() {
+            {
+                add(TestUtils.createNote("AA"));
+                add(TestUtils.createNote("BB"));
+                add(TestUtils.createNote("CC"));
+                add(TestUtils.createNote("DD"));
+            }
+        };
+
+        assertEquals(Utils.getSubjectNames(notes1), "DD, CC, BB and AA");
+
+        List<Note> notes2 = new ArrayList<Note>() {
+            {
+                add(TestUtils.createNote("AA"));
+            }
+        };
+
+        assertEquals(Utils.getSubjectNames(notes2), "AA");
+
+
+        List<Note> notes3 = new ArrayList<>();
+
+        assertEquals(Utils.getSubjectNames(notes3), "");
+
+        List<Note> notes4 = new ArrayList<Note>() {
+            {
+                add(TestUtils.createNote("AA"));
+                add(TestUtils.createNote("BB"));
+            }
+        };
+
+        assertEquals(Utils.getSubjectNames(notes4), "BB and AA");
+    }
 }

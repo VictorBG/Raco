@@ -105,8 +105,8 @@
     <string name="thur_one_letter">J</string>
     <string name="fri_one_letter">V</string>
     <string name="error_saving_event">No ha sido posible guardar el evento</string>
-  <string name="profile_bottom_tab">Profile</string>
-  <string name="upcoming_exams">Upcoming exams</string>
+    <string name="profile_bottom_tab">Profile</string>
+    <string name="upcoming_exams">Upcoming exams</string>
     <string name="add_grade_fab">Añadir nota</string>
     <string name="grade">Nota</string>
 
@@ -121,5 +121,9 @@
         <item>ca</item>
         <item>en</item>
     </string-array>
+
+    <string name="notify_channel_id" translatable="false">MyDefaultChannelID</string>
+    <string name="notify_channel_name" translatable="false">MyDefaultChannelName</string>
+    <string name="notify_channel_description" translatable="false">MyDefaultChannelDescription</string>
 
 </resources>

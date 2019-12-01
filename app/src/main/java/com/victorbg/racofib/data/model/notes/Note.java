@@ -67,7 +67,6 @@ public class Note implements Parcelable {
             Note n = (Note) obj;
 
             return n.color.equals(color)
-                    && n.favorite == favorite
                     && n.id == id
                     && n.subject.equals(subject)
                     && n.title.equals(title)
