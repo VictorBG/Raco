@@ -71,12 +71,10 @@ public class HomeFragment extends BaseFragment implements Injectable {
   @Inject
   ViewModelProvider.Factory viewModelFactory;
 
-  private HomeViewModel homeViewModel;
-
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+    HomeViewModel homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
     homeViewModel.getExams().observe(this, this::handleExams);
     homeViewModel.getSchedule().observe(this, this::handleSchedule);
   }

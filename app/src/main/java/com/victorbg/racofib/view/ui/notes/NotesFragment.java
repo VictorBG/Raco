@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.DimenRes;
 
 import butterknife.BindDimen;
@@ -95,19 +96,23 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
     ViewModelProvider.Factory viewModelFactory;
 
     private PublicationsViewModel publicationsViewModel;
-
     private final ConsumableBoolean scheduledScrollToTop = new ConsumableBoolean(true);
-
     private List<Note> scheduledUpdate = null;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            if (notePageLayout.isExpanded()) {
+                recyclerView.collapse();
+            }
+        }
+    };
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
         FragmentNotesBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notes, container, false);
         ButterKnife.bind(this, binding.getRoot());
         binding.setLifecycleOwner(this);
@@ -197,6 +202,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             public void onPageAboutToExpand(long l) {
                 appBarLayout.setExpanded(true, false);
                 swipeRefreshLayout.setEnabled(false);
+                requireActivity().getOnBackPressedDispatcher().addCallback(NotesFragment.this, onBackPressedCallback);
             }
 
             @Override
@@ -210,6 +216,7 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
 
             @Override
             public void onPageCollapsed() {
+                onBackPressedCallback.remove();
                 scrollView.scrollTo(0, 0);
                 if (scheduledUpdate != null) {
                     onChanged(scheduledUpdate);
@@ -283,16 +290,6 @@ public class NotesFragment extends BaseFragment implements Observer<List<Note>>,
             publicationsViewModel.onFilterClick();
         }
         return super.onItemClick(id);
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        if (notePageLayout.isExpanded()) {
-            recyclerView.collapse();
-            return true;
-        } else {
-            return super.onBackPressed();
-        }
     }
 }
 

@@ -2,7 +2,7 @@ package com.victorbg.racofib.data.repository.base;
 
 import javax.annotation.Nullable;
 
-public class Resource<T> {
+public final class Resource<T> {
 
     public T data;
     public final Status status;

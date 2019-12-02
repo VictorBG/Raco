@@ -26,6 +26,8 @@ import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.data.repository.notes.NotesRepository;
 import com.victorbg.racofib.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -66,6 +68,7 @@ public class DigestWorker extends ListenableWorker implements LifecycleOwner {
         return CallbackToFutureAdapter.getFuture(completer -> {
             if (notesRepository != null) {
                 LiveData<Resource<List<Note>>> notesLiveData = notesRepository.getNotes();
+                notesLiveData.removeObservers(DigestWorker.this);
                 notesLiveData.observe(this, notes -> {
                     if (notes.status != Status.LOADING) {
                         notesLiveData.removeObservers(DigestWorker.this);
@@ -82,11 +85,12 @@ public class DigestWorker extends ListenableWorker implements LifecycleOwner {
     }
 
     @SuppressLint("ResourceType")
-    private void processNotes(CallbackToFutureAdapter.Completer<ListenableWorker.Result> completer, List<Note> notes) {
+    private void processNotes(CallbackToFutureAdapter.Completer<ListenableWorker.Result> completer, final List<Note> notes) {
         try {
             LiveData<Resource<List<Note>>> offlineNotes = notesRepository.getOfflineNotes();
             offlineNotes.observe(this, dbNotes -> {
                 if (dbNotes.status == Status.SUCCESS) {
+                    List<Note> nn = new ArrayList<>(notes);
                     notes.removeAll(dbNotes.data);
                     if (notes.size() == 1) {
                         Note note = notes.get(0);
@@ -99,14 +103,35 @@ public class DigestWorker extends ListenableWorker implements LifecycleOwner {
                                     completer.set(Result.success());
                                 });
                     } else {
+                        if (notes.size() == 0) {
+                            String message = "No new notes";
+                            if (dbNotes.data.size() > 0 && nn.size() > 0) {
+                                message = "Last saved note is: " + dbNotes.data.get(0).title
+                                        + "\nLast downloaded note is " + nn.get(0).title;
+                            }
+                            Notify.create(getApplicationContext())
+                                    .setTitle("DEBUG: No new notes")
+                                    .setContent(message)
+                                    .setImportance(Notify.NotificationImportance.HIGH)
+                                    .setSmallIcon(R.drawable.ic_notification)
+                                    .setLargeIcon(R.drawable.ic_notification)
+                                    .show();
+                        }
                         NotificationCenter.showNotesNotification(getApplicationContext(), notes);
                         completer.set(Result.success());
                     }
                 } else if (dbNotes.status == Status.ERROR) {
+                    Notify.create(getApplicationContext())
+                            .setTitle("DEBUG: Digest error")
+                            .setContent(dbNotes.message)
+                            .setImportance(Notify.NotificationImportance.HIGH)
+                            .setSmallIcon(R.drawable.ic_notification)
+                            .setLargeIcon(R.drawable.ic_notification)
+                            .show();
                     completer.set(Result.failure());
                 }
             });
-        } catch (Exception e) {
+        } catch (Throwable e) {
             Timber.d(e);
             if (BuildConfig.DEBUG) {
                 Notify.create(getApplicationContext())

@@ -24,7 +24,7 @@ public class NotificationCenter {
             showSingleNote(context, notes.get(0));
         } else if (size > 1 && size < 4) {
             showMultipleNotes(context, notes);
-        } else {
+        } else if (size >= 4) {
             showGeneralNotes(context, notes);
         }
     }

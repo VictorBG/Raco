@@ -14,8 +14,6 @@ public class ExamsSaveOfflineData implements SaveOfflineData<List<Exam>> {
     private final AppDatabase appDatabase;
     private final AppExecutors appExecutors;
 
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     public ExamsSaveOfflineData(AppDatabase appDatabase, AppExecutors appExecutors) {
         this.appDatabase = appDatabase;
         this.appExecutors = appExecutors;
