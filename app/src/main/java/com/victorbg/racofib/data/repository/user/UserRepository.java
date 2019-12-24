@@ -61,6 +61,7 @@ public class UserRepository {
   private final UserDao userDao;
   private final SubjectsDao subjectsDao;
   private final SubjectScheduleDao subjectScheduleDao;
+  private final AppDatabase appDatabase;
   private final PrefManager prefManager;
   private final AppExecutors appExecutors;
 
@@ -69,9 +70,9 @@ public class UserRepository {
   private final MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
 
   @Inject
-  public UserRepository(AppExecutors appExecutors, AppDatabase appDatabase, PrefManager prefManager,
-      ApiService apiService) {
+  public UserRepository(AppExecutors appExecutors, AppDatabase appDatabase, PrefManager prefManager, ApiService apiService) {
     this.userDao = appDatabase.userDao();
+    this.appDatabase = appDatabase;
     this.prefManager = prefManager;
     this.apiService = apiService;
     this.appExecutors = appExecutors;
@@ -113,21 +114,38 @@ public class UserRepository {
    * TODO: LoadUserInfoUseCase preserving the current state of the databases
    */
   public LiveData<Resource<String>> authUser(Context context, String code) {
+
     MutableLiveData<Resource<String>> loadingStatus = new MutableLiveData<>();
     compositeDisposable.add(loadToken(context, code, loadingStatus)
         .subscribeOn(Schedulers.io())
         .subscribe(tokenResponse -> {
           getUser();
           prefManager.setLogin(tokenResponse);
-          appExecutors.mainThread()
-              .execute(() -> loadingStatus.setValue(Resource.success(null)));
-        }, error -> appExecutors.mainThread().execute(() -> Toast
-            .makeText(context, "An error has occurred: " + error.getMessage(),
-                Toast.LENGTH_SHORT)
-            .show())));
+          appExecutors.mainThread().execute(() -> loadingStatus.setValue(Resource.success(null)));
+        }, error -> appExecutors.mainThread()
+            .execute(() -> Toast.makeText(context, "An error has occurred: " + error.getMessage(), Toast.LENGTH_SHORT).show())));
 
     return loadingStatus;
   }
+
+  public LiveData<Resource<String>> reloadUser(Context context) {
+
+    appDatabase.runInTransaction(() -> {
+      appDatabase.runInTransaction(appDatabase::clearAllTables);
+    });
+
+    MutableLiveData<Resource<String>> loadingStatus = new MutableLiveData<>();
+    compositeDisposable.add(loadUser(context, getToken(), loadingStatus)
+        .subscribeOn(Schedulers.io())
+        .subscribe(tokenResponse -> {
+          getUser();
+          appExecutors.mainThread().execute(() -> loadingStatus.setValue(Resource.success(null)));
+        }, error -> appExecutors.mainThread()
+            .execute(() -> Toast.makeText(context, "An error has occurred: " + error.getMessage(), Toast.LENGTH_SHORT).show())));
+
+    return loadingStatus;
+  }
+
 
   private Single<TokenResponse> loadToken(Context context, String code,
       MutableLiveData<Resource<String>> result) {
@@ -203,6 +221,10 @@ public class UserRepository {
 
   private String getToken(TokenResponse tokenResponse) {
     return NetworkUtils.prepareToken(tokenResponse.getAccessToken());
+  }
+
+  private TokenResponse getToken() {
+    return new TokenResponse(prefManager.getToken());
   }
 
 }

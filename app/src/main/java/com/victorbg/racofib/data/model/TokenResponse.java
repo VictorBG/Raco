@@ -21,6 +21,10 @@ public class TokenResponse {
     @Expose
     private String scope;
 
+    public TokenResponse(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
