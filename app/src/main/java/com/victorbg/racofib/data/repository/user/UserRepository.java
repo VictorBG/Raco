@@ -97,13 +97,10 @@ public class UserRepository {
    */
   public LiveData<User> getUser() {
     if (userMutableLiveData.getValue() == null) {
-      appExecutors.diskIO().execute(() ->
-          compositeDisposable.add(
-              userDao.getUser().subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(user ->
-                          appExecutors.mainThread().execute(() -> userMutableLiveData.setValue(user))
-                      , Timber::d))
+      appExecutors.executeOnDisk(() -> compositeDisposable.add(userDao.getUser()
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(user -> appExecutors.executeOnMainThread(() -> userMutableLiveData.setValue(user)), Timber::d))
       );
     }
     return userMutableLiveData;
@@ -120,15 +117,15 @@ public class UserRepository {
         .subscribe(tokenResponse -> {
           this.uiMessaging.close();
           getUser();
-          appExecutors.mainThread().execute(() -> loadingStatus.setValue(Resource.success(null)));
-        }, error -> appExecutors.mainThread()
-            .execute(() -> Toast.makeText(context, "An error has occurred: " + error.getMessage(), Toast.LENGTH_SHORT).show())));
+          appExecutors.executeOnMainThread(() -> loadingStatus.setValue(Resource.success(null)));
+        }, error -> appExecutors
+            .executeOnMainThread(() -> Toast.makeText(context, "An error has occurred: " + error.getMessage(), Toast.LENGTH_SHORT).show())));
 
     return loadingStatus;
   }
 
   /**
-   * Authenticates the user with the provided code which is should be returned by the API.
+   * Authenticates the user with the provided code which should be returned by the API.
    * <p>
    * Once the user has been authorized successfully it downloads all the necessary data for the app to run like {@link User}, the {@link
    * com.victorbg.racofib.data.model.subject.Subject}s and the {@link SubjectSchedule} which indicates the schedule of the user.
