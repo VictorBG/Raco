@@ -13,7 +13,6 @@ public class ScheduleEvent {
 
     }
 
-
     public ScheduleEvent(long id, int day, String name, float startTime, float duration) {
         this.id = id;
         this.name = name;
@@ -48,6 +47,10 @@ public class ScheduleEvent {
     public ScheduleEvent setStartTime(float mStartTime) {
         this.startTime = mStartTime;
         return this;
+    }
+
+    public float getEndTime() {
+        return getStartTime() + getDuration();
     }
 
     public float getDuration() {

@@ -16,9 +16,11 @@ import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseFragment;
 import com.victorbg.racofib.view.widgets.calendar.CalendarWeekScheduleView;
+import com.victorbg.racofib.view.widgets.calendar.ScheduleEvent;
 import com.victorbg.racofib.viewmodel.ScheduleViewModel;
 
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+
 import butterknife.BindView;
 
 import static com.victorbg.racofib.utils.ScheduleUtils.convertToEventScheduleWeek;
@@ -70,7 +73,13 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
 
     private void onChanged(Resource<List<SubjectSchedule>> schedule) {
         if (schedule.status == Status.SUCCESS && schedule.data != null) {
-            scheduleView.setEvents(convertToEventScheduleWeek(schedule.data));
+            //TODO: Move to viewmodel
+            List<ScheduleEvent> scheduleEvents = convertToEventScheduleWeek(schedule.data);
+            float minHour = scheduleEvents.stream().min(Comparator.comparing(ScheduleEvent::getStartTime)).get().getStartTime();
+//            float maxHour = scheduleEvents.stream().max(Comparator.comparing(ScheduleEvent::getEndTime)).get().getEndTime();
+//            scheduleView.setEndHour((int) Math.ceil(maxHour));
+            scheduleView.setStartHour((int) Math.floor(minHour));
+            scheduleView.setEvents(scheduleEvents);
         }
     }
 

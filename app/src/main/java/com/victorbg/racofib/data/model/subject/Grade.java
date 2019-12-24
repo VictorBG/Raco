@@ -9,8 +9,8 @@ import androidx.databinding.InverseBindingAdapter;
 
 public class Grade implements Parcelable {
 
-    public float percent;
-    public float grade;
+    public double percent;
+    public double grade;
     public String title;
 
     @Override
@@ -20,12 +20,17 @@ public class Grade implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeFloat(this.percent);
-        dest.writeFloat(this.grade);
+        dest.writeDouble(this.percent);
+        dest.writeDouble(this.grade);
         dest.writeString(this.title);
     }
 
     public Grade() {
+    }
+
+    public Grade(String title, double percent) {
+        this.title = title;
+        this.percent = percent;
     }
 
     protected Grade(Parcel in) {
@@ -53,19 +58,19 @@ public class Grade implements Parcelable {
     }
 
     @BindingAdapter("android:text")
-    public static void setFloat(TextView view, float value) {
-        if (Float.isNaN(value)) view.setText("");
+    public static void setDouble(TextView view, double value) {
+        if (Double.isNaN(value)) view.setText("");
         else view.setText(String.valueOf(value));
     }
 
     @InverseBindingAdapter(attribute = "android:text")
-    public static float getFloat(TextView view) {
+    public static double getDouble(TextView view) {
         String num = view.getText().toString();
-        if (num.isEmpty()) return 0.0F;
+        if (num.isEmpty()) return 0.0D;
         try {
             return Float.parseFloat(num);
         } catch (NumberFormatException e) {
-            return 0.0F;
+            return 0.0D;
         }
     }
 }

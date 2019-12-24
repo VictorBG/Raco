@@ -44,7 +44,7 @@ public class GradeDialog extends BottomSheetDialogFragment implements Injectable
 
     public void isNewGrade(Context context) {
         Grade grade = new Grade();
-        grade.title = context.getString(R.string.grade) + " #" + subject.grades.size() + 1;
+        grade.title = context.getString(R.string.grade) + " #" + (subject.grades.size() + 1);
         subject.grades.add(grade);
         index = subject.grades.size() - 1;
         isNewGrade = true;

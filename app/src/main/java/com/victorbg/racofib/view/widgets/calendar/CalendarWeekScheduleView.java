@@ -17,6 +17,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -24,17 +25,19 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.OverScroller;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.core.view.ViewCompat;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+
 import com.victorbg.racofib.R;
 
-import java.text.SimpleDateFormat;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.core.view.GestureDetectorCompat;
-import androidx.core.view.ViewCompat;
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 
 /**
  * An adaptation of https://github.com/alamkanak/Android-Week-View that
@@ -51,8 +54,8 @@ public class CalendarWeekScheduleView extends View {
         NONE, VERTICAL
     }
 
-    private static final int START_HOUR = 8;
-    private static final int END_HOUR = 22;
+    private static int START_HOUR = 8;
+    private static int END_HOUR = 22;
 
     private final Context context;
 
@@ -88,16 +91,16 @@ public class CalendarWeekScheduleView extends View {
     private final int minHourHeight;
     private int effectiveMinHourHeight;
 
-    private final int columnGap = 5;
+    private final int columnGap = 2;
 
     private final int textSize;
     private final int timeCellPadding = 20;
 
     private final int visibleDays = 5;
 
-    private int dayBackgroundColor = Color.WHITE;
-    private int nowLineColor = Color.BLACK;
-    private int hourSeparatorColor = Color.rgb(230, 230, 230);
+    private int dayBackgroundColor;
+    private int nowLineColor;
+    private int hourSeparatorColor;
     private final int hourTextColor;
 
 
@@ -124,23 +127,16 @@ public class CalendarWeekScheduleView extends View {
                 return true;
             }
 
-            switch (currentScrollDirection) {
-                case NONE: {
-                    if (Math.abs(distanceX) < Math.abs(distanceY)) {
-                        currentScrollDirection = Direction.VERTICAL;
-                    }
-                    break;
+            if (currentScrollDirection == Direction.NONE) {
+                if (Math.abs(distanceX) < Math.abs(distanceY)) {
+                    currentScrollDirection = Direction.VERTICAL;
                 }
             }
 
             // Calculate the new origin after scroll
-            switch (currentScrollDirection) {
-                case VERTICAL:
-                    currentOrigin.y -= distanceY;
-                    ViewCompat.postInvalidateOnAnimation(CalendarWeekScheduleView.this);
-                    break;
-                default:
-                    break;
+            if (currentScrollDirection == Direction.VERTICAL) {
+                currentOrigin.y -= distanceY;
+                ViewCompat.postInvalidateOnAnimation(CalendarWeekScheduleView.this);
             }
             return true;
         }
@@ -188,7 +184,7 @@ public class CalendarWeekScheduleView extends View {
         eventTextSize = context.getResources().getDimensionPixelSize(R.dimen.calendar_schedule_text_size);
         startPaddingTop = eventPadding;
 
-        int attr[] = {
+        int[] attr = {
                 R.attr.themeColorDivider,
                 R.attr.themeBackgroundColor,
                 R.attr.themeColorViews
@@ -196,9 +192,9 @@ public class CalendarWeekScheduleView extends View {
         Resources.Theme theme = context.getTheme();
         TypedArray typedArray = theme.obtainStyledAttributes(attr);
 
-        hourSeparatorColor = typedArray.getColor(0, context.getResources().getColor(R.color.material_drawer_dark_divider));
-        dayBackgroundColor = typedArray.getColor(1, context.getResources().getColor(R.color.md_white_1000));
-        nowLineColor = typedArray.getColor(2, context.getResources().getColor(R.color.md_black_1000));
+        hourSeparatorColor = typedArray.getColor(0, ContextCompat.getColor(context, R.color.material_drawer_dark_divider));
+        dayBackgroundColor = typedArray.getColor(1, ContextCompat.getColor(context, R.color.md_white_1000));
+        nowLineColor = typedArray.getColor(2, ContextCompat.getColor(context, R.color.md_black_1000));
         hourTextColor = nowLineColor;
 
         typedArray.recycle();
@@ -251,7 +247,7 @@ public class CalendarWeekScheduleView extends View {
         eventTextPaint.setTextSize(eventTextSize);
 
         // Set default event color
-        defaultEventColor = context.getResources().getColor(R.color.accent);
+        defaultEventColor = ContextCompat.getColor(context, R.color.accent);
 
         scaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
@@ -282,6 +278,20 @@ public class CalendarWeekScheduleView extends View {
         dimensionsInvalid = true;
     }
 
+    public void setEndHour(int endHour) {
+        if (endHour > START_HOUR) {
+            END_HOUR = endHour;
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
+    public void setStartHour(int startHour) {
+        if (startHour < END_HOUR) {
+            START_HOUR = startHour;
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
     /**
      * Initialize time column width. Calculate value with all possible hours (supposed widest text).
      */
@@ -304,17 +314,6 @@ public class CalendarWeekScheduleView extends View {
             timeTextWidth = Math.max(timeTextWidth, textPaint.measureText(time));
         }
         return timeTextWidth;
-    }
-
-    /**
-     * Formats the given integer into the correct displaying
-     * format of hour
-     *
-     * @param hour
-     */
-    private String formatHour(Calendar hour) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        return sdf.format(hour.getTime());
     }
 
     private static String formatHour(int hour) {
@@ -340,14 +339,14 @@ public class CalendarWeekScheduleView extends View {
     private void computePositionOfEvents(List<ScheduleEventRect> ScheduleEventRects) {
         // Make "collision groups" for all events that collide with others.
         List<List<ScheduleEventRect>> collisionGroups = new ArrayList<>();
-        for (ScheduleEventRect ScheduleEventRect : ScheduleEventRects) {
+        for (ScheduleEventRect scheduleEventRect : ScheduleEventRects) {
             boolean isPlaced = false;
 
             outerLoop:
             for (List<ScheduleEventRect> collisionGroup : collisionGroups) {
                 for (ScheduleEventRect groupEvent : collisionGroup) {
-                    if (isEventsCollide(groupEvent.event, ScheduleEventRect.event)) {
-                        collisionGroup.add(ScheduleEventRect);
+                    if (isEventsCollide(groupEvent.event, scheduleEventRect.event)) {
+                        collisionGroup.add(scheduleEventRect);
                         isPlaced = true;
                         break outerLoop;
                     }
@@ -356,7 +355,7 @@ public class CalendarWeekScheduleView extends View {
 
             if (!isPlaced) {
                 List<ScheduleEventRect> newGroup = new ArrayList<>();
-                newGroup.add(ScheduleEventRect);
+                newGroup.add(scheduleEventRect);
                 collisionGroups.add(newGroup);
             }
         }
@@ -377,28 +376,27 @@ public class CalendarWeekScheduleView extends View {
 
         // Iterate through each day with events to calculate the position of the events
         while (tempEvents.size() > 0) {
-            ArrayList<ScheduleEventRect> ScheduleEventRects = new ArrayList<>(tempEvents.size());
+            ArrayList<ScheduleEventRect> scheduleEventRects = new ArrayList<>(tempEvents.size());
 
             // Get first event for a day
-            ScheduleEventRect ScheduleEventRect1 = tempEvents.remove(0);
-            ScheduleEventRects.add(ScheduleEventRect1);
+            ScheduleEventRect scheduleEventRect = tempEvents.remove(0);
+            scheduleEventRects.add(scheduleEventRect);
 
             int i = 0;
             while (i < tempEvents.size()) {
                 // Collect all other events for same day
-                ScheduleEventRect ScheduleEventRect2 = tempEvents.get(i);
-                if (ScheduleEventRect1.event.getDay() == ScheduleEventRect2.event.getDay()) {
+                ScheduleEventRect eventRect = tempEvents.get(i);
+                if (scheduleEventRect.event.getDay() == eventRect.event.getDay()) {
                     tempEvents.remove(i);
-                    ScheduleEventRects.add(ScheduleEventRect2);
+                    scheduleEventRects.add(eventRect);
                 } else {
                     i++;
                 }
             }
-            computePositionOfEvents(ScheduleEventRects);
+            computePositionOfEvents(scheduleEventRects);
         }
-
-        ViewCompat.postInvalidateOnAnimation(this);
-
+        dimensionsInvalid = true;
+        invalidate();
     }
 
 
@@ -479,7 +477,7 @@ public class CalendarWeekScheduleView extends View {
 
         for (int dayNumber = 0; dayNumber <= visibleDays; dayNumber++) {
             //Draw bg color for the day
-            float start = (startPixel < timeColumnWidth ? timeColumnWidth : startPixel);
+            float start = (Math.max(startPixel, timeColumnWidth));
             if (columnWidth + startPixel - start > 0) {
                 canvas.drawRect(start, 0, startPixel + columnWidth, getHeight(), dayBackgroundPaint);
             }
@@ -620,21 +618,21 @@ public class CalendarWeekScheduleView extends View {
         // Expand the events to maximum possible width.
         List<List<ScheduleEventRect>> columns = new ArrayList<>();
         columns.add(new ArrayList<>());
-        for (ScheduleEventRect ScheduleEventRect : collisionGroup) {
+        for (ScheduleEventRect scheduleEventRect : collisionGroup) {
             boolean isPlaced = false;
             for (List<ScheduleEventRect> column : columns) {
                 if (column.size() == 0) {
-                    column.add(ScheduleEventRect);
+                    column.add(scheduleEventRect);
                     isPlaced = true;
-                } else if (!isEventsCollide(ScheduleEventRect.event, column.get(column.size() - 1).event)) {
-                    column.add(ScheduleEventRect);
+                } else if (!isEventsCollide(scheduleEventRect.event, column.get(column.size() - 1).event)) {
+                    column.add(scheduleEventRect);
                     isPlaced = true;
                     break;
                 }
             }
             if (!isPlaced) {
                 List<ScheduleEventRect> newColumn = new ArrayList<>();
-                newColumn.add(ScheduleEventRect);
+                newColumn.add(scheduleEventRect);
                 columns.add(newColumn);
             }
         }
@@ -666,15 +664,14 @@ public class CalendarWeekScheduleView extends View {
         }
     }
 
-    private boolean isEventsCollide(ScheduleEvent event1, ScheduleEvent event2) {
-
+    private boolean isEventsCollide(@NotNull ScheduleEvent event1, @NotNull ScheduleEvent event2) {
         return event1.getDay() == event2.getDay() &&
                 (insideBounds(event1, event2.getStartTime()) ||
-                        insideBounds(event1, event2.getStartTime() - event2.getDuration()));
+                        insideBounds(event1, event2.getStartTime() + event2.getDuration()));
     }
 
-    private boolean insideBounds(ScheduleEvent event, float time) {
-        return time > event.getStartTime() && time < (event.getStartTime() + event.getDuration());
+    private boolean insideBounds(@NotNull ScheduleEvent event, float time) {
+        return time >= event.getStartTime() && time < (event.getStartTime() + event.getDuration());
     }
 
 

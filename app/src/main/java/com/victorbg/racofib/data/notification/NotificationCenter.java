@@ -56,7 +56,7 @@ public class NotificationCenter {
     }
 
     @SuppressLint("ResourceType")
-    public static void showSingleNote(Context context, Note note) {
+    private static void showSingleNote(Context context, Note note) {
         Notify.create(context)
                 .setTitle(String.format(Locale.getDefault(), "There is a new publication from %s", note.subject))
                 .setContent(note.title.substring(0, 80) + "...")

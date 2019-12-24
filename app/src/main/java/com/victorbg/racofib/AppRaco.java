@@ -9,6 +9,7 @@ import androidx.core.os.ConfigurationCompat;
 import androidx.work.WorkManager;
 
 import com.facebook.stetho.Stetho;
+import com.google.firebase.FirebaseApp;
 import com.victorbg.racofib.data.background.digest.CustomWorkerFactory;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.di.AppComponent;
@@ -44,6 +45,7 @@ public class AppRaco extends Application implements HasActivityInjector {
 //            LeakCanary.install(this);
 //        }
 
+    FirebaseApp.initializeApp(this);
     AppInjector.init(this);
 
     if (BuildConfig.DEBUG) {

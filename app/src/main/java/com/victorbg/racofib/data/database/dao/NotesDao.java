@@ -38,8 +38,7 @@ public interface NotesDao {
     void changeFavState(long id, int favState);
 
     //Ignore on conflict as it has to preserve the state of favorites column
-    // lol n
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNotes(List<Note> notes);
 
     @Delete

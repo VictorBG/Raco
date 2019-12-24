@@ -1,34 +1,22 @@
 package com.victorbg.racofib.view;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
-import butterknife.BindView;
-
-import com.application.isradeleon.notify.Notify;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.background.digest.DigestWorker;
 import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -36,13 +24,13 @@ import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;
 
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
-
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import butterknife.BindView;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * Mainly manages the state of the fragments and the {@link BottomAppBar}
@@ -91,13 +79,13 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
 
-        WorkManager.getInstance().cancelAllWork();
-        WorkManager.getInstance()
-                .enqueueUniquePeriodicWork("DigestWorker",
-                        ExistingPeriodicWorkPolicy.REPLACE,
-                        new PeriodicWorkRequest.Builder(DigestWorker.class,
-                                15,
-                                TimeUnit.MINUTES).build());
+//        WorkManager.getInstance().cancelAllWork();
+//        WorkManager.getInstance()
+//                .enqueueUniquePeriodicWork("Loteria",
+//                        ExistingPeriodicWorkPolicy.REPLACE,
+//                        new PeriodicWorkRequest.Builder(Loteria.class,
+//                                2,
+//                                TimeUnit.MINUTES).build());
 
     }
 

@@ -6,6 +6,7 @@
     <string name="fetching_user_message">Obteniendo usuario</string>
     <string name="fetching_subjects_message">Obteniendo asignaturas…</string>
     <string name="fetching_schedule_message">Obteniendo horario…</string>
+    <string name="last_steps_login_loading" translatable="false">Últimos retoques…</string>
     <string name="added_to_favorites">Añadido a favoritos</string>
     <string name="removed_from_favorites">Eliminado de favoritos</string>
     <string name="no_content_message">Sin contenido</string>

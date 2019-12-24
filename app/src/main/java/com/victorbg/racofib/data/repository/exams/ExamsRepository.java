@@ -3,6 +3,9 @@ package com.victorbg.racofib.data.repository.exams;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.ExamDao;
@@ -18,9 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 @Singleton
 public class ExamsRepository extends Repository {
@@ -59,7 +59,7 @@ public class ExamsRepository extends Repository {
 
     public LiveData<Resource<List<Exam>>> getExams(List<String> subjects) {
         if (subjects.size() == 0) {
-            MutableLiveData result = new MutableLiveData();
+            MutableLiveData<Resource<List<Exam>>> result = new MutableLiveData<>();
             result.setValue(Resource.error("Subjects equal 0", null));
             examCache = result;
             return examCache;

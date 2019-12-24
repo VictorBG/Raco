@@ -32,10 +32,10 @@ public interface SubjectsDao {
     @Query("SELECT * FROM Subjects WHERE shortName=:parameter")
     LiveData<Subject> getSubject(String parameter);
 
-    @Insert(onConflict = IGNORE)
+    @Insert(onConflict = REPLACE)
     void insert(Subject subject);
 
-    @Insert(onConflict = IGNORE)
+    @Insert(onConflict = REPLACE)
     void insert(List<Subject> subject);
 
     @Delete

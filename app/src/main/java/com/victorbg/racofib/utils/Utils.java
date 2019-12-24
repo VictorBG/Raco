@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -205,7 +206,8 @@ public class Utils {
 
     public static String getSubjectNames(List<Note> notes) {
         StringBuilder result = new StringBuilder();
-        Set<String> subjects = notes.stream().collect(Collectors.toMap(n -> n.subject, n -> n.id)).keySet();
+        Set<String> subjects = new HashSet<>();
+        notes.stream().map(n -> n.subject).filter(n -> !n.contains("#")).forEach(subjects::add);
         if (subjects.size() == 0) {
             return "";
         }

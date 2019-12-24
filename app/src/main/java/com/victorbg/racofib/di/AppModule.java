@@ -7,6 +7,7 @@ import com.victorbg.racofib.AppRaco;
 import com.victorbg.racofib.data.api.ApiManager;
 import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.api.AuthService;
+import com.victorbg.racofib.data.api.LoteriaService;
 import com.victorbg.racofib.data.api.TokenAuthenticator;
 import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.ExamDao;
@@ -38,6 +39,12 @@ public class AppModule {
     @Provides
     public AuthService provideAuthService() {
         return ApiManager.createAuthService();
+    }
+
+    @Singleton
+    @Provides
+    public LoteriaService provideLoteria() {
+        return ApiManager.createLoteria();
     }
 
     @Singleton

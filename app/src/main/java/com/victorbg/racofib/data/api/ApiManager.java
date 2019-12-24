@@ -32,6 +32,15 @@ public class ApiManager {
         return retrofit.create(AuthService.class);
     }
 
+    public static LoteriaService createLoteria() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(new OkHttpClient())
+                .baseUrl("https://api.elpais.com/ws/")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        return retrofit.create(LoteriaService.class);
+    }
+
     /**
      * Creates the ApiService that is used for every network call except {@link AuthService#refreshToken(String, String, String, String)}.
      * <p>
