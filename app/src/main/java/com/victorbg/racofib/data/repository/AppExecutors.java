@@ -3,13 +3,16 @@ package com.victorbg.racofib.data.repository;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
+import org.junit.internal.runners.statements.RunAfters;
 
 @Singleton
 public class AppExecutors {
@@ -42,6 +45,22 @@ public class AppExecutors {
 
   public Executor mainThread() {
     return mMainThread;
+  }
+
+  public void executeOnDisk(Runnable runnable) {
+    execute(diskIO(), runnable);
+  }
+
+  public void executeOnNetwork(Runnable runnable) {
+    execute(networkIO(), runnable);
+  }
+
+  public void executeOnMainThread(Runnable runnable) {
+    execute(mainThread(), runnable);
+  }
+
+  private void execute(@NonNull Executor executor, Runnable runnable) {
+    Optional.ofNullable(runnable).ifPresent(executor::execute);
   }
 
   private static class MainThreadExecutor implements Executor {
