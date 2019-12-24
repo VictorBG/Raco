@@ -13,35 +13,37 @@ import dagger.android.AndroidInjection;
 
 public abstract class BaseThemeActivity extends AppCompatActivity implements Injectable {
 
-    @Inject
-    PrefManager prefManager;
+  @Inject
+  PrefManager prefManager;
 
-    protected int themeId;
+  protected int themeId;
 
-    protected boolean isDarkThemeEnabled = false;
+  protected boolean isDarkThemeEnabled = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-        if (prefManager != null && prefManager.isDarkThemeEnabled()) {
-            isDarkThemeEnabled = true;
-            themeId = getDarkTheme();
-        } else {
-            isDarkThemeEnabled = false;
-            themeId = getLightTheme();
-        }
-        setTheme(themeId);
-        super.onCreate(savedInstanceState);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    AndroidInjection.inject(this);
+    if (prefManager != null && prefManager.isDarkThemeEnabled()) {
+      isDarkThemeEnabled = true;
+      themeId = getDarkTheme();
+    } else {
+      isDarkThemeEnabled = false;
+      themeId = getLightTheme();
     }
+    setTheme(themeId);
+    super.onCreate(savedInstanceState);
+  }
 
-    protected int getLightTheme() {
-        return R.style.AppTheme_Light;
-    }
+  //    protected int getLightTheme() {
+//        return R.style.AppTheme_Light;
+//    }
+  protected int getLightTheme() {
+    return getDarkTheme();
+  }
 
-    protected int getDarkTheme() {
-        return R.style.AppTheme_Dark;
-    }
-
+  protected int getDarkTheme() {
+    return R.style.AppTheme_Dark;
+  }
 
 
 }

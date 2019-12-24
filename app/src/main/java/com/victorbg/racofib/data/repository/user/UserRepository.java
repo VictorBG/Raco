@@ -188,15 +188,13 @@ public class UserRepository {
     subjects.forEach(s -> {
       db.collection("subjects").document(s.shortName).get().addOnCompleteListener(task -> {
         Optional.ofNullable(task).ifPresent((d) -> {
-
           Optional.ofNullable(task.getResult().getData()).ifPresent(map -> {
             s.grades = map
                 .keySet()
                 .stream()
-                .map(key -> new Grade(key, (Double) map.get(key)))
+                .map(key -> new Grade(key, (Double) map.get(key) * 100))
                 .collect(Collectors.toList());
           });
-          int a = 5;
           appExecutors.diskIO().execute(() -> subjectsDao.insert(s));
         });
       });
