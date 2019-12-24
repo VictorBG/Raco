@@ -38,7 +38,6 @@ public interface SubjectsDao {
     @Insert(onConflict = REPLACE)
     void insert(List<Subject> subject);
 
-
     @Delete
     void delete(Subject s);
 
