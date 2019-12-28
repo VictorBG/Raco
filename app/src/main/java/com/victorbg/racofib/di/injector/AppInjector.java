@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.google.common.base.Preconditions;
 import com.victorbg.racofib.AppRaco;
-import com.victorbg.racofib.data.background.digest.CustomWorkerFactory;
+import com.victorbg.racofib.data.background.CustomWorkerFactory;
 import com.victorbg.racofib.di.AppComponent;
 import com.victorbg.racofib.di.DaggerAppComponent;
 

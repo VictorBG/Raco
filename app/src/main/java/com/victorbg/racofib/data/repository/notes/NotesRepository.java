@@ -6,6 +6,7 @@ import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.AppExecutors;
+import com.victorbg.racofib.data.repository.base.DataSource;
 import com.victorbg.racofib.data.repository.base.Repository;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.network.RateLimiter;
@@ -33,7 +34,7 @@ public class NotesRepository extends Repository {
     private final RateLimiter databaseRateLimiter = new RateLimiter(1, TimeUnit.MINUTES);
 
     private LiveData<Resource<List<Note>>> notes;
-    private NetworkNotesDataSource networkNotesDataSource;
+    private DataSource<Resource<List<Note>>> networkNotesDataSource;
 
     @Inject
     public NotesRepository(AppDatabase appDatabase, AppExecutors appExecutors, ApiService apiService, Context context) {

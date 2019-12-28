@@ -6,22 +6,16 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.res.Configuration;
 import androidx.core.os.ConfigurationCompat;
-import androidx.work.WorkManager;
 
 import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
-import com.victorbg.racofib.data.background.digest.CustomWorkerFactory;
 import com.victorbg.racofib.data.sp.PrefManager;
-import com.victorbg.racofib.di.AppComponent;
-import com.victorbg.racofib.di.DaggerAppComponent;
 import com.victorbg.racofib.di.injector.AppInjector;
 import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import java.util.Locale;
 import javax.inject.Inject;
-import javax.inject.Provider;
 
 import timber.log.Timber;
 

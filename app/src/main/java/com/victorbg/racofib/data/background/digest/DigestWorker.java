@@ -1,6 +1,5 @@
 package com.victorbg.racofib.data.background.digest;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Looper;
 
@@ -17,6 +16,7 @@ import com.application.isradeleon.notify.Notify;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.background.ChildWorkerFactory;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.notification.NotificationCenter;
@@ -24,10 +24,7 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.data.repository.notes.NotesRepository;
 
-import org.mockito.internal.matchers.Not;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

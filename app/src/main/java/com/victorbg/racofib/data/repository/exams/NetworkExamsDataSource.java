@@ -50,7 +50,7 @@ public class NetworkExamsDataSource implements DataSource<Resource<List<Exam>>> 
      */
     @Override
     public LiveData<Resource<List<Exam>>> getRemoteData() {
-        MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData();
+        MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData<>();
 
         compositeDisposable.add(
                 apiService.getCurrentSemester("json").flatMap(semester -> {
@@ -93,7 +93,7 @@ public class NetworkExamsDataSource implements DataSource<Resource<List<Exam>>> 
      */
     @Override
     public LiveData<Resource<List<Exam>>> getOfflineData() {
-        MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData();
+        MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData<>();
 
         result.postValue(Resource.loading(null));
 

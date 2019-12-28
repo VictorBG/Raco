@@ -53,7 +53,7 @@ public class LoadExamsUseCase extends UseCase<Void, LiveData<Resource<List<Exam>
                       appExecutors.mainThread().execute(() -> result.setValue(data));
                     }));
               });
-            }, error -> appExecutors.mainThread().execute(() -> result.setValue(Resource.error(error.getMessage(), null)))))
+            }, error -> appExecutors.mainThread().execute(() -> result.setValue(Resource.error(error.getMessage())))))
     );
     return result;
   }

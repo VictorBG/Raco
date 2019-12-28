@@ -79,14 +79,6 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
 
-//        WorkManager.getInstance().cancelAllWork();
-//        WorkManager.getInstance()
-//                .enqueueUniquePeriodicWork("Loteria",
-//                        ExistingPeriodicWorkPolicy.REPLACE,
-//                        new PeriodicWorkRequest.Builder(Loteria.class,
-//                                2,
-//                                TimeUnit.MINUTES).build());
-
     }
 
     @Override

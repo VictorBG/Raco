@@ -60,7 +60,7 @@ public class ExamsRepository extends Repository {
     public LiveData<Resource<List<Exam>>> getExams(List<String> subjects) {
         if (subjects.size() == 0) {
             MutableLiveData<Resource<List<Exam>>> result = new MutableLiveData<>();
-            result.setValue(Resource.error("Subjects equal 0", null));
+            result.setValue(Resource.error("Subjects equal 0"));
             examCache = result;
             return examCache;
         }

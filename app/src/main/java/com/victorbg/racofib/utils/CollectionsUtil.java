@@ -2,7 +2,7 @@ package com.victorbg.racofib.utils;
 
 import androidx.work.ListenableWorker;
 
-import com.victorbg.racofib.data.background.digest.ChildWorkerFactory;
+import com.victorbg.racofib.data.background.ChildWorkerFactory;
 
 import java.util.Map;
 import java.util.Objects;

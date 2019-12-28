@@ -27,8 +27,8 @@ public class LoginViewModel extends ViewModel {
         if (code != null && rState != null && rState.equals(state)) {
             return loginUserUseCase.execute(code);
         } else {
-            MutableLiveData<Resource<String>> r = new MutableLiveData();
-            r.setValue(Resource.error("", null));
+            MutableLiveData<Resource<String>> r = new MutableLiveData<>();
+            r.setValue(Resource.error(""));
             return r;
         }
     }

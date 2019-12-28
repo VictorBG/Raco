@@ -1,4 +1,4 @@
-package com.victorbg.racofib.data.background.digest;
+package com.victorbg.racofib.data.background;
 
 import android.content.Context;
 

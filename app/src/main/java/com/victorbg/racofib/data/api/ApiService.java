@@ -6,6 +6,7 @@ import com.victorbg.racofib.data.model.api.ApiNotesResponse;
 import com.victorbg.racofib.data.model.api.ApiResponse;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.exams.Semester;
+import com.victorbg.racofib.data.model.season.APIEvent;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
@@ -59,5 +60,9 @@ public interface ApiService {
     @Headers({"Content-Type: application/json"})
     @GET("assignatures/{subject}/guia")
     Single<Subject> getSubject(@Path("subject") String subject, @Query("format") String format);
+
+    @Headers({"Content-Type: application/json"})
+    @GET("events/?format=json")
+    Single<ApiListResponse<APIEvent>> getEvents();
 
 }

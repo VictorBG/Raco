@@ -4,7 +4,7 @@ package com.victorbg.racofib.di;
 import android.app.Application;
 
 import com.victorbg.racofib.AppRaco;
-import com.victorbg.racofib.data.background.digest.CustomWorkerFactory;
+import com.victorbg.racofib.data.background.CustomWorkerFactory;
 import com.victorbg.racofib.data.sp.PrefManager;
 
 import javax.inject.Singleton;

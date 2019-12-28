@@ -3,33 +3,24 @@ package com.victorbg.racofib.data.repository.user;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.api.ApiService;
+import com.victorbg.racofib.data.background.season.SeasonCheckTask;
 import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.SubjectScheduleDao;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.database.dao.UserDao;
 import com.victorbg.racofib.data.model.TokenResponse;
-import com.victorbg.racofib.data.model.api.ApiListResponse;
 import com.victorbg.racofib.data.model.subject.Grade;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
@@ -40,26 +31,23 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.NetworkUtils;
 import com.victorbg.racofib.utils.Utils;
-
-import io.reactivex.internal.functions.ObjectHelper;
-import java.security.PrivilegedAction;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.RecursiveTask;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.internal.functions.ObjectHelper;
 import io.reactivex.schedulers.Schedulers;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import timber.log.Timber;
 
+/**
+ * TODO: This repository is a mess and bad structured, it even has functionalities that should not be here...
+ */
 @Singleton
 public class UserRepository {
 
@@ -134,7 +122,6 @@ public class UserRepository {
    * @param code    {@link String} code returned by the API to auth the user
    * @return {@link LiveData} with the state of the login and a message
    * <p>
-   * TODO: LoadUserInfoUseCase preserving the current state of the databases
    */
   public LiveData<Resource<String>> authUser(Context context, String code) {
     MutableLiveData<Resource<String>> loadingStatus = new MutableLiveData<>();
@@ -148,6 +135,10 @@ public class UserRepository {
               getUser();
               prefManager.setLogin(tokenResponse);
               appExecutors.executeOnMainThread(() -> loadingStatus.setValue(Resource.success(null)));
+              WorkManager.getInstance().enqueueUniquePeriodicWork(
+                  "SeasonCheckTask",
+                  ExistingPeriodicWorkPolicy.REPLACE,
+                  new PeriodicWorkRequest.Builder(SeasonCheckTask.class, 7, TimeUnit.DAYS).build());
             }, error -> appExecutors
                 .executeOnMainThread(() -> Toast.makeText(context, "An error has occurred: " + error.getMessage(), Toast.LENGTH_SHORT).show())));
 
@@ -198,6 +189,7 @@ public class UserRepository {
   }
 
 
+  // TODO: Move to SubjectRepository
   private void retrieveGrades(List<Subject> subjects) {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference subjectsCollection = db.collection("subjects");
@@ -228,8 +220,6 @@ public class UserRepository {
     Optional.ofNullable(uiMessaging).ifPresent(m -> m.setUIMessage(id));
   }
 
-  // region que barbaridad te has marcado cruk
-
   /**
    * Executes a special command for the UserRepository. This command is composed by the general command (the API call) and by a success callback that
    * is executed once the command has finished.
@@ -259,8 +249,6 @@ public class UserRepository {
       @NonNull Function<Single<B>, A> mapFunction) {
     return executeCommandNoMap(command, doOnSuccess).flatMap(mapFunction::run);
   }
-
-  //endregion
 
   /**
    * Saves on disk the given data and returns a single with the data
