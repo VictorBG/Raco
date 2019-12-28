@@ -32,11 +32,6 @@ public class LoginUserUseCase extends UseCase<String, LiveData<Resource<String>>
         this.context = BaseContextWrapper.wrap(context, sharedPreferences.getString(PrefManager.LOCALE_KEY, PrefManager.LOCALE_SPANISH));
     }
 
-    @Override
-    public LiveData<Resource<String>> execute() {
-        throw new InvalidParameterException("execute() cannot be called without a valid parameter");
-    }
-
     /**
      * It's all implemented and explained in {@link UserRepository#authUser(Context, String)}
      * <p>

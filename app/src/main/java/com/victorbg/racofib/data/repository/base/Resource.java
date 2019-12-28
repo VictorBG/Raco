@@ -18,12 +18,16 @@ public final class Resource<T> {
     return new Resource<>(Status.SUCCESS, data, null);
   }
 
-  public static <T> Resource<T> error(String message, @Nullable T data) {
+  public static <T> Resource<T> error(String message, T data) {
     return new Resource<>(Status.ERROR, data, message);
   }
 
   public static <T> Resource<T> error(String message) {
     return new Resource<>(Status.ERROR, null, message);
+  }
+
+  public static <T> Resource<T> error(Throwable t) {
+    return new Resource<>(Status.ERROR, null, t.getMessage());
   }
 
   public static <T> Resource<T> loading(@Nullable T data) {

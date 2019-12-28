@@ -63,11 +63,11 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             if (response.isSuccessful()) {
 
                 //Save response from network into database
-                appExecutors.diskIO().execute(() -> saveCallResult(processResponse(response)));
+                appExecutors.executeOnDisk(() -> saveCallResult(processResponse(response)));
 
                 //And request a new live data from which we will observe the new data inserted into database, remember, only db
                 //is a trusted source
-                appExecutors.mainThread().execute(() -> result.addSource(loadFromDb(), newData -> setValue(Resource.success(newData))));
+                appExecutors.executeOnMainThread(() -> result.addSource(loadFromDb(), newData -> setValue(Resource.success(newData))));
             } else {
                 onFetchFailed();
                 result.addSource(dbSource, newData -> setValue(Resource.error(response.errorMessage, newData)));

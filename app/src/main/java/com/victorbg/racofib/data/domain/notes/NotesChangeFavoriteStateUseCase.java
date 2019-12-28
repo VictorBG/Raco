@@ -19,12 +19,6 @@ public class NotesChangeFavoriteStateUseCase extends UseCase<Note, Note> {
         this.repository = repository;
     }
 
-
-    @Override
-    public Note execute() {
-        throw new RuntimeException("execute() cannot be called without a note");
-    }
-
     /**
      * Returns the modified {@link Note} that has been modified on the database
      *

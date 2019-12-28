@@ -26,7 +26,7 @@ import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
-import com.victorbg.racofib.data.repository.base.Function;
+import com.victorbg.racofib.data.repository.base.functions.Function;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.utils.NetworkUtils;

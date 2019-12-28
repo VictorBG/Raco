@@ -26,73 +26,74 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements Injectable {
 
-    private static final String STATE = "PiyiidVvcoywpoAeHUtMUESuwekIVBpFZMWPSmwq";
+  private static final String STATE = "PiyiidVvcoywpoAeHUtMUESuwekIVBpFZMWPSmwq";
 
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-    @BindView(R.id.status_message)
-    TextView statusMessage;
-    @BindView(R.id.parent)
-    View parent;
+  @BindView(R.id.progressBar)
+  ProgressBar progressBar;
+  @BindView(R.id.status_message)
+  TextView statusMessage;
+  @BindView(R.id.parent)
+  View parent;
 
-    private LoginViewModel loginViewModel;
+  private LoginViewModel loginViewModel;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+  @Inject
+  ViewModelProvider.Factory viewModelFactory;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_login);
+    ButterKnife.bind(this);
 
-        parent.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+    parent.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    if (getIntent().getDataString() != null && getIntent().getDataString().startsWith("apifib://login")) {
+      loginViewModel.login(getIntent().getData(), STATE).observe(this, this::handleLoginState);
     }
+  }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (getIntent().getDataString() != null && getIntent().getDataString().startsWith("apifib://login")) {
-            loginViewModel.login(getIntent().getData(), STATE).observe(this, this::handleLoginState);
-        }
+  private void handleLoginState(Resource<String> state) {
+    switch (state.status) {
+      case LOADING:
+        progressBar.setVisibility(View.VISIBLE);
+        statusMessage.setVisibility(View.VISIBLE);
+        statusMessage.setText(state.data);
+        break;
+      case ERROR:
+        progressBar.setVisibility(View.GONE);
+        statusMessage.setVisibility(View.VISIBLE);
+        statusMessage.setText(R.string.general_error);
+        break;
+      case SUCCESS:
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+        break;
     }
+  }
 
-    private void handleLoginState(Resource<String> state) {
-        switch (state.status) {
-            case LOADING:
-                progressBar.setVisibility(View.VISIBLE);
-                statusMessage.setVisibility(View.VISIBLE);
-                statusMessage.setText(state.data);
-                break;
-            case ERROR:
-                progressBar.setVisibility(View.GONE);
-                statusMessage.setVisibility(View.VISIBLE);
-                statusMessage.setText(R.string.general_error);
-                break;
-            case SUCCESS:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
-        }
-    }
+  @OnClick(R.id.login_button)
+  public void login(View v) {
+    String url =
+        "https://api.fib.upc.edu/v2/o/authorize/?client_id=dzHij8jTq4tpH9EzmNgmh3svKbRwBkV54cGr3RVh&redirect_uri=apifib://login&response_type=code&state="
+            + STATE;
+    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+    CustomTabsIntent customTabsIntent = builder.build();
+    customTabsIntent.launchUrl(this, Uri.parse(url));
+  }
 
-    @OnClick(R.id.login_button)
-    public void login(View v) {
+  protected int getLightTheme() {
+    return R.style.AppTheme_Login;
+  }
 
-        String url = "https://api.fib.upc.edu/v2/o/authorize/?client_id=dzHij8jTq4tpH9EzmNgmh3svKbRwBkV54cGr3RVh&redirect_uri=apifib://login&response_type=code&state=" + STATE;
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        CustomTabsIntent customTabsIntent = builder.build();
-        customTabsIntent.launchUrl(this, Uri.parse(url));
-    }
-
-    protected int getLightTheme() {
-        return R.style.AppTheme_Login;
-    }
-
-    protected int getDarkTheme() {
-        return R.style.AppTheme_Login;
-    }
+  protected int getDarkTheme() {
+    return R.style.AppTheme_Login;
+  }
 
 }

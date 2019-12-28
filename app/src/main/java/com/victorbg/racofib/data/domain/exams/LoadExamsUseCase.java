@@ -39,27 +39,34 @@ public class LoadExamsUseCase extends UseCase<Void, LiveData<Resource<List<Exam>
   public LiveData<Resource<List<Exam>>> execute() {
     MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData<>();
     result.setValue(Resource.loading(null));
-    appExecutors.diskIO().execute(() ->
-        compositeDisposable.add(appDatabase.subjectsDao().getSubjectsNames()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(subjects -> {
-              result.addSource(examsRepository.getExams(subjects), data -> {
-                compositeDisposable.add(appDatabase.subjectsDao().getColors()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(colors -> {
-                      Utils.assignColorsToExams(colors, data.data);
-                      appExecutors.mainThread().execute(() -> result.setValue(data));
-                    }));
-              });
-            }, error -> appExecutors.mainThread().execute(() -> result.setValue(Resource.error(error.getMessage())))))
-    );
-    return result;
-  }
 
-  @Override
-  public LiveData<Resource<List<Exam>>> execute(Void parameter) {
-    return execute();
+    executeSingleAction(() -> appDatabase.subjectsDao().getSubjectsNames(),
+        subjects -> {
+          result.addSource(examsRepository.getExams(subjects), data -> {
+            executeSingleAction(() -> appDatabase.subjectsDao().getColors(),
+                colors -> {
+                  Utils.assignColorsToExams(colors, data.data);
+                  result.setValue(data);
+                });
+          });
+        }, error -> result.setValue(Resource.error(error)));
+
+//    appExecutors.executeOnDisk(() ->
+//        compositeDisposable.add(appDatabase.subjectsDao().getSubjectsNames()
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribeOn(Schedulers.io())
+//            .subscribe(subjects -> {
+//              result.addSource(examsRepository.getExams(subjects), data -> {
+//                compositeDisposable.add(appDatabase.subjectsDao().getColors()
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribeOn(Schedulers.io())
+//                    .subscribe(colors -> {
+//                      Utils.assignColorsToExams(colors, data.data);
+//                      appExecutors.executeOnMainThread(() -> result.setValue(data));
+//                    }));
+//              });
+//            }, error -> appExecutors.executeOnMainThread(() -> result.setValue(Resource.error(error.getMessage())))))
+//    );
+    return result;
   }
 }

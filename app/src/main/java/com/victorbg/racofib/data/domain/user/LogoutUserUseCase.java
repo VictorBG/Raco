@@ -42,8 +42,4 @@ public class LogoutUserUseCase extends UseCase<Void, Void> {
     return null;
   }
 
-  @Override
-  public Void execute(Void parameter) {
-    return execute();
-  }
 }

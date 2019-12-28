@@ -15,21 +15,17 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadSubjectsUseCase extends UseCase<Void, LiveData<List<Subject>>> {
 
-    private final SubjectsDao subjectsDao;
+  private final SubjectsDao subjectsDao;
 
-    @Inject
-    public LoadSubjectsUseCase(AppExecutors appExecutors, SubjectsDao subjectsDao) {
-        super(appExecutors);
-        this.subjectsDao = subjectsDao;
-    }
+  @Inject
+  public LoadSubjectsUseCase(AppExecutors appExecutors, SubjectsDao subjectsDao) {
+    super(appExecutors);
+    this.subjectsDao = subjectsDao;
+  }
 
-    @Override
-    public LiveData<List<Subject>> execute() {
-        return subjectsDao.getSubjectsAsLiveData();
-    }
+  @Override
+  public LiveData<List<Subject>> execute() {
+    return subjectsDao.getSubjectsAsLiveData();
+  }
 
-    @Override
-    public LiveData<List<Subject>> execute(Void parameter) {
-        return execute();
-    }
 }

@@ -26,8 +26,4 @@ public class LoadUserUseCase extends UseCase<Void, LiveData<User>> {
         return userRepository.getUser();
     }
 
-    @Override
-    public LiveData<User> execute(Void parameter) {
-        return execute();
-    }
 }

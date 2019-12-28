@@ -15,9 +15,7 @@ import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 @Singleton
 public class LoadTodayScheduleUseCase extends UseCase<Void, LiveData<Resource<List<SubjectSchedule>>>> {
@@ -39,23 +37,23 @@ public class LoadTodayScheduleUseCase extends UseCase<Void, LiveData<Resource<Li
     result.setValue(Resource.loading(null));
 
     if (prefManager.shouldDisplaySchedule()) {
-      appExecutors.diskIO().execute(() -> {
-        compositeDisposable.add(appDatabase
-            .subjectScheduleDao()
-            .getTodaySchedule(Utils.getDayOfWeek())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                data -> appExecutors.executeOnMainThread(() -> result.setValue(Resource.success(data))),
-                error -> appExecutors.executeOnMainThread(() -> result.setValue(Resource.error(error.getMessage())))));
-      });
+      // TODO: it is neccessary to put executors for different threads?
+      executeSingleAction(() -> appDatabase.subjectScheduleDao().getTodaySchedule(Utils.getDayOfWeek()),
+          data -> result.setValue(Resource.success(data)),
+          error -> result.setValue(Resource.error(error)));
+//      appExecutors.executeOnDisk(() -> {
+//        compositeDisposable.add(appDatabase
+//            .subjectScheduleDao()
+//            .getTodaySchedule(Utils.getDayOfWeek())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribeOn(Schedulers.io())
+//            .subscribe(
+//                data -> appExecutors.executeOnMainThread(() -> result.setValue(Resource.success(data))),
+//                error -> appExecutors.executeOnMainThread(() -> result.setValue(Resource.error(error.getMessage())))));
+//      });
     }
 
     return result;
   }
 
-  @Override
-  public LiveData<Resource<List<SubjectSchedule>>> execute(Void parameter) {
-    return execute();
-  }
 }

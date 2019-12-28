@@ -24,11 +24,6 @@ public class LoadSingleSubjectUseCase extends UseCase<String, LiveData<Resource<
         this.subjectsRepository = subjectsRepository;
     }
 
-    @Override
-    public LiveData<Resource<Subject>> execute() {
-        throw new InvalidParameterException("execute() cannot be called with invalid parameters");
-    }
-
     /**
      * Loads a single {@link Subject} from the database with parameter as filter
      *

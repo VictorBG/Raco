@@ -28,8 +28,4 @@ public class LoadSavedNotesUseCase extends UseCase<Void, LiveData<List<Note>>> {
         return appDatabase.notesDao().getSavedNotes();
     }
 
-    @Override
-    public LiveData<List<Note>> execute(Void parameter) {
-        return execute();
-    }
 }

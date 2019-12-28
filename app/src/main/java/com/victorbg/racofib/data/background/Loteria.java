@@ -77,7 +77,6 @@ public class Loteria extends ListenableWorker {
                                 e.printStackTrace();
                             }
                             l = l.replaceAll("busqueda=", "");
-                            Timber.d(l);
                             LoteriaResponse loteriaStatus = new Gson().fromJson(l, LoteriaResponse.class);
                             if (loteriaStatus.premio != 0) {
                                 Notify.create(getApplicationContext())

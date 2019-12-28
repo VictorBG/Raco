@@ -24,11 +24,6 @@ public class SaveSubjectUseCase extends UseCase<Subject, Void> {
     }
 
     @Override
-    public Void execute() {
-        throw new InvalidParameterException("execute() cannot be called with invalid parameters");
-    }
-
-    @Override
     public Void execute(Subject parameter) {
         subjectsDao.update(parameter);
         return null;

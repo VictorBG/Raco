@@ -36,7 +36,7 @@ public class NotesSaveOfflineData implements SaveOfflineData<List<Note>> {
 
     @Override
     public void saveData(List<Note> data) {
-        appExecutors.diskIO().execute(() ->
+        appExecutors.executeOnDisk(() ->
                 appDatabase.runInTransaction(() -> internalSave(data))
         );
     }

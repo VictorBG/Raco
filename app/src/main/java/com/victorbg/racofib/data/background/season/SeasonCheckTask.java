@@ -13,6 +13,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.victorbg.racofib.data.background.ChildWorkerFactory;
 import com.victorbg.racofib.data.model.season.EventSeason;
 import com.victorbg.racofib.data.repository.base.Resource;
+import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.data.repository.season.EventsRepository;
 import com.victorbg.racofib.data.repository.user.UserRepository;
 import com.victorbg.racofib.data.sp.PrefManager;
@@ -52,22 +53,27 @@ public class SeasonCheckTask extends ListenableWorker implements LifecycleOwner 
       Optional.ofNullable(eventsRepository).ifPresent(rep -> {
         LiveData<Resource<EventSeason>> eventSeason = rep.getSeason();
         eventSeason.observe(this, season -> {
-          if (prefManager.hasSeason()) {
-            try {
-              int start;
-              if ((start = prefManager.getSeasonStart().compareTo(season.data.start)) != 0
-                  || prefManager.getSeasonEnd().compareTo(season.data.end) != 0) {
-                prefManager.saveSeason(season.data);
-                if (start != 0) {
-                  // Reload user on background when the start dates are differents, only start dates, end date is not important
-                  userRepository.reloadUser(getApplicationContext());
+          if (season.status != Status.LOADING) {
+            if (prefManager.hasSeason()) {
+              try {
+                int start;
+                if ((start = prefManager.getSeasonStart().compareTo(season.data.start)) != 0
+                    || prefManager.getSeasonEnd().compareTo(season.data.end) != 0) {
+                  prefManager.saveSeason(season.data);
+                  if (start != 0) {
+                    // Reload user on background when the start dates are differents, only start dates, end date is not important
+                    userRepository.reloadUser(getApplicationContext());
+                  }
+                  completer.set(Result.success());
                 }
+              } catch (ParseException e) {
+                Timber.d(e);
+                completer.set(Result.failure());
               }
-            } catch (ParseException e) {
-              Timber.d(e);
+            } else {
+              prefManager.saveSeason(season.data);
+              completer.set(Result.success());
             }
-          } else {
-            prefManager.saveSeason(season.data);
           }
         });
       });

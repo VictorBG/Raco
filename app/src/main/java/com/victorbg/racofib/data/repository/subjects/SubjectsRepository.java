@@ -43,13 +43,13 @@ public class SubjectsRepository {
 
     appExecutors.executeOnNetwork(() ->
         compositeDisposable.add(apiService.getSubject(subject, "json")
-            .flatMap(s -> Single.just(SubjectProcessor.processSubject(s))) //for every emission process the result
+            .flatMap(s -> Single.just(SubjectProcessor.processSubject(s)))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(s -> result.postValue(Resource.success(s)),
                 error -> {
                   Timber.d(error);
-                  result.postValue(Resource.error(error.getMessage()));
+                  result.postValue(Resource.error(error));
                 })));
 
     return result;

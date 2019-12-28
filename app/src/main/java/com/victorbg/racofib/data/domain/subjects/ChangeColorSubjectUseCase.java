@@ -26,11 +26,6 @@ public class ChangeColorSubjectUseCase extends UseCase<Subject, Void> {
         this.notesRepository = notesRepository;
     }
 
-    @Override
-    public Void execute() {
-        throw new InvalidParameterException("execute cannot be called with an invalid parameter");
-    }
-
     /**
      * Change the colors of the databases that have the color as parameter:
      * {@link com.victorbg.racofib.data.database.dao.SubjectsDao} and
@@ -46,7 +41,7 @@ public class ChangeColorSubjectUseCase extends UseCase<Subject, Void> {
      */
     @Override
     public Void execute(Subject parameter) {
-        appExecutors.diskIO().execute(() -> {
+        appExecutors.executeOnDisk(() -> {
             appDatabase.runInTransaction(() -> {
                 appDatabase.subjectsDao().changeColor(parameter.id, parameter.color);
                 appDatabase.notesDao().changeColor(parameter.shortName, parameter.color);

@@ -24,11 +24,6 @@ public class LoadSubjectDatabaseUseCase extends UseCase<String, LiveData<Subject
     }
 
     @Override
-    public LiveData<Subject> execute() {
-        throw new InvalidParameterException("execute() cannot be called with invalid parameters");
-    }
-
-    @Override
     public LiveData<Subject> execute(String parameter) {
         return subjectsDao.getSubject(parameter);
     }

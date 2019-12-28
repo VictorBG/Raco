@@ -29,8 +29,4 @@ public class LoadCacheExamsUseCase extends UseCase<Void, LiveData<List<Exam>>> {
         return examDao.getExams();
     }
 
-    @Override
-    public LiveData<List<Exam>> execute(Void parameter) {
-        return execute();
-    }
 }

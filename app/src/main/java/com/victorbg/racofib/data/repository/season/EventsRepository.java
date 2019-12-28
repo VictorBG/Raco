@@ -8,7 +8,7 @@ import com.victorbg.racofib.data.api.ApiService;
 import com.victorbg.racofib.data.model.season.APIEvent;
 import com.victorbg.racofib.data.model.season.BaseEvent;
 import com.victorbg.racofib.data.model.season.EventSeason;
-import com.victorbg.racofib.data.repository.base.Function;
+import com.victorbg.racofib.data.repository.base.functions.Function;
 import com.victorbg.racofib.data.repository.base.Resource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -63,7 +63,7 @@ public class EventsRepository {
           }
         }, error -> {
           Timber.d(error);
-          mutableLiveData.setValue(Resource.error(error.getMessage()));
+          mutableLiveData.setValue(Resource.error(error));
         }));
 
     return mutableLiveData;
@@ -86,7 +86,7 @@ public class EventsRepository {
               .collect(Collectors.toList());
         }, error -> {
           Timber.d(error);
-          mutableLiveData.setValue(Resource.error(error.getMessage()));
+          mutableLiveData.setValue(Resource.error(error));
         }));
 
     return mutableLiveData;

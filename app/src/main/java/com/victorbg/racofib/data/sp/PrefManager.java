@@ -121,8 +121,8 @@ public class PrefManager {
   }
 
   public boolean hasSeason() {
-    return "".equals(sharedPreferences.getString(START_SEASON_DATE_KEY, "")) &&
-        "".equals(sharedPreferences.getString(END_SEASON_DATE_KEY, ""));
+    return !"".equals(sharedPreferences.getString(START_SEASON_DATE_KEY, "")) &&
+        !"".equals(sharedPreferences.getString(END_SEASON_DATE_KEY, ""));
   }
 
   public Date getSeasonStart() throws ParseException {

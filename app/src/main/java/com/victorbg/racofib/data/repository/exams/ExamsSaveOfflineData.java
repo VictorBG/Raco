@@ -26,7 +26,7 @@ public class ExamsSaveOfflineData implements SaveOfflineData<List<Exam>> {
      */
     @Override
     public void saveData(List<Exam> data) {
-        appExecutors.diskIO().execute(() ->
+        appExecutors.executeOnDisk(() ->
                 appDatabase.runInTransaction(() -> appDatabase.examDao().insertExams(data))
         );
     }
