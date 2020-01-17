@@ -128,6 +128,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
   }
 
   private void bindExams(List<Exam> exams) {
+    examsProgressBar.setVisibility(View.GONE);
+
     if (exams == null || exams.isEmpty()) {
       noExams.setVisibility(View.VISIBLE);
       return;
@@ -135,7 +137,7 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
     List<ExamItem> items = exams.stream().map(exam -> new ExamItem().withExam(exam).withContext(getContext())).collect(Collectors.toList());
 
-    examsProgressBar.setVisibility(View.GONE);
+
     noExams.setVisibility(View.GONE);
 
     DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapterExams, items);
@@ -178,6 +180,6 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
   @OnClick(R.id.seeMoreExams)
   public void seeMoreExams(View view) {
-//    Navigation.findNavController(this, R.id.contentContainer).navigate();
+    Navigation.findNavController(todayScheduleRecyclerView).navigate(R.id.action_homeFragment_to_fragmentAllExams);
   }
 }

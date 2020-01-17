@@ -12,11 +12,12 @@ import androidx.lifecycle.LiveData;
 import androidx.work.ListenableWorker;
 import androidx.work.WorkerParameters;
 
-import com.application.isradeleon.notify.Notify;
+
 import com.google.common.util.concurrent.ListenableFuture;
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.background.ChildWorkerFactory;
+import com.victorbg.racofib.data.background.Notify;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.notification.NotificationCenter;

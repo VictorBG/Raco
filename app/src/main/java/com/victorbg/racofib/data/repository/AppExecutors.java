@@ -2,17 +2,12 @@ package com.victorbg.racofib.data.repository;
 
 import android.os.Handler;
 import android.os.Looper;
-
+import androidx.annotation.NonNull;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import androidx.annotation.NonNull;
-import org.junit.internal.runners.statements.RunAfters;
 
 @Singleton
 public class AppExecutors {

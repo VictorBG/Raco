@@ -10,7 +10,7 @@ android {
         applicationId "com.victorbg.racofib"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 10
+        versionCode 11
         versionName '2.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -152,7 +152,7 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-    implementation 'com.jaredrummler:colorpicker:1.1.0'
+    implementation 'com.jaredrummler:colorpicker:1.1.0'*
 
     api 'com.google.guava:guava:27.1-android'
 
@@ -160,10 +160,10 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:17.2.1'
 
-//    //https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver
-//    implementation 'androidx.arch.core:core-common:2.1.0'
-//    implementation 'androidx.arch.core:core-testing:2.1.0'
-//    implementation 'androidx.arch.core:core-runtime:2.1.0'
+    //https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver
+    implementation 'androidx.arch.core:core-common:2.1.0'
+    implementation 'androidx.arch.core:core-testing:2.1.0'
+    implementation 'androidx.arch.core:core-runtime:2.1.0'
 
     implementation 'com.github.florent37:arclayout:1.0.5'
     implementation "androidx.concurrent:concurrent-futures:$futures_version"

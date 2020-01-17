@@ -38,12 +38,9 @@ public class FragmentAllExams extends BaseFragment implements Injectable {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     private ItemAdapter<FullExamItem> itemAdapter;
-    private FastAdapter<FullExamItem> fastAdapter;
-
-    private HomeViewModel viewModel;
 
     @Nullable
     @Override
@@ -56,7 +53,7 @@ public class FragmentAllExams extends BaseFragment implements Injectable {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+        HomeViewModel viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
 
         setRecycler();
 
@@ -66,7 +63,7 @@ public class FragmentAllExams extends BaseFragment implements Injectable {
 
     private void setRecycler() {
         itemAdapter = new ItemAdapter<>();
-        fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+        FastAdapter<FullExamItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
 
         fastAdapter.withEventHook(new ClickEventHook<FullExamItem>() {
             @Override

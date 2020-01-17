@@ -3,14 +3,10 @@ package com.victorbg.racofib.data.notification;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-
-import androidx.work.ListenableWorker;
-
-import com.application.isradeleon.notify.Notify;
 import com.victorbg.racofib.R;
+import com.victorbg.racofib.data.background.Notify;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.utils.Utils;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
