@@ -66,7 +66,7 @@ public class SeasonCheckTask extends ListenableWorker implements LifecycleOwner 
                   }
                   completer.set(Result.success());
                 }
-              } catch (ParseException e) {
+              } catch (Exception e) {
                 Timber.d(e);
                 completer.set(Result.failure());
               }

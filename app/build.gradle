@@ -48,7 +48,7 @@ android {
 
 dependencies {
 
-    def room_version = "2.1.0"
+    def room_version = "2.2.3"
     def work_version = "1.0.1"
     def futures_version = "1.0.0"
 
@@ -85,11 +85,11 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     //Network
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.squareup.retrofit2:retrofit-mock:2.5.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
+    implementation 'com.squareup.retrofit2:retrofit-mock:2.7.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
 
     //MDC Android
     implementation 'com.google.android.material:material:1.2.0-alpha03'
@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.mikepenz:fastadapter-extensions:3.3.1'
 
     //GSON
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     //Stetho
     implementation 'com.facebook.stetho:stetho:1.5.0'
@@ -116,7 +116,7 @@ dependencies {
     implementation "android.arch.navigation:navigation-ui:1.0.0"
 
     //Dagger
-    implementation 'com.google.dagger:dagger:2.16'
+    implementation 'com.google.dagger:dagger:2.23.2'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
     annotationProcessor "com.google.dagger:dagger-android-processor:2.16"
     implementation 'com.google.dagger:dagger-android:2.16'
@@ -130,8 +130,8 @@ dependencies {
 
 
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     //Lottie
     implementation 'com.airbnb.android:lottie:3.0.0-beta1'
@@ -152,13 +152,11 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-    implementation 'com.jaredrummler:colorpicker:1.1.0'*
-
-    api 'com.google.guava:guava:27.1-android'
+    implementation 'com.jaredrummler:colorpicker:1.1.0'
 
     implementation 'me.saket:inboxrecyclerview:2.0.0-beta3'
 
-    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-core:17.2.2'
 
     //https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver
     implementation 'androidx.arch.core:core-common:2.1.0'

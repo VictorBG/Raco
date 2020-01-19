@@ -1,8 +1,8 @@
-package com.victorbg.racofib.data.domain.user;
+package com.victorbg.racofib.domain.user;
 
 import androidx.work.WorkManager;
 import com.victorbg.racofib.data.database.AppDatabase;
-import com.victorbg.racofib.data.domain.UseCase;
+import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.RepositoryCleaner;
 import com.victorbg.racofib.data.repository.base.Repository;

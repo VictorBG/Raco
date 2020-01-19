@@ -1,6 +1,6 @@
-package com.victorbg.racofib.data.domain.notes;
+package com.victorbg.racofib.domain.notes;
 
-import com.victorbg.racofib.data.domain.UseCase;
+import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.model.notes.Note;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.notes.NotesRepository;

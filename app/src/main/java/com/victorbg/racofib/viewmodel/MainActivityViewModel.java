@@ -1,8 +1,8 @@
 package com.victorbg.racofib.viewmodel;
 
-import com.victorbg.racofib.data.domain.UseCase;
-import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
-import com.victorbg.racofib.data.domain.user.LogoutUserUseCase;
+import com.victorbg.racofib.domain.UseCase;
+import com.victorbg.racofib.domain.user.LoadUserUseCase;
+import com.victorbg.racofib.domain.user.LogoutUserUseCase;
 import com.victorbg.racofib.data.model.user.User;
 
 import javax.inject.Inject;

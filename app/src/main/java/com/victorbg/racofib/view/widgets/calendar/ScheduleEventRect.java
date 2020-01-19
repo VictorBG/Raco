@@ -1,20 +1,20 @@
 package com.victorbg.racofib.view.widgets.calendar;
 
 import android.graphics.RectF;
+import androidx.annotation.Nullable;
 
 public class ScheduleEventRect {
 
-    public final ScheduleEvent event;
-    public RectF rectF;
-    public float left;
-    public float width;
-    public float top;
-    public float bottom;
+  public final ScheduleEvent event;
+  public RectF rectF;
+  public float left;
+  public float width;
+  public float top;
+  public float bottom;
 
 
-    public ScheduleEventRect(ScheduleEvent event, RectF rectF) {
-        this.event = event;
-        this.rectF = rectF;
-    }
-
+  public ScheduleEventRect(ScheduleEvent event, RectF rectF) {
+    this.event = event;
+    this.rectF = rectF;
+  }
 }

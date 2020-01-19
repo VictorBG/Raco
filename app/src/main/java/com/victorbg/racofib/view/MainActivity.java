@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
+import com.victorbg.racofib.domain.user.LoadUserUseCase;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.data.sp.PrefManager;
 import com.victorbg.racofib.view.base.BaseActivity;

@@ -1,6 +1,6 @@
-package com.victorbg.racofib.data.domain.user;
+package com.victorbg.racofib.domain.user;
 
-import com.victorbg.racofib.data.domain.UseCase;
+import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.model.user.User;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.user.UserRepository;

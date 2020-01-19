@@ -1,8 +1,8 @@
-package com.victorbg.racofib.data.domain.exams;
+package com.victorbg.racofib.domain.exams;
 
 import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.ExamDao;
-import com.victorbg.racofib.data.domain.UseCase;
+import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.repository.AppExecutors;
 

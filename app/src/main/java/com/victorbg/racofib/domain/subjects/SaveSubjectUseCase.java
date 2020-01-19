@@ -1,12 +1,10 @@
-package com.victorbg.racofib.data.domain.subjects;
+package com.victorbg.racofib.domain.subjects;
 
 import com.victorbg.racofib.data.database.AppDatabase;
 import com.victorbg.racofib.data.database.dao.SubjectsDao;
-import com.victorbg.racofib.data.domain.UseCase;
+import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.repository.AppExecutors;
-
-import java.security.InvalidParameterException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

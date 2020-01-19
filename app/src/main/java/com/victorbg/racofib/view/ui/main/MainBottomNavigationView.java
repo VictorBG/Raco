@@ -2,26 +2,20 @@ package com.victorbg.racofib.view.ui.main;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.domain.user.LoadUserUseCase;
+import com.victorbg.racofib.domain.user.LoadUserUseCase;
 import com.victorbg.racofib.data.glide.GlideRequests;
 import com.victorbg.racofib.di.injector.Injectable;
-import com.victorbg.racofib.view.widgets.bottom.MaterialBottomSheetDialogFragment;
 
 import javax.inject.Inject;
 

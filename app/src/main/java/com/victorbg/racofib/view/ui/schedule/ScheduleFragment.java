@@ -88,7 +88,7 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
         if (today < 0) today = 7;
 
 
-        float startPadding = CalendarWeekScheduleView.computeTextWidth(getContext()) + 60;
+        float startPadding = CalendarWeekScheduleView.computeTextWidth(getContext()) + 40;
         scheduleToolbar.setPadding((int) startPadding, 0, 0, 0);
         if (today <= 5) {
             if (scheduleToolbar.getChildAt(today - 1) instanceof ViewGroup) {

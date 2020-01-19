@@ -1,6 +1,6 @@
 package com.victorbg.racofib.viewmodel;
 
-import com.victorbg.racofib.data.domain.schedule.LoadScheduleUseCase;
+import com.victorbg.racofib.domain.schedule.LoadScheduleUseCase;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.repository.base.Resource;
 

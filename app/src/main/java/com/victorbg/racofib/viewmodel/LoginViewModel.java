@@ -4,7 +4,7 @@ import android.net.Uri;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.victorbg.racofib.data.domain.user.LoginUserUseCase;
+import com.victorbg.racofib.domain.user.LoginUserUseCase;
 import com.victorbg.racofib.data.repository.base.Resource;
 import javax.inject.Inject;
 

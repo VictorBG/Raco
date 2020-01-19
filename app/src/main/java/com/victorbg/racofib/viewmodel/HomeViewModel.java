@@ -1,9 +1,9 @@
 package com.victorbg.racofib.viewmodel;
 
 import androidx.lifecycle.Transformations;
-import com.victorbg.racofib.data.domain.exams.LoadCacheExamsUseCase;
-import com.victorbg.racofib.data.domain.exams.LoadExamsUseCase;
-import com.victorbg.racofib.data.domain.schedule.LoadTodayScheduleUseCase;
+import com.victorbg.racofib.domain.exams.LoadCacheExamsUseCase;
+import com.victorbg.racofib.domain.exams.LoadExamsUseCase;
+import com.victorbg.racofib.domain.schedule.LoadTodayScheduleUseCase;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.repository.base.Resource;
@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 

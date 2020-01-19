@@ -1,6 +1,6 @@
 package com.victorbg.racofib.viewmodel;
 
-import com.victorbg.racofib.data.domain.subjects.LoadSingleSubjectUseCase;
+import com.victorbg.racofib.domain.subjects.LoadSingleSubjectUseCase;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.data.repository.base.Resource;
 

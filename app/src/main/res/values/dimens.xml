@@ -3,9 +3,9 @@
     <dimen name="icon_subject_detail_width_height">96dp</dimen>
     <dimen name="bottom_sheet_corner_radius">8dp</dimen>
 
-    <dimen name="calendar_schedule_event_corner_radius">4dp</dimen>
-    <dimen name="calendar_schedule_event_overlapping_gap">2dp</dimen>
-    <dimen name="calendar_schedule_event_padding">8dp</dimen>
+    <dimen name="calendar_schedule_event_corner_radius">2dp</dimen>
+    <dimen name="calendar_schedule_event_overlapping_gap">0dp</dimen>
+    <dimen name="calendar_schedule_event_padding">4dp</dimen>
     <dimen name="calendar_schedule_hour_height">72dp</dimen>
     <dimen name="calendar_schedule_text_size">12sp</dimen>
     <dimen name="calendar_schedule_min_hour_height">72dp</dimen>

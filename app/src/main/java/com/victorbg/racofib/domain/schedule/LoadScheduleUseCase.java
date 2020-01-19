@@ -1,7 +1,7 @@
-package com.victorbg.racofib.data.domain.schedule;
+package com.victorbg.racofib.domain.schedule;
 
 import com.victorbg.racofib.data.database.AppDatabase;
-import com.victorbg.racofib.data.domain.UseCase;
+import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;

@@ -15,7 +15,7 @@ import androidx.databinding.ObservableField;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.domain.subjects.SaveSubjectUseCase;
+import com.victorbg.racofib.domain.subjects.SaveSubjectUseCase;
 import com.victorbg.racofib.data.model.subject.Grade;
 import com.victorbg.racofib.data.model.subject.Subject;
 import com.victorbg.racofib.databinding.ActivityGradeDialogBinding;

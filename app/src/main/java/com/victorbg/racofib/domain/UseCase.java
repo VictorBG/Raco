@@ -1,4 +1,4 @@
-package com.victorbg.racofib.data.domain;
+package com.victorbg.racofib.domain;
 
 
 import androidx.annotation.NonNull;
