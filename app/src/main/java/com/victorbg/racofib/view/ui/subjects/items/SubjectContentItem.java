@@ -27,7 +27,7 @@ public class SubjectContentItem extends AbstractItem<SubjectContentItem, Subject
     @NonNull
     @Override
     public SubjectContentItem.ViewHolder getViewHolder(View v) {
-        return new SubjectContentItem.ViewHolder(v);
+        return new ViewHolder(v);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SubjectContentItem extends AbstractItem<SubjectContentItem, Subject
         return R.layout.item_subject_content;
     }
 
-    public class ViewHolder extends FastAdapter.ViewHolder<SubjectContentItem> {
+    public static class ViewHolder extends FastAdapter.ViewHolder<SubjectContentItem> {
 
         @BindView(R.id.name)
         TextView name;

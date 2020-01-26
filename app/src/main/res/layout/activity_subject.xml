@@ -8,6 +8,8 @@
         <variable
             name="subject"
             type="com.victorbg.racofib.data.model.subject.Subject" />
+
+        <import type="android.graphics.Color" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -117,11 +119,10 @@
                 style="@style/Widget.MaterialComponents.TabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="?themeBackgroundColor"
+                android:background="?themeBackgroundColor"
                 app:tabIndicator="@drawable/tab_indicators"
                 app:tabMode="scrollable"
-                app:tabSelectedTextColor="?themeColorAccent"
-                app:tabTextColor="?themeSecondaryTextColor">
+                app:tabTextColor="?themePrimaryTextColor">
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"

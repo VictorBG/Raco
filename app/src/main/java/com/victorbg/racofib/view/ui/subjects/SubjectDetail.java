@@ -1,8 +1,22 @@
 package com.victorbg.racofib.view.ui.subjects;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -18,20 +32,13 @@ import com.victorbg.racofib.view.ui.subjects.pager.SubjectInfoFragment;
 import com.victorbg.racofib.view.widgets.ContentLoadingProgressBar;
 import com.victorbg.racofib.viewmodel.SubjectDetailViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,13 +74,13 @@ public class SubjectDetail extends BaseActivity implements Injectable {
 
         getSubject();
 
+
         binding.setSubject(subject);
 
         setSupportActionBar(toolbar);
         setTitle(null);
 
         viewModel.getSubject(subject.shortName).observe(this, this::handleSubjectResource);
-
     }
 
 
@@ -99,8 +106,6 @@ public class SubjectDetail extends BaseActivity implements Injectable {
                 break;
             case SUCCESS:
                 progressBar.hide();
-                //Copy color from the local subject object
-                resource.data.color = subject.color;
                 populateViewPager(resource.data);
                 break;
         }
@@ -116,20 +121,6 @@ public class SubjectDetail extends BaseActivity implements Injectable {
         SubjectPagerAdapter adapter = new SubjectPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-//                    case 1:
-//                        fab.show();
-//                        break;
-                    default:
-                        fab.hide();
-
-                }
-            }
-        });
     }
 
 
@@ -137,11 +128,12 @@ public class SubjectDetail extends BaseActivity implements Injectable {
 
         private final List<Fragment> fragments;
 
-        public SubjectPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-            super(fm);
+        SubjectPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             this.fragments = fragments;
         }
 
+        @NotNull
         @Override
         public Fragment getItem(int position) {
             return fragments.get(position);

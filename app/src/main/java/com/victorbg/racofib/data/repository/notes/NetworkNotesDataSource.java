@@ -47,31 +47,32 @@ public class NetworkNotesDataSource implements DataSource<Resource<List<Note>>> 
     @MainThread
     @Override
     public LiveData<Resource<List<Note>>> getRemoteData() {
-        MediatorLiveData<Resource<List<Note>>> result = new MediatorLiveData();
+        MediatorLiveData<Resource<List<Note>>> result = new MediatorLiveData<>();
+
+        LiveData<ApiResponse<ApiNotesResponse>> apiSource = apiService.getNotes();
+        LiveData<List<Note>> dbSource = notesDao.getNotes();
 
         result.postValue(Resource.loading(null));
 
-        LiveData<ApiResponse<ApiNotesResponse>> apiSource = apiService.getNotes("json");
-
-        result.addSource(apiSource, data -> {
-            result.removeSource(apiSource);
-            if (data.isSuccessful()) {
-                if (saveOfflineData != null) {
-                    saveOfflineData.saveData(data.body.getItems());
-                    result.addSource(notesDao.getNotes(), newData -> result.setValue(Resource.success(newData)));
-                } else {
-                    throw new RuntimeException("SaveOfflineData has not been provided");
-                }
-            } else {
-                LiveData<Resource<List<Note>>> dbSource = getOfflineData();
-                result.addSource(dbSource, dbData -> {
-                    //Only push data when is not in the loading state
-                    if (dbData.status != Status.LOADING) {
-                        result.removeSource(dbSource);
-                        result.setValue(Resource.success(dbData.data));
+        result.addSource(dbSource, dbData -> {
+            result.removeSource(dbSource);
+            result.postValue(Resource.loading(dbData));
+            result.addSource(apiSource, data -> {
+                result.removeSource(apiSource);
+                if (data.isSuccessful()) {
+                    if (saveOfflineData != null) {
+                        saveOfflineData.saveData(data.body.getItems());
+                        result.addSource(notesDao.getNotes(), newData -> result.setValue(Resource.success(newData)));
+                    } else {
+                        throw new RuntimeException("SaveOfflineData has not been provided");
                     }
-                });
-            }
+                } else {
+                    result.addSource(dbSource, d -> {
+                        result.removeSource(dbSource);
+                        result.setValue(Resource.success(d));
+                    });
+                }
+            });
         });
         return result;
     }
@@ -84,7 +85,7 @@ public class NetworkNotesDataSource implements DataSource<Resource<List<Note>>> 
     @MainThread
     @Override
     public LiveData<Resource<List<Note>>> getOfflineData() {
-        MediatorLiveData<Resource<List<Note>>> result = new MediatorLiveData();
+        MediatorLiveData<Resource<List<Note>>> result = new MediatorLiveData<>();
 
         result.postValue(Resource.loading(null));
 

@@ -48,25 +48,28 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/montserrat"
                     android:text="@{hours.theory}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"
-                    app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintEnd_toEndOf="@+id/textView25"
                     app:layout_constraintTop_toTopOf="@+id/textView6"
-                    tools:text="AC" />
+                    tools:text="7.5" />
 
                 <TextView
                     android:id="@+id/textView25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:fontFamily="@font/montserrat"
                     android:text="@{hours.autonomous}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/textView23"
                     app:layout_constraintStart_toEndOf="@+id/textView23"
                     app:layout_constraintTop_toTopOf="@+id/textView23"
-                    tools:text="AC" />
+                    tools:text="3.2" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -112,11 +115,12 @@
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/montserrat"
                     android:text="@{hours.problems}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/textView7"
-                    app:layout_constraintStart_toEndOf="@+id/textView7"
+                    app:layout_constraintEnd_toEndOf="@+id/textView25"
                     app:layout_constraintTop_toTopOf="@+id/textView7"
                     tools:text="6.0" />
 
@@ -124,29 +128,31 @@
                     android:id="@+id/textView19"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/montserrat"
                     android:text="@{hours.labs}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/textView18"
-                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintEnd_toEndOf="@+id/textView25"
                     app:layout_constraintTop_toTopOf="@+id/textView18"
                     app:layout_constraintVertical_bias="1.0"
-                    tools:text="lorem@lorem.com" />
+                    tools:text="0.0" />
 
                 <TextView
                     android:id="@+id/textView21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:autoLink="web"
+                    android:fontFamily="@font/montserrat"
                     android:linksClickable="true"
                     android:text="@{hours.guided}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/textView20"
-                    app:layout_constraintStart_toEndOf="@+id/textView20"
+                    app:layout_constraintEnd_toEndOf="@+id/textView25"
                     app:layout_constraintTop_toTopOf="@+id/textView20"
                     app:layout_constraintVertical_bias="1.0"
-                    tools:text="lorem.com" />
+                    tools:text="6.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

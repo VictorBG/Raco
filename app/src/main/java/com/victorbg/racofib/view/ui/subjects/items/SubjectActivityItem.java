@@ -11,10 +11,12 @@ import com.mikepenz.fastadapter.items.AbstractItem;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.subject.SubjectActivity;
+import com.victorbg.racofib.utils.ViewUtils;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -77,35 +79,26 @@ public class SubjectActivityItem extends AbstractItem<SubjectActivityItem, Subje
             StringHolder.applyToOrHide(new StringHolder(item.subject.name), title);
             StringHolder.applyToOrHide(new StringHolder(item.subject.desc), description);
 
-            if (item.subject.desc == null || item.subject.desc.isEmpty()) {
-                description.setVisibility(View.GONE);
-            } else {
-                description.setVisibility(View.VISIBLE);
-            }
+            ViewUtils.hideOrShow(item.subject.desc == null || item.subject.desc.isEmpty(), description);
 
             contentContainer.removeAllViews();
-            for (String content : item.subject.content) {
-                TextView contentTextView = new TextView(context);
-                contentTextView.setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Subtitle1);
-                contentTextView.setText(content);
-                contentContainer.addView(contentTextView);
-            }
+            item.subject.content.forEach(c -> contentContainer.addView(createText(c)));
 
-            if (item.subject.content == null || item.subject.content.size() == 0) {
-                contentTitle.setVisibility(View.GONE);
-                contentContainer.setVisibility(View.GONE);
-            } else {
-                contentTitle.setVisibility(View.VISIBLE);
-                contentContainer.setVisibility(View.VISIBLE);
-            }
+            ViewUtils.hideOrShow(item.subject.content == null || item.subject.content.size() == 0, contentTitle, contentContainer);
+
         }
 
+        private TextView createText(String content) {
+            TextView contentTextView = new TextView(context);
+            contentTextView.setTextAppearance(R.style.TextAppearance_MaterialComponents_Subtitle1);
+            contentTextView.setText(content);
+            return contentTextView;
+        }
 
         @Override
         public void unbindView(@NonNull SubjectActivityItem item) {
             title.setText(null);
             description.setText(null);
-
             contentContainer.removeAllViews();
         }
     }

@@ -65,9 +65,9 @@
         android:layout_margin="16dp"
         android:text="@string/add_grade_fab"
         android:textColor="@color/md_white_1000"
-        app:iconTint="@color/md_white_1000"
-        app:icon="@drawable/ic_add_black_24dp"
         app:backgroundTint="@color/accent"
+        app:icon="@drawable/ic_add_black_24dp"
+        app:iconTint="@color/md_white_1000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

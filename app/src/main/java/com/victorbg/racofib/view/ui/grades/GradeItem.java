@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -21,7 +22,7 @@ public class GradeItem extends AbstractItem<GradeItem, GradeItem.ViewHolder> {
     private Grade grade;
     private long id;
 
-    public GradeItem withGrade(Grade exam) {
+    GradeItem withGrade(Grade exam) {
         this.grade = exam;
         return this;
     }

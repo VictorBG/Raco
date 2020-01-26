@@ -13,6 +13,7 @@ import com.victorbg.racofib.data.model.subject.SubjectEvalAct;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,7 +35,7 @@ public class SubjectEvalActivityItem extends AbstractItem<SubjectEvalActivityIte
     @NonNull
     @Override
     public SubjectEvalActivityItem.ViewHolder getViewHolder(View v) {
-        return new SubjectEvalActivityItem.ViewHolder(v);
+        return new ViewHolder(v);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class SubjectEvalActivityItem extends AbstractItem<SubjectEvalActivityIte
         return R.layout.item_subject_eval_activity;
     }
 
-    public class ViewHolder extends FastAdapter.ViewHolder<SubjectEvalActivityItem> {
+    public static class ViewHolder extends FastAdapter.ViewHolder<SubjectEvalActivityItem> {
 
         @BindView(R.id.title_activity)
         TextView title;
@@ -67,14 +68,25 @@ public class SubjectEvalActivityItem extends AbstractItem<SubjectEvalActivityIte
         @Override
         public void bindView(@NonNull SubjectEvalActivityItem item, @NonNull List<Object> payloads) {
             StringHolder.applyToOrHide(new StringHolder(item.subject.name), title);
-            StringHolder.applyToOrHide(new StringHolder(item.subject.type), type);
+            StringHolder.applyToOrHide(new StringHolder(mapType(item.context, item.subject.type)), type);
             StringHolder.applyToOrHide(new StringHolder(String.valueOf(item.subject.duration)), duration);
 
             String w = String.valueOf(item.subject.week);
             if (item.subject.notInClassHours) {
-                w += " " + item.context.getString(R.string.not_class_hours_subject_eval_item);
+                w += Character.SPACE_SEPARATOR + item.context.getString(R.string.not_class_hours_subject_eval_item);
             }
             week.setText(w);
+        }
+
+        private String mapType(Context context, String type) {
+            switch (type) {
+                case "control_teoria":
+                    return context.getString(R.string.control_teoria_type);
+                case "control_laboratori":
+                    return context.getString(R.string.control_lab_type);
+                default:
+                    return type;
+            }
         }
 
 

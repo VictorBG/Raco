@@ -158,7 +158,7 @@ public class UserRepository {
   private Single<TokenResponse> loadUser(TokenResponse token) {
     setUIMessage(R.string.fetching_user_message);
 
-    return apiService.getUser(getToken(token), "json")
+    return apiService.getUser(getToken(token))
         .doOnSuccess(user -> saveOnDisk(user, userDao::insert))
         .flatMap(user -> loadSubjects(token));
   }
@@ -166,7 +166,7 @@ public class UserRepository {
   private Single<TokenResponse> loadSubjects(TokenResponse token) {
     setUIMessage(R.string.fetching_subjects_message);
 
-    return apiService.getSubjects(getToken(token), "json")
+    return apiService.getSubjects(getToken(token))
         .map(s -> s.result)
         .doOnSuccess(subjects -> {
           Utils.assignRandomColors(subjects);
@@ -179,7 +179,7 @@ public class UserRepository {
   private Single<TokenResponse> loadSubjectsSchedule(TokenResponse token) {
     setUIMessage(R.string.fetching_schedule_message);
 
-    return apiService.getSubjectsSchedule(getToken(token), "json")
+    return apiService.getSubjectsSchedule(getToken(token))
         .map(t -> t.result)
         .doOnSuccess(timetable -> {
           Optional.of(timetable).ifPresent(t -> saveOnDisk(t, subjectScheduleDao::insert));

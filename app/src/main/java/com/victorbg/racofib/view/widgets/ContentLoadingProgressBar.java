@@ -90,6 +90,7 @@ public class ContentLoadingProgressBar extends MaterialProgressBar {
             // The progress spinner has been shown long enough
             // OR was not shown yet. If it wasn't shown yet,
             // it will just never be shown.
+
             setVisibility(View.GONE);
         } else {
             // The progress spinner is shown, but not long enough,

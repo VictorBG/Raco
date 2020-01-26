@@ -12,6 +12,7 @@ import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.model.user.User;
 
 import androidx.lifecycle.LiveData;
+
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -25,12 +26,12 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @Headers({"Content-Type: application/json"})
-    @GET("jo/avisos")
-    LiveData<ApiResponse<ApiNotesResponse>> getNotes(@Query("format") String format);
+    @GET("jo/avisos?format=json")
+    LiveData<ApiResponse<ApiNotesResponse>> getNotes();
 
     @Headers({"Content-Type: application/json"})
-    @GET("jo")
-    Single<User> getUser(@Header("Authorization") String authToken, @Query("format") String format);
+    @GET("jo?format=json")
+    Single<User> getUser(@Header("Authorization") String authToken);
 
     @FormUrlEncoded
     @POST("o/token")
@@ -42,24 +43,24 @@ public interface ApiService {
             @Field("client_secret") String client_secret);
 
     @Headers({"Content-Type: application/json"})
-    @GET("jo/assignatures")
-    Single<ApiListResponse<Subject>> getSubjects(@Header("Authorization") String authToken, @Query("format") String format);
+    @GET("jo/assignatures?format=json")
+    Single<ApiListResponse<Subject>> getSubjects(@Header("Authorization") String authToken);
 
     @Headers({"Content-Type: application/json"})
-    @GET("jo/classes")
-    Single<ApiListResponse<SubjectSchedule>> getSubjectsSchedule(@Header("Authorization") String authToken, @Query("format") String format);
+    @GET("jo/classes?format=json")
+    Single<ApiListResponse<SubjectSchedule>> getSubjectsSchedule(@Header("Authorization") String authToken);
 
     @Headers({"Content-Type: application/json"})
-    @GET("quadrimestres/actual")
-    Single<Semester> getCurrentSemester(@Query("format") String format);
+    @GET("quadrimestres/actual?format=json")
+    Single<Semester> getCurrentSemester();
 
     @Headers({"Content-Type: application/json"})
-    @GET("quadrimestres/{semester}/examens")
-    Single<ApiListResponse<Exam>> getExams(@Path("semester") String semester, @Query("format") String format, @Query("assig") String subject);
+    @GET("quadrimestres/{semester}/examens?format=json")
+    Single<ApiListResponse<Exam>> getExams(@Path("semester") String semester, @Query("assig") String subject);
 
     @Headers({"Content-Type: application/json"})
-    @GET("assignatures/{subject}/guia")
-    Single<Subject> getSubject(@Path("subject") String subject, @Query("format") String format);
+    @GET("assignatures/{subject}/guia?format=json")
+    Single<Subject> getSubject(@Path("subject") String subject);
 
     @Headers({"Content-Type: application/json"})
     @GET("events/?format=json")

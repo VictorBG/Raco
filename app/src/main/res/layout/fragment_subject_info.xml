@@ -79,6 +79,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/mail_dots"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:visibility="@{subject.getVisibility(subject.mail)}"
                     app:layout_constraintStart_toStartOf="@+id/textView7"
                     app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -89,6 +90,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/website_dots"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:visibility="@{subject.getVisibility(subject.web)}"
                     app:layout_constraintStart_toStartOf="@+id/textView6"
                     app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -111,6 +113,7 @@
                     android:layout_marginStart="8dp"
                     android:text="@{subject.mail}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:visibility="@{subject.getVisibility(subject.mail)}"
                     app:layout_constraintBottom_toBottomOf="@+id/textView18"
                     app:layout_constraintStart_toEndOf="@+id/textView18"
                     app:layout_constraintTop_toTopOf="@+id/textView18"
@@ -126,6 +129,7 @@
                     android:linksClickable="true"
                     android:text="@{subject.web}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:visibility="@{subject.getVisibility(subject.web)}"
                     app:layout_constraintBottom_toBottomOf="@+id/textView20"
                     app:layout_constraintStart_toEndOf="@+id/textView20"
                     app:layout_constraintTop_toTopOf="@+id/textView20"
@@ -162,7 +166,7 @@
                 android:text="@string/description"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textStyle="bold"
-                android:visibility="@{subject.description==null || subject.description.isEmpty()? View.GONE: View.VISIBLE}" />
+                android:visibility="@{subject.getVisibility(subject.description)}" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -171,10 +175,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:justificationMode="inter_word"
                 android:text="@{subject.description}"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:textSize="14sp"
-                android:visibility="@{subject.description==null || subject.description.isEmpty()? View.GONE: View.VISIBLE}"
+                android:visibility="@{subject.getVisibility(subject.description)}"
                 tools:text="Lorem ipsum dolor sit amet consecutur" />
 
             <TextView
@@ -194,6 +199,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:justificationMode="inter_word"
                 android:text="@{subject.docentMetodology}"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:textSize="14sp"
@@ -216,6 +222,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:justificationMode="inter_word"
                 android:text="@{subject.evaluationMetodology}"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:textSize="14sp"
@@ -238,6 +245,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:justificationMode="inter_word"
                 android:text="@{subject.requirements}"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:textSize="14sp"

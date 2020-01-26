@@ -53,11 +53,11 @@ public class NetworkExamsDataSource implements DataSource<Resource<List<Exam>>> 
         MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData<>();
 
         compositeDisposable.add(
-                apiService.getCurrentSemester("json").flatMap(semester -> {
+                apiService.getCurrentSemester().flatMap(semester -> {
 
                     String exams = Utils.getStringSubjectsApi(subjects);
 
-                    return apiService.getExams(semester.id, "json", exams).flatMap(data -> {
+                    return apiService.getExams(semester.id, exams).flatMap(data -> {
                         Utils.sortExamsList(data.result);
                         return Single.just(data.result);
                     });

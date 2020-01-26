@@ -3,9 +3,11 @@ package com.victorbg.racofib.data.model.subject;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
 import com.victorbg.racofib.data.database.converters.GradesConverter;
+import com.victorbg.racofib.view.base.BindedModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.util.StringUtil;
 
 @Entity(tableName = "Subjects")
-public class Subject implements Parcelable {
+public class Subject extends BindedModel implements Parcelable {
 
     @NonNull
     @PrimaryKey

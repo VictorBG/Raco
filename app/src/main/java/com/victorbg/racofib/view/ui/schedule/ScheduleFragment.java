@@ -44,12 +44,10 @@ public class ScheduleFragment extends BaseFragment implements Injectable {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private ScheduleViewModel scheduleViewModel;
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        scheduleViewModel = ViewModelProviders.of(this, viewModelFactory).get(ScheduleViewModel.class);
+        ScheduleViewModel scheduleViewModel = ViewModelProviders.of(this, viewModelFactory).get(ScheduleViewModel.class);
         scheduleViewModel.getSchedule(true).observe(this, this::onChanged);
     }
 

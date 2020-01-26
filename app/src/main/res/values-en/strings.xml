@@ -116,5 +116,7 @@
   <string name="upcoming_exams">Upcoming exams</string>
     <string name="add_grade_fab">Añadir nota</string>
     <string name="grade">Nota</string>
+    <string name="control_teoria_type">Control teoría</string>
+    <string name="control_lab_type">Control laboratorio</string>
 
 </resources>
