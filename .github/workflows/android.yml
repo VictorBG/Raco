@@ -13,5 +13,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Gradle
-      run: ./gradlew clean build connectedCheck
+    - name: setup-android
+      uses: msfjarvis/setup-android@0.2
+      with:
+        entrypoint: ./gradlew
+        args: dependencies spotlessApply assembleDebug
