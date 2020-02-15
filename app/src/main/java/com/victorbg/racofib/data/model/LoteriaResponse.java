@@ -1,6 +1,5 @@
 package com.victorbg.racofib.data.model;
 
-
 public class LoteriaResponse {
 
   public int numero;

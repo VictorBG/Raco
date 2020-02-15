@@ -7,7 +7,6 @@ import com.victorbg.racofib.data.repository.base.SaveOfflineData;
 
 import java.util.List;
 
-
 public class ExamsSaveOfflineData implements SaveOfflineData<List<Exam>> {
 
   private final AppDatabase appDatabase;

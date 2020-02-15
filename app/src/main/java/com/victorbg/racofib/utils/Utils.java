@@ -1,6 +1,5 @@
 package com.victorbg.racofib.utils;
 
-
 import com.victorbg.racofib.data.model.ColoredResource;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.notes.Note;
