@@ -69,6 +69,7 @@ public class AppRaco extends Application implements HasActivityInjector {
         }
 
         int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        prefManager.setDarkTheme(currentNightMode == UI_MODE_NIGHT_YES);
+//        prefManager.setDarkTheme(currentNightMode == UI_MODE_NIGHT_YES);
+        prefManager.setDarkTheme(true);
     }
 }

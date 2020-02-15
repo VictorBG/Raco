@@ -10,7 +10,7 @@ android {
         applicationId "com.victorbg.racofib"
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 11
+        versionCode 12
         versionName '2.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

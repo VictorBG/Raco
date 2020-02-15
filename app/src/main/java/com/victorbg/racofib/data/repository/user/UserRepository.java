@@ -75,7 +75,7 @@ public class UserRepository {
     this.subjectsDao = appDatabase.subjectsDao();
     this.subjectScheduleDao = appDatabase.subjectScheduleDao();
 
-    userMutableLiveData.setValue(null);
+    userMutableLiveData.postValue(null);
   }
 
   /**

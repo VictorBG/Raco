@@ -11,6 +11,7 @@ import com.victorbg.racofib.view.base.BindedModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -127,7 +128,7 @@ public class Subject extends BindedModel implements Parcelable {
     }
 
     protected Subject(Parcel in) {
-        this.id = in.readString();
+        this.id = Objects.requireNonNull(in.readString());
         this.subjectUrl = in.readString();
         this.guideUrl = in.readString();
         this.group = in.readString();
