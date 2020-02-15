@@ -9,13 +9,11 @@ import retrofit2.http.POST;
 
 public interface AuthService {
 
-    @FormUrlEncoded
-    @POST("o/token")
-    Call<TokenResponse> refreshToken(
-            @Field("grant_type") String grantType,
-            @Field("refresh_token") String code,
-            @Field("client_id") String clientID,
-            @Field("client_secret") String clientSecret);
-
-
+  @FormUrlEncoded
+  @POST("o/token")
+  Call<TokenResponse> refreshToken(
+      @Field("grant_type") String grantType,
+      @Field("refresh_token") String code,
+      @Field("client_id") String clientID,
+      @Field("client_secret") String clientSecret);
 }

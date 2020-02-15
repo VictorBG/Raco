@@ -44,124 +44,139 @@ import butterknife.OnClick;
 
 import org.jetbrains.annotations.NotNull;
 
-//TODO: refactor this into ProfileFragment
+// TODO: refactor this into ProfileFragment
 public class SubjectsFragment extends BaseFragment implements Injectable {
 
-    @BindView(R.id.recycler_notes)
-    RecyclerView recyclerView;
-    @BindView(R.id.animation_view)
-    LottieAnimationView animationView;
-    @BindView(R.id.error_state_message)
-    TextView errorTextView;
-    @BindView(R.id.profilePicture)
-    ImageView profilePicture;
-    @BindView(R.id.name)
-    TextView name;
-    @BindView(R.id.mail)
-    TextView mail;
+  @BindView(R.id.recycler_notes)
+  RecyclerView recyclerView;
 
-    private ItemAdapter<SubjectItem> itemAdapter;
-    private SubjectsViewModel subjectsViewModel;
+  @BindView(R.id.animation_view)
+  LottieAnimationView animationView;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+  @BindView(R.id.error_state_message)
+  TextView errorTextView;
 
-    @Inject
-    GlideRequests glideRequests;
+  @BindView(R.id.profilePicture)
+  ImageView profilePicture;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
-        subjectsViewModel.getSubjects().observe(this, this::onChanged);
-        subjectsViewModel.getUser().observe(this, (user) ->
-                Optional.ofNullable(user).ifPresent(u -> {
-                    name.setText(u.getFullname());
-                    mail.setText(u.mail);
-                    glideRequests.loadImage(profilePicture, u.photoUrl);
-                }));
-    }
+  @BindView(R.id.name)
+  TextView name;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
+  @BindView(R.id.mail)
+  TextView mail;
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setRecycler();
-    }
+  private ItemAdapter<SubjectItem> itemAdapter;
+  private SubjectsViewModel subjectsViewModel;
 
-    private void setRecycler() {
-        itemAdapter = new ItemAdapter<>();
-        FastAdapter<SubjectItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+  @Inject ViewModelProvider.Factory viewModelFactory;
 
-        fastAdapter.withEventHook(new ClickEventHook<SubjectItem>() {
-            @Override
-            public void onClick(@NotNull View v, int position, @NotNull FastAdapter<SubjectItem> fastAdapter,
-                                @NotNull SubjectItem item) {
-                ActionSubjectsFragmentToSubjectDetailFragment2 action = SubjectsFragmentDirections
-                        .actionSubjectsFragmentToSubjectDetailFragment2(item.getSubject());
-                Navigation.findNavController(v).navigate(R.id.subjectDetailFragment, action.getArguments());
+  @Inject GlideRequests glideRequests;
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    subjectsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SubjectsViewModel.class);
+    subjectsViewModel.getSubjects().observe(this, this::onChanged);
+    subjectsViewModel
+        .getUser()
+        .observe(
+            this,
+            (user) ->
+                Optional.ofNullable(user)
+                    .ifPresent(
+                        u -> {
+                          name.setText(u.getFullname());
+                          mail.setText(u.mail);
+                          glideRequests.loadImage(profilePicture, u.photoUrl);
+                        }));
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_profile, container, false);
+  }
+
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    setRecycler();
+  }
+
+  private void setRecycler() {
+    itemAdapter = new ItemAdapter<>();
+    FastAdapter<SubjectItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+
+    fastAdapter.withEventHook(
+        new ClickEventHook<SubjectItem>() {
+          @Override
+          public void onClick(
+              @NotNull View v,
+              int position,
+              @NotNull FastAdapter<SubjectItem> fastAdapter,
+              @NotNull SubjectItem item) {
+            ActionSubjectsFragmentToSubjectDetailFragment2 action =
+                SubjectsFragmentDirections.actionSubjectsFragmentToSubjectDetailFragment2(
+                    item.getSubject());
+            Navigation.findNavController(v)
+                .navigate(R.id.subjectDetailFragment, action.getArguments());
+          }
+
+          @javax.annotation.Nullable
+          @Override
+          public View onBind(RecyclerView.ViewHolder viewHolder) {
+            if (viewHolder instanceof SubjectItem.ViewHolder) {
+              return ((SubjectItem.ViewHolder) viewHolder).cardView;
             }
-
-            @javax.annotation.Nullable
-            @Override
-            public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof SubjectItem.ViewHolder) {
-                    return ((SubjectItem.ViewHolder) viewHolder).cardView;
-                }
-                return null;
-            }
-
+            return null;
+          }
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(fastAdapter);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setAdapter(fastAdapter);
+  }
+
+  public void onChanged(List<Subject> list) {
+    if (list == null || list.isEmpty()) {
+      setLayout(true);
+      return;
+    }
+    setLayout(false);
+    List<SubjectItem> items = new ArrayList<>();
+    for (Subject subject : list) {
+      items.add(new SubjectItem().withSubject(subject));
     }
 
-    public void onChanged(List<Subject> list) {
-        if (list == null || list.isEmpty()) {
-            setLayout(true);
-            return;
-        }
-        setLayout(false);
-        List<SubjectItem> items = new ArrayList<>();
-        for (Subject subject : list) {
-            items.add(new SubjectItem().withSubject(subject));
-        }
+    itemAdapter.setNewList(items);
+    recyclerView.scrollToPosition(0);
+  }
 
-        itemAdapter.setNewList(items);
-        recyclerView.scrollToPosition(0);
+  private void setLayout(boolean empty) {
+
+    int errorTvVis;
+    int animVis = errorTvVis = (empty) ? View.VISIBLE : View.GONE;
+    int recyclerVis = (!empty) ? View.VISIBLE : View.GONE;
+    errorTextView.setVisibility(errorTvVis);
+    errorTextView.setText(R.string.no_content_message);
+    animationView.setVisibility(animVis);
+    recyclerView.setVisibility(recyclerVis);
+    if (empty) {
+      animationView.playAnimation();
     }
+  }
 
-    private void setLayout(boolean empty) {
+  @OnClick(R.id.settings)
+  public void openSettings(View v) {
+    startActivity(new Intent(getActivity(), SettingsActivity.class));
+    // TODO: change for navigation
+  }
 
-        int errorTvVis;
-        int animVis = errorTvVis = (empty) ? View.VISIBLE : View.GONE;
-        int recyclerVis = (!empty) ? View.VISIBLE : View.GONE;
-        errorTextView.setVisibility(errorTvVis);
-        errorTextView.setText(R.string.no_content_message);
-        animationView.setVisibility(animVis);
-        recyclerView.setVisibility(recyclerVis);
-        if (empty) {
-            animationView.playAnimation();
-        }
-
-    }
-
-    @OnClick(R.id.settings)
-    public void openSettings(View v) {
-        startActivity(new Intent(getActivity(), SettingsActivity.class));
-        // TODO: change for navigation
-    }
-
-    @OnClick(R.id.logoutButton)
-    public void logout(View v) {
-        subjectsViewModel.logout();
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-        getActivity().finish();
-    }
+  @OnClick(R.id.logoutButton)
+  public void logout(View v) {
+    subjectsViewModel.logout();
+    startActivity(new Intent(getActivity(), LoginActivity.class));
+    getActivity().finish();
+  }
 }

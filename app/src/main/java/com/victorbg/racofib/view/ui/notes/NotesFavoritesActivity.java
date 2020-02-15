@@ -38,163 +38,170 @@ import butterknife.BindView;
 
 public class NotesFavoritesActivity extends BaseActivity implements Injectable {
 
-    @BindView(R.id.recycler_notes)
-    RecyclerView recyclerView;
-    @BindView(R.id.animation_view)
-    LottieAnimationView animationView;
-    @BindView(R.id.error_state_message)
-    TextView errorTextView;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+  @BindView(R.id.recycler_notes)
+  RecyclerView recyclerView;
 
-    private ItemAdapter<NoteItem> itemAdapter;
-    FastAdapter<NoteItem> fastAdapter;
+  @BindView(R.id.animation_view)
+  LottieAnimationView animationView;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+  @BindView(R.id.error_state_message)
+  TextView errorTextView;
 
-    private PublicationsViewModel publicationsViewModel;
+  @BindView(R.id.toolbar)
+  Toolbar toolbar;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_notes);
+  private ItemAdapter<NoteItem> itemAdapter;
+  FastAdapter<NoteItem> fastAdapter;
 
-        publicationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
+  @Inject ViewModelProvider.Factory viewModelFactory;
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(R.string.saved_notes_title);
+  private PublicationsViewModel publicationsViewModel;
 
-        setRecycler();
-    }
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_saved_notes);
 
-    @Override
-    public void onStart() {
-        super.onStart();
-//        reload();
-    }
+    publicationsViewModel =
+        ViewModelProviders.of(this, viewModelFactory).get(PublicationsViewModel.class);
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        publicationsViewModel.getPublications().removeObservers(this);
-    }
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    setTitle(R.string.saved_notes_title);
 
-    @Override
-    public void onBackPressed() {
-        finishAfterTransition();
-    }
+    setRecycler();
+  }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
+  @Override
+  public void onStart() {
+    super.onStart();
+    //        reload();
+  }
 
-    private void reload() {
-        publicationsViewModel.getPublications().removeObservers(this);
-        publicationsViewModel.reload();
-        publicationsViewModel.getSavedPublications().observe(this, listResource ->
-                new Handler().postDelayed(() -> onChanged(listResource), 200));
-    }
+  @Override
+  public void onStop() {
+    super.onStop();
+    publicationsViewModel.getPublications().removeObservers(this);
+  }
 
-    private void setRecycler() {
+  @Override
+  public void onBackPressed() {
+    finishAfterTransition();
+  }
 
-        itemAdapter = new ItemAdapter<>();
-        fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+  @Override
+  public boolean onSupportNavigateUp() {
+    onBackPressed();
+    return true;
+  }
 
-        fastAdapter.withEventHook(new ClickEventHook<NoteItem>() {
-            @Override
-            public void onClick(View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
-//                Intent intent = new Intent(NotesFavoritesActivity.this, NoteDetail.class);
-//                intent.putExtra("TEST", item.getNote());
-//                NotesFavoritesActivity.this.startActivity(intent);
+  private void reload() {
+    publicationsViewModel.getPublications().removeObservers(this);
+    publicationsViewModel.reload();
+    publicationsViewModel
+        .getSavedPublications()
+        .observe(
+            this, listResource -> new Handler().postDelayed(() -> onChanged(listResource), 200));
+  }
+
+  private void setRecycler() {
+
+    itemAdapter = new ItemAdapter<>();
+    fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+
+    fastAdapter.withEventHook(
+        new ClickEventHook<NoteItem>() {
+          @Override
+          public void onClick(
+              View v, int position, FastAdapter<NoteItem> fastAdapter, NoteItem item) {
+            //                Intent intent = new Intent(NotesFavoritesActivity.this,
+            // NoteDetail.class);
+            //                intent.putExtra("TEST", item.getNote());
+            //                NotesFavoritesActivity.this.startActivity(intent);
+          }
+
+          @javax.annotation.Nullable
+          @Override
+          public View onBind(RecyclerView.ViewHolder viewHolder) {
+            if (viewHolder instanceof NoteItem.ViewHolder) {
+              return ((NoteItem.ViewHolder) viewHolder).itemView;
             }
-
-            @javax.annotation.Nullable
-            @Override
-            public View onBind(RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder instanceof NoteItem.ViewHolder) {
-                    return ((NoteItem.ViewHolder) viewHolder).itemView;
-                }
-                return null;
-            }
-
+            return null;
+          }
         });
 
-        Drawable removeFromFav = getDrawable(R.drawable.ic_remove_fav);
-        int removeFromFavColor = getResources().getColor(R.color.md_red_400);
+    Drawable removeFromFav = getDrawable(R.drawable.ic_remove_fav);
+    int removeFromFavColor = getResources().getColor(R.color.md_red_400);
 
-        SwipeCallback simpleSwipeCallback = new SwipeCallback((pos, dir) -> {
-            fastAdapter.notifyItemChanged(pos);
-            publicationsViewModel.changeFavoriteState(itemAdapter.getAdapterItem(pos).getNote());
-            itemAdapter.remove(pos);
-            fastAdapter.notifyAdapterItemRemoved(pos);
-            showSnackbar(getString(R.string.removed_from_favorites));
-
-
-        }, new SwipeCallback.ItemSwipeDrawableCallback() {
-            @Override
-            public Drawable getDrawable(int position) {
+    SwipeCallback simpleSwipeCallback =
+        new SwipeCallback(
+            (pos, dir) -> {
+              fastAdapter.notifyItemChanged(pos);
+              publicationsViewModel.changeFavoriteState(itemAdapter.getAdapterItem(pos).getNote());
+              itemAdapter.remove(pos);
+              fastAdapter.notifyAdapterItemRemoved(pos);
+              showSnackbar(getString(R.string.removed_from_favorites));
+            },
+            new SwipeCallback.ItemSwipeDrawableCallback() {
+              @Override
+              public Drawable getDrawable(int position) {
                 return removeFromFav;
-            }
+              }
 
-            @Override
-            public int getColor(int position) {
+              @Override
+              public int getColor(int position) {
                 return removeFromFavColor;
-            }
-        });
+              }
+            });
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleSwipeCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleSwipeCallback);
+    itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(fastAdapter);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    recyclerView.setAdapter(fastAdapter);
+  }
 
+  public void onChanged(List<Note> notes) {
+    if (notes == null || notes.size() == 0) {
+      onChangedState(Status.ERROR, getString(R.string.no_content_message));
+      return;
+    }
+    onChangedState(Status.SUCCESS, null);
+    List<NoteItem> items = new ArrayList<>();
+    for (Note note : notes) {
+      items.add(new NoteItem().withNote(note));
     }
 
-    public void onChanged(List<Note> notes) {
-        if (notes == null || notes.size() == 0) {
-            onChangedState(Status.ERROR, getString(R.string.no_content_message));
-            return;
-        }
-        onChangedState(Status.SUCCESS, null);
-        List<NoteItem> items = new ArrayList<>();
-        for (Note note : notes) {
-            items.add(new NoteItem().withNote(note));
-        }
+    // Prevent recreating the whole list when there are identical items (based on title and subject)
 
-        //Prevent recreating the whole list when there are identical items (based on title and subject)
+    DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
+    FastAdapterDiffUtil.set(itemAdapter, diffs);
 
-        DiffUtil.DiffResult diffs = FastAdapterDiffUtil.calculateDiff(itemAdapter, items);
-        FastAdapterDiffUtil.set(itemAdapter, diffs);
+    //        recyclerView.scrollToPosition(0);
+  }
 
-//        recyclerView.scrollToPosition(0);
+  private void onChangedState(final Status st, String message) {
+
+    int errorTvVis;
+    int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.INVISIBLE;
+    int rvVis = (st == Status.ERROR) ? View.INVISIBLE : View.VISIBLE;
+
+    errorTextView.setVisibility(errorTvVis);
+    errorTextView.setText(message);
+    animationView.setVisibility(animVis);
+    recyclerView.setVisibility(rvVis);
+    if (animVis == View.VISIBLE) {
+      animationView.playAnimation();
     }
+  }
 
-    private void onChangedState(final Status st, String message) {
+  @Override
+  protected int getLightTheme() {
+    return R.style.AppTheme_NoteDetail_Light;
+  }
 
-        int errorTvVis;
-        int animVis = errorTvVis = (st == Status.ERROR) ? View.VISIBLE : View.INVISIBLE;
-        int rvVis = (st == Status.ERROR) ? View.INVISIBLE : View.VISIBLE;
-
-        errorTextView.setVisibility(errorTvVis);
-        errorTextView.setText(message);
-        animationView.setVisibility(animVis);
-        recyclerView.setVisibility(rvVis);
-        if (animVis == View.VISIBLE) {
-            animationView.playAnimation();
-        }
-    }
-
-    @Override
-    protected int getLightTheme() {
-        return R.style.AppTheme_NoteDetail_Light;
-    }
-
-    @Override
-    protected int getDarkTheme() {
-        return R.style.AppTheme_NoteDetail_Dark;
-    }
+  @Override
+  protected int getDarkTheme() {
+    return R.style.AppTheme_NoteDetail_Dark;
+  }
 }

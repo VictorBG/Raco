@@ -6,6 +6,6 @@ import java.util.List;
 
 public class ApiListResponse<T> {
 
-    @SerializedName("results")
-    public List<T> result;
+  @SerializedName("results")
+  public List<T> result;
 }

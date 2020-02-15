@@ -30,8 +30,12 @@ public class SeasonCheckTask extends ListenableWorker implements LifecycleOwner 
 
   private LifecycleRegistry lifecycle = new LifecycleRegistry(this);
 
-  public SeasonCheckTask(@NonNull Context context, @NonNull WorkerParameters workerParams, @NonNull EventsRepository eventsRepository, @NonNull
-      PrefManager prefManager, @NonNull UserRepository userRepository) {
+  public SeasonCheckTask(
+      @NonNull Context context,
+      @NonNull WorkerParameters workerParams,
+      @NonNull EventsRepository eventsRepository,
+      @NonNull PrefManager prefManager,
+      @NonNull UserRepository userRepository) {
     super(context, workerParams);
     this.eventsRepository = eventsRepository;
     this.prefManager = prefManager;
@@ -49,36 +53,46 @@ public class SeasonCheckTask extends ListenableWorker implements LifecycleOwner 
   @NonNull
   @Override
   public ListenableFuture<Result> startWork() {
-    return CallbackToFutureAdapter.getFuture(completer -> {
-      Optional.ofNullable(eventsRepository).ifPresent(rep -> {
-        LiveData<Resource<EventSeason>> eventSeason = rep.getSeason();
-        eventSeason.observe(this, season -> {
-          if (season.status != Status.LOADING) {
-            if (prefManager.hasSeason()) {
-              try {
-                int start;
-                if ((start = prefManager.getSeasonStart().compareTo(season.data.start)) != 0
-                    || prefManager.getSeasonEnd().compareTo(season.data.end) != 0) {
-                  prefManager.saveSeason(season.data);
-                  if (start != 0) {
-                    // Reload user on background when the start dates are differents, only start dates, end date is not important
-                    userRepository.reloadUser(getApplicationContext());
-                  }
-                  completer.set(Result.success());
-                }
-              } catch (Exception e) {
-                Timber.d(e);
-                completer.set(Result.failure());
-              }
-            } else {
-              prefManager.saveSeason(season.data);
-              completer.set(Result.success());
-            }
-          }
+    return CallbackToFutureAdapter.getFuture(
+        completer -> {
+          Optional.ofNullable(eventsRepository)
+              .ifPresent(
+                  rep -> {
+                    LiveData<Resource<EventSeason>> eventSeason = rep.getSeason();
+                    eventSeason.observe(
+                        this,
+                        season -> {
+                          if (season.status != Status.LOADING) {
+                            if (prefManager.hasSeason()) {
+                              try {
+                                int start;
+                                if ((start =
+                                            prefManager
+                                                .getSeasonStart()
+                                                .compareTo(season.data.start))
+                                        != 0
+                                    || prefManager.getSeasonEnd().compareTo(season.data.end) != 0) {
+                                  prefManager.saveSeason(season.data);
+                                  if (start != 0) {
+                                    // Reload user on background when the start dates are
+                                    // differents, only start dates, end date is not important
+                                    userRepository.reloadUser(getApplicationContext());
+                                  }
+                                  completer.set(Result.success());
+                                }
+                              } catch (Exception e) {
+                                Timber.d(e);
+                                completer.set(Result.failure());
+                              }
+                            } else {
+                              prefManager.saveSeason(season.data);
+                              completer.set(Result.success());
+                            }
+                          }
+                        });
+                  });
+          return "SeasonCheckTask.startWork";
         });
-      });
-      return "SeasonCheckTask.startWork";
-    });
   }
 
   public static class Factory implements ChildWorkerFactory {
@@ -88,7 +102,8 @@ public class SeasonCheckTask extends ListenableWorker implements LifecycleOwner 
     private UserRepository userRepository;
 
     @Inject
-    public Factory(EventsRepository eventsRepository, PrefManager prefManager, UserRepository userRepository) {
+    public Factory(
+        EventsRepository eventsRepository, PrefManager prefManager, UserRepository userRepository) {
       this.eventsRepository = eventsRepository;
       this.prefManager = prefManager;
       this.userRepository = userRepository;
@@ -96,7 +111,8 @@ public class SeasonCheckTask extends ListenableWorker implements LifecycleOwner 
 
     @Override
     public ListenableWorker create(Context context, WorkerParameters workerParameters) {
-      return new SeasonCheckTask(context, workerParameters, eventsRepository, prefManager, userRepository);
+      return new SeasonCheckTask(
+          context, workerParameters, eventsRepository, prefManager, userRepository);
     }
   }
 }

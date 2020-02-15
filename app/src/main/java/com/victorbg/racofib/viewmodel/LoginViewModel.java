@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 public class LoginViewModel extends ViewModel {
 
-
   private final LoginUserUseCase loginUserUseCase;
 
   @Inject

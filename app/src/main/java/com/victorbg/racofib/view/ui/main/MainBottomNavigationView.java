@@ -28,133 +28,143 @@ import butterknife.OnClick;
 
 public class MainBottomNavigationView extends BottomSheetDialogFragment implements Injectable {
 
-    @BindView(R.id.profileLayout)
-    ConstraintLayout profileLayout;
-    @BindView(R.id.profile_image)
-    ImageView profileImage;
-    @BindView(R.id.navigation_view)
-    NavigationView navigationView;
-    @BindView(R.id.name)
-    TextView name;
-    @BindView(R.id.username)
-    TextView username;
-    @BindView(R.id.container_main_nav)
-    ConstraintLayout constraintLayout;
+  @BindView(R.id.profileLayout)
+  ConstraintLayout profileLayout;
 
-    private MenuListener menuListener;
+  @BindView(R.id.profile_image)
+  ImageView profileImage;
 
-    @Inject
-    LoadUserUseCase loadUserUseCase;
+  @BindView(R.id.navigation_view)
+  NavigationView navigationView;
 
-    @Inject
-    GlideRequests glideRequests;
+  @BindView(R.id.name)
+  TextView name;
 
-    private boolean profileOpened = false;
-    private int selectedItem = R.id.homeFragment;
+  @BindView(R.id.username)
+  TextView username;
 
-    public static MainBottomNavigationView getMenu(MenuListener menuListener, int id) {
-        return new MainBottomNavigationView().withListener(menuListener).withInitialMenu(id);
-    }
+  @BindView(R.id.container_main_nav)
+  ConstraintLayout constraintLayout;
 
-    private MainBottomNavigationView withListener(MenuListener listener) {
-        this.menuListener = listener;
-        return this;
-    }
+  private MenuListener menuListener;
 
-    private MainBottomNavigationView withInitialMenu(int initialId) {
-        this.selectedItem = initialId;
-        return this;
-    }
+  @Inject LoadUserUseCase loadUserUseCase;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  @Inject GlideRequests glideRequests;
 
-    }
+  private boolean profileOpened = false;
+  private int selectedItem = R.id.homeFragment;
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);  // setContentView called here
-        ((View) getView().getParent()).setBackgroundColor(Color.TRANSPARENT);
-    }
+  public static MainBottomNavigationView getMenu(MenuListener menuListener, int id) {
+    return new MainBottomNavigationView().withListener(menuListener).withInitialMenu(id);
+  }
 
-    @SuppressLint("SetTextI18n")
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.main_navigation_bottom, container);
+  private MainBottomNavigationView withListener(MenuListener listener) {
+    this.menuListener = listener;
+    return this;
+  }
 
-        ButterKnife.bind(this, rootView);
+  private MainBottomNavigationView withInitialMenu(int initialId) {
+    this.selectedItem = initialId;
+    return this;
+  }
 
-        return rootView;
-    }
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState); // setContentView called here
+    ((View) getView().getParent()).setBackgroundColor(Color.TRANSPARENT);
+  }
 
-        LayoutTransition transition = new LayoutTransition();
-        transition.setAnimateParentHierarchy(false);
-//        constraintLayout.setLayoutTransition(transition);
+  @SuppressLint("SetTextI18n")
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View rootView = inflater.inflate(R.layout.main_navigation_bottom, container);
 
-        navigationView.getMenu().findItem(selectedItem).setChecked(true);
+    ButterKnife.bind(this, rootView);
 
-        navigationView.setNavigationItemSelectedListener(menuItem -> {
-            selectItem(menuItem.getItemId(), true);
+    return rootView;
+  }
 
-            return true;
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    LayoutTransition transition = new LayoutTransition();
+    transition.setAnimateParentHierarchy(false);
+    //        constraintLayout.setLayoutTransition(transition);
+
+    navigationView.getMenu().findItem(selectedItem).setChecked(true);
+
+    navigationView.setNavigationItemSelectedListener(
+        menuItem -> {
+          selectItem(menuItem.getItemId(), true);
+
+          return true;
         });
 
-        displayUserInfo();
+    displayUserInfo();
 
-        profileImage.setOnClickListener((v) -> {
-            profileOpened = !profileOpened;
-            profileLayout.setVisibility(profileOpened ? View.VISIBLE : View.GONE);
-//            if (profileOpened) {
-//                transition.showChild(constraintLayout, profileLayout, View.GONE);
-//            } else {
-//                transition.hideChild(constraintLayout, profileLayout, View.GONE);
-//            }
+    profileImage.setOnClickListener(
+        (v) -> {
+          profileOpened = !profileOpened;
+          profileLayout.setVisibility(profileOpened ? View.VISIBLE : View.GONE);
+          //            if (profileOpened) {
+          //                transition.showChild(constraintLayout, profileLayout, View.GONE);
+          //            } else {
+          //                transition.hideChild(constraintLayout, profileLayout, View.GONE);
+          //            }
         });
+  }
+
+  public void selectItem(int id, boolean dispatchClick) {
+    if (selectedItem == id) {
+      //            if (dispatchClick && menuListener != null) {
+      //                menuListener.onMenuRepeatClick(id);
+      //            }
+      return;
     }
-
-    public void selectItem(int id, boolean dispatchClick) {
-        if (selectedItem == id) {
-//            if (dispatchClick && menuListener != null) {
-//                menuListener.onMenuRepeatClick(id);
-//            }
-            return;
-        }
-//        if (id != R.id.settings_menu) {
-//            navigationView.getMenu().findItem(selectedItem).setChecked(false);
-//            selectedItem = id;
-//            navigationView.getMenu().findItem(selectedItem).setChecked(true);
-//        }
-        if (dispatchClick && menuListener != null) {
-            menuListener.onMenuClick(id);
-        }
+    //        if (id != R.id.settings_menu) {
+    //            navigationView.getMenu().findItem(selectedItem).setChecked(false);
+    //            selectedItem = id;
+    //            navigationView.getMenu().findItem(selectedItem).setChecked(true);
+    //        }
+    if (dispatchClick && menuListener != null) {
+      menuListener.onMenuClick(id);
     }
+  }
 
-    @SuppressLint("SetTextI18n")
-    private void displayUserInfo() {
-        loadUserUseCase.execute().observe(this, user -> {
-            name.setText(user.name + " " + user.surnames);
-            username.setText(user.username);
-            glideRequests.loadImage(profileImage, user.photoUrl);
-        });
+  @SuppressLint("SetTextI18n")
+  private void displayUserInfo() {
+    loadUserUseCase
+        .execute()
+        .observe(
+            this,
+            user -> {
+              name.setText(user.name + " " + user.surnames);
+              username.setText(user.username);
+              glideRequests.loadImage(profileImage, user.photoUrl);
+            });
+  }
+
+  @OnClick(R.id.closeSession)
+  public void closeSession(View v) {
+    if (menuListener != null) {
+      menuListener.onLogoutClick();
     }
+  }
 
-    @OnClick(R.id.closeSession)
-    public void closeSession(View v) {
-        if (menuListener != null) {
-            menuListener.onLogoutClick();
-        }
-    }
+  public interface MenuListener {
+    void onMenuClick(int id);
 
-
-    public interface MenuListener {
-        void onMenuClick(int id);
-
-        void onLogoutClick();
-    }
+    void onLogoutClick();
+  }
 }

@@ -29,67 +29,72 @@ import butterknife.ButterKnife;
 
 public class SubjectContentsFragments extends BaseFragment {
 
-    @BindView(R.id.recycler)
-    RecyclerView recyclerView;
+  @BindView(R.id.recycler)
+  RecyclerView recyclerView;
 
-    private Subject subject;
-    private ItemAdapter<SubjectContentItem> itemAdapter;
+  private Subject subject;
+  private ItemAdapter<SubjectContentItem> itemAdapter;
 
-    public static SubjectContentsFragments newInstance(Subject subject) {
-        SubjectContentsFragments fragment = new SubjectContentsFragments();
+  public static SubjectContentsFragments newInstance(Subject subject) {
+    SubjectContentsFragments fragment = new SubjectContentsFragments();
 
-        Bundle args = new Bundle();
-        args.putString("Subject", new Gson().toJson(subject));
-        fragment.setArguments(args);
+    Bundle args = new Bundle();
+    args.putString("Subject", new Gson().toJson(subject));
+    fragment.setArguments(args);
 
-        return fragment;
-    }
+    return fragment;
+  }
 
-    public SubjectContentsFragments() {
-    }
+  public SubjectContentsFragments() {}
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        subject = new Gson().fromJson(getArguments().getString("Subject"), Subject.class);
-    }
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    subject = new Gson().fromJson(getArguments().getString("Subject"), Subject.class);
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentSubjectContentBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_subject_content, container, false);
-        ButterKnife.bind(this, binding.getRoot());
-        binding.setHours(subject.workHours);
-        return binding.getRoot();
-    }
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    FragmentSubjectContentBinding binding =
+        DataBindingUtil.inflate(inflater, R.layout.fragment_subject_content, container, false);
+    ButterKnife.bind(this, binding.getRoot());
+    binding.setHours(subject.workHours);
+    return binding.getRoot();
+  }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
-        setRecycler();
-        setData();
-    }
+    setRecycler();
+    setData();
+  }
 
-    private void setRecycler() {
-        itemAdapter = new ItemAdapter<>();
-        FastAdapter<SubjectContentItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
+  private void setRecycler() {
+    itemAdapter = new ItemAdapter<>();
+    FastAdapter<SubjectContentItem> fastAdapter =
+        FastAdapter.with(Collections.singletonList(itemAdapter));
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
+    recyclerView.setLayoutManager(
+        new LinearLayoutManager(getContext()) {
+          @Override
+          public boolean canScrollVertically() {
+            return false;
+          }
         });
-        recyclerView.setAdapter(fastAdapter);
+    recyclerView.setAdapter(fastAdapter);
+  }
+
+  private void setData() {
+    List<SubjectContentItem> items = new ArrayList<>();
+    for (SubjectContent subjectContent : subject.contents) {
+      items.add(new SubjectContentItem().withSubjectContent(subjectContent));
     }
 
-    private void setData() {
-        List<SubjectContentItem> items = new ArrayList<>();
-        for (SubjectContent subjectContent : subject.contents) {
-            items.add(new SubjectContentItem().withSubjectContent(subjectContent));
-        }
-
-        itemAdapter.setNewList(items);
-    }
+    itemAdapter.setNewList(items);
+  }
 }

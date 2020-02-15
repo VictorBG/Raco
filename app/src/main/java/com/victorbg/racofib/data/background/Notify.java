@@ -1,6 +1,5 @@
 package com.victorbg.racofib.data.background;
 
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,19 +17,22 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-
 public class Notify {
 
   public NotificationCompat.Builder getNotificationBuilder() {
     return builder;
   }
 
-  public enum NotificationImportance {MIN, LOW, HIGH, MAX}
+  public enum NotificationImportance {
+    MIN,
+    LOW,
+    HIGH,
+    MAX
+  }
 
   public interface DefaultChannelKeys {
 
-    String
-        ID = "notify_channel_id",
+    String ID = "notify_channel_id",
         NAME = "notify_channel_name",
         DESCRIPTION = "notify_channel_description";
   }
@@ -61,7 +63,8 @@ public class Notify {
 
       this.channelId = getStringResourceByKey(context, Notify.DefaultChannelKeys.ID);
       this.channelName = getStringResourceByKey(context, Notify.DefaultChannelKeys.NAME);
-      this.channelDescription = getStringResourceByKey(context, Notify.DefaultChannelKeys.DESCRIPTION);
+      this.channelDescription =
+          getStringResourceByKey(context, Notify.DefaultChannelKeys.DESCRIPTION);
 
     } catch (Resources.NotFoundException e) {
       throw new RuntimeException("Channel was not found");
@@ -78,7 +81,7 @@ public class Notify {
     this.color = -1;
     this.action = null;
     this.vibration = true;
-    this.vibrationPattern = new long[]{0, 250, 250, 250};
+    this.vibrationPattern = new long[] {0, 250, 250, 250};
     this.autoCancel = false;
     this.setImportanceDefault();
   }
@@ -92,12 +95,14 @@ public class Notify {
       return;
     }
 
-    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    NotificationManager notificationManager =
+        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     if (notificationManager == null) {
       return;
     }
 
-    builder.setAutoCancel(this.autoCancel)
+    builder
+        .setAutoCancel(this.autoCancel)
         .setDefaults(Notification.DEFAULT_SOUND)
         .setWhen(System.currentTimeMillis())
         .setSmallIcon(smallIcon)
@@ -106,18 +111,20 @@ public class Notify {
         .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
         .setOngoing(ongoing);
 
-    Bitmap largeIconBitmap = getBitmapFromRes(this.context,  largeIcon);
+    Bitmap largeIconBitmap = getBitmapFromRes(this.context, largeIcon);
 
     if (largeIconBitmap != null) {
       builder.setLargeIcon(largeIconBitmap);
     }
 
     if (bigPicture != -1) {
-      Bitmap bigPictureBitmap = getBitmapFromRes(this.context,bigPicture);
+      Bitmap bigPictureBitmap = getBitmapFromRes(this.context, bigPicture);
 
       if (bigPictureBitmap != null) {
-        NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle().bigPicture(bigPictureBitmap)
-            .setSummaryText(content);
+        NotificationCompat.BigPictureStyle bigPictureStyle =
+            new NotificationCompat.BigPictureStyle()
+                .bigPicture(bigPictureBitmap)
+                .setSummaryText(content);
         bigPictureStyle.bigLargeIcon(largeIconBitmap);
         builder.setStyle(bigPictureStyle);
       }
@@ -128,9 +135,8 @@ public class Notify {
     builder.setColor(realColor);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel notificationChannel = new NotificationChannel(
-          channelId, channelName, oreoImportance
-      );
+      NotificationChannel notificationChannel =
+          new NotificationChannel(channelId, channelName, oreoImportance);
       notificationChannel.enableLights(true);
       notificationChannel.setLightColor(realColor);
       notificationChannel.setDescription(this.channelDescription);
@@ -145,11 +151,12 @@ public class Notify {
     if (this.vibration) {
       builder.setVibrate(this.vibrationPattern);
     } else {
-      builder.setVibrate(new long[]{0});
+      builder.setVibrate(new long[] {0});
     }
 
     if (this.action != null) {
-      PendingIntent pi = PendingIntent.getActivity(context, id, this.action, PendingIntent.FLAG_CANCEL_CURRENT);
+      PendingIntent pi =
+          PendingIntent.getActivity(context, id, this.action, PendingIntent.FLAG_CANCEL_CURRENT);
       builder.setContentIntent(pi);
     }
     notificationManager.notify(id, builder.build());
@@ -259,7 +266,6 @@ public class Notify {
     return this;
   }
 
-
   public Notify setAction(@NonNull Intent action) {
     this.action = action;
     return this;
@@ -296,21 +302,24 @@ public class Notify {
   }
 
   public static void cancel(@NonNull Context context, int id) {
-    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    NotificationManager notificationManager =
+        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     if (notificationManager != null) {
       notificationManager.cancel(id);
     }
   }
 
   public static void cancelAll(@NonNull Context context) {
-    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    NotificationManager notificationManager =
+        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     if (notificationManager != null) {
       notificationManager.cancelAll();
     }
   }
 
   private String getStringResourceByKey(@NonNull Context context, @NonNull String resourceKey) {
-    int resId = context.getResources().getIdentifier(resourceKey, "string", context.getPackageName());
+    int resId =
+        context.getResources().getIdentifier(resourceKey, "string", context.getPackageName());
     return context.getResources().getString(resId);
   }
 
@@ -318,6 +327,3 @@ public class Notify {
     return BitmapFactory.decodeResource(context.getResources(), res);
   }
 }
-
-
-

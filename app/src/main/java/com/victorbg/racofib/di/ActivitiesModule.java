@@ -17,37 +17,36 @@ import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class ActivitiesModule {
-    @ContributesAndroidInjector(modules = FragmentBuilderModule.class)
-    abstract MainActivity contributeMainActivity();
+  @ContributesAndroidInjector(modules = FragmentBuilderModule.class)
+  abstract MainActivity contributeMainActivity();
 
-    @ContributesAndroidInjector
-    abstract StartActivity contirbuteStartActivity();
+  @ContributesAndroidInjector
+  abstract StartActivity contirbuteStartActivity();
 
-    @ContributesAndroidInjector
-    abstract LoginActivity contirbuteLoginActivity();
+  @ContributesAndroidInjector
+  abstract LoginActivity contirbuteLoginActivity();
 
-    @ContributesAndroidInjector
-    abstract SubjectDetail contirbuteSubjectDetail();
+  @ContributesAndroidInjector
+  abstract SubjectDetail contirbuteSubjectDetail();
 
-    @ContributesAndroidInjector
-    abstract NotesFavoritesActivity contirbuteNotesFavoritesActivity();
+  @ContributesAndroidInjector
+  abstract NotesFavoritesActivity contirbuteNotesFavoritesActivity();
 
-    @ContributesAndroidInjector
-    abstract BaseThemeActivity contirbuteBaseThemeActivity();
+  @ContributesAndroidInjector
+  abstract BaseThemeActivity contirbuteBaseThemeActivity();
 
-    @ContributesAndroidInjector
-    abstract BaseActivity contirbuteBaseActivity();
+  @ContributesAndroidInjector
+  abstract BaseActivity contirbuteBaseActivity();
 
-    @ContributesAndroidInjector
-    abstract SettingsActivity contirbuteSettingsActivity();
+  @ContributesAndroidInjector
+  abstract SettingsActivity contirbuteSettingsActivity();
 
-    @ContributesAndroidInjector
-    abstract ColorSettingsActivity contirbuteColorSettingsActivity();
+  @ContributesAndroidInjector
+  abstract ColorSettingsActivity contirbuteColorSettingsActivity();
 
-    @ContributesAndroidInjector
-    abstract DialogExamDetail contirbuteDialogExamDetail();
+  @ContributesAndroidInjector
+  abstract DialogExamDetail contirbuteDialogExamDetail();
 
-    @ContributesAndroidInjector
-    abstract GradeDialog contirbuteGradeDialog();
-
+  @ContributesAndroidInjector
+  abstract GradeDialog contirbuteGradeDialog();
 }

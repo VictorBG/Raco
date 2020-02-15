@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class SubjectTeacher {
 
-    @SerializedName("nom")
-    public String name;
+  @SerializedName("nom")
+  public String name;
 
-    public String email;
+  public String email;
 
-    @SerializedName("is_responsable")
-    public boolean responsable;
+  @SerializedName("is_responsable")
+  public boolean responsable;
 }

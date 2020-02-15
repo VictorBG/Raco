@@ -16,17 +16,16 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadCacheExamsUseCase extends UseCase<Void, LiveData<List<Exam>>> {
 
-    private ExamDao examDao;
+  private ExamDao examDao;
 
-    @Inject
-    public LoadCacheExamsUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
-        super(appExecutors);
-        this.examDao = appDatabase.examDao();
-    }
+  @Inject
+  public LoadCacheExamsUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
+    super(appExecutors);
+    this.examDao = appDatabase.examDao();
+  }
 
-    @Override
-    public LiveData<List<Exam>> execute() {
-        return examDao.getExams();
-    }
-
+  @Override
+  public LiveData<List<Exam>> execute() {
+    return examDao.getExams();
+  }
 }

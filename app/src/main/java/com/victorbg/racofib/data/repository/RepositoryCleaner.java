@@ -12,19 +12,19 @@ import javax.inject.Singleton;
 @Singleton
 public class RepositoryCleaner {
 
-    private final ArrayList<Repository> repositories = new ArrayList<>();
+  private final ArrayList<Repository> repositories = new ArrayList<>();
 
-    @Inject
-    public RepositoryCleaner(ExamsRepository examsRepository, NotesRepository notesRepository) {
-        repositories.add(examsRepository);
-        repositories.add(notesRepository);
-    }
+  @Inject
+  public RepositoryCleaner(ExamsRepository examsRepository, NotesRepository notesRepository) {
+    repositories.add(examsRepository);
+    repositories.add(notesRepository);
+  }
 
-    /**
-     * Cleans all the repositories from data (repository!=database), thus involving that the next time the data is fetched in one of these repositories
-     * it must be fetched from network
-     */
-    public void clean() {
-        repositories.forEach(Repository::clean);
-    }
+  /**
+   * Cleans all the repositories from data (repository!=database), thus involving that the next time
+   * the data is fetched in one of these repositories it must be fetched from network
+   */
+  public void clean() {
+    repositories.forEach(Repository::clean);
+  }
 }

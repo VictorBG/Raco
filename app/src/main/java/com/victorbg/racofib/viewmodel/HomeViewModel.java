@@ -28,64 +28,76 @@ import androidx.lifecycle.ViewModel;
 
 public class HomeViewModel extends ViewModel {
 
-    private final LiveData<Resource<List<Exam>>> exams;
-    private final LiveData<Resource<List<SubjectSchedule>>> schedule;
+  private final LiveData<Resource<List<Exam>>> exams;
+  private final LiveData<Resource<List<SubjectSchedule>>> schedule;
 
-    private final LoadCacheExamsUseCase loadCacheExamsUseCase;
-    private PrefManager prefManager;
+  private final LoadCacheExamsUseCase loadCacheExamsUseCase;
+  private PrefManager prefManager;
 
-    @Inject
-    public HomeViewModel(LoadExamsUseCase loadExamsUseCase, LoadTodayScheduleUseCase loadScheduleUseCase,
-                         LoadCacheExamsUseCase loadCacheExamsUseCase, PrefManager prefManager) {
-        this.loadCacheExamsUseCase = loadCacheExamsUseCase;
-        this.prefManager = prefManager;
+  @Inject
+  public HomeViewModel(
+      LoadExamsUseCase loadExamsUseCase,
+      LoadTodayScheduleUseCase loadScheduleUseCase,
+      LoadCacheExamsUseCase loadCacheExamsUseCase,
+      PrefManager prefManager) {
+    this.loadCacheExamsUseCase = loadCacheExamsUseCase;
+    this.prefManager = prefManager;
 
-        schedule = loadScheduleUseCase.execute();
-        exams = Transformations.map(loadExamsUseCase.execute(), input -> {
-            input.data = getUpcomingExams(input.data);
-            return input;
-        });
+    schedule = loadScheduleUseCase.execute();
+    exams =
+        Transformations.map(
+            loadExamsUseCase.execute(),
+            input -> {
+              input.data = getUpcomingExams(input.data);
+              return input;
+            });
+  }
+
+  public LiveData<List<Exam>> getCachedExams() {
+    return loadCacheExamsUseCase.execute();
+  }
+
+  public LiveData<Resource<List<Exam>>> getExams() {
+    return exams;
+  }
+
+  public LiveData<Resource<List<SubjectSchedule>>> getSchedule() {
+    return schedule;
+  }
+
+  private List<Exam> getUpcomingExams(List<Exam> exams) {
+
+    if (exams == null || exams.isEmpty()) {
+      return new ArrayList<>();
     }
 
-    public LiveData<List<Exam>> getCachedExams() {
-        return loadCacheExamsUseCase.execute();
-    }
+    SimpleDateFormat simpleDateFormat =
+        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+    Date currentTime = Calendar.getInstance().getTime();
+    Calendar limitTimeCalendar = Calendar.getInstance();
+    limitTimeCalendar.add(Calendar.MONTH, prefManager.getHomePageExamLimit());
+    Date limitTime = limitTimeCalendar.getTime();
 
-    public LiveData<Resource<List<Exam>>> getExams() {
-        return exams;
-    }
-
-    public LiveData<Resource<List<SubjectSchedule>>> getSchedule() {
-        return schedule;
-    }
-
-    private List<Exam> getUpcomingExams(List<Exam> exams) {
-
-        if (exams == null || exams.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-        Date currentTime = Calendar.getInstance().getTime();
-        Calendar limitTimeCalendar = Calendar.getInstance();
-        limitTimeCalendar.add(Calendar.MONTH, prefManager.getHomePageExamLimit());
-        Date limitTime = limitTimeCalendar.getTime();
-
-        return exams.stream().filter(exam -> {
-            try {
+    return exams.stream()
+        .filter(
+            exam -> {
+              try {
                 Date examDate = simpleDateFormat.parse(exam.startDate);
                 assert examDate != null;
                 return examDate.after(currentTime) && examDate.before(limitTime);
-            } catch (ParseException e) {
+              } catch (ParseException e) {
                 return false;
-            }
-        }).sorted((exam1, exam2) -> {
-            try {
+              }
+            })
+        .sorted(
+            (exam1, exam2) -> {
+              try {
                 return Objects.requireNonNull(simpleDateFormat.parse(exam1.startDate))
-                        .compareTo(simpleDateFormat.parse(exam2.startDate));
-            } catch (ParseException e) {
+                    .compareTo(simpleDateFormat.parse(exam2.startDate));
+              } catch (ParseException e) {
                 return 0;
-            }
-        }).collect(Collectors.toList());
-    }
+              }
+            })
+        .collect(Collectors.toList());
+  }
 }

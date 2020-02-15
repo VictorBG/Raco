@@ -13,8 +13,7 @@ import dagger.android.AndroidInjection;
 
 public abstract class BaseThemeActivity extends AppCompatActivity implements Injectable {
 
-  @Inject
-  protected PrefManager prefManager;
+  @Inject protected PrefManager prefManager;
 
   protected int themeId;
 
@@ -35,8 +34,8 @@ public abstract class BaseThemeActivity extends AppCompatActivity implements Inj
   }
 
   //    protected int getLightTheme() {
-//        return R.style.AppTheme_Light;
-//    }
+  //        return R.style.AppTheme_Light;
+  //    }
   protected int getLightTheme() {
     return getDarkTheme();
   }
@@ -44,6 +43,4 @@ public abstract class BaseThemeActivity extends AppCompatActivity implements Inj
   protected int getDarkTheme() {
     return R.style.AppTheme_Dark;
   }
-
-
 }

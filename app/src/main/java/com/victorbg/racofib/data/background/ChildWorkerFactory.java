@@ -6,5 +6,5 @@ import androidx.work.ListenableWorker;
 import androidx.work.WorkerParameters;
 
 public interface ChildWorkerFactory {
-    ListenableWorker create(Context appContext, WorkerParameters workerParameters);
+  ListenableWorker create(Context appContext, WorkerParameters workerParameters);
 }

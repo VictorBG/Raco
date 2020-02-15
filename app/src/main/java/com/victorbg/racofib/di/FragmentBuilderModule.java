@@ -14,29 +14,27 @@ import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class FragmentBuilderModule {
-    @ContributesAndroidInjector
-    abstract NotesFragment contributeNotesFragment();
+  @ContributesAndroidInjector
+  abstract NotesFragment contributeNotesFragment();
 
-    @ContributesAndroidInjector
-    abstract HomeFragment contributeHomeFragment();
+  @ContributesAndroidInjector
+  abstract HomeFragment contributeHomeFragment();
 
-    @ContributesAndroidInjector
-    abstract SubjectsFragment contributeSubjectsFragment();
+  @ContributesAndroidInjector
+  abstract SubjectsFragment contributeSubjectsFragment();
 
-    @ContributesAndroidInjector
-    abstract ScheduleFragment contributeScheduleFragment();
+  @ContributesAndroidInjector
+  abstract ScheduleFragment contributeScheduleFragment();
 
+  @ContributesAndroidInjector
+  abstract MainBottomNavigationView contributeMainBottomNavigationView();
 
-    @ContributesAndroidInjector
-    abstract MainBottomNavigationView contributeMainBottomNavigationView();
+  @ContributesAndroidInjector
+  abstract FragmentAllExams contributeFragmentAllExams();
 
-    @ContributesAndroidInjector
-    abstract FragmentAllExams contributeFragmentAllExams();
+  @ContributesAndroidInjector
+  abstract SubjectDetailFragment contributeSubjectDetailFragment();
 
-    @ContributesAndroidInjector
-    abstract SubjectDetailFragment contributeSubjectDetailFragment();
-
-    @ContributesAndroidInjector
-    abstract GradesFragment contributeGradesFragment();
-
+  @ContributesAndroidInjector
+  abstract GradesFragment contributeGradesFragment();
 }

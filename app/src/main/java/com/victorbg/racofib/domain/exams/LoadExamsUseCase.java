@@ -20,14 +20,14 @@ import io.reactivex.disposables.CompositeDisposable;
 @Singleton
 public class LoadExamsUseCase extends UseCase<Void, LiveData<Resource<List<Exam>>>> {
 
-
   private final ExamsRepository examsRepository;
   private final AppDatabase appDatabase;
 
   private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   @Inject
-  public LoadExamsUseCase(AppExecutors appExecutors, ExamsRepository examsRepository, AppDatabase appDatabase) {
+  public LoadExamsUseCase(
+      AppExecutors appExecutors, ExamsRepository examsRepository, AppDatabase appDatabase) {
     super(appExecutors);
     this.examsRepository = examsRepository;
     this.appDatabase = appDatabase;
@@ -38,14 +38,20 @@ public class LoadExamsUseCase extends UseCase<Void, LiveData<Resource<List<Exam>
     MediatorLiveData<Resource<List<Exam>>> result = new MediatorLiveData<>();
     result.setValue(Resource.loading(null));
 
-    executeSingleAction(() -> appDatabase.subjectsDao().getSubjectsNames(),
-        subjects -> result.addSource(examsRepository.getExams(subjects), data -> {
-          executeSingleAction(() -> appDatabase.subjectsDao().getColors(),
-              colors -> {
-                Utils.assignColorsToExams(colors, data.data);
-                result.setValue(data);
-              });
-        }), error -> result.setValue(Resource.error(error)));
+    executeSingleAction(
+        () -> appDatabase.subjectsDao().getSubjectsNames(),
+        subjects ->
+            result.addSource(
+                examsRepository.getExams(subjects),
+                data -> {
+                  executeSingleAction(
+                      () -> appDatabase.subjectsDao().getColors(),
+                      colors -> {
+                        Utils.assignColorsToExams(colors, data.data);
+                        result.setValue(data);
+                      });
+                }),
+        error -> result.setValue(Resource.error(error)));
 
     return result;
   }

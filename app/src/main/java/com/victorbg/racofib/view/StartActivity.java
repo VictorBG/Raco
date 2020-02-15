@@ -14,19 +14,17 @@ import androidx.annotation.Nullable;
 
 public class StartActivity extends BaseActivity implements Injectable {
 
-    @Inject
-    PrefManager prefManager;
+  @Inject PrefManager prefManager;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-        if (prefManager.isLogged()) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-        finish();
-
+    if (prefManager.isLogged()) {
+      startActivity(new Intent(this, MainActivity.class));
+    } else {
+      startActivity(new Intent(this, LoginActivity.class));
     }
+    finish();
+  }
 }

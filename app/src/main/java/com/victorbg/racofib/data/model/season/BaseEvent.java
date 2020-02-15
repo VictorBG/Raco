@@ -8,7 +8,8 @@ import java.util.Date;
 public abstract class BaseEvent {
 
   @SuppressLint("SimpleDateFormat")
-  public final static SimpleDateFormat EVENT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+  public static final SimpleDateFormat EVENT_DATE_FORMAT =
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
   public Date start;
   public Date end;
@@ -22,5 +23,4 @@ public abstract class BaseEvent {
 
     return result;
   }
-
 }

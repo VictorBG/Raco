@@ -14,22 +14,23 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadSingleSubjectUseCase extends UseCase<String, LiveData<Resource<Subject>>> {
 
-    private final SubjectsRepository subjectsRepository;
+  private final SubjectsRepository subjectsRepository;
 
-    @Inject
-    public LoadSingleSubjectUseCase(AppExecutors appExecutors, SubjectsRepository subjectsRepository) {
-        super(appExecutors);
-        this.subjectsRepository = subjectsRepository;
-    }
+  @Inject
+  public LoadSingleSubjectUseCase(
+      AppExecutors appExecutors, SubjectsRepository subjectsRepository) {
+    super(appExecutors);
+    this.subjectsRepository = subjectsRepository;
+  }
 
-    /**
-     * Loads a single {@link Subject} from the database with parameter as filter
-     *
-     * @param parameter
-     * @return
-     */
-    @Override
-    public LiveData<Resource<Subject>> execute(String parameter) {
-        return subjectsRepository.getSubject(parameter);
-    }
+  /**
+   * Loads a single {@link Subject} from the database with parameter as filter
+   *
+   * @param parameter
+   * @return
+   */
+  @Override
+  public LiveData<Resource<Subject>> execute(String parameter) {
+    return subjectsRepository.getSubject(parameter);
+  }
 }

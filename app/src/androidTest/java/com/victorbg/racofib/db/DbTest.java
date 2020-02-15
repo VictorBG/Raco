@@ -10,20 +10,20 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
 import androidx.test.InstrumentationRegistry;
 
-abstract public class DbTest {
-    protected AppDatabase db;
+public abstract class DbTest {
+  protected AppDatabase db;
 
-    @Rule
-    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+  @Rule public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    @Before
-    public void initDb() {
-        db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
-                AppDatabase.class).build();
-    }
+  @Before
+  public void initDb() {
+    db =
+        Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), AppDatabase.class)
+            .build();
+  }
 
-    @After
-    public void closeDb() {
-        db.close();
-    }
+  @After
+  public void closeDb() {
+    db.close();
+  }
 }

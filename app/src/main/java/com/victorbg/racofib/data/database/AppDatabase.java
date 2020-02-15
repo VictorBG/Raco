@@ -17,18 +17,20 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {User.class, Subject.class, SubjectSchedule.class, Note.class, Exam.class}, version = 1, exportSchema = false)
+@Database(
+    entities = {User.class, Subject.class, SubjectSchedule.class, Note.class, Exam.class},
+    version = 1,
+    exportSchema = false)
 @TypeConverters({AttachmentsConverter.class, GradesConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
-    public abstract UserDao userDao();
+  public abstract UserDao userDao();
 
-    public abstract SubjectsDao subjectsDao();
+  public abstract SubjectsDao subjectsDao();
 
-    public abstract SubjectScheduleDao subjectScheduleDao();
+  public abstract SubjectScheduleDao subjectScheduleDao();
 
-    public abstract NotesDao notesDao();
+  public abstract NotesDao notesDao();
 
-    public abstract ExamDao examDao();
-
+  public abstract ExamDao examDao();
 }

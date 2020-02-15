@@ -14,29 +14,31 @@ import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-
 public class SubjectsViewModel extends ViewModel {
 
-    private final LiveData<List<Subject>> subjects;
-    private final LiveData<User> user;
-    private final UseCase<Void, Void> logoutUserUseCase;
+  private final LiveData<List<Subject>> subjects;
+  private final LiveData<User> user;
+  private final UseCase<Void, Void> logoutUserUseCase;
 
-    @Inject
-    public SubjectsViewModel(LoadSubjectsUseCase loadSubjectsUseCase, LoadUserUseCase loadUserUseCase, LogoutUserUseCase logoutUserUseCase) {
-        this.subjects = loadSubjectsUseCase.execute();
-        this.user = loadUserUseCase.execute();
-        this.logoutUserUseCase = logoutUserUseCase;
-    }
+  @Inject
+  public SubjectsViewModel(
+      LoadSubjectsUseCase loadSubjectsUseCase,
+      LoadUserUseCase loadUserUseCase,
+      LogoutUserUseCase logoutUserUseCase) {
+    this.subjects = loadSubjectsUseCase.execute();
+    this.user = loadUserUseCase.execute();
+    this.logoutUserUseCase = logoutUserUseCase;
+  }
 
-    public LiveData<List<Subject>> getSubjects() {
-        return subjects;
-    }
+  public LiveData<List<Subject>> getSubjects() {
+    return subjects;
+  }
 
-    public LiveData<User> getUser() {
-        return user;
-    }
+  public LiveData<User> getUser() {
+    return user;
+  }
 
-    public void logout() {
-        logoutUserUseCase.execute();
-    }
+  public void logout() {
+    logoutUserUseCase.execute();
+  }
 }

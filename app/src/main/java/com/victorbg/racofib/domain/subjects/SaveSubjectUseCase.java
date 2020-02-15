@@ -10,20 +10,19 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-
 public class SaveSubjectUseCase extends UseCase<Subject, Void> {
 
-    private final SubjectsDao subjectsDao;
+  private final SubjectsDao subjectsDao;
 
-    @Inject
-    public SaveSubjectUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
-        super(appExecutors);
-        this.subjectsDao = appDatabase.subjectsDao();
-    }
+  @Inject
+  public SaveSubjectUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
+    super(appExecutors);
+    this.subjectsDao = appDatabase.subjectsDao();
+  }
 
-    @Override
-    public Void execute(Subject parameter) {
-        subjectsDao.update(parameter);
-        return null;
-    }
+  @Override
+  public Void execute(Subject parameter) {
+    subjectsDao.update(parameter);
+    return null;
+  }
 }

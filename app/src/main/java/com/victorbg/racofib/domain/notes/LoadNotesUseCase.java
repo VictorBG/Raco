@@ -13,7 +13,6 @@ import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
 
-
 @Singleton
 public class LoadNotesUseCase extends UseCase<Boolean, LiveData<Resource<List<Note>>>> {
 

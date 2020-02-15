@@ -26,78 +26,78 @@ import dagger.Provides;
 @Module(subcomponents = ViewModelSubcomponent.class)
 public class AppModule {
 
-    @Singleton
-    @Provides
-    public AppDatabase provideAppDatabase(Application context) {
-        return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "racofib-database")
-                .allowMainThreadQueries()
-                .build();
-    }
+  @Singleton
+  @Provides
+  public AppDatabase provideAppDatabase(Application context) {
+    return Room.databaseBuilder(
+            context.getApplicationContext(), AppDatabase.class, "racofib-database")
+        .allowMainThreadQueries()
+        .build();
+  }
 
-    @Singleton
-    @Provides
-    public AuthService provideAuthService() {
-        return ApiManager.createAuthService();
-    }
+  @Singleton
+  @Provides
+  public AuthService provideAuthService() {
+    return ApiManager.createAuthService();
+  }
 
-    @Singleton
-    @Provides
-    public TokenAuthenticator provideTokenAuthenticator(PrefManager prefManager, AuthService authService) {
-        return new TokenAuthenticator(prefManager, authService);
-    }
+  @Singleton
+  @Provides
+  public TokenAuthenticator provideTokenAuthenticator(
+      PrefManager prefManager, AuthService authService) {
+    return new TokenAuthenticator(prefManager, authService);
+  }
 
-    @Singleton
-    @Provides
-    public ApiService provideApi(PrefManager prefManager, TokenAuthenticator tokenAuthenticator) {
-        return ApiManager.create(prefManager, tokenAuthenticator);
-    }
+  @Singleton
+  @Provides
+  public ApiService provideApi(PrefManager prefManager, TokenAuthenticator tokenAuthenticator) {
+    return ApiManager.create(prefManager, tokenAuthenticator);
+  }
 
-    @Singleton
-    @Provides
-    public UserDao getUserDao(AppDatabase appDatabase) {
-        return appDatabase.userDao();
-    }
+  @Singleton
+  @Provides
+  public UserDao getUserDao(AppDatabase appDatabase) {
+    return appDatabase.userDao();
+  }
 
-    @Singleton
-    @Provides
-    public SubjectsDao getSubjectsDao(AppDatabase appDatabase) {
-        return appDatabase.subjectsDao();
-    }
+  @Singleton
+  @Provides
+  public SubjectsDao getSubjectsDao(AppDatabase appDatabase) {
+    return appDatabase.subjectsDao();
+  }
 
-    @Singleton
-    @Provides
-    public SubjectScheduleDao getSubjectScheduleDao(AppDatabase appDatabase) {
-        return appDatabase.subjectScheduleDao();
-    }
+  @Singleton
+  @Provides
+  public SubjectScheduleDao getSubjectScheduleDao(AppDatabase appDatabase) {
+    return appDatabase.subjectScheduleDao();
+  }
 
-    @Singleton
-    @Provides
-    public NotesDao getNotesDao(AppDatabase appDatabase) {
-        return appDatabase.notesDao();
-    }
+  @Singleton
+  @Provides
+  public NotesDao getNotesDao(AppDatabase appDatabase) {
+    return appDatabase.notesDao();
+  }
 
-    @Singleton
-    @Provides
-    public ExamDao getExamDao(AppDatabase appDatabase) {
-        return appDatabase.examDao();
-    }
+  @Singleton
+  @Provides
+  public ExamDao getExamDao(AppDatabase appDatabase) {
+    return appDatabase.examDao();
+  }
 
-    @Singleton
-    @Provides
-    ViewModelProvider.Factory provideViewModelFactory(
-            ViewModelSubcomponent.Builder viewModelSubComponent) {
-        return new AppViewModelFactory(viewModelSubComponent.build());
-    }
+  @Singleton
+  @Provides
+  ViewModelProvider.Factory provideViewModelFactory(
+      ViewModelSubcomponent.Builder viewModelSubComponent) {
+    return new AppViewModelFactory(viewModelSubComponent.build());
+  }
 
-    @Provides
-    AppRaco provideAppRaco(Application appRaco) {
-        return (AppRaco) appRaco;
-    }
+  @Provides
+  AppRaco provideAppRaco(Application appRaco) {
+    return (AppRaco) appRaco;
+  }
 
-    @Provides
-    Context provideContext(Application appRaco) {
-        return appRaco;
-    }
-
-
+  @Provides
+  Context provideContext(Application appRaco) {
+    return appRaco;
+  }
 }

@@ -15,17 +15,16 @@ import androidx.lifecycle.LiveData;
 @Singleton
 public class LoadSavedNotesUseCase extends UseCase<Void, LiveData<List<Note>>> {
 
-    private final AppDatabase appDatabase;
+  private final AppDatabase appDatabase;
 
-    @Inject
-    public LoadSavedNotesUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
-        super(appExecutors);
-        this.appDatabase = appDatabase;
-    }
+  @Inject
+  public LoadSavedNotesUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
+    super(appExecutors);
+    this.appDatabase = appDatabase;
+  }
 
-    @Override
-    public LiveData<List<Note>> execute() {
-        return appDatabase.notesDao().getSavedNotes();
-    }
-
+  @Override
+  public LiveData<List<Note>> execute() {
+    return appDatabase.notesDao().getSavedNotes();
+  }
 }

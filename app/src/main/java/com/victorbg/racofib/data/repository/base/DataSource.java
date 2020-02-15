@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 
 public interface DataSource<T> {
 
-    LiveData<T> getRemoteData();
+  LiveData<T> getRemoteData();
 
-    LiveData<T> getOfflineData();
+  LiveData<T> getOfflineData();
 }

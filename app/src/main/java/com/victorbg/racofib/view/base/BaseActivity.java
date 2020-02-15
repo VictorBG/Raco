@@ -30,90 +30,91 @@ import butterknife.ButterKnife;
 @SuppressLint("Registered")
 public class BaseActivity extends BaseThemeActivity implements Injectable {
 
-    @Inject
-    AttachmentDownload attachmentDownload;
+  @Inject AttachmentDownload attachmentDownload;
 
-    private Attachment attachmentSaved = null;
+  private Attachment attachmentSaved = null;
 
-    private String locale;
+  private String locale;
 
-    @Override
-    public void attachBaseContext(Context newBase) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(newBase);
-        locale = sharedPreferences.getString(PrefManager.LOCALE_KEY, PrefManager.LOCALE_SPANISH);
-        super.attachBaseContext(BaseContextWrapper.wrap(newBase, locale));
+  @Override
+  public void attachBaseContext(Context newBase) {
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(newBase);
+    locale = sharedPreferences.getString(PrefManager.LOCALE_KEY, PrefManager.LOCALE_SPANISH);
+    super.attachBaseContext(BaseContextWrapper.wrap(newBase, locale));
+  }
+
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
+
+  @Override
+  public void setContentView(int layoutResID) {
+    super.setContentView(layoutResID);
+    ButterKnife.bind(this);
+  }
+
+  protected void internalRecreate() {
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    if (isDarkThemeEnabled != prefManager.isDarkThemeEnabled()
+        || !locale.equals(
+            sharedPreferences.getString(PrefManager.LOCALE_KEY, PrefManager.LOCALE_SPANISH))) {
+      recreate();
+    }
+  }
+
+  public void downloadFile(Attachment attachment) {
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED) {
+      this.attachmentSaved = attachment;
+      ActivityCompat.requestPermissions(
+          this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+    } else {
+      attachmentDownload.download(attachment, this);
+      attachmentSaved = null;
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    if (requestCode == 1) {
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        downloadFile(attachmentSaved);
+      }
+    }
+  }
+
+  public Snackbar showSnackbar(String s) {
+    return showSnackbar(s, Snackbar.LENGTH_LONG);
+  }
+
+  public Snackbar showSnackbar(String s, int length) {
+    return showSnackbar(findViewById(android.R.id.content), s, length);
+  }
+
+  public Snackbar showSnackbar(View v, String s) {
+    return showSnackbar(v, s, Snackbar.LENGTH_LONG);
+  }
+
+  public Snackbar showSnackbar(View v, String s, int length) {
+    Snackbar snackbar = Snackbar.make(v, s, length);
+    if (isDarkThemeEnabled) {
+      snackbar
+          .getView()
+          .setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFBDBDBD")));
+      ((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text))
+          .setTextColor(getResources().getColor(R.color.md_light_primary_text));
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    snackbar = customSnackbarAnchor(snackbar);
+    snackbar.show();
+    return snackbar;
+  }
 
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        ButterKnife.bind(this);
-    }
-
-    protected void internalRecreate() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (isDarkThemeEnabled != prefManager.isDarkThemeEnabled() ||
-                !locale.equals(sharedPreferences.getString(PrefManager.LOCALE_KEY, PrefManager.LOCALE_SPANISH))) {
-            recreate();
-        }
-    }
-
-    public void downloadFile(Attachment attachment) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            this.attachmentSaved = attachment;
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    1);
-        } else {
-            attachmentDownload.download(attachment, this);
-            attachmentSaved = null;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                downloadFile(attachmentSaved);
-            }
-        }
-    }
-
-
-    public Snackbar showSnackbar(String s) {
-        return showSnackbar(s, Snackbar.LENGTH_LONG);
-    }
-
-    public Snackbar showSnackbar(String s, int length) {
-        return showSnackbar(findViewById(android.R.id.content), s, length);
-    }
-
-    public Snackbar showSnackbar(View v, String s) {
-        return showSnackbar(v, s, Snackbar.LENGTH_LONG);
-    }
-
-    public Snackbar showSnackbar(View v, String s, int length) {
-        Snackbar snackbar = Snackbar.make(v, s, length);
-        if (isDarkThemeEnabled) {
-            snackbar.getView().setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFBDBDBD")));
-            ((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(getResources().getColor(R.color.md_light_primary_text));
-        }
-
-        snackbar = customSnackbarAnchor(snackbar);
-        snackbar.show();
-        return snackbar;
-    }
-
-    protected Snackbar customSnackbarAnchor(Snackbar snackbar) {
-        return snackbar;
-    }
+  protected Snackbar customSnackbarAnchor(Snackbar snackbar) {
+    return snackbar;
+  }
 }

@@ -14,17 +14,24 @@ import dagger.Subcomponent;
 @Subcomponent
 public interface ViewModelSubcomponent {
 
-    @Subcomponent.Builder
-    interface Builder {
-        ViewModelSubcomponent build();
-    }
+  @Subcomponent.Builder
+  interface Builder {
+    ViewModelSubcomponent build();
+  }
 
-    PublicationsViewModel notesViewModel();
-    HomeViewModel homeViewModel();
-    LoginViewModel loginViewModel();
-    MainActivityViewModel mainActivityViewModel();
-    SubjectsViewModel subjectsViewModel();
-    SubjectDetailViewModel subjectDetailViewModel();
-    ScheduleViewModel scheduleViewModel();
-    GradesViewModel gradesViewModel();
+  PublicationsViewModel notesViewModel();
+
+  HomeViewModel homeViewModel();
+
+  LoginViewModel loginViewModel();
+
+  MainActivityViewModel mainActivityViewModel();
+
+  SubjectsViewModel subjectsViewModel();
+
+  SubjectDetailViewModel subjectDetailViewModel();
+
+  ScheduleViewModel scheduleViewModel();
+
+  GradesViewModel gradesViewModel();
 }

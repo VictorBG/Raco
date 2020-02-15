@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class MaterialBottomSheetDialogFragment extends AppCompatDialogFragment {
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new MaterialBottomSheet(getContext(), getTheme());
-    }
+  @NonNull
+  @Override
+  public Dialog onCreateDialog(Bundle savedInstanceState) {
+    return new MaterialBottomSheet(getContext(), getTheme());
+  }
 }

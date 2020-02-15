@@ -13,16 +13,16 @@ import androidx.lifecycle.LiveData;
 
 @Singleton
 public class LoadSubjectDatabaseUseCase extends UseCase<String, LiveData<Subject>> {
-    private SubjectsDao subjectsDao;
+  private SubjectsDao subjectsDao;
 
-    @Inject
-    public LoadSubjectDatabaseUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
-        super(appExecutors);
-        this.subjectsDao = appDatabase.subjectsDao();
-    }
+  @Inject
+  public LoadSubjectDatabaseUseCase(AppExecutors appExecutors, AppDatabase appDatabase) {
+    super(appExecutors);
+    this.subjectsDao = appDatabase.subjectsDao();
+  }
 
-    @Override
-    public LiveData<Subject> execute(String parameter) {
-        return subjectsDao.getSubject(parameter);
-    }
+  @Override
+  public LiveData<Subject> execute(String parameter) {
+    return subjectsDao.getSubject(parameter);
+  }
 }

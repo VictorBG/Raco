@@ -7,8 +7,7 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public class SearchBarBehavior extends AppBarLayout.ScrollingViewBehavior {
 
-  public SearchBarBehavior() {
-  }
+  public SearchBarBehavior() {}
 
   public SearchBarBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);

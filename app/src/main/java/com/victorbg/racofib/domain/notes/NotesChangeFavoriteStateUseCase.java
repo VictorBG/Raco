@@ -11,27 +11,25 @@ import javax.inject.Singleton;
 @Singleton
 public class NotesChangeFavoriteStateUseCase extends UseCase<Note, Note> {
 
-    final NotesRepository repository;
+  final NotesRepository repository;
 
-    @Inject
-    public NotesChangeFavoriteStateUseCase(AppExecutors appExecutors, NotesRepository repository) {
-        super(appExecutors);
-        this.repository = repository;
-    }
+  @Inject
+  public NotesChangeFavoriteStateUseCase(AppExecutors appExecutors, NotesRepository repository) {
+    super(appExecutors);
+    this.repository = repository;
+  }
 
-    /**
-     * Returns the modified {@link Note} that has been modified on the database
-     *
-     * @param parameter
-     * @return
-     */
-    @Override
-    public Note execute(Note parameter) {
-        parameter.favorite = !parameter.favorite;
-        repository.addToFav(parameter);
-        repository.resetTimer();
-        return parameter;
-    }
-
-
+  /**
+   * Returns the modified {@link Note} that has been modified on the database
+   *
+   * @param parameter
+   * @return
+   */
+  @Override
+  public Note execute(Note parameter) {
+    parameter.favorite = !parameter.favorite;
+    repository.addToFav(parameter);
+    repository.resetTimer();
+    return parameter;
+  }
 }

@@ -27,5 +27,4 @@ public class LoadSubjectsUseCase extends UseCase<Void, LiveData<List<Subject>>> 
   public LiveData<List<Subject>> execute() {
     return subjectsDao.getSubjectsAsLiveData();
   }
-
 }

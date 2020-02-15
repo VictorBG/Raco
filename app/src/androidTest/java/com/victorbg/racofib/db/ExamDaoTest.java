@@ -13,113 +13,109 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-
 @RunWith(JUnit4.class)
 public class ExamDaoTest extends DbTest {
 
-    @Test
-    public void getExams() throws InterruptedException {
-        Exam exam = new Exam();
-        exam.startDate = "startDate";
-        exam.classrooms = "classrooms";
-        exam.id = 5;
-        exam.subject = "subject";
+  @Test
+  public void getExams() throws InterruptedException {
+    Exam exam = new Exam();
+    exam.startDate = "startDate";
+    exam.classrooms = "classrooms";
+    exam.id = 5;
+    exam.subject = "subject";
 
-        db.examDao().clear();
-        db.examDao().insert(exam);
-        //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExams());
+    db.examDao().clear();
+    db.examDao().insert(exam);
+    // List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExams());
 
-        assertEquals(1, exams.size());
+    assertEquals(1, exams.size());
 
-        Exam fromDb = exams.get(0);
-        assertNotNull(fromDb);
-        assertEquals(fromDb.startDate, "startDate");
-        assertEquals(fromDb.classrooms, "classrooms");
-        assertEquals(fromDb.id, 5);
-        assertEquals(fromDb.subject, "subject");
+    Exam fromDb = exams.get(0);
+    assertNotNull(fromDb);
+    assertEquals(fromDb.startDate, "startDate");
+    assertEquals(fromDb.classrooms, "classrooms");
+    assertEquals(fromDb.id, 5);
+    assertEquals(fromDb.subject, "subject");
+  }
 
-    }
+  @Test
+  public void insert() throws InterruptedException {
+    Exam exam = new Exam();
+    exam.startDate = "startDate";
+    exam.classrooms = "classrooms";
+    exam.id = 5;
+    exam.subject = "subject";
 
-    @Test
-    public void insert() throws InterruptedException {
-        Exam exam = new Exam();
-        exam.startDate = "startDate";
-        exam.classrooms = "classrooms";
-        exam.id = 5;
-        exam.subject = "subject";
+    db.examDao().clear();
+    db.examDao().insert(exam);
+    // List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExams());
 
-        db.examDao().clear();
-        db.examDao().insert(exam);
-        //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExams());
+    assertEquals(1, exams.size());
 
-        assertEquals(1, exams.size());
+    Exam exam2 = new Exam();
+    exam2.startDate = "startDate";
+    exam2.classrooms = "classrooms";
+    exam2.id = 6;
+    exam2.subject = "subject";
 
-        Exam exam2 = new Exam();
-        exam2.startDate = "startDate";
-        exam2.classrooms = "classrooms";
-        exam2.id = 6;
-        exam2.subject = "subject";
+    db.examDao().insert(exam);
+    db.examDao().insert(exam2);
 
-        db.examDao().insert(exam);
-        db.examDao().insert(exam2);
+    exams = LiveDataTestUtil.getValue(db.examDao().getExams());
 
-        exams = LiveDataTestUtil.getValue(db.examDao().getExams());
+    assertEquals(2, exams.size());
 
-        assertEquals(2, exams.size());
+    List<Exam> list = new ArrayList<>();
+    list.add(exam);
+    list.add(exam2);
 
-        List<Exam> list = new ArrayList<>();
-        list.add(exam);
-        list.add(exam2);
+    db.examDao().clear();
+    db.examDao().insertExams(list);
+    // List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    List<Exam> e = LiveDataTestUtil.getValue(db.examDao().getExams());
 
-        db.examDao().clear();
-        db.examDao().insertExams(list);
-        //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Exam> e = LiveDataTestUtil.getValue(db.examDao().getExams());
+    assertEquals(2, e.size());
+  }
 
-        assertEquals(2, e.size());
-    }
+  @Test
+  public void getExamsBySubject() throws InterruptedException {
+    Exam exam = new Exam();
+    exam.startDate = "startDate";
+    exam.classrooms = "classrooms";
+    exam.id = 5;
+    exam.subject = "subject";
 
+    db.examDao().clear();
+    db.examDao().insert(exam);
+    // List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
 
-    @Test
-    public void getExamsBySubject() throws InterruptedException {
-        Exam exam = new Exam();
-        exam.startDate = "startDate";
-        exam.classrooms = "classrooms";
-        exam.id = 5;
-        exam.subject = "subject";
+    assertEquals(1, exams.size());
 
-        db.examDao().clear();
-        db.examDao().insert(exam);
-        //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    Exam fromDb = exams.get(0);
+    assertNotNull(fromDb);
+    assertEquals(fromDb.startDate, "startDate");
+    assertEquals(fromDb.classrooms, "classrooms");
+    assertEquals(fromDb.id, 5);
+    assertEquals(fromDb.subject, "subject");
+  }
 
-        assertEquals(1, exams.size());
+  @Test
+  public void delete() throws InterruptedException {
+    Exam exam = new Exam();
+    exam.startDate = "startDate";
+    exam.classrooms = "classrooms";
+    exam.id = 5;
+    exam.subject = "subject";
 
-        Exam fromDb = exams.get(0);
-        assertNotNull(fromDb);
-        assertEquals(fromDb.startDate, "startDate");
-        assertEquals(fromDb.classrooms, "classrooms");
-        assertEquals(fromDb.id, 5);
-        assertEquals(fromDb.subject, "subject");
-    }
+    db.examDao().clear();
+    db.examDao().insert(exam);
+    db.examDao().delete(exam);
+    // List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExams());
 
-    @Test
-    public void delete() throws InterruptedException {
-        Exam exam = new Exam();
-        exam.startDate = "startDate";
-        exam.classrooms = "classrooms";
-        exam.id = 5;
-        exam.subject = "subject";
-
-        db.examDao().clear();
-        db.examDao().insert(exam);
-        db.examDao().delete(exam);
-        //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Exam> exams = LiveDataTestUtil.getValue(db.examDao().getExams());
-
-        assertEquals(0, exams.size());
-
-    }
+    assertEquals(0, exams.size());
+  }
 }

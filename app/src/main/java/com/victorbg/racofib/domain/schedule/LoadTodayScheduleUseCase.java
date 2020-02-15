@@ -18,14 +18,16 @@ import androidx.lifecycle.MutableLiveData;
 import io.reactivex.disposables.CompositeDisposable;
 
 @Singleton
-public class LoadTodayScheduleUseCase extends UseCase<Void, LiveData<Resource<List<SubjectSchedule>>>> {
+public class LoadTodayScheduleUseCase
+    extends UseCase<Void, LiveData<Resource<List<SubjectSchedule>>>> {
 
   private final AppDatabase appDatabase;
   private PrefManager prefManager;
   private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   @Inject
-  public LoadTodayScheduleUseCase(AppExecutors appExecutors, AppDatabase appDatabase, PrefManager prefManager) {
+  public LoadTodayScheduleUseCase(
+      AppExecutors appExecutors, AppDatabase appDatabase, PrefManager prefManager) {
     super(appExecutors);
     this.appDatabase = appDatabase;
     this.prefManager = prefManager;
@@ -37,12 +39,12 @@ public class LoadTodayScheduleUseCase extends UseCase<Void, LiveData<Resource<Li
     result.setValue(Resource.loading(null));
 
     if (prefManager.shouldDisplaySchedule()) {
-      executeSingleAction(() -> appDatabase.subjectScheduleDao().getTodaySchedule(Utils.getDayOfWeek()),
+      executeSingleAction(
+          () -> appDatabase.subjectScheduleDao().getTodaySchedule(Utils.getDayOfWeek()),
           data -> result.setValue(Resource.success(data)),
           error -> result.setValue(Resource.error(error)));
     }
 
     return result;
   }
-
 }

@@ -12,20 +12,19 @@ import androidx.lifecycle.ViewModel;
 
 public class SubjectDetailViewModel extends ViewModel {
 
+  private LiveData<Resource<Subject>> subject = null;
 
-    private LiveData<Resource<Subject>> subject = null;
+  private final LoadSingleSubjectUseCase loadSingleSubjectUseCase;
 
-    private final LoadSingleSubjectUseCase loadSingleSubjectUseCase;
+  @Inject
+  public SubjectDetailViewModel(LoadSingleSubjectUseCase loadSingleSubjectUseCase) {
+    this.loadSingleSubjectUseCase = loadSingleSubjectUseCase;
+  }
 
-    @Inject
-    public SubjectDetailViewModel(LoadSingleSubjectUseCase loadSingleSubjectUseCase) {
-        this.loadSingleSubjectUseCase = loadSingleSubjectUseCase;
+  public LiveData<Resource<Subject>> getSubject(@Nullable String subject) {
+    if (subject != null && this.subject == null) {
+      this.subject = loadSingleSubjectUseCase.execute(subject);
     }
-
-    public LiveData<Resource<Subject>> getSubject(@Nullable String subject) {
-        if (subject != null && this.subject == null) {
-            this.subject = loadSingleSubjectUseCase.execute(subject);
-        }
-        return this.subject;
-    }
+    return this.subject;
+  }
 }

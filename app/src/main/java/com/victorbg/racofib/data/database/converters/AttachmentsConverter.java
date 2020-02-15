@@ -9,14 +9,13 @@ import java.util.List;
 import androidx.room.TypeConverter;
 
 public class AttachmentsConverter {
-    @TypeConverter
-    public static String toString(List<Attachment> list) {
-        return new Gson().toJson(list, new TypeToken<List<Attachment>>() {
-        }.getType());
-    }
-    @TypeConverter
-    public static List<Attachment> toList(String s) {
-        return new Gson().fromJson(s, new TypeToken<List<Attachment>>() {
-        }.getType());
-    }
+  @TypeConverter
+  public static String toString(List<Attachment> list) {
+    return new Gson().toJson(list, new TypeToken<List<Attachment>>() {}.getType());
+  }
+
+  @TypeConverter
+  public static List<Attachment> toList(String s) {
+    return new Gson().fromJson(s, new TypeToken<List<Attachment>>() {}.getType());
+  }
 }

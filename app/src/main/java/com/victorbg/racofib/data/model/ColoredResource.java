@@ -4,8 +4,7 @@ import androidx.room.Ignore;
 
 public abstract class ColoredResource {
 
-  @Ignore
-  public String color;
+  @Ignore public String color;
 
   public abstract String getSubject();
 }

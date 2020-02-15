@@ -19,69 +19,74 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import timber.log.Timber;
 
-
 public class DialogExamDetail extends DialogCustomContent implements Injectable {
 
-    public static final String EXAM_PARAM_KEY = "ExamParam";
+  public static final String EXAM_PARAM_KEY = "ExamParam";
 
-    Exam exam = null;
+  Exam exam = null;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-
-        try {
-            exam = getIntent().getExtras().getParcelable(EXAM_PARAM_KEY);
-            if (exam == null) {
-                Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        } catch (Exception ignore) {
-            Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-        ActivityExamDetailDialogBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_exam_detail_dialog);
-        binding.setExam(exam);
+    try {
+      exam = getIntent().getExtras().getParcelable(EXAM_PARAM_KEY);
+      if (exam == null) {
+        Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
+            .show();
+        finish();
+      }
+    } catch (Exception ignore) {
+      Toast.makeText(this, getString(R.string.error_retrieving_subject_data), Toast.LENGTH_SHORT)
+          .show();
+      finish();
     }
 
-    @Override
-    protected int getLightTheme() {
-        return R.style.AppTheme_NoteDetail_Light_Dialog;
-    }
+    ActivityExamDetailDialogBinding binding =
+        DataBindingUtil.setContentView(this, R.layout.activity_exam_detail_dialog);
+    binding.setExam(exam);
+  }
 
-    @Override
-    protected int getDarkTheme() {
-        return R.style.AppTheme_NoteDetail_Dark_Dialog;
-    }
+  @Override
+  protected int getLightTheme() {
+    return R.style.AppTheme_NoteDetail_Light_Dialog;
+  }
 
-    @Override
-    public void onBackPressed() {
-        finishAfterTransition();
-    }
+  @Override
+  protected int getDarkTheme() {
+    return R.style.AppTheme_NoteDetail_Dark_Dialog;
+  }
 
-    public void saveToCalendar(View v) {
-        Intent intent = null;
-        try {
-            intent = new Intent(Intent.ACTION_INSERT)
-                    .setData(CalendarContract.Events.CONTENT_URI)
-                    .putExtra(CalendarContract.Events.TITLE, exam.getType(this) + " " + exam.subject)
-                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, Utils.getTimeFromDate(exam.startDate, exam.standardFormat))
-                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, Utils.getTimeFromDate(exam.endDate, exam.standardFormat));
-            if (intent != null && intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, getString(R.string.error_saving_event), Toast.LENGTH_SHORT).show();
-            }
-        } catch (ParseException e) {
-            Timber.w(e);
-            Toast.makeText(this, getString(R.string.error_saving_event), Toast.LENGTH_SHORT).show();
-        }
+  @Override
+  public void onBackPressed() {
+    finishAfterTransition();
+  }
 
+  public void saveToCalendar(View v) {
+    Intent intent = null;
+    try {
+      intent =
+          new Intent(Intent.ACTION_INSERT)
+              .setData(CalendarContract.Events.CONTENT_URI)
+              .putExtra(CalendarContract.Events.TITLE, exam.getType(this) + " " + exam.subject)
+              .putExtra(
+                  CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                  Utils.getTimeFromDate(exam.startDate, exam.standardFormat))
+              .putExtra(
+                  CalendarContract.EXTRA_EVENT_END_TIME,
+                  Utils.getTimeFromDate(exam.endDate, exam.standardFormat));
+      if (intent != null && intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+      } else {
+        Toast.makeText(this, getString(R.string.error_saving_event), Toast.LENGTH_SHORT).show();
+      }
+    } catch (ParseException e) {
+      Timber.w(e);
+      Toast.makeText(this, getString(R.string.error_saving_event), Toast.LENGTH_SHORT).show();
     }
+  }
 
-    public void close(View v) {
-        finishAfterTransition();
-    }
+  public void close(View v) {
+    finishAfterTransition();
+  }
 }

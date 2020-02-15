@@ -14,7 +14,8 @@ public class NetworkUtils {
    * @return If the device is online or not
    */
   public static boolean isOnline(Context context) {
-    ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    ConnectivityManager connectivityManager =
+        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
     return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
   }

@@ -14,21 +14,21 @@ import androidx.room.Query;
 @Dao
 public interface ExamDao {
 
-    @Query("select * from Exams order by start_date ASC")
-    LiveData<List<Exam>> getExams();
+  @Query("select * from Exams order by start_date ASC")
+  LiveData<List<Exam>> getExams();
 
-    @Query("select * from Exams where subject=:s order by start_date ASC")
-    LiveData<List<Exam>> getExamsBySubject(String s);
+  @Query("select * from Exams where subject=:s order by start_date ASC")
+  LiveData<List<Exam>> getExamsBySubject(String s);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Exam exam);
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  void insert(Exam exam);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertExams(List<Exam> exam);
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  void insertExams(List<Exam> exam);
 
-    @Delete
-    void delete(Exam exam);
+  @Delete
+  void delete(Exam exam);
 
-    @Query("delete from Exams")
-    void clear();
+  @Query("delete from Exams")
+  void clear();
 }

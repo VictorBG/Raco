@@ -12,68 +12,65 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-
 @RunWith(JUnit4.class)
 public class NotesDaoTest extends DbTest {
 
-    @Test
-    public void getNotes() throws InterruptedException {
-        Note note = new Note();
-        note.subject = "subject";
-        note.date = "date";
-        note.title = "title";
+  @Test
+  public void getNotes() throws InterruptedException {
+    Note note = new Note();
+    note.subject = "subject";
+    note.date = "date";
+    note.title = "title";
 
+    db.notesDao().clear();
+    db.notesDao().insert(note);
+    // List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    List<Note> notes = LiveDataTestUtil.getValue(db.notesDao().getNotes());
 
-        db.notesDao().clear();
-        db.notesDao().insert(note);
-        //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Note> notes = LiveDataTestUtil.getValue(db.notesDao().getNotes());
+    assertEquals(1, notes.size());
 
-        assertEquals(1, notes.size());
+    Note n = notes.get(0);
+    assertEquals(n.subject, "subject");
+    assertEquals(n.date, "date");
+    assertEquals(n.title, "title");
+  }
 
-        Note n = notes.get(0);
-        assertEquals(n.subject, "subject");
-        assertEquals(n.date, "date");
-        assertEquals(n.title, "title");
-    }
+  @Test
+  public void insert() throws InterruptedException {
+    Note note = new Note();
+    note.subject = "subject";
+    note.date = "date";
+    note.title = "title";
+    note.id = 1;
 
-    @Test
-    public void insert() throws InterruptedException {
-        Note note = new Note();
-        note.subject = "subject";
-        note.date = "date";
-        note.title = "title";
-        note.id = 1;
+    db.notesDao().clear();
+    db.notesDao().insert(note);
+    // List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
+    List<Note> notes = LiveDataTestUtil.getValue(db.notesDao().getNotes());
 
+    assertEquals(1, notes.size());
 
-        db.notesDao().clear();
-        db.notesDao().insert(note);
-        //List<Exam> examFromDb = LiveDataTestUtil.getValue(db.examDao().getExamsBySubject("subject"));
-        List<Note> notes = LiveDataTestUtil.getValue(db.notesDao().getNotes());
+    Note note2 = new Note();
+    note2.subject = "subject2";
+    note2.date = "date2";
+    note2.title = "title2";
+    note2.id = 2;
 
-        assertEquals(1, notes.size());
+    db.notesDao().insert(note);
+    db.notesDao().insert(note2);
 
-        Note note2 = new Note();
-        note2.subject = "subject2";
-        note2.date = "date2";
-        note2.title = "title2";
-        note2.id = 2;
+    notes = LiveDataTestUtil.getValue(db.notesDao().getNotes());
 
-        db.notesDao().insert(note);
-        db.notesDao().insert(note2);
+    assertEquals(2, notes.size());
 
-        notes = LiveDataTestUtil.getValue(db.notesDao().getNotes());
+    List<Note> list = new ArrayList<>();
+    list.add(note);
+    list.add(note2);
 
-        assertEquals(2, notes.size());
+    db.notesDao().clear();
+    db.notesDao().insertNotes(list);
 
-        List<Note> list = new ArrayList<>();
-        list.add(note);
-        list.add(note2);
-
-        db.notesDao().clear();
-        db.notesDao().insertNotes(list);
-
-        List<Note> e = LiveDataTestUtil.getValue(db.notesDao().getNotes());
-        assertEquals(2, e.size());
-    }
+    List<Note> e = LiveDataTestUtil.getValue(db.notesDao().getNotes());
+    assertEquals(2, e.size());
+  }
 }

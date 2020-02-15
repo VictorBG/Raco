@@ -4,41 +4,39 @@ import java.util.concurrent.TimeUnit;
 
 public class RateLimiter {
 
-    private long timestamp = -1;
-    private final long timeout;
+  private long timestamp = -1;
+  private final long timeout;
 
-    public RateLimiter(int timeout, TimeUnit timeUnit) {
-        this.timeout = timeUnit.toMillis(timeout);
+  public RateLimiter(int timeout, TimeUnit timeUnit) {
+    this.timeout = timeUnit.toMillis(timeout);
+  }
+
+  /**
+   * Returns if the network call should be fetch based on the timeout and the last time a call has
+   * been made. It also stores the current timestamp as the last call timestamp to future checks.
+   *
+   * @return
+   */
+  public synchronized boolean shouldFetch() {
+    long now = now();
+    if (timestamp == -1) {
+      timestamp = now;
+      return true;
     }
 
-    /**
-     * Returns if the network call should be fetch based on the
-     * timeout and the last time a call has been made. It also
-     * stores the current timestamp as the last call timestamp
-     * to future checks.
-     *
-     * @return
-     */
-    public synchronized boolean shouldFetch() {
-        long now = now();
-        if (timestamp == -1) {
-            timestamp = now;
-            return true;
-        }
-
-        if (now - timeout > timestamp) {
-            timestamp = now;
-            return true;
-        }
-
-        return false;
+    if (now - timeout > timestamp) {
+      timestamp = now;
+      return true;
     }
 
-    private long now() {
-        return System.currentTimeMillis();
-    }
+    return false;
+  }
 
-    public void reset() {
-        timestamp = -1;
-    }
+  private long now() {
+    return System.currentTimeMillis();
+  }
+
+  public void reset() {
+    timestamp = -1;
+  }
 }

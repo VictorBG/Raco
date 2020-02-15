@@ -30,15 +30,16 @@ public class LoginActivity extends BaseActivity implements Injectable {
 
   @BindView(R.id.progressBar)
   ProgressBar progressBar;
+
   @BindView(R.id.status_message)
   TextView statusMessage;
+
   @BindView(R.id.parent)
   View parent;
 
   private LoginViewModel loginViewModel;
 
-  @Inject
-  ViewModelProvider.Factory viewModelFactory;
+  @Inject ViewModelProvider.Factory viewModelFactory;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +47,8 @@ public class LoginActivity extends BaseActivity implements Injectable {
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
 
-    parent.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    parent.setSystemUiVisibility(
+        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
   }
 
@@ -54,7 +56,8 @@ public class LoginActivity extends BaseActivity implements Injectable {
   protected void onResume() {
     super.onResume();
 
-    if (getIntent().getDataString() != null && getIntent().getDataString().startsWith("apifib://login")) {
+    if (getIntent().getDataString() != null
+        && getIntent().getDataString().startsWith("apifib://login")) {
       loginViewModel.login(getIntent().getData(), STATE).observe(this, this::handleLoginState);
     }
   }
@@ -95,5 +98,4 @@ public class LoginActivity extends BaseActivity implements Injectable {
   protected int getDarkTheme() {
     return R.style.AppTheme_Login;
   }
-
 }

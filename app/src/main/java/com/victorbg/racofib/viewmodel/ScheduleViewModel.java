@@ -13,21 +13,20 @@ import androidx.lifecycle.ViewModel;
 
 public class ScheduleViewModel extends ViewModel {
 
-    private LiveData<Resource<List<SubjectSchedule>>> schedule;
+  private LiveData<Resource<List<SubjectSchedule>>> schedule;
 
-    private final LoadScheduleUseCase scheduleUseCase;
+  private final LoadScheduleUseCase scheduleUseCase;
 
-    @Inject
-    public ScheduleViewModel(LoadScheduleUseCase scheduleUseCase) {
-        this.scheduleUseCase = scheduleUseCase;
-        schedule = scheduleUseCase.execute();
+  @Inject
+  public ScheduleViewModel(LoadScheduleUseCase scheduleUseCase) {
+    this.scheduleUseCase = scheduleUseCase;
+    schedule = scheduleUseCase.execute();
+  }
+
+  public LiveData<Resource<List<SubjectSchedule>>> getSchedule(boolean reset) {
+    if (reset) {
+      schedule = scheduleUseCase.execute();
     }
-
-    public LiveData<Resource<List<SubjectSchedule>>> getSchedule(boolean reset) {
-        if (reset) {
-            schedule = scheduleUseCase.execute();
-        }
-        return schedule;
-    }
-
+    return schedule;
+  }
 }

@@ -1,8 +1,6 @@
 package com.victorbg.racofib.utils;
 
-import android.content.Context;
 
-import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.ColoredResource;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.data.model.notes.Note;
@@ -29,30 +27,28 @@ import timber.log.Timber;
 
 public class Utils {
 
-  /**
-   * @return Today index based on spanish week system
-   */
+  /** @return Today index based on spanish week system */
   public static int getDayOfWeek() {
     int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     return day < 0 ? 7 : day;
   }
 
   public static String getFormattedPeriod(Date start, Date end) {
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM HH:mm - ", Locale.getDefault());
+    SimpleDateFormat simpleDateFormat =
+        new SimpleDateFormat("dd MMM HH:mm - ", Locale.getDefault());
     String result = simpleDateFormat.format(start);
 
     SimpleDateFormat endFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     return result + endFormat.format(end);
   }
 
-  public static String getFormattedPeriod(String start, String end, String initialFormat) throws ParseException {
+  public static String getFormattedPeriod(String start, String end, String initialFormat)
+      throws ParseException {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(initialFormat, Locale.getDefault());
     return getFormattedPeriod(simpleDateFormat.parse(start), simpleDateFormat.parse(end));
   }
 
-  /**
-   * Returns a string with all the subject ids separated by comma
-   */
+  /** Returns a string with all the subject ids separated by comma */
   public static String getStringSubjectsApi(List<String> subjects) {
     if (subjects == null) {
       return "";
@@ -70,25 +66,15 @@ public class Utils {
 
   /**
    * Assigns random colors to the given list of subjects.
-   * <p>
-   * If the list is grater than the available colors, it will assign a basic color to the rest.
+   *
+   * <p>If the list is grater than the available colors, it will assign a basic color to the rest.
    */
   public static void assignRandomColors(List<Subject> list) {
-    String[] colors = new String[]{
-        "#e84e40",
-        "#ec407a",
-        "#ab47bc",
-        "#7e57c2",
-        "#5c6bc0",
-        "#738ffe",
-        "#29b6f6",
-        "#26c6da",
-        "#26a69a",
-        "#2baf2b",
-        "#9ccc65",
-        "#ffa726",
-        "#8d6e63"
-    };
+    String[] colors =
+        new String[] {
+          "#e84e40", "#ec407a", "#ab47bc", "#7e57c2", "#5c6bc0", "#738ffe", "#29b6f6", "#26c6da",
+          "#26a69a", "#2baf2b", "#9ccc65", "#ffa726", "#8d6e63"
+        };
 
     List<String> c = Arrays.asList(colors);
     Collections.shuffle(c);
@@ -104,7 +90,8 @@ public class Utils {
     }
   }
 
-  public static void assignColorsToResources(List<SubjectColor> colors, List<? extends ColoredResource> result) {
+  public static void assignColorsToResources(
+      List<SubjectColor> colors, List<? extends ColoredResource> result) {
     HashMap<String, String> colorsMap = new HashMap<>();
     for (SubjectColor color : colors) {
       colorsMap.put(color.subject, color.color);
@@ -123,9 +110,7 @@ public class Utils {
     assignColorsToResources(colors, result);
   }
 
-  /**
-   * Assigns to every note the specific color of the subject
-   */
+  /** Assigns to every note the specific color of the subject */
   public static void assignColorsToNotes(List<SubjectColor> colors, List<Note> result) {
     HashMap<String, String> colorsMap = new HashMap<>();
     for (SubjectColor color : colors) {
@@ -141,9 +126,7 @@ public class Utils {
     }
   }
 
-  /**
-   * Assigns the color of every subject to the schedule list
-   */
+  /** Assigns the color of every subject to the schedule list */
   public static void assignColorsSchedule(List<Subject> colors, List<SubjectSchedule> result) {
     HashMap<String, String> colorsMap = buildColors(colors);
 
@@ -158,7 +141,8 @@ public class Utils {
   }
 
   /**
-   * Builds a {@link HashMap} of Strings indicating the subject id as key and the String indicating the color as value
+   * Builds a {@link HashMap} of Strings indicating the subject id as key and the String indicating
+   * the color as value
    */
   public static HashMap<String, String> buildColors(List<Subject> subjects) {
     HashMap<String, String> colorsMap = new HashMap<>();
@@ -168,24 +152,25 @@ public class Utils {
     return colorsMap;
   }
 
-  /**
-   * Sorts the given exams list by date
-   */
+  /** Sorts the given exams list by date */
   public static void sortExamsList(List<Exam> subjects) {
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-    sortList(subjects, (o1, o2) -> {
-      try {
-        return simpleDateFormat.parse(o1.startDate).compareTo(simpleDateFormat.parse(o2.startDate));
-      } catch (ParseException e) {
-        Timber.d(e);
-        return 0;
-      }
-    });
+    SimpleDateFormat simpleDateFormat =
+        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+    sortList(
+        subjects,
+        (o1, o2) -> {
+          try {
+            return simpleDateFormat
+                .parse(o1.startDate)
+                .compareTo(simpleDateFormat.parse(o2.startDate));
+          } catch (ParseException e) {
+            Timber.d(e);
+            return 0;
+          }
+        });
   }
 
-  /**
-   * Sorts the list with the given {@link Comparator}
-   */
+  /** Sorts the list with the given {@link Comparator} */
   public static <T> void sortList(List<T> list, Comparator<T> comparator) {
     Collections.sort(list, comparator);
   }

@@ -31,16 +31,18 @@ public class PublicationsViewModel extends ViewModel {
   public MutableLiveData<Boolean> orderAscending = new MutableLiveData<>();
   public MutableLiveData<Note> selectedNote = new MutableLiveData<>();
 
-
   private final NotesChangeFavoriteStateUseCase changeFavoriteStateUseCase;
   private final LoadNotesUseCase loadNotesUseCase;
   private final LoadSavedNotesUseCase loadSavedNotesUseCase;
 
-  private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+  private final SimpleDateFormat format =
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 
   @Inject
-  public PublicationsViewModel(LoadSavedNotesUseCase loadSavedNotesUseCase,
-      NotesChangeFavoriteStateUseCase notesChangeFavoriteStateUseCase, LoadNotesUseCase loadNotesUseCase,
+  public PublicationsViewModel(
+      LoadSavedNotesUseCase loadSavedNotesUseCase,
+      NotesChangeFavoriteStateUseCase notesChangeFavoriteStateUseCase,
+      LoadNotesUseCase loadNotesUseCase,
       LoadSubjectsUseCase loadSubjectsUseCase) {
     this.loadSavedNotesUseCase = loadSavedNotesUseCase;
     this.changeFavoriteStateUseCase = notesChangeFavoriteStateUseCase;
@@ -55,30 +57,37 @@ public class PublicationsViewModel extends ViewModel {
   }
 
   /**
-   * Load the subjects from the repository layer applying a {@link Transformations} to the given {@link LiveData} to
-   * convert it to a {@link Map} used by the filter to apply the desired filter on the notes list.
+   * Load the subjects from the repository layer applying a {@link Transformations} to the given
+   * {@link LiveData} to convert it to a {@link Map} used by the filter to apply the desired filter
+   * on the notes list.
    */
   private void loadSubjects(LoadSubjectsUseCase loadSubjectsUseCase) {
-    subjects = Transformations.map(loadSubjectsUseCase.execute(), s -> {
-      Map<String, SubjectFilter> result = new ArrayMap<>();
-      s.forEach(subject -> {
-        if (subjects != null && subjects.getValue() != null &&
-            subjects.getValue().containsKey(subject.shortName)) {
-          result.put(subject.shortName, subjects.getValue().get(subject.shortName));
-        } else {
-          SubjectFilter subjectsFilter = new SubjectFilter();
-          subjectsFilter.subject = subject;
-          subjectsFilter.checked = true;
-          result.put(subject.shortName, subjectsFilter);
-        }
-      });
-      return result;
-    });
+    subjects =
+        Transformations.map(
+            loadSubjectsUseCase.execute(),
+            s -> {
+              Map<String, SubjectFilter> result = new ArrayMap<>();
+              s.forEach(
+                  subject -> {
+                    if (subjects != null
+                        && subjects.getValue() != null
+                        && subjects.getValue().containsKey(subject.shortName)) {
+                      result.put(subject.shortName, subjects.getValue().get(subject.shortName));
+                    } else {
+                      SubjectFilter subjectsFilter = new SubjectFilter();
+                      subjectsFilter.subject = subject;
+                      subjectsFilter.checked = true;
+                      result.put(subject.shortName, subjectsFilter);
+                    }
+                  });
+              return result;
+            });
   }
 
   /**
-   * Loads the {@link Note} list into an internal {@link MutableLiveData} in order to dispatch the same value when
-   * applying a new filter (the filter is applied when a new value is being dispatched
+   * Loads the {@link Note} list into an internal {@link MutableLiveData} in order to dispatch the
+   * same value when applying a new filter (the filter is applied when a new value is being
+   * dispatched
    */
   private void loadPublications(boolean force) {
     if (!force && publications.getValue() != null) {
@@ -87,51 +96,61 @@ public class PublicationsViewModel extends ViewModel {
     }
     LiveData<Resource<List<Note>>> data = loadNotesUseCase.execute(force);
     //            if (result.status != Status.LOADING) {
-//                publications.removeSource(data);
-//            }
+    //                publications.removeSource(data);
+    //            }
     publications.removeSource(data);
     publications.addSource(data, publications::setValue);
   }
 
   /**
-   * Returns the {@link Note} LiveData with the applied filters. The filters are applied using a {@link Transformations}
-   * in order to sort them, by the {@link #orderAscending} value, and filter them by the {@link #subjects} checked
-   * values. The transformation is only applied to the {@link Status#SUCCESS} status due it is the only status that has
-   * data attached, the other status only carry error messages or null data.
+   * Returns the {@link Note} LiveData with the applied filters. The filters are applied using a
+   * {@link Transformations} in order to sort them, by the {@link #orderAscending} value, and filter
+   * them by the {@link #subjects} checked values. The transformation is only applied to the {@link
+   * Status#SUCCESS} status due it is the only status that has data attached, the other status only
+   * carry error messages or null data.
+   *
    * <p>
    *
    * @return {@link LiveData} with the applied filters
    */
   public LiveData<Resource<List<Note>>> getPublications() {
-    return Transformations.map(publications, notes -> {
-      if (notes.status == Status.SUCCESS) {
-        return Resource.success(notes.data.stream().sorted((o1, o2) -> {
-          try {
-            return orderAscending.getValue() ?
-                format.parse(o1.date).compareTo(format.parse(o2.date)) :
-                format.parse(o2.date).compareTo(format.parse(o1.date));
-          } catch (Exception ignore) {
-            return 0;
+    return Transformations.map(
+        publications,
+        notes -> {
+          if (notes.status == Status.SUCCESS) {
+            return Resource.success(
+                notes.data.stream()
+                    .sorted(
+                        (o1, o2) -> {
+                          try {
+                            return orderAscending.getValue()
+                                ? format.parse(o1.date).compareTo(format.parse(o2.date))
+                                : format.parse(o2.date).compareTo(format.parse(o1.date));
+                          } catch (Exception ignore) {
+                            return 0;
+                          }
+                        })
+                    .collect(Collectors.toList()));
+            //        return Resource.success(notes.data.stream().filter(input ->
+            //            subjects != null && subjects.getValue() != null
+            //                && ((subjects.getValue().containsKey(input.subject) &&
+            // subjects.getValue()
+            //                .get(input.subject).checked))
+            //                || (subjects.getValue() != null &&
+            // !subjects.getValue().containsKey(input.subject)))
+            //            .sorted((o1, o2) -> {
+            //              try {
+            //                return orderAscending.getValue() ?
+            //                    format.parse(o1.date).compareTo(format.parse(o2.date)) :
+            //                    format.parse(o2.date).compareTo(format.parse(o1.date));
+            //              } catch (Exception ignore) {
+            //                return 0;
+            //              }
+            //            }).collect(Collectors.toList()));
+          } else {
+            return notes;
           }
-        }).collect(Collectors.toList()));
-//        return Resource.success(notes.data.stream().filter(input ->
-//            subjects != null && subjects.getValue() != null
-//                && ((subjects.getValue().containsKey(input.subject) && subjects.getValue()
-//                .get(input.subject).checked))
-//                || (subjects.getValue() != null && !subjects.getValue().containsKey(input.subject)))
-//            .sorted((o1, o2) -> {
-//              try {
-//                return orderAscending.getValue() ?
-//                    format.parse(o1.date).compareTo(format.parse(o2.date)) :
-//                    format.parse(o2.date).compareTo(format.parse(o1.date));
-//              } catch (Exception ignore) {
-//                return 0;
-//              }
-//            }).collect(Collectors.toList()));
-      } else {
-        return notes;
-      }
-    });
+        });
   }
 
   public void setSelectedNote(Note note) {
@@ -159,10 +178,11 @@ public class PublicationsViewModel extends ViewModel {
   }
 
   /**
-   * The filters are already saved. Redispatch the value of the livedata in order to trigger the transformation
+   * The filters are already saved. Redispatch the value of the livedata in order to trigger the
+   * transformation
    */
   public void applyFilter() {
-    //Dispatch the same data that will be filtered with the transformation
+    // Dispatch the same data that will be filtered with the transformation
     publications.setValue(publications.getValue());
     closeFilter();
   }
@@ -174,5 +194,4 @@ public class PublicationsViewModel extends ViewModel {
   public void orderChanged(int id) {
     orderAscending.setValue(id == R.id.ascDateFilter);
   }
-
 }

@@ -10,19 +10,16 @@ This class cannot be abstract due Gson would not be able to parse Subject data
  */
 public class BaseSubjectActivity {
 
-    public static final int ACTIVITY = 1;
-    public static final int EVALUATION_ACTIVITY = 1 << 2;
+  public static final int ACTIVITY = 1;
+  public static final int EVALUATION_ACTIVITY = 1 << 2;
 
-    public int id;
+  public int id;
 
-    @IntDef({ACTIVITY, EVALUATION_ACTIVITY})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface ActivityType {
-    }
+  @IntDef({ACTIVITY, EVALUATION_ACTIVITY})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface ActivityType {}
 
-    public @ActivityType
-    int getType() {
-        return ACTIVITY;
-    }
-
+  public @ActivityType int getType() {
+    return ACTIVITY;
+  }
 }

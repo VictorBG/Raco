@@ -8,35 +8,35 @@ import java.util.List;
 
 public class SubjectsFilter {
 
-    public enum SubjectFilterOrder {
-        ASCENDING,
-        DESCENDING
+  public enum SubjectFilterOrder {
+    ASCENDING,
+    DESCENDING
+  }
+
+  private List<SubjectFilter> filter;
+  private SubjectFilterOrder order;
+
+  public SubjectsFilter(List<SubjectFilter> filter) {
+    this(filter, SubjectFilterOrder.DESCENDING);
+  }
+
+  public SubjectsFilter(List<SubjectFilter> filter, SubjectFilterOrder order) {
+    this.filter = filter;
+    this.order = order;
+  }
+
+  public String getOrder() {
+    return order == SubjectFilterOrder.ASCENDING ? "ASC" : "DESC";
+  }
+
+  public String getSubjects() {
+    List<String> sFilter = new ArrayList<>();
+    for (SubjectFilter sf : filter) {
+      if (sf.checked) {
+        sFilter.add(sf.subject.shortName);
+      }
     }
 
-    private List<SubjectFilter> filter;
-    private SubjectFilterOrder order;
-
-    public SubjectsFilter(List<SubjectFilter> filter) {
-        this(filter, SubjectFilterOrder.DESCENDING);
-    }
-
-    public SubjectsFilter(List<SubjectFilter> filter, SubjectFilterOrder order) {
-        this.filter = filter;
-        this.order = order;
-    }
-
-    public String getOrder() {
-        return order == SubjectFilterOrder.ASCENDING ? "ASC" : "DESC";
-    }
-
-    public String getSubjects() {
-        List<String> sFilter = new ArrayList<>();
-        for (SubjectFilter sf : filter) {
-            if (sf.checked) {
-                sFilter.add(sf.subject.shortName);
-            }
-        }
-
-        return Utils.getStringSubjectsApi(sFilter);
-    }
+    return Utils.getStringSubjectsApi(sFilter);
+  }
 }

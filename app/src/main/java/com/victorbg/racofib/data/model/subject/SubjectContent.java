@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class SubjectContent {
 
-    public int id;
+  public int id;
 
-    @SerializedName("nom")
-    public String name;
+  @SerializedName("nom")
+  public String name;
 
-    @SerializedName("descripcio")
-    public String description;
+  @SerializedName("descripcio")
+  public String description;
 }

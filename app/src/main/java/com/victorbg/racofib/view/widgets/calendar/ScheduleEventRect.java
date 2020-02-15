@@ -1,7 +1,6 @@
 package com.victorbg.racofib.view.widgets.calendar;
 
 import android.graphics.RectF;
-import androidx.annotation.Nullable;
 
 public class ScheduleEventRect {
 
@@ -11,7 +10,6 @@ public class ScheduleEventRect {
   public float width;
   public float top;
   public float bottom;
-
 
   public ScheduleEventRect(ScheduleEvent event, RectF rectF) {
     this.event = event;

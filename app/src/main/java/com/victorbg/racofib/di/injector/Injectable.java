@@ -1,4 +1,3 @@
 package com.victorbg.racofib.di.injector;
 
-public interface Injectable {
-}
+public interface Injectable {}

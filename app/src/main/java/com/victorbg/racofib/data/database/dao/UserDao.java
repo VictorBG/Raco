@@ -13,15 +13,15 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface UserDao {
 
-    @Query("select * from RacoUsers ")
-    Single<User> getUser();
+  @Query("select * from RacoUsers ")
+  Single<User> getUser();
 
-    @Insert(onConflict = REPLACE)
-    void insert(User user);
+  @Insert(onConflict = REPLACE)
+  void insert(User user);
 
-    @Delete
-    void delete(User user);
+  @Delete
+  void delete(User user);
 
-    @Query("delete from RacoUsers")
-    void clear();
+  @Query("delete from RacoUsers")
+  void clear();
 }

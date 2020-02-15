@@ -36,74 +36,79 @@ import static com.victorbg.racofib.utils.ScheduleUtils.convertToEventScheduleWee
 
 public class ScheduleFragment extends BaseFragment implements Injectable {
 
-    @BindView(R.id.scheduleView)
-    CalendarWeekScheduleView scheduleView;
-    @BindView(R.id.schedule_toolbar)
-    LinearLayout scheduleToolbar;
+  @BindView(R.id.scheduleView)
+  CalendarWeekScheduleView scheduleView;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+  @BindView(R.id.schedule_toolbar)
+  LinearLayout scheduleToolbar;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ScheduleViewModel scheduleViewModel = ViewModelProviders.of(this, viewModelFactory).get(ScheduleViewModel.class);
-        scheduleViewModel.getSchedule(true).observe(this, this::onChanged);
+  @Inject ViewModelProvider.Factory viewModelFactory;
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    ScheduleViewModel scheduleViewModel =
+        ViewModelProviders.of(this, viewModelFactory).get(ScheduleViewModel.class);
+    scheduleViewModel.getSchedule(true).observe(this, this::onChanged);
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_schedule, container, false);
+  }
+
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    computeDaysToolbarAttribs();
+  }
+
+  @Override
+  public boolean onBackPressed() {
+    return false;
+  }
+
+  private void onChanged(Resource<List<SubjectSchedule>> schedule) {
+    if (schedule.status == Status.SUCCESS && schedule.data != null) {
+      // TODO: Move to viewmodel
+      List<ScheduleEvent> scheduleEvents = convertToEventScheduleWeek(schedule.data);
+      float minHour =
+          scheduleEvents.stream()
+              .min(Comparator.comparing(ScheduleEvent::getStartTime))
+              .get()
+              .getStartTime();
+      //            float maxHour =
+      // scheduleEvents.stream().max(Comparator.comparing(ScheduleEvent::getEndTime)).get().getEndTime();
+      //            scheduleView.setEndHour((int) Math.ceil(maxHour));
+      scheduleView.setStartHour((int) Math.floor(minHour));
+      scheduleView.setEvents(scheduleEvents);
     }
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
-    }
+  private void computeDaysToolbarAttribs() {
+    int today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+    if (today < 0) today = 7;
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        computeDaysToolbarAttribs();
+    float startPadding = CalendarWeekScheduleView.computeTextWidth(getContext()) + 40;
+    scheduleToolbar.setPadding((int) startPadding, 0, 0, 0);
+    if (today <= 5) {
+      if (scheduleToolbar.getChildAt(today - 1) instanceof ViewGroup) {
+        ViewGroup vg = ((ViewGroup) scheduleToolbar.getChildAt(today - 1));
+        for (int i = 0; i < vg.getChildCount(); i++) {
+          View v = vg.getChildAt(i);
+          if (v instanceof TextView) {
+            ((TextView) v).setTextColor(Color.WHITE);
+          }
 
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        return false;
-    }
-
-    private void onChanged(Resource<List<SubjectSchedule>> schedule) {
-        if (schedule.status == Status.SUCCESS && schedule.data != null) {
-            //TODO: Move to viewmodel
-            List<ScheduleEvent> scheduleEvents = convertToEventScheduleWeek(schedule.data);
-            float minHour = scheduleEvents.stream().min(Comparator.comparing(ScheduleEvent::getStartTime)).get().getStartTime();
-//            float maxHour = scheduleEvents.stream().max(Comparator.comparing(ScheduleEvent::getEndTime)).get().getEndTime();
-//            scheduleView.setEndHour((int) Math.ceil(maxHour));
-            scheduleView.setStartHour((int) Math.floor(minHour));
-            scheduleView.setEvents(scheduleEvents);
+          if (v instanceof ImageView) {
+            v.setVisibility(View.VISIBLE);
+          }
         }
+      }
     }
-
-    private void computeDaysToolbarAttribs() {
-        int today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-        if (today < 0) today = 7;
-
-
-        float startPadding = CalendarWeekScheduleView.computeTextWidth(getContext()) + 40;
-        scheduleToolbar.setPadding((int) startPadding, 0, 0, 0);
-        if (today <= 5) {
-            if (scheduleToolbar.getChildAt(today - 1) instanceof ViewGroup) {
-                ViewGroup vg = ((ViewGroup) scheduleToolbar.getChildAt(today - 1));
-                for (int i = 0; i < vg.getChildCount(); i++) {
-                    View v = vg.getChildAt(i);
-                    if (v instanceof TextView) {
-                        ((TextView) v).setTextColor(Color.WHITE);
-                    }
-
-                    if (v instanceof ImageView) {
-                        v.setVisibility(View.VISIBLE);
-                    }
-                }
-
-            }
-        }
-    }
+  }
 }
-

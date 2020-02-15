@@ -14,24 +14,25 @@ import io.reactivex.Single;
 @Dao
 public interface SubjectScheduleDao {
 
-    @Query("select * from SubjectSchedule where  day_of_week=:day")
-    Single<List<SubjectSchedule>> getTodaySchedule(int day);
+  @Query("select * from SubjectSchedule where  day_of_week=:day")
+  Single<List<SubjectSchedule>> getTodaySchedule(int day);
 
-    @Query("select * from SubjectSchedule order by day_of_week ASC")
-    Single<List<SubjectSchedule>> getSchedule();
+  @Query("select * from SubjectSchedule order by day_of_week ASC")
+  Single<List<SubjectSchedule>> getSchedule();
 
-//    @Query("select ss.id, ss.day_of_week, ss.duration, ss.start, s.color from SubjectSchedule ss, Subjects s where ss.id=s.id order by ss.day_of_week ASC")
-//    Single<List<SubjectSchedule>> getScheduleWithColors();
+  //    @Query("select ss.id, ss.day_of_week, ss.duration, ss.start, s.color from SubjectSchedule
+  // ss, Subjects s where ss.id=s.id order by ss.day_of_week ASC")
+  //    Single<List<SubjectSchedule>> getScheduleWithColors();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(SubjectSchedule subjectSchedule);
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  void insert(SubjectSchedule subjectSchedule);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<SubjectSchedule> subjectSchedule);
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  void insert(List<SubjectSchedule> subjectSchedule);
 
-    @Delete
-    void delete(SubjectSchedule subjectSchedule);
+  @Delete
+  void delete(SubjectSchedule subjectSchedule);
 
-    @Query("delete from SubjectSchedule")
-    void clear();
+  @Query("delete from SubjectSchedule")
+  void clear();
 }

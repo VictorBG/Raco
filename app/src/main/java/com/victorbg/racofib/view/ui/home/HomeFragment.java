@@ -26,7 +26,6 @@ import com.victorbg.racofib.view.ui.home.items.ExamItem;
 import com.victorbg.racofib.view.ui.home.items.ScheduledClassItem;
 import com.victorbg.racofib.viewmodel.HomeViewModel;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,14 +52,19 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
   @BindView(R.id.todayDate)
   TextView todayDate;
+
   @BindView(R.id.recyclerView)
   RecyclerView todayScheduleRecyclerView;
+
   @BindView(R.id.textView5)
   TextView noClassesTodayView;
+
   @BindView(R.id.recyclerViewExams)
   RecyclerView recyclerViewExams;
+
   @BindView(R.id.noExams)
   TextView noExams;
+
   @BindView(R.id.progressBar2)
   ProgressBar examsProgressBar;
 
@@ -68,20 +72,23 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
   private ItemAdapter<ExamItem> itemAdapterExams;
 
-  @Inject
-  ViewModelProvider.Factory viewModelFactory;
+  @Inject ViewModelProvider.Factory viewModelFactory;
 
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    HomeViewModel homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+    HomeViewModel homeViewModel =
+        ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
     homeViewModel.getExams().observe(this, this::handleExams);
     homeViewModel.getSchedule().observe(this, this::handleSchedule);
   }
 
   @Nullable
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_home, container, false);
   }
 
@@ -98,30 +105,39 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
     itemAdapter = new ItemAdapter<>();
     itemAdapterExams = new ItemAdapter<>();
-    FastAdapter<ScheduledClassItem> fastAdapter = FastAdapter.with(Collections.singletonList(itemAdapter));
-    FastAdapter<ExamItem> fastAdapterExams = FastAdapter.with(Collections.singletonList(itemAdapterExams));
+    FastAdapter<ScheduledClassItem> fastAdapter =
+        FastAdapter.with(Collections.singletonList(itemAdapter));
+    FastAdapter<ExamItem> fastAdapterExams =
+        FastAdapter.with(Collections.singletonList(itemAdapterExams));
 
-    fastAdapterExams.withEventHook(new ClickEventHook<ExamItem>() {
-      @Override
-      public void onClick(@NotNull View v, int position, @NotNull FastAdapter<ExamItem> fastAdapter, @NotNull ExamItem item) {
-        Intent intent = new Intent(getContext(), DialogExamDetail.class);
-        intent.putExtra(DialogExamDetail.EXAM_PARAM_KEY, item.getExam());
-        ActivityOptions activityOptions = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
-        HomeFragment.this.startActivity(intent, activityOptions.toBundle());
-      }
+    fastAdapterExams.withEventHook(
+        new ClickEventHook<ExamItem>() {
+          @Override
+          public void onClick(
+              @NotNull View v,
+              int position,
+              @NotNull FastAdapter<ExamItem> fastAdapter,
+              @NotNull ExamItem item) {
+            Intent intent = new Intent(getContext(), DialogExamDetail.class);
+            intent.putExtra(DialogExamDetail.EXAM_PARAM_KEY, item.getExam());
+            ActivityOptions activityOptions =
+                ActivityOptions.makeScaleUpAnimation(
+                    v, 0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+            HomeFragment.this.startActivity(intent, activityOptions.toBundle());
+          }
 
-      @javax.annotation.Nullable
-      @Override
-      public View onBind(RecyclerView.ViewHolder viewHolder) {
-        if (viewHolder instanceof ExamItem.ViewHolder) {
-          return ((ExamItem.ViewHolder) viewHolder).itemView;
-        }
-        return null;
-      }
+          @javax.annotation.Nullable
+          @Override
+          public View onBind(RecyclerView.ViewHolder viewHolder) {
+            if (viewHolder instanceof ExamItem.ViewHolder) {
+              return ((ExamItem.ViewHolder) viewHolder).itemView;
+            }
+            return null;
+          }
+        });
 
-    });
-
-    todayScheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+    todayScheduleRecyclerView.setLayoutManager(
+        new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
     recyclerViewExams.setLayoutManager(new LinearLayoutManager(getContext()));
     todayScheduleRecyclerView.setAdapter(fastAdapter);
     recyclerViewExams.setAdapter(fastAdapterExams);
@@ -135,8 +151,10 @@ public class HomeFragment extends BaseFragment implements Injectable {
       return;
     }
 
-    List<ExamItem> items = exams.stream().map(exam -> new ExamItem().withExam(exam).withContext(getContext())).collect(Collectors.toList());
-
+    List<ExamItem> items =
+        exams.stream()
+            .map(exam -> new ExamItem().withExam(exam).withContext(getContext()))
+            .collect(Collectors.toList());
 
     noExams.setVisibility(View.GONE);
 
@@ -167,7 +185,8 @@ public class HomeFragment extends BaseFragment implements Injectable {
     }
 
     List<ScheduledClassItem> items = new ArrayList<>();
-    noClassesTodayView.setVisibility((schedule.data == null || schedule.data.isEmpty()) ? View.VISIBLE : View.GONE);
+    noClassesTodayView.setVisibility(
+        (schedule.data == null || schedule.data.isEmpty()) ? View.VISIBLE : View.GONE);
 
     for (SubjectSchedule note : schedule.data) {
       items.add(new ScheduledClassItem().withScheduledClass(note).withContext(getContext()));
@@ -180,6 +199,7 @@ public class HomeFragment extends BaseFragment implements Injectable {
 
   @OnClick(R.id.seeMoreExams)
   public void seeMoreExams(View view) {
-    Navigation.findNavController(todayScheduleRecyclerView).navigate(R.id.action_homeFragment_to_fragmentAllExams);
+    Navigation.findNavController(todayScheduleRecyclerView)
+        .navigate(R.id.action_homeFragment_to_fragmentAllExams);
   }
 }

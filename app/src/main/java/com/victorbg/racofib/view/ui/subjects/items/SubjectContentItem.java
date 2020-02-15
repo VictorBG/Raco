@@ -15,54 +15,55 @@ import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SubjectContentItem extends AbstractItem<SubjectContentItem, SubjectContentItem.ViewHolder> {
+public class SubjectContentItem
+    extends AbstractItem<SubjectContentItem, SubjectContentItem.ViewHolder> {
 
-    private SubjectContent subject;
+  private SubjectContent subject;
 
-    public SubjectContentItem withSubjectContent(SubjectContent subject) {
-        this.subject = subject;
-        return this;
+  public SubjectContentItem withSubjectContent(SubjectContent subject) {
+    this.subject = subject;
+    return this;
+  }
+
+  @NonNull
+  @Override
+  public SubjectContentItem.ViewHolder getViewHolder(View v) {
+    return new ViewHolder(v);
+  }
+
+  @Override
+  public int getType() {
+    return 0;
+  }
+
+  @Override
+  public int getLayoutRes() {
+    return R.layout.item_subject_content;
+  }
+
+  public static class ViewHolder extends FastAdapter.ViewHolder<SubjectContentItem> {
+
+    @BindView(R.id.name)
+    TextView name;
+
+    @BindView(R.id.description)
+    TextView description;
+
+    ViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
     }
 
-    @NonNull
     @Override
-    public SubjectContentItem.ViewHolder getViewHolder(View v) {
-        return new ViewHolder(v);
+    public void bindView(@NonNull SubjectContentItem item, @NonNull List<Object> payloads) {
+      StringHolder.applyToOrHide(new StringHolder(item.subject.name), name);
+      StringHolder.applyToOrHide(new StringHolder(item.subject.description), description);
     }
 
     @Override
-    public int getType() {
-        return 0;
+    public void unbindView(@NonNull SubjectContentItem item) {
+      name.setText(null);
+      description.setText(null);
     }
-
-    @Override
-    public int getLayoutRes() {
-        return R.layout.item_subject_content;
-    }
-
-    public static class ViewHolder extends FastAdapter.ViewHolder<SubjectContentItem> {
-
-        @BindView(R.id.name)
-        TextView name;
-        @BindView(R.id.description)
-        TextView description;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        @Override
-        public void bindView(@NonNull SubjectContentItem item, @NonNull List<Object> payloads) {
-            StringHolder.applyToOrHide(new StringHolder(item.subject.name), name);
-            StringHolder.applyToOrHide(new StringHolder(item.subject.description), description);
-        }
-
-
-        @Override
-        public void unbindView(@NonNull SubjectContentItem item) {
-            name.setText(null);
-            description.setText(null);
-        }
-    }
+  }
 }

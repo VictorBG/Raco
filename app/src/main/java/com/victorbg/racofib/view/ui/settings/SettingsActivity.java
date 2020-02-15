@@ -18,110 +18,116 @@ import javax.inject.Inject;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
+public class SettingsActivity extends BaseActivity
+    implements Injectable, SharedPreferences.OnSharedPreferenceChangeListener {
 
-public class SettingsActivity extends BaseActivity implements Injectable, SharedPreferences.OnSharedPreferenceChangeListener {
+  @Inject LogoutUserUseCase logoutUserUseCase;
 
-    @Inject
-    LogoutUserUseCase logoutUserUseCase;
+  private String locale;
 
-    private String locale;
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
+    setPreferenceListener();
+
+    locale = prefManager.getLocale();
+
+    getFragmentManager()
+        .beginTransaction()
+        .replace(android.R.id.content, new SettingsFragment())
+        .commit();
+
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    setTitle(R.string.settings);
+  }
+
+  private void setPreferenceListener() {
+    prefManager.getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+  }
+
+  @Override
+  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    if ("DarkTheme".equals(key)) {
+      prefManager.refreshDarkTheme();
+      recreate();
+    }
+
+    if ("LocaleApp".equals(key)) {
+      if (!locale.equals(sharedPreferences.getString(key, PrefManager.LOCALE_SPANISH))) {
+        MaterialDialog materialDialog =
+            new MaterialDialog.Builder(this)
+                .title(getString(R.string.change_language_title))
+                .content(getString(R.string.change_language_description))
+                .positiveText(getString(R.string.restart))
+                .negativeText(getString(R.string.cancel))
+                .onPositive(
+                    (dialog, which) -> {
+                      logoutUserUseCase.execute();
+                      dialog.dismiss();
+                      onBackPressed();
+                    })
+                .onNegative(
+                    ((dialog, which) -> {
+                      sharedPreferences.edit().putString(key, locale).apply();
+                      dialog.dismiss();
+                    }))
+                .build();
+        materialDialog.show();
+      }
+    }
+  }
+
+  @Override
+  protected void onDestroy() {
+    prefManager.getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    super.onDestroy();
+  }
+
+  @Override
+  protected int getLightTheme() {
+    return R.style.AppTheme_Settings_Light;
+  }
+
+  @Override
+  protected int getDarkTheme() {
+    return R.style.AppTheme_Settings_Dark;
+  }
+
+  @Override
+  public void onBackPressed() {
+    finishAfterTransition();
+  }
+
+  @Override
+  public boolean onSupportNavigateUp() {
+    onBackPressed();
+    return true;
+  }
+
+  public static class SettingsFragment extends PreferenceFragment {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      addPreferencesFromResource(R.xml.settings);
 
-        setPreferenceListener();
-
-        locale = prefManager.getLocale();
-
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
-                .commit();
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        setTitle(R.string.settings);
-    }
-
-    private void setPreferenceListener() {
-        prefManager.getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-    }
-
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if ("DarkTheme".equals(key)) {
-            prefManager.refreshDarkTheme();
-            recreate();
-        }
-
-        if ("LocaleApp".equals(key)) {
-            if (!locale.equals(sharedPreferences.getString(key, PrefManager.LOCALE_SPANISH))) {
-                MaterialDialog materialDialog = new MaterialDialog.Builder(this)
-                        .title(getString(R.string.change_language_title))
-                        .content(getString(R.string.change_language_description))
-                        .positiveText(getString(R.string.restart))
-                        .negativeText(getString(R.string.cancel))
-                        .onPositive((dialog, which) -> {
-                            logoutUserUseCase.execute();
-                            dialog.dismiss();
-                            onBackPressed();
-                        })
-                        .onNegative(((dialog, which) -> {
-                            sharedPreferences.edit().putString(key, locale).apply();
-                            dialog.dismiss();
-                        })).build();
-                materialDialog.show();
-            }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        prefManager.getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-        super.onDestroy();
-    }
-
-    @Override
-    protected int getLightTheme() {
-        return R.style.AppTheme_Settings_Light;
-    }
-
-    @Override
-    protected int getDarkTheme() {
-        return R.style.AppTheme_Settings_Dark;
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishAfterTransition();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-
-    public static class SettingsFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.settings);
-
-            findPreference("OpenSource").setOnPreferenceClickListener(v -> {
+      findPreference("OpenSource")
+          .setOnPreferenceClickListener(
+              v -> {
                 startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
                 return true;
-            });
+              });
 
-            findPreference("SubjectsColors").setOnPreferenceClickListener(v -> {
+      findPreference("SubjectsColors")
+          .setOnPreferenceClickListener(
+              v -> {
                 startActivity(new Intent(getActivity(), ColorSettingsActivity.class));
                 return true;
-            });
-        }
+              });
     }
+  }
 }

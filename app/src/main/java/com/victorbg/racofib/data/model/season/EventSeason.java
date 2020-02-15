@@ -4,8 +4,8 @@ import java.text.ParseException;
 
 public class EventSeason extends BaseEvent {
 
-  public static EventSeason createFromAPIEvent(APIEvent event) throws ParseException, InstantiationException, IllegalAccessException {
+  public static EventSeason createFromAPIEvent(APIEvent event)
+      throws ParseException, InstantiationException, IllegalAccessException {
     return BaseEvent.createFromAPIEvent(event, EventSeason.class);
   }
-
 }

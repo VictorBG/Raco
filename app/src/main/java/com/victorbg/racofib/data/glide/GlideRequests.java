@@ -42,24 +42,41 @@ public class GlideRequests {
 
   public void loadImage(ImageView into, String from, int width, int height) {
     GlideUrl glideUrl = getGlideUrl(from);
-    RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_face).fallback(R.drawable.ic_face).override(width, height)
-        .transform(new CircleTransform());
+    RequestOptions requestOptions =
+        new RequestOptions()
+            .placeholder(R.drawable.ic_face)
+            .fallback(R.drawable.ic_face)
+            .override(width, height)
+            .transform(new CircleTransform());
     Glide.with(context).setDefaultRequestOptions(requestOptions).load(glideUrl).into(into);
   }
 
   public void loadImageMenuItem(MenuItem into, String from, int width, int height) {
     GlideUrl glideUrl = getGlideUrl(from);
-    RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_face).fallback(R.drawable.ic_face).override(width, height)
-        .transform(new CircleTransform());
-    Glide.with(context).setDefaultRequestOptions(requestOptions).load(glideUrl).into(new SimpleTarget<Drawable>(width, height) {
-      @Override
-      public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-        into.setIcon(resource);
-      }
-    });
+    RequestOptions requestOptions =
+        new RequestOptions()
+            .placeholder(R.drawable.ic_face)
+            .fallback(R.drawable.ic_face)
+            .override(width, height)
+            .transform(new CircleTransform());
+    Glide.with(context)
+        .setDefaultRequestOptions(requestOptions)
+        .load(glideUrl)
+        .into(
+            new SimpleTarget<Drawable>(width, height) {
+              @Override
+              public void onResourceReady(
+                  @NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                into.setIcon(resource);
+              }
+            });
   }
 
   private GlideUrl getGlideUrl(String from) {
-    return new GlideUrl(from, new LazyHeaders.Builder().addHeader("Authorization", NetworkUtils.prepareToken(prefManager.getToken())).build());
+    return new GlideUrl(
+        from,
+        new LazyHeaders.Builder()
+            .addHeader("Authorization", NetworkUtils.prepareToken(prefManager.getToken()))
+            .build());
   }
 }

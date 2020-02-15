@@ -11,7 +11,6 @@ import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.exams.Exam;
 import com.victorbg.racofib.utils.Utils;
 
-import java.security.cert.PKIXRevocationChecker.Option;
 import java.text.ParseException;
 import java.util.List;
 
@@ -64,8 +63,10 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
 
     @BindView(R.id.time)
     public TextView time;
+
     @BindView(R.id.subject)
     public TextView subject;
+
     @BindView(R.id.type)
     public TextView type;
 
@@ -90,12 +91,15 @@ public class ExamItem extends AbstractItem<ExamItem, ExamItem.ViewHolder> {
       }
 
       try {
-        time.setText(Utils.getFormattedPeriod(item.exam.startDate, item.exam.endDate, item.exam.standardFormat));
+        time.setText(
+            Utils.getFormattedPeriod(
+                item.exam.startDate, item.exam.endDate, item.exam.standardFormat));
       } catch (ParseException e) {
         e.printStackTrace();
         time.setVisibility(View.GONE);
       }
-      Optional.ofNullable(item.exam.color).ifPresent(color -> subject.setBackgroundColor(Color.parseColor(color)));
+      Optional.ofNullable(item.exam.color)
+          .ifPresent(color -> subject.setBackgroundColor(Color.parseColor(color)));
     }
 
     @Override

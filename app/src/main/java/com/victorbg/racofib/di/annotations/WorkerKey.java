@@ -12,5 +12,5 @@ import dagger.MapKey;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface WorkerKey {
-    Class<? extends ListenableWorker> value();
+  Class<? extends ListenableWorker> value();
 }
