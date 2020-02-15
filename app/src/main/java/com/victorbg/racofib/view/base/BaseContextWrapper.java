@@ -7,8 +7,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
 
-import com.victorbg.racofib.data.sp.PrefManager;
-
 import java.util.Locale;
 
 import androidx.annotation.NonNull;

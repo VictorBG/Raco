@@ -9,7 +9,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.domain.user.LogoutUserUseCase;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 import com.victorbg.racofib.view.base.BaseActivity;
 

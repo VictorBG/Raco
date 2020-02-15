@@ -16,7 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.data.model.notes.Attachment;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.utils.NetworkUtils;
 
 import java.io.File;

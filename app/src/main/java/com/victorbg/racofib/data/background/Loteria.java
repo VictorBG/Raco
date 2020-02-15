@@ -10,7 +10,6 @@ import androidx.work.WorkerParameters;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.api.LoteriaService;
 import com.victorbg.racofib.data.model.LoteriaResponse;
 
 import java.io.IOException;

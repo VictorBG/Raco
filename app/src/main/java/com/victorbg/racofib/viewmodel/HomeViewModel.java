@@ -2,7 +2,7 @@ package com.victorbg.racofib.viewmodel;
 
 import androidx.lifecycle.Transformations;
 
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.domain.exams.LoadCacheExamsUseCase;
 import com.victorbg.racofib.domain.exams.LoadExamsUseCase;
 import com.victorbg.racofib.domain.schedule.LoadTodayScheduleUseCase;
@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -73,13 +74,15 @@ public class HomeViewModel extends ViewModel {
         return exams.stream().filter(exam -> {
             try {
                 Date examDate = simpleDateFormat.parse(exam.startDate);
+                assert examDate != null;
                 return examDate.after(currentTime) && examDate.before(limitTime);
             } catch (ParseException e) {
                 return false;
             }
         }).sorted((exam1, exam2) -> {
             try {
-                return simpleDateFormat.parse(exam1.startDate).compareTo(simpleDateFormat.parse(exam2.startDate));
+                return Objects.requireNonNull(simpleDateFormat.parse(exam1.startDate))
+                        .compareTo(simpleDateFormat.parse(exam2.startDate));
             } catch (ParseException e) {
                 return 0;
             }

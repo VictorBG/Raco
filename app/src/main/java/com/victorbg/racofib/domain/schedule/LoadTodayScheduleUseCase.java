@@ -5,7 +5,7 @@ import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.model.subject.SubjectSchedule;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.utils.Utils;
 
 import java.util.List;
@@ -37,20 +37,9 @@ public class LoadTodayScheduleUseCase extends UseCase<Void, LiveData<Resource<Li
     result.setValue(Resource.loading(null));
 
     if (prefManager.shouldDisplaySchedule()) {
-      // TODO: it is neccessary to put executors for different threads?
       executeSingleAction(() -> appDatabase.subjectScheduleDao().getTodaySchedule(Utils.getDayOfWeek()),
           data -> result.setValue(Resource.success(data)),
           error -> result.setValue(Resource.error(error)));
-//      appExecutors.executeOnDisk(() -> {
-//        compositeDisposable.add(appDatabase
-//            .subjectScheduleDao()
-//            .getTodaySchedule(Utils.getDayOfWeek())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribeOn(Schedulers.io())
-//            .subscribe(
-//                data -> appExecutors.executeOnMainThread(() -> result.setValue(Resource.success(data))),
-//                error -> appExecutors.executeOnMainThread(() -> result.setValue(Resource.error(error.getMessage())))));
-//      });
     }
 
     return result;

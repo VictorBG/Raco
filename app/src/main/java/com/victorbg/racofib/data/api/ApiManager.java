@@ -1,7 +1,7 @@
 package com.victorbg.racofib.data.api;
 
 import com.victorbg.racofib.BuildConfig;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.utils.NetworkUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -30,15 +30,6 @@ public class ApiManager {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         return retrofit.create(AuthService.class);
-    }
-
-    public static LoteriaService createLoteria() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(new OkHttpClient())
-                .baseUrl("https://api.elpais.com/ws/")
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-        return retrofit.create(LoteriaService.class);
     }
 
     /**

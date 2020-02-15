@@ -15,7 +15,7 @@ public interface AuthService {
             @Field("grant_type") String grantType,
             @Field("refresh_token") String code,
             @Field("client_id") String clientID,
-            @Field("client_secret") String client_secret);
+            @Field("client_secret") String clientSecret);
 
 
 }

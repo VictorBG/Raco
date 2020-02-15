@@ -11,6 +11,7 @@ public class Attachment {
     @SerializedName("nom")
     public String name;
 
+    @SerializedName("url")
     public String url;
 
     @SerializedName("mida")

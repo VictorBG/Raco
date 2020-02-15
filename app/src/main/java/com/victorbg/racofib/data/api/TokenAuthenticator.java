@@ -2,7 +2,7 @@ package com.victorbg.racofib.data.api;
 
 import com.victorbg.racofib.BuildConfig;
 import com.victorbg.racofib.data.model.TokenResponse;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.utils.NetworkUtils;
 
 import org.jetbrains.annotations.NotNull;

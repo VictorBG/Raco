@@ -2,19 +2,20 @@ package com.victorbg.racofib.domain.user;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
 
 import com.victorbg.racofib.domain.UseCase;
 import com.victorbg.racofib.data.repository.AppExecutors;
 import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.user.UserRepository;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.view.base.BaseContextWrapper;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
+import androidx.preference.PreferenceManager;
 
 @Singleton
 public class LoginUserUseCase extends UseCase<String, LiveData<Resource<String>>> {
@@ -33,8 +34,6 @@ public class LoginUserUseCase extends UseCase<String, LiveData<Resource<String>>
     /**
      * It's all implemented and explained in {@link UserRepository#authUser(Context, String)}
      * <p>
-     * TODO: Should the logic be implemented here to clear the repository?
-     *
      * @param parameter
      * @return
      */

@@ -16,8 +16,8 @@ import com.victorbg.racofib.data.repository.base.Resource;
 import com.victorbg.racofib.data.repository.base.Status;
 import com.victorbg.racofib.data.repository.season.EventsRepository;
 import com.victorbg.racofib.data.repository.user.UserRepository;
-import com.victorbg.racofib.data.sp.PrefManager;
-import java.text.ParseException;
+import com.victorbg.racofib.data.preferences.PrefManager;
+
 import java.util.Optional;
 import javax.inject.Inject;
 import timber.log.Timber;

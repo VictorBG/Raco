@@ -3,7 +3,7 @@ package com.victorbg.racofib.view.base;
 import android.os.Bundle;
 
 import com.victorbg.racofib.R;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.di.injector.Injectable;
 
 import javax.inject.Inject;

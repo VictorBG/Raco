@@ -40,7 +40,7 @@ public interface ApiService {
             @Field("code") String code,
             @Field("redirect_uri") String redirectURI,
             @Field("client_id") String clientID,
-            @Field("client_secret") String client_secret);
+            @Field("client_secret") String clientSecret);
 
     @Headers({"Content-Type: application/json"})
     @GET("jo/assignatures?format=json")

@@ -8,7 +8,7 @@ import androidx.core.os.ConfigurationCompat;
 
 import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.di.injector.AppInjector;
 
 import java.util.Locale;
@@ -19,8 +19,6 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import timber.log.Timber;
-
-import static android.content.res.Configuration.UI_MODE_NIGHT_YES;
 
 public class AppRaco extends Application implements HasActivityInjector {
 
@@ -33,14 +31,6 @@ public class AppRaco extends Application implements HasActivityInjector {
     @Override
     public void onCreate() {
         super.onCreate();
-
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            return;
-//        }
-//
-//        if (BuildConfig.DEBUG) {
-//            LeakCanary.install(this);
-//        }
 
         FirebaseApp.initializeApp(this);
         AppInjector.init(this);
@@ -68,7 +58,7 @@ public class AppRaco extends Application implements HasActivityInjector {
             }
         }
 
-        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+//        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 //        prefManager.setDarkTheme(currentNightMode == UI_MODE_NIGHT_YES);
         prefManager.setDarkTheme(true);
     }

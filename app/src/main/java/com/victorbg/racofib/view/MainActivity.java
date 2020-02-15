@@ -19,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.victorbg.racofib.R;
 import com.victorbg.racofib.domain.user.LoadUserUseCase;
 import com.victorbg.racofib.data.glide.GlideRequests;
-import com.victorbg.racofib.data.sp.PrefManager;
+import com.victorbg.racofib.data.preferences.PrefManager;
 import com.victorbg.racofib.view.base.BaseActivity;
 import com.victorbg.racofib.view.ui.login.LoginActivity;
 import com.victorbg.racofib.viewmodel.MainActivityViewModel;

@@ -1,8 +1,8 @@
-package com.victorbg.racofib.data.sp;
+package com.victorbg.racofib.data.preferences;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
 
 import com.victorbg.racofib.data.model.TokenResponse;
 
@@ -17,12 +17,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 /**
- * Class to manage the preferences of the application using a Singleton pattern. It is initialized in a secure way to prevent duplicate on more than
- * one thread.
+ * Class to manage the preferences of the application using a Singleton pattern.
  * <p>
- * TODO: Tests are not ready yet for this class.
  */
 @Singleton
 public class PrefManager {
