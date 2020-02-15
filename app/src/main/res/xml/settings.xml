@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="Personalización">
         <SwitchPreference
-            android:icon="@drawable/ic_palette_black_24dp"
+            android:icon="@drawable/ic_baseline_style_24"
             android:key="DarkTheme"
             android:summary="@string/pref_enable_dark_mode"
             android:title="@string/pref_enable_dark_mode_title" />
@@ -19,6 +19,18 @@
         <!--android:key="NavBarColor"-->
         <!--android:summary="Deshabilitar barra de navegación coloreada"-->
         <!--android:title="Barra de navegación sin color" />-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Home page">
+
+        <ListPreference
+            android:icon="@drawable/ic_baseline_functions_24"
+            android:key="HomePageExamLimit"
+            android:entries="@array/home_page_exam_limit_titles"
+            android:entryValues="@array/home_page_exam_limit_values"
+            android:summary="Interval date from now that the exams within that date will appear"
+            android:title="Summary exams date limit" />
+
     </PreferenceCategory>
 
     <!--<PreferenceCategory android:title="Notificaciones">-->
@@ -48,10 +60,10 @@
             android:key="LocaleApp"
             android:title="@string/pref_language_title" />
         <!--<Preference-->
-            <!--android:icon="@drawable/ic_delete_black_24dp"-->
-            <!--android:key="DeleteAppData"-->
-            <!--android:summary="Borra todos los datos almacenados en la app. Requiere reinicio"-->
-            <!--android:title="Borrar datos almacenados" />-->
+        <!--android:icon="@drawable/ic_delete_black_24dp"-->
+        <!--android:key="DeleteAppData"-->
+        <!--android:summary="Borra todos los datos almacenados en la app. Requiere reinicio"-->
+        <!--android:title="Borrar datos almacenados" />-->
 
 
     </PreferenceCategory>
