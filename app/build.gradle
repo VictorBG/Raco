@@ -6,14 +6,52 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
-    defaultConfig {
-        applicationId "com.victorbg.racofib"
-        minSdkVersion 26
-        targetSdkVersion 29
-        versionCode 12
-        versionName '2.0'
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def value = 0
+
+        def runTasks = gradle.startParameter.taskNames
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks) {
+            value = 1
+        }
+
+        def versionc = versionProps['VERSION_CODE'].toInteger() + value
+        def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+        def versionMajor = versionProps['VERSION_MAJOR'].toInteger()
+        def versionMinor = versionProps['VERSION_MINOR'].toInteger()
+        def versionPatch = versionProps['VERSION_PATCH'].toInteger()
+
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps['VERSION_CODE'] = versionc.toString()
+
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            applicationId "com.victorbg.racofib"
+            minSdkVersion 26
+            targetSdkVersion 29
+            versionCode versionc.toInteger()
+            versionName "${versionMajor}.${versionMinor}.${versionPatch}(${versionBuild})"
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                    outputFileName = "com.victorbg.racofib.${versionMajor}.${versionMinor}.${versionPatch}(${versionBuild}).apk"
+                }
+
+            }
+        }
+
+    } else {
+        throw new FileNotFoundException("Could not read version.properties!")
     }
+
     buildTypes {
         release {
             minifyEnabled false
