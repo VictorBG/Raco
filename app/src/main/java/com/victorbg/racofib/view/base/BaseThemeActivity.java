@@ -14,7 +14,7 @@ import dagger.android.AndroidInjection;
 public abstract class BaseThemeActivity extends AppCompatActivity implements Injectable {
 
   @Inject
-  PrefManager prefManager;
+  protected PrefManager prefManager;
 
   protected int themeId;
 

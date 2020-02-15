@@ -22,9 +22,6 @@ import androidx.appcompat.app.ActionBar;
 public class SettingsActivity extends BaseActivity implements Injectable, SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Inject
-    PrefManager prefManager;
-
-    @Inject
     LogoutUserUseCase logoutUserUseCase;
 
     private String locale;

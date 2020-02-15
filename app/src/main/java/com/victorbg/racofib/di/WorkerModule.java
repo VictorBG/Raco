@@ -1,6 +1,5 @@
 package com.victorbg.racofib.di;
 
-import com.victorbg.racofib.data.background.Loteria;
 import com.victorbg.racofib.data.background.ChildWorkerFactory;
 import com.victorbg.racofib.data.background.digest.DigestWorker;
 import com.victorbg.racofib.data.background.season.SeasonCheckTask;
@@ -18,11 +17,6 @@ public interface WorkerModule {
   @IntoMap
   @WorkerKey(DigestWorker.class)
   ChildWorkerFactory bindDigestWorker(DigestWorker.Factory factory);
-
-  @Binds
-  @IntoMap
-  @WorkerKey(Loteria.class)
-  ChildWorkerFactory bindLoteria(Loteria.Factory factory);
 
   @Binds
   @IntoMap

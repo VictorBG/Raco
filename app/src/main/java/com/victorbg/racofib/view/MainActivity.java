@@ -43,11 +43,8 @@ public class MainActivity extends BaseActivity implements HasSupportFragmentInje
     FloatingActionButton fab;
     @BindView(R.id.parent)
     View parent;
-
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
-    @Inject
-    PrefManager prefManager;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     @Inject
